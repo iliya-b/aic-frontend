@@ -5,8 +5,8 @@ var ThemeManager = new mui.Styles.ThemeManager();
 var Router = require('react-router');
 var Link = Router.Link;
 var RouteHandler = Router.RouteHandler;
-var GobyPalette = require('../shared/goby-palette.jsx');
-var FullWidthSection = require('../shared/full-width-section.jsx');
+var GobyPalette = require('../configs/goby-palette.jsx');
+var FullWidthSection = require('../components/full-width-section.jsx');
 var Colors = mui.Styles.Colors;
 
 var {

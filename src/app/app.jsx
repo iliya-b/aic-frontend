@@ -2,7 +2,7 @@
 
   var React = require('react'),
     Router = require('react-router'),
-    AppRoutes = require('./app-routes.jsx'),
+    AppRoutes = require('./configs/app-routes.jsx'),
     injectTapEventPlugin = require("react-tap-event-plugin");
 
   //Needed for React Developer Tools

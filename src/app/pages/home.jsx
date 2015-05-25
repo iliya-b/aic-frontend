@@ -3,7 +3,9 @@ var React = require('react');
 var mui = require('material-ui');
 var {Colors, Spacing, Typography} = mui.Styles;
 
-var FullWidthSection = require('../shared/full-width-section.jsx');
+var FullWidthSection = require('../components/full-width-section.jsx');
+
+var Auth = require('../stores/auth.jsx');
 
 var {
   Checkbox,
@@ -34,12 +36,6 @@ var Home = React.createClass({
   // _onHomeClick() {
   //   this.context.router.transitionTo('home');
   // },
-   _onLoginClick() {
-    this.context.router.transitionTo('user-login');
-  },
-  _onSignUpClick() {
-    this.context.router.transitionTo('user-register');
-  },
 
   render: function() {
     var palette = this.context.muiTheme.palette;
@@ -88,6 +84,14 @@ var Home = React.createClass({
         marginBottom: '12px'
       }
     };
+    var loginActions = [
+      { text: 'Cancel' },
+      { text: 'Submit', onClick: this._onLoginSubmit }
+    ];
+    var signUpActions = [
+      { text: 'Cancel' },
+      { text: 'Submit', onClick: this._onSignUpSubmit }
+    ];
     return (
       <FullWidthSection style={styles.root}>
 
@@ -97,27 +101,68 @@ var Home = React.createClass({
               A platform for testing Android applications in the Cloud
             </h2>
             <RaisedButton
-              className="demo-button"
               label="Login"
               onTouchTap={this._onLoginClick}
               linkButton={true}
               style={styles.buttonStyle}
               primary={true} />
+            <Dialog ref="loginDialog" title="Login" actions={loginActions}>
+              <TextField ref="loginEmail" hintText="your@email"/><br/>
+              <TextField ref="loginPassword" hintText="password" type="password" />
+            </Dialog>
             <RaisedButton
-              className="github-button"
               label="Sign Up"
               onTouchTap={this._onSignUpClick}
               linkButton={true}
               style={styles.buttonStyle}
               primary={true} />
+            <Dialog ref="signUpDialog" title="Sign Up" actions={signUpActions}>
+              <TextField ref="signUpEmail" hintText="your@email"/><br/>
+              <TextField ref="signUpPassword" hintText="password" type="password" />
+            </Dialog>
           </div>
       </FullWidthSection>
     );
-  }
+  },
+
+  _onLoginClick: function(e) {
+    this.refs.loginDialog.show();
+  },
+
+  _onLoginSubmit: function(e) {
+    console.log('submit login');
+    this.context.router.transitionTo('projects');
+    // e.preventDefault();
+    // var { router } = this.context;
+    // var nextPath = router.getCurrentQuery().nextPath;
+    // var email = this.refs.loginEmail.getDOMNode().value;
+    // var pass = this.refs.loginPassword.getDOMNode().value;
+    // Auth.login(email, pass, (loggedIn) => {
+    //   if (!loggedIn){
+    //     // return this.setState({ error: true });
+    //     console.log('submit login 1');
+    //   } else if (nextPath) {
+    //     // router.replaceWith(nextPath);
+    //     console.log('submit login 2');
+    //   } else {
+    //     // router.replaceWith('/projects');
+    //     console.log('submit login 3');
+    //   }
+    // });
+  },
+
+  _onSignUpClick: function(e) {
+    this.refs.signUpDialog.show();
+  },
+
+  _onSignUpSubmit: function(e) {
+    console.log('submit sign');
+  },
 
 });
 
 Home.contextTypes = {
+  router: React.PropTypes.func,
   muiTheme: React.PropTypes.object
 }
 
