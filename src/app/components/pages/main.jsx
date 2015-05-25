@@ -6,6 +6,8 @@ var Router = require('react-router');
 var Link = Router.Link;
 var RouteHandler = Router.RouteHandler;
 var GobyPalette = require('../shared/goby-palette.jsx');
+var FullWidthSection = require('../shared/full-width-section.jsx');
+var Colors = mui.Styles.Colors;
 
 var {
   Checkbox,
@@ -52,16 +54,39 @@ var Main = React.createClass({
     };
   },
 
-  render: function() {
+  getStyles() {
+    var darkWhite = Colors.darkWhite;
+    return {
+      footer: {
+        backgroundColor: Colors.grey900,
+        textAlign: 'center'
+      },
+      a: {
+        color: darkWhite
+      },
+      p: {
+        margin: '0 auto',
+        padding: '0 0 24px 0',
+        color: Colors.lightWhite,
+        maxWidth: '335px'
+      },
+      iconButton: {
+        color: darkWhite
+      }
+    };
+  },
 
+  render: function() {
+    var styles = this.getStyles();
     return (
       <div>
-        <p>Welcome to AiC!</p>
-        <a>Testing theme</a>
-        <FlatButton label="Home" primary={true}  onClick={this._onHomeClick} />
-        <FlatButton label="Test Theme" primary={true}  onClick={this._onThemeClick} />
         <RouteHandler />
+        <FullWidthSection useContent={true} style={styles.footer}>
+          <p style={styles.p}>COPYRIGHT © AiC</p>
+          <RaisedButton label="Test Theme" primary={true}  onClick={this._onThemeClick} />
+        </FullWidthSection>
       </div>
+
     );
   }
 
