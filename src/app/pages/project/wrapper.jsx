@@ -30,7 +30,7 @@ var ProjectWrapper = React.createClass({
             onRightIconButtonTouchTap={this._onRightIconButtonTouchTap}
             title={title}
             zDepth={0}
-            iconClassNameRight="fa fa-sign-out" />
+            iconClassNameRight="mdi mdi-logout" />
         <RouteHandler />
       </div>
     );

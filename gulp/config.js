@@ -19,11 +19,21 @@ module.exports = {
       src + '/less/**',
       mui + '/less/**'
     ],
-    dest: dest
+    dest:  dest + '/css'
   },
   markup: {
     src: src + "/www/**",
     dest: dest
+  },
+  mdi: {
+    css: {
+      src: './node_modules/mdi/css/materialdesignicons.min.css',
+      dest: dest + '/css'
+    },
+    fonts: {
+      files: './node_modules/mdi/fonts/**',
+      dest: dest + '/fonts'
+    },
   },
   browserify: {
     // Enable source maps

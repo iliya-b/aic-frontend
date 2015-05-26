@@ -29,10 +29,12 @@ var ListItem = React.createClass({
     number: React.PropTypes.string,
     data: React.PropTypes.string,
     toggle: React.PropTypes.bool,
+    check: React.PropTypes.bool,
     disabled: React.PropTypes.bool,
     onTouchTap: React.PropTypes.func,
     onClick: React.PropTypes.func,
     onToggle: React.PropTypes.func,
+    onCheck: React.PropTypes.func,
     selected: React.PropTypes.bool
   },
 
@@ -160,7 +162,7 @@ var ListItem = React.createClass({
       var {
         checkbox,
         onClick,
-        onToggle,
+        onCheck,
         onMouseOver,
         onMouseOut,
         children,

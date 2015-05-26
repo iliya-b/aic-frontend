@@ -38,6 +38,7 @@
     "gulp-sourcemaps": "^1.5.2",
     "gulp-util": "^3.0.4",
     "highlight.js": "^8.6.0",
+    "mdi": "^1.0.62-beta",
     "pretty-hrtime": "^1.0.0",
     "reactify": "^1.1.1",
     "require-dir": "^0.3.0",

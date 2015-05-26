@@ -29,29 +29,31 @@ var {
 var ProjectSettings = React.createClass({
 
   render: function() {
+    var style = {
+      paper: {
+        textAlign: 'center',
+        padding: '20px'
+      }
+    };
     return (
       <div>
+        <h2>Update Project</h2>
+        <Paper style={style.paper}>
+          <TextField ref="projectName" hintText="Project Name"/><br/>
+          <TextField ref="projectDescription" hintText="Project Description (Multiline)" multiLine={true} /><br/>
+          <FlatButton
+            label="Update"
+            linkButton={true}
+            primary={true} />
+        </Paper>
 
-      <Tabs>
-        <Tab label="Update Project" >
-          <div>
-            <TextField ref="projectName" hintText="Project Name"/><br/>
-            <TextField ref="projectDescription" hintText="Project Description (Multiline)" multiLine={true} /><br/>
-            <FlatButton
-              label="Update"
-              linkButton={true}
-              primary={true} />
-          </div>
-        </Tab>
-        <Tab label="Delete Project" >
-          <div>
-            <FlatButton
-              label="Delete this project"
-              linkButton={true}
-              primary={true} />
-          </div>
-        </Tab>
-      </Tabs>
+        <h2>Delete Project</h2>
+        <Paper style={style.paper}>
+          <FlatButton
+            label="Delete this project"
+            linkButton={true}
+            primary={true} />
+        </Paper>
 
       </div>
     );

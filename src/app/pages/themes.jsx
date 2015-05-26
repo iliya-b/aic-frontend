@@ -141,13 +141,13 @@ var ThemesPage = React.createClass({
 
               <div style={styles.group}>
                 <div style={styles.containerCentered}>
-                  <FloatingActionButton iconClassName="fa fa-star" disabled={true}/>
+                  <FloatingActionButton iconClassName="mdi mdi-star" disabled={true}/>
                 </div>
                 <div style={styles.containerCentered}>
-                  <FloatingActionButton iconClassName="fa fa-star" disabled={false}/>
+                  <FloatingActionButton iconClassName="mdi mdi-star" disabled={false}/>
                 </div>
                  <div style={styles.containerCentered}>
-                  <FloatingActionButton iconClassName="fa fa-star" disabled={false}  secondary={true} />
+                  <FloatingActionButton iconClassName="mdi mdi-star" disabled={false}  secondary={true} />
                 </div>
                 <div style={styles.containerCentered}>
                   <RaisedButton label="Secondary" secondary={true} />

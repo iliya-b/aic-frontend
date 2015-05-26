@@ -13,8 +13,8 @@ var ProjectWrapper = require('../pages/project/wrapper.jsx');
 var ProjectList = require('../pages/project/list.jsx');
 var ProjectPage = require('../pages/project/page.jsx');
 var ProjectSettings = require('../pages/project/settings.jsx');
-var ProjectApkList = require('../pages/project/apk/list.jsx');
-var ProjectApkPage = require('../pages/project/apk/page.jsx');
+var ProjectApkList = require('../pages/project/apk-list.jsx');
+var ProjectLive = require('../pages/project/live.jsx');
 
 // Routes //
 var AppRoutes = (
@@ -25,10 +25,9 @@ var AppRoutes = (
     <Route name="projects" handler={ProjectWrapper}>
       <Route name="project-list" path='list' handler={ProjectList} />
       <Route name="project-page" path=":projectId" handler={ProjectPage}>
-        <Route name="apks" path="apks" handler={ProjectApkList}>
-          <Route name="apk-page" path=":apkId" handler={ProjectApkPage} />
-        </Route>
+        <Route name="apks" handler={ProjectApkList} />
         <Route name="settings" handler={ProjectSettings} />
+        <Route name="live" handler={ProjectLive} />
         <Redirect from="/projects/:projectId" to="apks" />
       </Route>
       <Redirect from="/projects" to="project-list" />

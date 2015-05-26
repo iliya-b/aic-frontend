@@ -26,6 +26,7 @@ var List = React.createClass({
     onItemTap: React.PropTypes.func,
     onItemClick: React.PropTypes.func,
     onToggle: React.PropTypes.func,
+    onCheck: React.PropTypes.func,
     listItems: React.PropTypes.array.isRequired,
     selectedIndex: React.PropTypes.number,
     hideable: React.PropTypes.bool,
@@ -138,6 +139,7 @@ var List = React.createClass({
         attribute,
         number,
         toggle,
+        check,
         onClick,
         ...other
       } = listItem;
@@ -172,6 +174,7 @@ var List = React.createClass({
               attribute={listItem.attribute}
               number={listItem.number}
               toggle={listItem.toggle}
+              check={listItem.check}
               onToggle={this.props.onToggle}
               onCheck={this.props.onCheck}
               disabled={isDisabled}
@@ -189,7 +192,7 @@ var List = React.createClass({
 
   _setKeyWidth: function(el) {
     var menuWidth = this.props.autoWidth ?
-      KeyLine.getIncrementalDim(el.offsetWidth) + 'px' :
+      (KeyLine.getIncrementalDim(el.offsetWidth) -  this.getTheme().padding) + 'px' :
       '100%';
 
     //Update the menu width
@@ -247,7 +250,7 @@ var List = React.createClass({
 
   _onItemToggle: function(e, index, toggled) {
     if (this.props.onItemToggle) this.props.onItemToggle(e, index, this.props.listItems[index], toggled);
-  }
+  },
 
   _onItemCheck: function(e, index, checked) {
     if (this.props.onItemCheck) this.props.onItemCheck(e, index, this.props.listItems[index], checked);

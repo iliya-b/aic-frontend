@@ -3,7 +3,7 @@ var React = require('react');
 var mui = require('material-ui');
 var {Colors, Spacing, Typography} = mui.Styles;
 
-var List = require('../../../components/list/list.jsx');
+var List = require('../../components/list/list.jsx');
 
 var { Menu, Toolbar, ToolbarGroup, IconButton } = mui;
 
@@ -22,23 +22,29 @@ var ProjectApkList = React.createClass({
   render: function() {
     var style = {
       toolbar: {
-        width: '512px',
-        textAlign: 'right'
+        // width: '512px',
       },
-      toolbargroup: {
+      toolbargroup1: {
+        paddingTop: '3px',
+        float: 'left'
+      },
+      toolbargroup2: {
         paddingRight: '6px',
-        float: 'none'
+        float: 'right'
       },
       list: {
-        width: '500px'
+        // width: '500px'
       }
     };
     return (
       <div>
         <h2>APK List</h2>
         <Toolbar style={style.toolbar}>
-          <ToolbarGroup style={style.toolbargroup}>
-            <IconButton iconClassName="fa fa-trash" tooltip="Delete selected"/>
+          <ToolbarGroup style={style.toolbargroup1}>
+            <IconButton iconClassName="mdi mdi-cloud-upload" tooltip="Upload APK file"/>
+          </ToolbarGroup>
+          <ToolbarGroup style={style.toolbargroup2}>
+            <IconButton iconClassName="mdi mdi-delete" tooltip="Delete selected"/>
           </ToolbarGroup>
         </Toolbar>
         <List style={style.list} listItems={apks} onItemTap={this._onItemTap} />
