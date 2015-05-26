@@ -29,22 +29,39 @@ var {
 var ProjectSettings = React.createClass({
 
   render: function() {
+    var contentWidth = (64 * 6) + 'px';
     var style = {
       paper: {
         textAlign: 'center',
-        padding: '20px'
+        padding: Spacing.desktopGutter
+      },
+      paperContent: {
+        textAlign: 'left',
+        width: contentWidth,
+        display: 'inline-block'
+      },
+      field: {
+        width: '100%'
+      },
+      divButton: {
+        paddingTop: Spacing.desktopGutter,
+        textAlign: 'center',
       }
     };
     return (
       <div>
         <h2>Update Project</h2>
         <Paper style={style.paper}>
-          <TextField ref="projectName" hintText="Project Name"/><br/>
-          <TextField ref="projectDescription" hintText="Project Description (Multiline)" multiLine={true} /><br/>
-          <FlatButton
-            label="Update"
-            linkButton={true}
-            primary={true} />
+          <div style={style.paperContent}>
+          <TextField style={style.field} ref="projectName" floatingLabelText="Name"  hintText="Project Name"/><br/>
+          <TextField style={style.field} ref="projectDescription" floatingLabelText="Description" hintText="Project Description (Multiline)" multiLine={true} /><br/>
+          <div style={style.divButton}>
+            <FlatButton
+              label="Update"
+              linkButton={true}
+              primary={true} />
+          </div>
+          </div>
         </Paper>
 
         <h2>Delete Project</h2>
