@@ -23,14 +23,15 @@ var AppRoutes = (
     <Route name="theme-test" handler={Themes} />
 
     <Route name="projects" handler={ProjectWrapper}>
-      <Route name="list" handler={ProjectList} />
+      <Route name="project-list" path='list' handler={ProjectList} />
       <Route name="project-page" path=":projectId" handler={ProjectPage}>
         <Route name="apks" path="apks" handler={ProjectApkList}>
           <Route name="apk-page" path=":apkId" handler={ProjectApkPage} />
         </Route>
         <Route name="settings" handler={ProjectSettings} />
+        <Redirect from="/projects/:projectId" to="apks" />
       </Route>
-      <Redirect from="/projects" to="list" />
+      <Redirect from="/projects" to="project-list" />
     </Route>
 
     <DefaultRoute handler={Home}/>

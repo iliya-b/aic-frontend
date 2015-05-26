@@ -1,8 +1,7 @@
 var React = require('react');
 var mui = require('material-ui');
 var ClearFix = mui.ClearFix;
-var StylePropable = mui.Mixins.StylePropable;
-var StyleResizable = mui.Mixins.StyleResizable;
+var {StyleResizable, StylePropable} = mui.Mixins;
 var DesktopGutter = mui.Styles.Spacing.desktopGutter;
 
 var FullWidthSection = React.createClass({

@@ -1,12 +1,14 @@
 var React = require('react');
 
 var mui = require('material-ui');
-var AppBar = mui.AppBar;
+var { AppBar } = mui;
 
 var Router = require('react-router');
-var RouteHandler = Router.RouteHandler;
+var { RouteHandler, State } = Router;
 
 var ProjectWrapper = React.createClass({
+
+  mixins: [ State ],
 
   _onLeftIconButtonTouchTap() {
     this.context.router.transitionTo('projects');
@@ -17,13 +19,16 @@ var ProjectWrapper = React.createClass({
   },
 
   render: function() {
-
+    var routerParams = this.getParams();
+    // console.log(routerParams);
+    var title = routerParams.hasOwnProperty('projectId') ? routerParams.projectId :
+                this.context.router.isActive('project-list') ? 'Projects' : '';
     return (
       <div>
         <AppBar
             onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap}
             onRightIconButtonTouchTap={this._onRightIconButtonTouchTap}
-            title="Projects"
+            title={title}
             zDepth={0}
             iconClassNameRight="fa fa-sign-out" />
         <RouteHandler />
