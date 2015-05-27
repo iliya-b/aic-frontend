@@ -6,23 +6,34 @@ var { AppBar } = mui;
 var Router = require('react-router');
 var { RouteHandler, State } = Router;
 
-var ProjectWrapper = React.createClass({
+var { Auth, RequireAuthComponent } = require('../../stores/auth.jsx');
 
-  mixins: [ State ],
+// var ProjectWrapper = RequireAuth( class extends React.Component {
+var ProjectWrapper = class extends RequireAuthComponent {
+
+  constructor (props) {
+    super(props);
+    this._onLeftIconButtonTouchTap = this._onLeftIconButtonTouchTap.bind(this);
+    this._onRightIconButtonTouchTap = this._onRightIconButtonTouchTap.bind(this);
+  }
 
   _onLeftIconButtonTouchTap() {
     this.context.router.transitionTo('projects');
-  },
+  }
 
   _onRightIconButtonTouchTap() {
-    this.context.router.transitionTo('home');
-  },
+    Auth.logout();
+    Auth.requireAuth(this.context.router);
+  }
 
-  render: function() {
-    var routerParams = this.getParams();
-    // console.log(routerParams);
+  render() {
+    console.log(this);
+    console.log(this.context);
+    var routerParams = this.context.router.getCurrentParams();
+    console.log(routerParams);
     var title = routerParams.hasOwnProperty('projectId') ? routerParams.projectId :
                 this.context.router.isActive('project-list') ? 'Projects' : '';
+    // var title = '';
     return (
       <div>
         <AppBar
@@ -36,10 +47,17 @@ var ProjectWrapper = React.createClass({
     );
   }
 
-});
+// });
+};
+
+// ProjectWrapper.mixins = [ State ];
+
+// ProjectWrapper.contextTypes = {
+//   router: React.PropTypes.func.isRequired
+// }
 
 ProjectWrapper.contextTypes = {
-  router: React.PropTypes.func
-}
+  router: React.PropTypes.func.isRequired
+};
 
 module.exports = ProjectWrapper;

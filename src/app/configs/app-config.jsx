@@ -1,7 +1,8 @@
 'use strict';
 
 var AppConfig = {
-  backend: 'http://localhost:12345'
+  backend: 'http://10.2.0.143:12345',
+  userHome: 'projects'
 };
 
 module.exports = AppConfig;

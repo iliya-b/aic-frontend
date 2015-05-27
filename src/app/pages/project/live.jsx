@@ -51,7 +51,8 @@ var ProjectLive = React.createClass({
       device: {
         position: 'absolute',
         fontSize: '600px',
-        color: this.context.muiTheme.palette.primary1Color,
+        // color: this.context.muiTheme.palette.primary1Color,
+        color: this.context.muiTheme.palette.disabledColor,
         margin: '0 -100px'
       },
       button: {

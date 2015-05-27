@@ -4,8 +4,8 @@ var mui = require('material-ui');
 var {Colors, Spacing, Typography} = mui.Styles;
 
 var FullWidthSection = require('../components/full-width-section.jsx');
-
-var Auth = require('../stores/auth.jsx');
+var ErrorBox = require('../components/error-box.jsx');
+var { Auth, RequireAuth } = require('../stores/auth.jsx');
 
 var {
   Checkbox,
@@ -28,7 +28,20 @@ var {
   TextField,
   Toggle} = mui;
 
-var Home = React.createClass({
+var Home = class extends React.Component {
+
+  constructor (props) {
+    super(props);
+    this.state = {
+      // loggedIn: auth.loggedIn()
+      loginError: false,
+      loginErrorMessage: ''
+    };
+    this._onLoginClick = this._onLoginClick.bind(this);
+    this._onLoginSubmit = this._onLoginSubmit.bind(this);
+    this._onSignUpClick = this._onSignUpClick.bind(this);
+    this._onSignUpSubmit = this._onSignUpSubmit.bind(this);
+  }
 
   // _onThemeClick() {
   //   this.context.router.transitionTo('theme-test');
@@ -37,7 +50,7 @@ var Home = React.createClass({
   //   this.context.router.transitionTo('home');
   // },
 
-  render: function() {
+  render() {
     var palette = this.context.muiTheme.palette;
     var styles = {
       root: {
@@ -107,8 +120,11 @@ var Home = React.createClass({
               style={styles.buttonStyle}
               primary={true} />
             <Dialog ref="loginDialog" title="Login" actions={loginActions}>
-              <TextField ref="loginEmail" hintText="your@email"/><br/>
-              <TextField ref="loginPassword" hintText="password" type="password" />
+              {this.state.loginError ? (
+                <ErrorBox>Error durring login. Login or password invalid. {this.state.loginErrorMessage} </ErrorBox>
+              ) : '' }
+              <TextField ref="loginEmail" floatingLabelText="login"/><br/>
+              <TextField ref="loginPassword" floatingLabelText="password" type="password" />
             </Dialog>
             <RaisedButton
               label="Sign Up"
@@ -117,53 +133,61 @@ var Home = React.createClass({
               style={styles.buttonStyle}
               primary={true} />
             <Dialog ref="signUpDialog" title="Sign Up" actions={signUpActions}>
-              <TextField ref="signUpEmail" hintText="your@email"/><br/>
-              <TextField ref="signUpPassword" hintText="password" type="password" />
+              <TextField ref="signUpEmail" floatingLabelText="login"/><br/>
+              <TextField ref="signUpPassword" floatingLabelText="password" type="password" />
             </Dialog>
           </div>
       </FullWidthSection>
     );
-  },
+  }
 
-  _onLoginClick: function(e) {
+  _onLoginClick(e) {
     this.refs.loginDialog.show();
-  },
+  }
 
-  _onLoginSubmit: function(e) {
+  _onLoginSubmit(e) {
     console.log('submit login');
-    this.context.router.transitionTo('projects');
-    // e.preventDefault();
-    // var { router } = this.context;
-    // var nextPath = router.getCurrentQuery().nextPath;
-    // var email = this.refs.loginEmail.getDOMNode().value;
-    // var pass = this.refs.loginPassword.getDOMNode().value;
-    // Auth.login(email, pass, (loggedIn) => {
-    //   if (!loggedIn){
-    //     // return this.setState({ error: true });
-    //     console.log('submit login 1');
-    //   } else if (nextPath) {
-    //     // router.replaceWith(nextPath);
-    //     console.log('submit login 2');
-    //   } else {
-    //     // router.replaceWith('/projects');
-    //     console.log('submit login 3');
-    //   }
-    // });
-  },
+    // this.context.router.transitionTo('projects');
+    e.preventDefault();
+    var { router } = this.context;
+    var nextPath = router.getCurrentQuery().nextPath;
+    var email = this.refs.loginEmail.getValue();
+    var pass = this.refs.loginPassword.getValue();
+    Auth.login(email, pass, (loggedIn) => {
+      console.log(loggedIn);
+      if (!loggedIn.authenticated){
+        this.setState({ loginError: true, loginErrorMessage: loggedIn.errorMessage });
+        console.log('submit login 1');
+      } else if (nextPath) {
+        router.replaceWith(nextPath);
+        console.log('submit login 2');
+      } else {
+        // router.replaceWith('projects');
+        console.log('submit login 3');
+        Auth.userHome(router);
+      }
+    });
+  }
 
-  _onSignUpClick: function(e) {
+  _onSignUpClick(e) {
     this.refs.signUpDialog.show();
-  },
+  }
 
-  _onSignUpSubmit: function(e) {
+  _onSignUpSubmit(e) {
     console.log('submit sign');
-  },
+    this.context.router.transitionTo('projects');
+  }
 
-});
+};
 
 Home.contextTypes = {
   router: React.PropTypes.func,
   muiTheme: React.PropTypes.object
 }
+
+Home.willTransitionTo = function(transition) {
+  console.log('hometrans2');
+  Auth.userHome(transition);
+};
 
 module.exports = Home;
