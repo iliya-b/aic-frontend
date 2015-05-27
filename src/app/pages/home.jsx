@@ -35,7 +35,9 @@ var Home = class extends React.Component {
     this.state = {
       // loggedIn: auth.loggedIn()
       loginError: false,
-      loginErrorMessage: ''
+      loginErrorMessage: '',
+      signUpError: false,
+      signUpErrorMessage: ''
     };
     this._onLoginClick = this._onLoginClick.bind(this);
     this._onLoginSubmit = this._onLoginSubmit.bind(this);
@@ -121,7 +123,7 @@ var Home = class extends React.Component {
               primary={true} />
             <Dialog ref="loginDialog" title="Login" actions={loginActions}>
               {this.state.loginError ? (
-                <ErrorBox>Error durring login. Login or password invalid. {this.state.loginErrorMessage} </ErrorBox>
+                <ErrorBox>Error during login. Login or password invalid. {this.state.loginErrorMessage} </ErrorBox>
               ) : '' }
               <TextField ref="loginEmail" floatingLabelText="login"/><br/>
               <TextField ref="loginPassword" floatingLabelText="password" type="password" />
@@ -133,6 +135,10 @@ var Home = class extends React.Component {
               style={styles.buttonStyle}
               primary={true} />
             <Dialog ref="signUpDialog" title="Sign Up" actions={signUpActions}>
+              {this.state.signUpError ? (
+                <ErrorBox>Error during sign up. {this.state.signUpErrorMessage} </ErrorBox>
+              ) : '' }
+              <TextField ref="signUpName" floatingLabelText="name"/><br/>
               <TextField ref="signUpEmail" floatingLabelText="login"/><br/>
               <TextField ref="signUpPassword" floatingLabelText="password" type="password" />
             </Dialog>
@@ -174,8 +180,24 @@ var Home = class extends React.Component {
   }
 
   _onSignUpSubmit(e) {
-    console.log('submit sign');
-    this.context.router.transitionTo('projects');
+    console.log('submit register');
+    // this.context.router.transitionTo('projects');
+    e.preventDefault();
+    var { router } = this.context;
+    var nextPath = router.getCurrentQuery().nextPath;
+    var name = this.refs.signUpName.getValue();
+    var email = this.refs.signUpEmail.getValue();
+    var pass = this.refs.signUpPassword.getValue();
+    Auth.register(email, pass, name, (results) => {
+      console.log(results);
+      if (!results.registered){
+        this.setState({ signUpError: true, signUpErrorMessage: results.errorMessage });
+        console.log('register 1');
+      } else {
+        // router.replaceWith('projects');
+        console.log('submit register 3');
+      }
+    });
   }
 
 };
