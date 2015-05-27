@@ -1,5 +1,3 @@
-'use strict';
-
 var React = require('react');
 
 var mui = require('material-ui');
@@ -133,7 +131,7 @@ var List = React.createClass({
       isSelected = i === this.props.selectedIndex;
       isDisabled = (listItem.disabled === undefined) ? false : listItem.disabled;
 
-      let {
+      var {
         icon,
         data,
         attribute,
