@@ -1,6 +1,6 @@
 'use strict';
 
-var $ = jQuery;
+// var $ = jQuery; // not needed
 
 var AppConfig = require('../configs/app-config.jsx');
 
@@ -69,9 +69,10 @@ var BackendAPI = {
       contentType: 'application/json;charset=UTF-8',
       processData: false,
       dataType: 'json',
+      // crossDomain: true,
       // headers: {
       //   'Access-Control-Allow-Origin': '*',
-      //   'test':'123'
+      //   // 'test':'123'
       // },
       // xhrFields: {withCredentials: true}
     })
@@ -116,18 +117,21 @@ registerRequest: function (email, pass, name, cb) {
     });
 },
 
+userLogout: function() {
+    // TODO!!
+},
+
 
 userProjects: function (token, cb) {
   $.ajax({
-      url:  AppConfig.backend + "/back/user/register",
-      // method: 'GET',
-      // contentType: 'application/json;charset=UTF-8',
-      // processData: false,
-      // dataType: 'json',
+      url:  AppConfig.backend + "/back/project",
+      method: 'GET',
+      contentType: 'application/json;charset=UTF-8',
+      processData: false,
+      dataType: 'json',
       headers: {
-        "X-Auth-Token:": token
+        "X-Auth-Token": token
       },
-      xhrFields: {withCredentials: true}
     })
     .done(function(data) {
       console.log(data);

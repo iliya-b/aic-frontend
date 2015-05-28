@@ -19,7 +19,7 @@ var {
 
 var List = require('../../components/list/list.jsx');
 
-  apks = [
+var apks = [
      { apkId: 'apk1', text: 'APK1', checkbox:true },
      { apkId: 'apk2', text: 'APK2', checkbox:true },
      { apkId: 'apk3', text: 'APK3', checkbox:true }

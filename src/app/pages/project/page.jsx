@@ -7,7 +7,7 @@ var mui = require('material-ui');
 var { Menu } = mui;
 var {Spacing, Colors} = mui.Styles;
 
-  menuItems = [
+var menuItems = [
      { path: 'apks', text: 'APK List' },
      { path: 'settings', text: 'Settings'},
      { path: 'live', text: 'Live Mode'}
@@ -26,7 +26,9 @@ var ProjectPage = React.createClass({
     var currentItem;
     for (var i = menuItems.length - 1; i >= 0; i--) {
       currentItem = menuItems[i];
-      if (currentItem.path && this.context.router.isActive(currentItem.path, this.props.params, this.props.query)) return i;
+      if (currentItem.path && this.context.router.isActive(currentItem.path, this.props.params, this.props.query)) {
+        return i;
+      }
     }
   },
 

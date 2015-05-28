@@ -42,6 +42,7 @@ var Auth = {
   },
 
   logout: function (cb) {
+    BackendAPI.userLogout();
     delete localStorage.token;
     if (cb) {cb();}
     this.onChange(false);

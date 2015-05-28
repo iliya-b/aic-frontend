@@ -4,7 +4,7 @@ var mui = require('material-ui');
 var { Paper } = mui;
 var { StylePropable } = mui.Mixins;
 var { Transitions } = mui.Styles;
-var { KeyLine, Dom } = mui.Utils;
+var { KeyLine, Dom, CssEvent } = mui.Utils;
 
 var ListItem = require('./list-item.jsx');
 
@@ -65,7 +65,7 @@ var List = React.createClass({
   },
 
   componentDidUpdate: function(prevProps, prevState) {
-    if (this.props.visible !== prevProps.visible) this._renderVisibility();
+    if (this.props.visible !== prevProps.visible) {this._renderVisibility();}
   },
 
   getTheme: function() {
@@ -143,21 +143,6 @@ var List = React.createClass({
       } = listItem;
 
       switch (listItem.type) {
-
-        case ListItem.Types.LINK:
-          itemComponent = (
-            <LinkListItem
-              key={i}
-              index={i}
-              text={listItem.text}
-              disabled={isDisabled}
-              className={this.props.listItemClassNameLink}
-              style={this.props.listItemStyleLink}
-              payload={listItem.payload}
-              target={listItem.target}/>
-          );
-          break;
-
         default:
           itemComponent = (
             <ListItem
@@ -216,7 +201,7 @@ var List = React.createClass({
         CssEvent.onTransitionEnd(el, function() {
           //Make sure the menu is open before setting the overflow.
           //This is to accout for fast clicks
-          if (this.props.visible) container.style.overflow = 'visible';
+          if (this.props.visible) {container.style.overflow = 'visible';}
         }.bind(this));
 
       } else {
@@ -231,27 +216,27 @@ var List = React.createClass({
   },
 
   _onNestedItemClick: function(e, index, listItem) {
-    if (this.props.onItemClick) this.props.onItemClick(e, index, listItem);
+    if (this.props.onItemClick) {this.props.onItemClick(e, index, listItem);}
   },
 
   _onNestedItemTap: function(e, index, listItem) {
-    if (this.props.onItemTap) this.props.onItemTap(e, index, listItem);
+    if (this.props.onItemTap) {this.props.onItemTap(e, index, listItem);}
   },
 
   _onItemClick: function(e, index) {
-    if (this.props.onItemClick) this.props.onItemClick(e, index, this.props.listItems[index]);
+    if (this.props.onItemClick) {this.props.onItemClick(e, index, this.props.listItems[index]);}
   },
 
   _onItemTap: function(e, index) {
-    if (this.props.onItemTap) this.props.onItemTap(e, index, this.props.listItems[index]);
+    if (this.props.onItemTap) {this.props.onItemTap(e, index, this.props.listItems[index]);}
   },
 
   _onItemToggle: function(e, index, toggled) {
-    if (this.props.onItemToggle) this.props.onItemToggle(e, index, this.props.listItems[index], toggled);
+    if (this.props.onItemToggle) {this.props.onItemToggle(e, index, this.props.listItems[index], toggled);}
   },
 
   _onItemCheck: function(e, index, checked) {
-    if (this.props.onItemCheck) this.props.onItemCheck(e, index, this.props.listItems[index], checked);
+    if (this.props.onItemCheck) {this.props.onItemCheck(e, index, this.props.listItems[index], checked);}
   }
 
 });

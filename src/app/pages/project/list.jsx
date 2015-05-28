@@ -38,13 +38,15 @@ var ProjectList = class extends React.Component {
   }
 
   componentDidMount(argument) {
-    var projects = [
-         { projectId: 'project1', text: 'Project1' },
-         { projectId: 'project2', text: 'Project2' },
-         { projectId: 'project3', text: 'Project3' }
-      ];
-    this.setState({projects: projects});
-    User.getProjects();
+    // var projects = [
+    //      { projectId: 'project1', text: 'Project1' },
+    //      { projectId: 'project2', text: 'Project2' },
+    //      { projectId: 'project3', text: 'Project3' }
+    //   ];
+    // this.setState({projects: projects});
+    User.getProjects( (userProjects) => {
+      this.setState({projects: userProjects});
+    });
     // this.forceUpdate();
     console.log('passing did mount');
   }

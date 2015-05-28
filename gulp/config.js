@@ -35,6 +35,10 @@ module.exports = {
       dest: dest + '/fonts'
     },
   },
+  jshint: {
+    src: [ src + '/**/*.js', src + '/**/*.jsx'],
+    app: src + '/app/app.jsx'
+  },
   browserify: {
     // Enable source maps
     debug: true,

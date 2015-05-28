@@ -27,13 +27,9 @@ var ProjectWrapper = class extends RequireAuthComponent {
   }
 
   render() {
-    console.log(this);
-    console.log(this.context);
     var routerParams = this.context.router.getCurrentParams();
-    console.log(routerParams);
     var title = routerParams.hasOwnProperty('projectId') ? routerParams.projectId :
                 this.context.router.isActive('project-list') ? 'Projects' : '';
-    // var title = '';
     return (
       <div>
         <AppBar

@@ -134,17 +134,28 @@ var ListItem = React.createClass({
     var number;
     var toggleElement;
     var checkboxElement;
+    var toggle,
+        checkbox,
+        onClick,
+        onToggle,
+        onCheck,
+        onMouseOver,
+        onMouseOut,
+        children,
+        label,
+        style,
+        other;
 
     var styles = this.getStyles();
 
-    if (this.props.iconClassName) icon = <FontIcon style={this.mergeAndPrefix(styles.icon, this.props.iconStyle)} className={this.props.iconClassName} />;
-    if (this.props.iconRightClassName) iconRight = <FontIcon style={this.mergeAndPrefix(styles.iconRight, this.props.iconRightStyle)} className={this.props.iconRightClassName} />;
-    if (this.props.data) data = <span style={this.mergeAndPrefix(styles.data)}>{this.props.data}</span>;
-    if (this.props.number !== undefined) number = <span style={this.mergeAndPrefix(styles.number)}>{this.props.number}</span>;
-    if (this.props.attribute !== undefined) attribute = <span style={this.mergeAndPrefix(styles.style)}>{this.props.attribute}</span>;
+    if (this.props.iconClassName) { icon = <FontIcon style={this.mergeAndPrefix(styles.icon, this.props.iconStyle)} className={this.props.iconClassName} />;}
+    if (this.props.iconRightClassName) { iconRight = <FontIcon style={this.mergeAndPrefix(styles.iconRight, this.props.iconRightStyle)} className={this.props.iconRightClassName} />;}
+    if (this.props.data) { data = <span style={this.mergeAndPrefix(styles.data)}>{this.props.data}</span>;}
+    if (this.props.number !== undefined) { number = <span style={this.mergeAndPrefix(styles.number)}>{this.props.number}</span>;}
+    if (this.props.attribute !== undefined) { attribute = <span style={this.mergeAndPrefix(styles.style)}>{this.props.attribute}</span>;}
 
     if (this.props.toggle) {
-      var {
+      [
         toggle,
         onClick,
         onToggle,
@@ -154,12 +165,12 @@ var ListItem = React.createClass({
         label,
         style,
         ...other
-      } = this.props;
+      ] = this.props;
       toggleElement = <Toggle {...other} onToggle={this._handleToggle} style={styles.toggle}/>;
     }
 
     if (this.props.checkbox) {
-      var {
+      [
         checkbox,
         onClick,
         onCheck,
@@ -169,7 +180,7 @@ var ListItem = React.createClass({
         label,
         style,
         ...other
-      } = this.props;
+      ] = this.props;
       checkboxElement = <Checkbox {...other} onCheck={this._handleCheck} style={styles.checkbox}/>;
     }
 
@@ -202,29 +213,29 @@ var ListItem = React.createClass({
   },
 
   _handleTouchTap: function(e) {
-    if (!this.props.disabled && this.props.onTouchTap) this.props.onTouchTap(e, this.props.index);
+    if (!this.props.disabled && this.props.onTouchTap) { this.props.onTouchTap(e, this.props.index);}
   },
 
   _handleOnClick: function(e) {
-    if (!this.props.disabled && this.props.onClick) this.props.onClick(e, this.props.index);
+    if (!this.props.disabled && this.props.onClick) { this.props.onClick(e, this.props.index);}
   },
 
   _handleToggle: function(e, toggled) {
-    if (!this.props.disabled && this.props.onToggle) this.props.onToggle(e, this.props.index, toggled);
+    if (!this.props.disabled && this.props.onToggle) { this.props.onToggle(e, this.props.index, toggled);}
   },
 
   _handleCheck: function(e, checked) {
-    if (!this.props.disabled && this.props.onCheck) this.props.onCheck(e, this.props.index, checked);
+    if (!this.props.disabled && this.props.onCheck) { this.props.onCheck(e, this.props.index, checked);}
   },
 
   _handleMouseOver: function(e) {
     this.setState({hovered: true});
-    if (!this.props.disabled && this.props.onMouseOver) this.props.onMouseOver(e);
+    if (!this.props.disabled && this.props.onMouseOver) { this.props.onMouseOver(e);}
   },
 
   _handleMouseOut: function(e) {
     this.setState({hovered: false});
-    if (!this.props.disabled && this.props.onMouseOut) this.props.onMouseOut(e);
+    if (!this.props.disabled && this.props.onMouseOut) { this.props.onMouseOut(e);}
   }
 
 });
