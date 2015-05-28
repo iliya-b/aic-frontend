@@ -17,6 +17,7 @@ var GobyPalette = {
   logo2Color: '#A2C846',
   textLightColor: Colors.grey200,
   errorColor: Colors.red500,
+  successColor: Colors.green500,
 };
 
 module.exports = GobyPalette;

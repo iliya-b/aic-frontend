@@ -3,7 +3,7 @@ var React = require('react');
 var mui = require('material-ui');
 var { StylePropable } = mui.Mixins;
 
-var ErrorBox = React.createClass({
+var InfoBox = React.createClass({
 
   mixins: [StylePropable],
 
@@ -11,12 +11,15 @@ var ErrorBox = React.createClass({
 
     var {
       style,
+      boxType,
       ...other
     } = this.props;
 
     var styles = {
       div: {
-        color: this.context.muiTheme.palette.errorColor
+        color:  boxType == InfoBox.ERROR ? this.context.muiTheme.palette.errorColor :
+                boxType == InfoBox.SUCCESS ? this.context.muiTheme.palette.successColor :
+                this.context.muiTheme.palette.textColor
       }
     }
 
@@ -34,8 +37,11 @@ var ErrorBox = React.createClass({
   }
 });
 
-ErrorBox.contextTypes = {
+InfoBox.contextTypes = {
   muiTheme: React.PropTypes.object
 }
 
-module.exports = ErrorBox;
+InfoBox.ERROR = 'error';
+InfoBox.SUCCESS = 'success';
+
+module.exports = InfoBox;

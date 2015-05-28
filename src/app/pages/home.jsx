@@ -3,8 +3,7 @@ var React = require('react');
 var mui = require('material-ui');
 var {Colors, Spacing, Typography} = mui.Styles;
 
-var FullWidthSection = require('../components/full-width-section.jsx');
-var ErrorBox = require('../components/error-box.jsx');
+var { FullWidthSection, SignUpDialog, ErrorBox } = require('../components/');
 var { Auth, RequireAuth } = require('../stores/auth.jsx');
 
 var {
@@ -42,7 +41,6 @@ var Home = class extends React.Component {
     this._onLoginClick = this._onLoginClick.bind(this);
     this._onLoginSubmit = this._onLoginSubmit.bind(this);
     this._onSignUpClick = this._onSignUpClick.bind(this);
-    this._onSignUpSubmit = this._onSignUpSubmit.bind(this);
   }
 
   // _onThemeClick() {
@@ -103,10 +101,7 @@ var Home = class extends React.Component {
       { text: 'Cancel' },
       { text: 'Submit', onClick: this._onLoginSubmit }
     ];
-    var signUpActions = [
-      { text: 'Cancel' },
-      { text: 'Submit', onClick: this._onSignUpSubmit }
-    ];
+
     return (
       <FullWidthSection style={styles.root}>
 
@@ -134,14 +129,7 @@ var Home = class extends React.Component {
               linkButton={true}
               style={styles.buttonStyle}
               primary={true} />
-            <Dialog ref="signUpDialog" title="Sign Up" actions={signUpActions}>
-              {this.state.signUpError ? (
-                <ErrorBox>Error during sign up. {this.state.signUpErrorMessage} </ErrorBox>
-              ) : '' }
-              <TextField ref="signUpName" floatingLabelText="name"/><br/>
-              <TextField ref="signUpEmail" floatingLabelText="login"/><br/>
-              <TextField ref="signUpPassword" floatingLabelText="password" type="password" />
-            </Dialog>
+            <SignUpDialog ref="signUpDialog" />
           </div>
       </FullWidthSection>
     );
@@ -149,6 +137,10 @@ var Home = class extends React.Component {
 
   _onLoginClick(e) {
     this.refs.loginDialog.show();
+  }
+
+  _onSignUpClick(e) {
+    this.refs.signUpDialog.show();
   }
 
   _onLoginSubmit(e) {
@@ -175,30 +167,7 @@ var Home = class extends React.Component {
     });
   }
 
-  _onSignUpClick(e) {
-    this.refs.signUpDialog.show();
-  }
 
-  _onSignUpSubmit(e) {
-    console.log('submit register');
-    // this.context.router.transitionTo('projects');
-    e.preventDefault();
-    var { router } = this.context;
-    var nextPath = router.getCurrentQuery().nextPath;
-    var name = this.refs.signUpName.getValue();
-    var email = this.refs.signUpEmail.getValue();
-    var pass = this.refs.signUpPassword.getValue();
-    Auth.register(email, pass, name, (results) => {
-      console.log(results);
-      if (!results.registered){
-        this.setState({ signUpError: true, signUpErrorMessage: results.errorMessage });
-        console.log('register 1');
-      } else {
-        // router.replaceWith('projects');
-        console.log('submit register 3');
-      }
-    });
-  }
 
 };
 

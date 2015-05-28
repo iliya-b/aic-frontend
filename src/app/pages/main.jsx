@@ -6,7 +6,7 @@ var Router = require('react-router');
 var Link = Router.Link;
 var RouteHandler = Router.RouteHandler;
 var GobyPalette = require('../configs/goby-palette.jsx');
-var FullWidthSection = require('../components/full-width-section.jsx');
+var { FullWidthSection } = require('../components/');
 var Colors = mui.Styles.Colors;
 
 var {

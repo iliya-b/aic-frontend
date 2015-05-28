@@ -11,6 +11,7 @@ var notify = require("gulp-notify");
 gulp.task('lint', function() {
   return gulp.src(config.src)
     .pipe(react())
+    .on('error', notify.onError('<%= error.message %>'))
     .pipe(jshint({
       "asi": true,
       "browser": true,
@@ -24,6 +25,7 @@ gulp.task('lint', function() {
       'curly': true,
       'jquery': true,
     }))
+    .on('error', notify.onError('<%= error.message %>'))
     .pipe(jshint.reporter(stylish));
 });
 

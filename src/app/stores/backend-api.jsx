@@ -1,147 +1,138 @@
 'use strict';
 
-// var $ = jQuery; // not needed
-
 var AppConfig = require('../configs/app-config.jsx');
 
 var BackendAPI = {
 
+  ERROR: 0,
 
-// // Create the XHR object.
-// function createCORSRequest(method, url) {
-//   var xhr = new XMLHttpRequest();
-//   if ("withCredentials" in xhr) {
-//     // XHR for Chrome/Firefox/Opera/Safari.
-//     xhr.open(method, url, true);
-//   } else if (typeof XDomainRequest != "undefined") {
-//     // XDomainRequest for IE.
-//     xhr = new XDomainRequest();
-//     xhr.open(method, url);
-//   } else {
-//     // CORS not supported.
-//     xhr = null;
-//   }
-//   return xhr;
-// }
-
-// // Helper method to parse the title tag from the response.
-// function getTitle(text) {
-//   return text.match('<title>(.*)?</title>')[1];
-// }
-
-// // Make the actual CORS request.
-// function makeCorsRequest() {
-//   // All HTML5 Rocks properties support CORS.
-//   var url = 'http://updates.html5rocks.com';
-
-//   var xhr = createCORSRequest('GET', url);
-//   if (!xhr) {
-//     alert('CORS not supported');
-//     return;
-//   }
-
-//   // Response handlers.
-//   xhr.onload = function() {
-//     var text = xhr.responseText;
-//     var title = getTitle(text);
-//     alert('Response from CORS request to ' + url + ': ' + title);
-//   };
-
-//   xhr.onerror = function() {
-//     alert('Woops, there was an error making the request.');
-//   };
-
-//   xhr.send();
-// }
-
-    pretendRequest: function (email, pass, cb) {
-  // var postData = '{ "email": "'+email+'", "password":"'+pass+'" }';
-  var postData = '{"auth":{"passwordCredentials":{"username":"'+email+'","password":"'+pass+'"}}}';
-  // var postData = '{"auth":{"passwordCredentials":{"username":"test","password":"test"}}}';
-  // var url = AppConfig.backend + "/back/user/login"  ;
-  // var xhr = createCORSRequest('POST', url);
-  // xhr.send();
-  console.log('ajax');
-  $.ajax({
-      url:  AppConfig.backend + "/back/user/login",
-      data: postData,
+  apiCall: function(url, data, cb, headers){
+    $.ajax({
+      url:  url,
+      data: data,
       method: 'POST',
       contentType: 'application/json;charset=UTF-8',
       processData: false,
       dataType: 'json',
-      // crossDomain: true,
-      // headers: {
-      //   'Access-Control-Allow-Origin': '*',
-      //   // 'test':'123'
-      // },
-      // xhrFields: {withCredentials: true}
+      headers: headers,
+      timeout: AppConfig.backend.timeout
     })
-    .done(function(data) {
-      cb({
-          authenticated: true,
-          token: data['X-Auth-Token']
-        });
-    })
-    .fail(function(data) {
-      // console.log(data);
-      cb({
-        authenticated: false,
-        errorMessage: data.statusText
-      });
+    .always(function(data, textStatus, errorThrown) {
+      cb(data, textStatus, errorThrown);
     });
-},
+  },
 
+  apiCallAuth: function(url, data, cb, token){
+    this.apiCall(url, data, cb, { "X-Auth-Token": token });
+  },
 
-registerRequest: function (email, pass, name, cb) {
-  var postData = '{"user":{"email":"'+email+'","password":"'+pass+'","name":"'+name+'"}}';
-  $.ajax({
-      url:  AppConfig.backend + "/back/user/register",
-      data: postData,
-      method: 'POST',
-      contentType: 'application/json;charset=UTF-8',
-      processData: false,
-      dataType: 'json',
-    })
-    .done(function(data) {
-      console.log(data);
-      cb({
-          registered: true,
-        });
-    })
-    .fail(function(data) {
-      console.log(data);
-      cb({
-        registered: false,
-        errorMessage: data.statusText
-      });
-    });
-},
+  userLogin: function (email, pass, cb) {
+    var url = AppConfig.backend.api + "/back/user/login";
+    var data = '{"auth":{"passwordCredentials":{"username":"'+email+'","password":"'+pass+'"}}}';
+    this.apiCall(url, data, cb);
+  },
 
-userLogout: function() {
+  userRegister: function (email, pass, name, cb) {
+    var url = AppConfig.backend.api + "/back/user/register";
+    var data = '{"user":{"email":"'+email+'","password":"'+pass+'","name":"'+name+'"}}';
+    this.apiCall(url, data, cb);
+  },
+
+  userLogout: function() {
     // TODO!!
-},
+  },
+
+  userProjects: function (token, cb) {
+    var url = AppConfig.backend.api + "/back/project";
+    this.apiCallAuth(url, '', cb, token);
+  }
+
+//     pretendRequest: function (email, pass, cb) {
+//   // var postData = '{ "email": "'+email+'", "password":"'+pass+'" }';
+//   var postData = '{"auth":{"passwordCredentials":{"username":"'+email+'","password":"'+pass+'"}}}';
+//   // var postData = '{"auth":{"passwordCredentials":{"username":"test","password":"test"}}}';
+//   // var url = AppConfig.backend + "/back/user/login"  ;
+//   // var xhr = createCORSRequest('POST', url);
+//   // xhr.send();
+//   console.log('ajax');
+//   $.ajax({
+//       url:  AppConfig.backend + "/back/user/login",
+//       data: postData,
+//       method: 'POST',
+//       contentType: 'application/json;charset=UTF-8',
+//       processData: false,
+//       dataType: 'json',
+//       // crossDomain: true,
+//       // headers: {
+//       //   'Access-Control-Allow-Origin': '*',
+//       //   // 'test':'123'
+//       // },
+//       // xhrFields: {withCredentials: true}
+//     })
+//     .done(function(data) {
+//       cb({
+//           authenticated: true,
+//           token: data['X-Auth-Token']
+//         });
+//     })
+//     .fail(function(data) {
+//       // console.log(data);
+//       cb({
+//         authenticated: false,
+//         errorMessage: data.statusText
+//       });
+//     });
+// },
 
 
-userProjects: function (token, cb) {
-  $.ajax({
-      url:  AppConfig.backend + "/back/project",
-      method: 'GET',
-      contentType: 'application/json;charset=UTF-8',
-      processData: false,
-      dataType: 'json',
-      headers: {
-        "X-Auth-Token": token
-      },
-    })
-    .done(function(data) {
-      console.log(data);
-      cb(data);
-    })
-    .fail(function(data) {
-      console.log(data);
-      cb(data);
-    });
-},
+// registerRequest: function (email, pass, name, cb) {
+//   var postData = '{"user":{"email":"'+email+'","password":"'+pass+'","name":"'+name+'"}}';
+//   $.ajax({
+//       url:  AppConfig.backend + "/back/user/register",
+//       data: postData,
+//       method: 'POST',
+//       contentType: 'application/json;charset=UTF-8',
+//       processData: false,
+//       dataType: 'json',
+//     })
+//     .done(function(data) {
+//       console.log(data);
+//       cb({
+//           registered: true,
+//         });
+//     })
+//     .fail(function(data) {
+//       console.log(data);
+//       cb({
+//         registered: false,
+//         errorMessage: data.statusText
+//       });
+//     });
+// },
+
+
+
+
+// userProjects: function (token, cb) {
+//   $.ajax({
+//       url:  AppConfig.backend + "/back/project",
+//       method: 'GET',
+//       contentType: 'application/json;charset=UTF-8',
+//       processData: false,
+//       dataType: 'json',
+//       headers: {
+//         "X-Auth-Token": token
+//       },
+//     })
+//     .done(function(data) {
+//       console.log(data);
+//       cb(data);
+//     })
+//     .fail(function(data) {
+//       console.log(data);
+//       cb(data);
+//     });
+// },
 
 };
 

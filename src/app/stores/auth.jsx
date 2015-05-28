@@ -13,7 +13,7 @@ var Auth = {
       this.onChange(true);
       return;
     }
-    BackendAPI.pretendRequest(email, pass, (res) => {
+    BackendAPI.userLogin(email, pass, (res) => {
       if (res.authenticated) {
         localStorage.token = res.token;
         if (cb) {cb(res);}
@@ -26,14 +26,27 @@ var Auth = {
   },
 
   register (email, pass, name, cb) {
-    BackendAPI.registerRequest(email, pass, name, (res) => {
-      if (res.registered) {
-        // this.login(email, pass, cb);
-        if (cb) {cb(res);}
-      } else {
-        if (cb) {cb(res);}
-        this.onChange(false);
-      }
+    BackendAPI.userRegister(email, pass, name, (result) => {
+      // return { registered:false, errorMessage:'error' }
+      // on error {readyState: 0, responseJSON: undefined, status: 0, statusText: "timeout"}
+      // on success {"role":{"id":"28fd4df4d463486285d4f27e24346799","name":"admin"}}
+        console.log('result');
+        console.log(result);
+        if (result.status === BackendAPI.ERROR){
+          cb({
+            registered: false,
+            errorMessage: 'It was not possible to register new user. Error: ' + result.statusText
+          });
+        }else if (result.hasOwnProperty('role')){
+          cb({
+            registered: true
+          });
+        }else{
+          cb({
+            registered: false,
+            errorMessage: 'It was not possible to register new user.'
+          });
+        }
     });
   },
 

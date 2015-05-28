@@ -1,9 +1,9 @@
 var React = require('react');
 
 var mui = require('material-ui');
-var {Colors, Spacing, Typography} = mui.Styles;
+var { Colors, Spacing, Typography } = mui.Styles;
 
-var TogglableIcon = require('../../components/togglable-icon.jsx');
+var { TogglableIcon, List } = require('../../components/');
 
 var {
   Dialog,
@@ -16,8 +16,6 @@ var {
   TextField,
   Toolbar,
   ToolbarGroup} = mui;
-
-var List = require('../../components/list/list.jsx');
 
 var apks = [
      { apkId: 'apk1', text: 'APK1', checkbox:true },

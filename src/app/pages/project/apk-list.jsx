@@ -3,7 +3,7 @@ var React = require('react');
 var mui = require('material-ui');
 var {Colors, Spacing, Typography} = mui.Styles;
 
-var List = require('../../components/list/list.jsx');
+var { List } = require('../../components/');
 
 var { Menu, Toolbar, ToolbarGroup, IconButton } = mui;
 

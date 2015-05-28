@@ -5,7 +5,7 @@ var { RouteHandler, State } = Router;
 
 var mui = require('material-ui');
 var { Menu } = mui;
-var {Spacing, Colors} = mui.Styles;
+var { Spacing, Colors } = mui.Styles;
 
 var menuItems = [
      { path: 'apks', text: 'APK List' },

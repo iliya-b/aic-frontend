@@ -3,7 +3,7 @@ var React = require('react');
 var mui = require('material-ui');
 var {Colors, Spacing, Typography} = mui.Styles;
 
-var FullWidthSection = require('../../components/full-width-section.jsx');
+var { FullWidthSection } = require('../../components/');
 
 var {
   Checkbox,
