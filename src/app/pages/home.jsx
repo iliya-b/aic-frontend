@@ -3,52 +3,18 @@ var React = require('react');
 var mui = require('material-ui');
 var {Colors, Spacing, Typography} = mui.Styles;
 
-var { FullWidthSection, SignUpDialog, ErrorBox } = require('../components/');
+var { FullWidthSection, LoginDialog, SignUpDialog } = require('../components/');
 var { Auth, RequireAuth } = require('../stores/auth.jsx');
 
-var {
-  Checkbox,
-  ClearFix,
-  DatePicker,
-  Dialog,
-  DropDownMenu,
-  FlatButton,
-  FloatingActionButton,
-  LeftNav,
-  MenuItem,
-  Paper,
-  RadioButton,
-  RadioButtonGroup,
-  RaisedButton,
-  Snackbar,
-  Slider,
-  Tabs,
-  Tab,
-  TextField,
-  Toggle} = mui;
+var { RaisedButton } = mui;
 
 var Home = class extends React.Component {
 
   constructor (props) {
     super(props);
-    this.state = {
-      // loggedIn: auth.loggedIn()
-      loginError: false,
-      loginErrorMessage: '',
-      signUpError: false,
-      signUpErrorMessage: ''
-    };
     this._onLoginClick = this._onLoginClick.bind(this);
-    this._onLoginSubmit = this._onLoginSubmit.bind(this);
     this._onSignUpClick = this._onSignUpClick.bind(this);
   }
-
-  // _onThemeClick() {
-  //   this.context.router.transitionTo('theme-test');
-  // },
-  // _onHomeClick() {
-  //   this.context.router.transitionTo('home');
-  // },
 
   render() {
     var palette = this.context.muiTheme.palette;
@@ -97,10 +63,6 @@ var Home = class extends React.Component {
         marginBottom: '12px'
       }
     };
-    var loginActions = [
-      { text: 'Cancel' },
-      { text: 'Submit', onClick: this._onLoginSubmit }
-    ];
 
     return (
       <FullWidthSection style={styles.root}>
@@ -116,13 +78,7 @@ var Home = class extends React.Component {
               linkButton={true}
               style={styles.buttonStyle}
               primary={true} />
-            <Dialog ref="loginDialog" title="Login" actions={loginActions}>
-              {this.state.loginError ? (
-                <ErrorBox>Error during login. Login or password invalid. {this.state.loginErrorMessage} </ErrorBox>
-              ) : '' }
-              <TextField ref="loginEmail" floatingLabelText="login"/><br/>
-              <TextField ref="loginPassword" floatingLabelText="password" type="password" />
-            </Dialog>
+            <LoginDialog ref="loginDialog" />
             <RaisedButton
               label="Sign Up"
               onTouchTap={this._onSignUpClick}
@@ -143,32 +99,6 @@ var Home = class extends React.Component {
     this.refs.signUpDialog.show();
   }
 
-  _onLoginSubmit(e) {
-    console.log('submit login');
-    // this.context.router.transitionTo('projects');
-    e.preventDefault();
-    var { router } = this.context;
-    var nextPath = router.getCurrentQuery().nextPath;
-    var email = this.refs.loginEmail.getValue();
-    var pass = this.refs.loginPassword.getValue();
-    Auth.login(email, pass, (loggedIn) => {
-      console.log(loggedIn);
-      if (!loggedIn.authenticated){
-        this.setState({ loginError: true, loginErrorMessage: loggedIn.errorMessage });
-        console.log('submit login 1');
-      } else if (nextPath) {
-        router.replaceWith(nextPath);
-        console.log('submit login 2');
-      } else {
-        // router.replaceWith('projects');
-        console.log('submit login 3');
-        Auth.userHome(router);
-      }
-    });
-  }
-
-
-
 };
 
 Home.contextTypes = {
@@ -177,7 +107,6 @@ Home.contextTypes = {
 }
 
 Home.willTransitionTo = function(transition) {
-  console.log('hometrans2');
   Auth.userHome(transition);
 };
 

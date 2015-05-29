@@ -6,7 +6,7 @@ var { AppBar, Menu } = mui;
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 
-var User = require('../../stores/user.jsx');
+var { Project } = require('../../stores/');
 
 var ProjectList = class extends React.Component {
 
@@ -16,13 +16,13 @@ var ProjectList = class extends React.Component {
       projects: []
     };
     this._onItemTap = this._onItemTap.bind(this);
-    console.log('passing cons');
+    // console.log('passing cons');
   }
 
   _onItemTap(e, index, menuItem) {
     console.log(index);
     console.log(menuItem);
-    this.context.router.transitionTo('project-page', {projectId: menuItem.projectId} );
+    this.context.router.transitionTo('project-page', {projectId: menuItem.id} );
   }
 
   getProjects(){
@@ -44,11 +44,11 @@ var ProjectList = class extends React.Component {
     //      { projectId: 'project3', text: 'Project3' }
     //   ];
     // this.setState({projects: projects});
-    User.getProjects( (userProjects) => {
-      this.setState({projects: userProjects});
+    Project.getAll( (res) => {
+      this.setState({projects: res});
     });
     // this.forceUpdate();
-    console.log('passing did mount');
+    // console.log('passing did mount');
   }
 
 };

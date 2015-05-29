@@ -51,10 +51,12 @@ var SignUpDialog = class extends React.Component{
 
     var signUpActions = [
       <FlatButton
+        key="signUpActionCancel"
         label={this.state.signUpSuccess ? 'Close' : 'Cancel'}
         secondary={true}
         onTouchTap={this._onSignUpCancel} />,
       <FlatButton
+        key="signUpActionSubmit"
         label="Submit"
         primary={true}
         onTouchTap={this._onSignUpSubmit}
@@ -101,7 +103,7 @@ var SignUpDialog = class extends React.Component{
   }
 
   _onSignUpSubmit(e) {
-    console.log('submit register');
+    // console.log('submit register');
     e.preventDefault();
     this.blockFields();
     var { router } = this.context;
@@ -110,7 +112,7 @@ var SignUpDialog = class extends React.Component{
     var email = this.refs.signUpEmail.getValue();
     var pass = this.refs.signUpPassword.getValue();
     Auth.register(email, pass, name, (results) => {
-      console.log(results);
+      // console.log(results);
       if (!results.registered){
         this.setState({ signUpError: true, signUpErrorMessage: results.errorMessage });
         this.unblockFields();
