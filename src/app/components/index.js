@@ -5,4 +5,5 @@ module.exports = {
   List: require('./shared/list/list.jsx'),
   SignUpDialog: require('./home/sign-up-dialog.jsx'),
   LoginDialog: require('./home/login-dialog.jsx'),
+  APKUploadDialog: require('./project/apk-upload-dialog.jsx'),
 };
