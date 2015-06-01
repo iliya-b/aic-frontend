@@ -30,8 +30,8 @@ var BackendAPI = {
 
   userLogin: function (email, pass, cb) {
     var url = AppConfig.backend.api + "/back/user/login";
-    var data = '{"auth":{"passwordCredentials":{"username":"'+email+'","password":"'+pass+'"}}}';
-    // var data = '{"passwordCredentials":{"username":"'+email+'","password":"'+pass+'"}}';
+    // var data = '{"auth":{"passwordCredentials":{"username":"'+email+'","password":"'+pass+'"}}}';
+    var data = '{"passwordCredentials":{"username":"'+email+'","password":"'+pass+'"}}';
     this.apiCall(url, data, cb);
   },
 
