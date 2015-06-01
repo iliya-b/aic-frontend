@@ -61,18 +61,48 @@ var BackendAPI = {
     //   data = data + '&filenames[]=' + value.name;
     // });
     // this.apiCall(url, data, cb);
-    var data, xhr;
 
-    data = new FormData();
-    data.append( 'file', files[0] );
+
+
+
+    var formData, xhr;
+
+    formData = new FormData();
+    formData.append( 'file', files[0] );
 
     xhr = new XMLHttpRequest();
 
-    xhr.open( 'POST', AppConfig.backend.api + "/back/application", true );
-    xhr.onreadystatechange = function ( response ) {};
-    xhr.send( data );
 
-    e.preventDefault();
+    xhr.open( 'POST', AppConfig.backend.api + "/back/application", true );
+    xhr.setRequestHeader("X-Auth-Token", token);
+    xhr.onreadystatechange = function ( response ) {};
+    xhr.send( formData );
+
+
+
+
+    // e.preventDefault();
+
+    // var formData = new FormData();
+    // formData.append( 'file', 'a' );
+    // formData.append( 'file', files[0] );
+
+    // var formData = '';
+
+    // $.ajax({
+    //   url: AppConfig.backend.api + "/back/application",
+    //   type: 'POST',
+    //   data: formData,
+    //   // async: false,
+    //   // cache: false,
+    //   contentType: false,
+    //   // processData: false,
+    //   headers: { "X-Auth-Token": token },
+    //   always: function (returndata) {
+    //     console.log(returndata);
+    //   }
+    // });
+    console.log('aaaaend');
   }
 
 };
