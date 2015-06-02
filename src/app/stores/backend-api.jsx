@@ -65,29 +65,48 @@ var BackendAPI = {
 
 
 
-    var formData, xhr;
+    // var formData, xhr;
 
-    formData = new FormData();
-    formData.append( 'file', files[0] );
+    // formData = new FormData();
+    // formData.append( 'file', files[0] );
 
-    xhr = new XMLHttpRequest();
+    // xhr = new XMLHttpRequest();
 
 
-    xhr.open( 'POST', AppConfig.backend.api + "/back/application", true );
-    xhr.setRequestHeader("X-Auth-Token", token);
-    xhr.onreadystatechange = function ( response ) {};
-    xhr.send( formData );
+    // xhr.open( 'POST', AppConfig.backend.api + "/back/application", true );
+    // xhr.setRequestHeader("X-Auth-Token", token);
+    // xhr.onreadystatechange = function ( response ) { cb(response) };
+    // xhr.send( formData );
 
 
 
 
     // e.preventDefault();
 
-    // var formData = new FormData();
-    // formData.append( 'file', 'a' );
-    // formData.append( 'file', files[0] );
+    var formData = new FormData();
+    formData.append( 'file', files[0] );
 
     // var formData = '';
+
+    $.ajax({
+      url: AppConfig.backend.api + "/back/application",
+      data: formData,
+      cache: false,
+      contentType: false,
+      processData: false,
+      type: 'POST',
+      headers: { "X-Auth-Token": token },
+      xhr: function() {  // Custom XMLHttpRequest
+            var myXhr = $.ajaxSettings.xhr();
+            if(myXhr.upload){ // Check if upload property exists
+                myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
+            }
+            return myXhr;
+        },
+    })
+    .always(function(data, textStatus, errorThrown) {
+      cb(data, textStatus, errorThrown);
+    });
 
     // $.ajax({
     //   url: AppConfig.backend.api + "/back/application",
@@ -95,16 +114,28 @@ var BackendAPI = {
     //   data: formData,
     //   // async: false,
     //   // cache: false,
-    //   contentType: false,
+    //   // contentType: false,
     //   // processData: false,
-    //   headers: { "X-Auth-Token": token },
-    //   always: function (returndata) {
-    //     console.log(returndata);
-    //   }
+    //   // headers: { "X-Auth-Token": token },
+    //   // always: function (returndata) {
+    //   //   console.log(returndata);
+    //   // }
     // });
-    console.log('aaaaend');
-  }
+    console.log('end');
+  },
+
+  apkList: function (token, cb) {
+    var url = AppConfig.backend.api + "/back/applications";
+    this.apiCallAuth(url, null, cb, token, 'GET');
+  },
 
 };
+
+function progressHandlingFunction(e){
+  console.log(e);
+  // if(e.lengthComputable){
+  //   console.log({value:e.loaded,max:e.total});
+  // }
+}
 
 module.exports = BackendAPI;

@@ -1,10 +1,10 @@
 var React = require('react');
 
 var mui = require('material-ui');
-var {Colors, Spacing, Typography} = mui.Styles;
+var { Typography } = mui.Styles;
 
 var { FullWidthSection, LoginDialog, SignUpDialog } = require('../components/');
-var { Auth, RequireAuth } = require('../stores/auth.jsx');
+var { Auth } = require('../stores/auth.jsx');
 
 var { RaisedButton } = mui;
 
@@ -91,11 +91,11 @@ var Home = class extends React.Component {
     );
   }
 
-  _onLoginClick(e) {
+  _onLoginClick() {
     this.refs.loginDialog.show();
   }
 
-  _onSignUpClick(e) {
+  _onSignUpClick() {
     this.refs.signUpDialog.show();
   }
 

@@ -1,11 +1,7 @@
 var React = require('react');
 
 var mui = require('material-ui');
-var { AppBar, Menu } = mui;
-
-var Router = require('react-router');
-var RouteHandler = Router.RouteHandler;
-
+var { Menu } = mui;
 var { Project } = require('../../stores/');
 
 var ProjectList = class extends React.Component {
@@ -37,7 +33,7 @@ var ProjectList = class extends React.Component {
     );
   }
 
-  componentDidMount(argument) {
+  componentDidMount() {
     // var projects = [
     //      { projectId: 'project1', text: 'Project1' },
     //      { projectId: 'project2', text: 'Project2' },

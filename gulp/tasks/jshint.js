@@ -22,6 +22,7 @@ gulp.task('lint', function() {
       "node": true,
       "sub": true,
       "undef": true,
+      "unused": true,
       'curly': true,
       'jquery': true,
     }))

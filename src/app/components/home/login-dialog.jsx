@@ -31,16 +31,17 @@ var LoginDialog = class extends React.Component{
   render() {
 
     var {
-      style,
+      // style,
       ...other
     } = this.props;
-
-    var content = this.props.children;
 
     var successBox = <InfoBox boxType={InfoBox.SUCCESS}>New user <strong>{this.state.userName}</strong> successfully registered.</InfoBox>;
     var errorBox = this.state.loginError ? ( <InfoBox boxType={InfoBox.ERROR}>{this.state.loginErrorMessage}</InfoBox>) : '';
 
     var styles = {
+      root:{
+
+      },
       submit: {
         display: this.state.loginSuccess ? 'none' : 'auto'
       }
@@ -60,9 +61,9 @@ var LoginDialog = class extends React.Component{
         style={styles.submit} />
     ];
 
-
+    //style={this.mergeAndPrefix(styles.root,style)}
     return (
-      <Dialog title="Login" actions={loginActions} {...other} ref="loginDialogIn">
+      <Dialog title="Login" actions={loginActions} {...other} ref="loginDialogIn" >
         {this.state.loginSuccess ? successBox : (
           <div>
           {errorBox}
@@ -140,7 +141,7 @@ var LoginDialog = class extends React.Component{
     }
   }
 
-  _onLoginCancel(e) {
+  _onLoginCancel() {
     this.refs.loginDialogIn.dismiss();
   }
 

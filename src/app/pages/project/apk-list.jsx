@@ -1,34 +1,34 @@
 var React = require('react');
 
 var mui = require('material-ui');
-var {Colors, Spacing, Typography} = mui.Styles;
 
 var { List, APKUploadDialog } = require('../../components/');
 
-var { Menu, Toolbar, ToolbarGroup, IconButton } = mui;
+var { Toolbar, ToolbarGroup, IconButton } = mui;
 
-var apks = [
-     { apkId: 'apk1', text: 'APK1', checkbox:true },
-     { apkId: 'apk2', text: 'APK2', checkbox:true },
-     { apkId: 'apk3', text: 'APK3', checkbox:true }
-  ];
+var { APK } = require('../../stores/');
 
 var ProjectApkList = class extends React.Component {
 
   constructor(props) {
     super(props);
     this._onUploadClick = this._onUploadClick.bind(this);
+    this.reloadList = this.reloadList.bind(this);
     // this._onDeleteClick = this._onDeleteClick.bind(this);
-  }
 
-  _onItemTap(e, index, menuItem) {
+    this._onItemCheck = this._onItemCheck.bind(this);
 
+    this.state = {
+      apks: [],
+      toDelete: []
+    };
   }
 
   render() {
     var style = {
       toolbar: {
         // width: '512px',
+        paddingLeft: '10px',
       },
       toolbargroup1: {
         paddingTop: '3px',
@@ -53,14 +53,34 @@ var ProjectApkList = class extends React.Component {
             <IconButton iconClassName="mdi mdi-delete" tooltip="Delete selected"/>
           </ToolbarGroup>
         </Toolbar>
-        <APKUploadDialog ref="uploadDialog" />
-        <List style={style.list} listItems={apks} onItemTap={this._onItemTap} />
+        <APKUploadDialog ref="uploadDialog" reload={this.reloadList} />
+        <List style={style.list} listItems={this.state.apks} onItemTap={this._onItemTap}  onCheck={this._onItemCheck} />
       </div>
     );
   }
 
-  _onUploadClick(e) {
+  _onUploadClick() {
     this.refs.uploadDialog.show();
+  }
+
+  _onItemTap() { /*e, index, menuItem*/
+
+  }
+
+  _onItemCheck(e, index, menuItem) {
+    console.log(e);
+    console.log(index);
+    console.log(menuItem);
+  }
+
+  componentDidMount() {
+    this.reloadList();
+  }
+
+  reloadList(){
+    APK.getAll( (res) => {
+      this.setState({apks: res});
+    });
   }
 
 };

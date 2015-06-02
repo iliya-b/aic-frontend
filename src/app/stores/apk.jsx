@@ -28,21 +28,22 @@ var APK = {
 
   getAll: function (cb) {
     var token = Auth.getToken();
-    BackendAPI.userProjects(token, (res) => {
+    BackendAPI.apkList(token, (res) => {
       // console.log(res);
       // res =
       // { tenants: [ {description: "test's project", enabled: true, id: "a532574a46954bf3a85dd6284ed8f5e8", name: "test"} ], tenants_links: [] }
       // project =
       // { projectId: 'project1', text: 'Project1' },
-      var projects = res.tenants.map(function (project) {
+      var apks = res.files.map(function (apk) {
         return {
-          id: project.id,
-          name: project.name,
-          text: project.name,
-          description: project.description,
+          apkId: apk,
+          text: apk,
+          checkbox:true
         }
       })
-      cb(projects);
+
+      // { apkId: 'apk1', text: 'APK1', checkbox:true },
+      cb(apks);
     });
   },
 

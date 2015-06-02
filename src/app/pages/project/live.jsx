@@ -1,12 +1,11 @@
 var React = require('react');
 
 var mui = require('material-ui');
-var { Colors, Spacing, Typography } = mui.Styles;
+var { Spacing } = mui.Styles;
 
 var { TogglableIcon, List } = require('../../components/');
 
 var {
-  Dialog,
   FlatButton,
   IconButton,
   FontIcon,

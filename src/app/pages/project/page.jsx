@@ -58,7 +58,7 @@ var ProjectPage = React.createClass({
 
   render: function() {
     var styles = this.getStyles();
-    var { projectId } = this.context.router.getCurrentParams();
+    // var { projectId } = this.context.router.getCurrentParams();
     return (
       <div style={styles.root}>
         <Menu

@@ -4,7 +4,7 @@ var mui = require('material-ui');
 var { AppBar } = mui;
 
 var Router = require('react-router');
-var { RouteHandler, State } = Router;
+var { RouteHandler } = Router;
 
 var { Auth, RequireAuthComponent, Project } = require('../../stores/');
 

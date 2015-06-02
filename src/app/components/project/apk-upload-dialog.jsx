@@ -3,11 +3,8 @@ var React = require('react');
 var mui = require('material-ui');
 var { StylePropable } = mui.Mixins;
 
-var { Dialog, TextField, FlatButton } = mui;
+var { Dialog, FlatButton } = mui;
 var { APK } = require('../../stores/');
-
-var InfoBox = require('../shared/info-box.jsx');
-var AppUtils = require('../shared/app-utils.jsx');
 
 var Dropzone = require('react-dropzone');
 
@@ -15,17 +12,6 @@ var APKUploadDialog = class extends React.Component{
 
   constructor (props) {
     super(props);
-    this.state = {
-      loginError: false,
-      loginErrorMessage: '',
-      blockFields: false,
-      loginSuccess: false,
-      userName: '',
-      loginEmailError: '',
-      loginPasswordError: '',
-    };
-
-    this._onSubmit = this._onSubmit.bind(this);
     this._onCancel = this._onCancel.bind(this);
     this._onDrop = this._onDrop.bind(this);
   }
@@ -33,59 +19,35 @@ var APKUploadDialog = class extends React.Component{
   render() {
 
     var {
-      style,
+      // style,
       ...other
     } = this.props;
 
-    var content = this.props.children;
-
-    var successBox = <InfoBox boxType={InfoBox.SUCCESS}>New user <strong>{this.state.userName}</strong> successfully registered.</InfoBox>;
-    var errorBox = this.state.loginError ? ( <InfoBox boxType={InfoBox.ERROR}>{this.state.loginErrorMessage}</InfoBox>) : '';
-
-    var styles = {
-      submit: {
-        display: this.state.loginSuccess ? 'none' : 'auto'
-      }
-    };
+    // var styles = {
+    //   root:{}
+    // };
 
     var loginActions = [
       <FlatButton
         key="loginActionCancel"
-        label={this.state.loginSuccess ? 'Close' : 'Cancel'}
+        label='Close'
         secondary={true}
         onTouchTap={this._onCancel} />,
-      <FlatButton
-        key="loginActionSubmit"
-        label="Submit"
-        primary={true}
-        onTouchTap={this._onSubmit}
-        style={styles.submit} />
     ];
 
 
     return (
-      <Dialog title="APK Upload" actions={loginActions} {...other} ref="dialogIn">
-        {this.state.loginSuccess ? successBox : (
-          <div>
-            {errorBox}
-            <Dropzone onDrop={this._onDrop} size={150} >
-              <div>Try dropping some files here, or click to select files to upload.</div>
-            </Dropzone>
-          </div>
-        )}
+      <Dialog title="APK Upload" actions={loginActions} {...other} ref="dialogIn" >
+        <div>
+          <Dropzone onDrop={this._onDrop} size={150} >
+            <div>Try dropping some files here, or click to select files to upload.</div>
+          </Dropzone>
+        </div>
       </Dialog>
       );
   }
 
   show(){
-    this.setState({ loginError: false,
-      loginErrorMessage: '',
-      blockFields: false,
-      loginSuccess: false,
-      userName: '',
-      loginEmailError: '',
-      loginPasswordError: '',
-      });
     this.refs.dialogIn.show();
   }
 
@@ -96,15 +58,14 @@ var APKUploadDialog = class extends React.Component{
       APK.uploadFiles(routerParams.projectId, files, (res) => {
         console.log('res ondrop');
         console.log(res);
+        if(res.file_uploaded){
+          this.props.reload();
+        }
       });
     }
   }
 
-  _onSubmit(e) {
-    e.preventDefault();
-  }
-
-  _onCancel(e) {
+  _onCancel() {
     this.refs.dialogIn.dismiss();
   }
 

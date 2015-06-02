@@ -1,30 +1,8 @@
 var React = require('react');
 
 var mui = require('material-ui');
-var {Colors, Spacing, Typography} = mui.Styles;
-
-var { FullWidthSection } = require('../../components/');
-
-var {
-  Checkbox,
-  ClearFix,
-  DatePicker,
-  Dialog,
-  DropDownMenu,
-  FlatButton,
-  FloatingActionButton,
-  LeftNav,
-  MenuItem,
-  Paper,
-  RadioButton,
-  RadioButtonGroup,
-  RaisedButton,
-  Snackbar,
-  Slider,
-  Tabs,
-  Tab,
-  TextField,
-  Toggle} = mui;
+var { Spacing } = mui.Styles;
+var { FlatButton, Paper, TextField } = mui;
 
 var ProjectSettings = React.createClass({
 

@@ -11,14 +11,11 @@ var {
   FloatingActionButton,
   LeftNav,
   MenuItem,
-  Paper,
   RadioButton,
   RadioButtonGroup,
   RaisedButton,
   Snackbar,
   Slider,
-  Tabs,
-  Tab,
   TextField,
   Toggle} = mui;
 
@@ -270,7 +267,7 @@ var ThemesPage = React.createClass({
     },
 
   // Toggles between light and dark themes
-  onTabChange: function(tabIndex, tab) {
+  onTabChange: function() {
     if (this.state.isThemeDark) {
       ThemeManager.setTheme(ThemeManager.types.LIGHT);
     } else {
@@ -279,19 +276,19 @@ var ThemesPage = React.createClass({
     this.setState({isThemeDark: !this.state.isThemeDark});
   },
 
-  handleAction: function(e) {
+  handleAction: function() {
     this.refs.snackbar.dismiss();
   },
 
-  handleClickNav: function(e) {
+  handleClickNav: function() {
     this.refs.leftNav.toggle();
   },
 
-  handleClickSnackbar: function(e) {
+  handleClickSnackbar: function() {
     this.refs.snackbar.show();
   },
 
-  handleTouchTapDialog: function(e) {
+  handleTouchTapDialog: function() {
     this.refs.dialog.show();
   }
 });

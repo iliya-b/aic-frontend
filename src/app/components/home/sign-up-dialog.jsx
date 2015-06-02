@@ -29,11 +29,9 @@ var SignUpDialog = class extends React.Component{
   // render: function(){
 
     var {
-      style,
+      // style,
       ...other
     } = this.props;
-
-    var content = this.props.children;
 
     // var signUpActions = [
     //   { text: 'Cancel' },
@@ -44,6 +42,7 @@ var SignUpDialog = class extends React.Component{
     var errorBox = this.state.signUpError ? ( <InfoBox boxType={InfoBox.ERROR}>{this.state.signUpErrorMessage}</InfoBox>) : '';
 
     var styles = {
+      root: {},
       submit: {
         display: this.state.signUpSuccess ? 'none' : 'auto'
       }
@@ -65,7 +64,7 @@ var SignUpDialog = class extends React.Component{
 
 
     return (
-      <Dialog title="Sign Up" actions={signUpActions} {...other} ref="signUpDialogIn">
+      <Dialog title="Sign Up" actions={signUpActions} {...other} ref="signUpDialogIn" >
         {this.state.signUpSuccess ? successBox : (
           <div>
           {errorBox}
@@ -106,8 +105,8 @@ var SignUpDialog = class extends React.Component{
     // console.log('submit register');
     e.preventDefault();
     this.blockFields();
-    var { router } = this.context;
-    var nextPath = router.getCurrentQuery().nextPath;
+    // var { router } = this.context;
+    // var nextPath = router.getCurrentQuery().nextPath;
     var name = this.refs.signUpName.getValue();
     var email = this.refs.signUpEmail.getValue();
     var pass = this.refs.signUpPassword.getValue();
@@ -122,7 +121,7 @@ var SignUpDialog = class extends React.Component{
     });
   }
 
-  _onSignUpCancel(e) {
+  _onSignUpCancel() {
     this.refs.signUpDialogIn.dismiss();
   }
 

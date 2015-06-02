@@ -64,7 +64,7 @@ var List = React.createClass({
     this._renderVisibility();
   },
 
-  componentDidUpdate: function(prevProps, prevState) {
+  componentDidUpdate: function(prevProps) { /*, prevState*/
     if (this.props.visible !== prevProps.visible) {this._renderVisibility();}
   },
 
@@ -94,6 +94,9 @@ var List = React.createClass({
         position: 'absolute',
         top: 0,
         zIndex: 1
+      },
+      item: {
+
       }
     };
     return styles;
@@ -150,18 +153,19 @@ var List = React.createClass({
               selected={isSelected}
               key={i}
               index={i}
-              icon={listItem.icon}
-              data={listItem.data}
+              icon={icon}
+              data={data}
               className={this.props.listItemClassName}
-              style={this.props.listItemStyle}
-              attribute={listItem.attribute}
-              number={listItem.number}
-              toggle={listItem.toggle}
-              check={listItem.check}
+              style={this.mergeAndPrefix(styles.item,this.props.listItemStyle)}
+              attribute={attribute}
+              number={number}
+              toggle={toggle}
+              check={check}
               onToggle={this.props.onToggle}
               onCheck={this.props.onCheck}
               disabled={isDisabled}
               onClick={this._onItemClick}
+              onClickItemProp={onClick}
               onTouchTap={this._onItemTap}>
               {listItem.text}
             </ListItem>
