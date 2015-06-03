@@ -6,7 +6,7 @@ var { StylePropable } = mui.Mixins;
 var { Dialog, TextField, FlatButton } = mui;
 var { Auth } = require('../../stores/auth.jsx');
 
-var InfoBox = require('../shared/info-box.jsx')
+var InfoBox = require('../shared/info-box.jsx');
 
 // var SignUpDialog = React.createClass({
 var SignUpDialog = class extends React.Component{

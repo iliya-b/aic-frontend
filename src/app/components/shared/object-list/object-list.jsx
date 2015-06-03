@@ -7,12 +7,12 @@ var { StylePropable } = mui.Mixins;
 var { Transitions } = mui.Styles;
 var { KeyLine, Dom, CssEvent } = mui.Utils;
 
-var ListItem = require('./list-item.jsx');
+var ObjectListItem = require('./object-list-item.jsx');
 
 /****************
-* List Component
+* ObjectList Component
 ****************/
-var List = React.createClass({
+var ObjectList = React.createClass({
 
   mixins: [StylePropable],
 
@@ -26,17 +26,17 @@ var List = React.createClass({
     onItemClick: React.PropTypes.func,
     onToggle: React.PropTypes.func,
     onCheck: React.PropTypes.func,
-    listItems: React.PropTypes.array.isRequired,
+    objectListItems: React.PropTypes.array.isRequired,
     selectedIndex: React.PropTypes.number,
     hideable: React.PropTypes.bool,
     visible: React.PropTypes.bool,
     zDepth: React.PropTypes.number,
-    listItemStyle: React.PropTypes.object,
-    listItemStyleSubheader: React.PropTypes.object,
-    listItemStyleLink: React.PropTypes.object,
-    listItemClassName: React.PropTypes.string,
-    listItemClassNameSubheader: React.PropTypes.string,
-    listItemClassNameLink: React.PropTypes.string,
+    objectListItemStyle: React.PropTypes.object,
+    objectListItemStyleSubheader: React.PropTypes.object,
+    objectListItemStyleLink: React.PropTypes.object,
+    objectListItemClassName: React.PropTypes.string,
+    objectListItemClassNameSubheader: React.PropTypes.string,
+    objectListItemClassNameLink: React.PropTypes.string,
   },
 
   getInitialState: function() {
@@ -122,7 +122,7 @@ var List = React.createClass({
 
   _getChildren: function() {
     var children = [],
-      listItem,
+      objectListItem,
       itemComponent,
       isSelected,
       isDisabled;
@@ -132,10 +132,10 @@ var List = React.createClass({
     //This array is used to keep track of all nested menu refs
     this._nestedChildren = [];
 
-    for (var i=0; i < this.props.listItems.length; i++) {
-      listItem = this.props.listItems[i];
+    for (var i=0; i < this.props.objectListItems.length; i++) {
+      objectListItem = this.props.objectListItems[i];
       isSelected = i === this.props.selectedIndex;
-      isDisabled = (listItem.disabled === undefined) ? false : listItem.disabled;
+      isDisabled = (objectListItem.disabled === undefined) ? false : objectListItem.disabled;
 
       var {
         icon,
@@ -147,20 +147,20 @@ var List = React.createClass({
         onClick,
         key,
         ...other
-      } = listItem;
+      } = objectListItem;
 
-      switch (listItem.type) {
+      switch (objectListItem.type) {
         default:
           itemComponent = (
-            <ListItem
+            <ObjectListItem
               {...other}
               selected={isSelected}
               key={key !== undefined ? key : i}
               index={i}
               icon={icon}
               data={data}
-              className={this.props.listItemClassName}
-              style={this.mergeAndPrefix(styles.item,this.props.listItemStyle)}
+              className={this.props.objectListItemClassName}
+              style={this.mergeAndPrefix(styles.item,this.props.objectListItemStyle)}
               attribute={attribute}
               number={number}
               toggle={toggle}
@@ -171,8 +171,8 @@ var List = React.createClass({
               onClick={this._onItemClick}
               onClickItemProp={onClick}
               onTouchTap={this._onItemTap}>
-              {listItem.text}
-            </ListItem>
+              {objectListItem.text}
+            </ObjectListItem>
           );
       }
       children.push(itemComponent);
@@ -223,30 +223,30 @@ var List = React.createClass({
     }
   },
 
-  _onNestedItemClick: function(e, index, listItem) {
-    if (this.props.onItemClick) {this.props.onItemClick(e, index, listItem);}
+  _onNestedItemClick: function(e, index, objectListItem) {
+    if (this.props.onItemClick) {this.props.onItemClick(e, index, objectListItem);}
   },
 
-  _onNestedItemTap: function(e, index, listItem) {
-    if (this.props.onItemTap) {this.props.onItemTap(e, index, listItem);}
+  _onNestedItemTap: function(e, index, objectListItem) {
+    if (this.props.onItemTap) {this.props.onItemTap(e, index, objectListItem);}
   },
 
   _onItemClick: function(e, index) {
-    if (this.props.onItemClick) {this.props.onItemClick(e, index, this.props.listItems[index]);}
+    if (this.props.onItemClick) {this.props.onItemClick(e, index, this.props.objectListItems[index]);}
   },
 
   _onItemTap: function(e, index) {
-    if (this.props.onItemTap) {this.props.onItemTap(e, index, this.props.listItems[index]);}
+    if (this.props.onItemTap) {this.props.onItemTap(e, index, this.props.objectListItems[index]);}
   },
 
   _onItemToggle: function(e, index, toggled) {
-    if (this.props.onItemToggle) {this.props.onItemToggle(e, index, this.props.listItems[index], toggled);}
+    if (this.props.onItemToggle) {this.props.onItemToggle(e, index, this.props.objectListItems[index], toggled);}
   },
 
   _onItemCheck: function(e, index, checked) {
-    if (this.props.onItemCheck) {this.props.onItemCheck(e, index, this.props.listItems[index], checked);}
+    if (this.props.onItemCheck) {this.props.onItemCheck(e, index, this.props.objectListItems[index], checked);}
   }
 
 });
 
-module.exports = List;
+module.exports = ObjectList;

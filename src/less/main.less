@@ -9,3 +9,62 @@ html {
 body {
     margin: 0
 }
+
+
+// Transitions
+
+
+// show hide opacity
+@keyframes transitionShow {
+  from {opacity: 0.01;}
+  to   {opacity: 1.00;}
+}
+
+.showHideTransition-enter {
+  animation-name: transitionShow;
+  animation-duration: 1s;
+  animation-timing-function: ease-in;
+}
+
+// .deleteButtonTransition-enter.deleteButtonTransition-enter-active {
+//   opacity: 1;
+// }
+
+.showHideTransition-appear {
+  animation-name: transitionShow;
+  animation-duration: 1s;
+  animation-timing-function: ease-in;
+}
+
+// .deleteButtonTransition-appear.deleteButtonTransition-appear  -active {
+//   opacity: 1;
+// }
+
+@keyframes transitionHide {
+  from {opacity: 1.00;}
+  to   {opacity: 0.01;}
+}
+
+.showHideTransition-leave {
+  animation-name: transitionHide;
+  animation-duration: 1s;
+  animation-timing-function: ease-in;
+}
+
+// .deleteButtonTransition-leave.deleteButtonTransition-leave-active {
+//   opacity: 0.01;
+// }
+
+
+.dropzone{
+  width: 100%;
+  border: 1px dashed;
+  padding: 20px;
+  box-sizing: border-box;
+  height: 150px;
+}
+
+.dropzone.active{
+  border: 1px solid rgb(139, 195, 74);
+  background: #dcedc8;
+}

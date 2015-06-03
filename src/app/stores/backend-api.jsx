@@ -50,46 +50,16 @@ var BackendAPI = {
     this.apiCallAuth(url, null, cb, token, 'GET');
   },
 
-  apkUpload: function (token, projectId, files, cb) {
-    // {"name": " ","projectId": " "}
-    // var url = AppConfig.backend.api + "/back/application";
-    // // var data = { name:'', projectId: projectId }
-    // // var data = 'name=&projectId=' + projectId;
-    // var data = '';
-    // $.each(files, function(key, value){
-    //   console.log(value);
-    //   data = data + '&filenames[]=' + value.name;
-    // });
-    // this.apiCall(url, data, cb);
-
-
-
-
-    // var formData, xhr;
-
-    // formData = new FormData();
-    // formData.append( 'file', files[0] );
-
-    // xhr = new XMLHttpRequest();
-
-
-    // xhr.open( 'POST', AppConfig.backend.api + "/back/application", true );
-    // xhr.setRequestHeader("X-Auth-Token", token);
-    // xhr.onreadystatechange = function ( response ) { cb(response) };
-    // xhr.send( formData );
-
-
-
-
-    // e.preventDefault();
-
+  apkUpload: function (token, projectId, file, cbProgress, cb) {
+    // on error:
+    //    {"code":409,"message":"Error 1062 - #23000 - Duplicate entry 'example.apk' for key 'unique_name'"}
+    // on success:
+    //    {"appId":"ab3e1736-ef99-44e0-b466-c015bc449b10"}
     var formData = new FormData();
-    formData.append( 'file', files[0] );
-
-    // var formData = '';
+    formData.append('file', file);
 
     $.ajax({
-      url: AppConfig.backend.api + "/back/application",
+      url: AppConfig.backend.api + "/back/application/" + projectId,
       data: formData,
       cache: false,
       contentType: false,
@@ -99,7 +69,7 @@ var BackendAPI = {
       xhr: function() {  // Custom XMLHttpRequest
             var myXhr = $.ajaxSettings.xhr();
             if(myXhr.upload){ // Check if upload property exists
-                myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
+                myXhr.upload.addEventListener('progress',cbProgress, false); // For handling the progress of the upload
             }
             return myXhr;
         },
@@ -108,34 +78,37 @@ var BackendAPI = {
       cb(data, textStatus, errorThrown);
     });
 
-    // $.ajax({
-    //   url: AppConfig.backend.api + "/back/application",
-    //   type: 'POST',
-    //   data: formData,
-    //   // async: false,
-    //   // cache: false,
-    //   // contentType: false,
-    //   // processData: false,
-    //   // headers: { "X-Auth-Token": token },
-    //   // always: function (returndata) {
-    //   //   console.log(returndata);
-    //   // }
-    // });
-    console.log('end');
   },
 
-  apkList: function (token, cb) {
-    var url = AppConfig.backend.api + "/back/applications";
-    this.apiCallAuth(url, null, cb, token, 'GET');
+  apkList: function (token, projectId, cb) {
+    // on success
+    //    {"results":[["ab3e1736-ef99-44e0-b466-c015bc449b10","example.apk copy"],["ba435ea0-394a-447d-ba11-06ea6595fb96","example.apk"]]}
+    var url = AppConfig.backend.api + "/back/application/" + projectId;
+    this.apiCallAuth(url, null, (res) => {
+      var apks = res.results.map(function (apk) {
+        return { id: apk[0], name: apk[1] };
+      });
+      cb(apks);
+    }, token, 'GET');
+  },
+
+  apkRemove: function (token, ids, cb) {
+    var url = AppConfig.backend.api + "/back/application/selection";
+    var data = '{"ids": ["' + ids.join('","') + '"]}';
+    // var data = {ids: ids};
+    this.apiCallAuth(url, data, () => {
+      url = AppConfig.backend.api + "/back/application/selection";
+      this.apiCallAuth(url, null, cb, token, 'DELETE');
+    }, token);
   },
 
 };
 
 function progressHandlingFunction(e){
   console.log(e);
-  // if(e.lengthComputable){
-  //   console.log({value:e.loaded,max:e.total});
-  // }
+  if(e.lengthComputable){
+    console.log({value:e.loaded,max:e.total});
+  }
 }
 
 module.exports = BackendAPI;
