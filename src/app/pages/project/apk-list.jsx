@@ -63,8 +63,9 @@ var ProjectApkList = class extends React.Component {
         </Toolbar>
         <APKUploadDialog ref="uploadDialog" reload={this.reloadList} />
 
+        {this.state.apks.length > 0 ? (
         <List style={style.list} listItems={this.state.apks} onItemTap={this._onItemTap}  onCheck={this._onItemCheck} />
-
+        ) : null }
       </div>
     );
   }
@@ -78,6 +79,7 @@ var ProjectApkList = class extends React.Component {
     // console.log(this.state.toDelete);
 
     var indexToDelete = this.state.toDelete;
+    this.setState({toDelete: []});
     var apks = this.state.apks;
 
     var apksToDelete = indexToDelete.map(function (index) {

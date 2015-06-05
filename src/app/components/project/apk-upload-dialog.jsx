@@ -21,6 +21,7 @@ var APKUploadDialog = class extends React.Component{
 
     this._onCancel = this._onCancel.bind(this);
     this._onDrop = this._onDrop.bind(this);
+    this._onCleanClick = this._onCleanClick.bind(this);
   }
 
   render() {
@@ -35,12 +36,15 @@ var APKUploadDialog = class extends React.Component{
         width: '100%'
       },
       toolbargroup: {
-        paddingRight: '6px',
-        float: 'right',
+        paddingTop: '3px',
+        float: 'left'
       },
       objectlist: {
         maxHeight: '200px',
         overflowY: 'auto',
+      },
+      cleanButton: {
+        marginLeft: '-14px'
       }
     };
 
@@ -60,7 +64,7 @@ var APKUploadDialog = class extends React.Component{
             <div>
             <Toolbar style={styles.toolbar}>
               <ToolbarGroup style={styles.toolbargroup}>
-                <IconButton onTouchTap={this._onUploadClick} ref="upload" iconClassName="mdi mdi-broom" tooltip="Clean finished files"/>
+                <IconButton style={styles.cleanButton} onTouchTap={this._onCleanClick} ref="upload" iconClassName="mdi mdi-broom" tooltip="Clean finished files"/>
               </ToolbarGroup>
             </Toolbar>
             <ObjectList style={styles.objectlist} objectListItems={this.state.files} />
@@ -80,37 +84,39 @@ var APKUploadDialog = class extends React.Component{
 
   _onDrop(files){
     console.log('Received files: ', files);
-    var filesInfo = files.map(function (file) {
-      return {
-        key: file.name,
-        text: file.name,
-        size: file.size,
-        iconRightClassName: 'mdi mdi-upload',
-        progress: 0,
-      };
-    });
+    var filesInfo = APK.convertToListItems(files);
     var updatedFiles = this.state.files.concat(filesInfo);
     this.setState({files: updatedFiles});
     var projectId = this.getProjectId();
     if (projectId !== null) {
       APK.uploadFiles(projectId, files, (res) => {
+        updatedFiles = this.state.files;
         console.log('res uploadfiles');
         console.log(res);
-        // if(res.file_uploaded){
-
-        //   this.props.reload();
-        // }else if(res.file_uploaded === false){
-
-        // }else if(res.file_progress){
-
-        // }else{
-        //   // ????
-        // }
+        if (res.hasOwnProperty('progress')){
+          updatedFiles = APK.listUpdate(updatedFiles, {id: res.apkId, progress: res.progress });
+          this.setState({files: updatedFiles});
+        } else if (res.hasOwnProperty('completed')){
+          updatedFiles = APK.listUpdate(updatedFiles, {id: res.apkId, iconRightClassName: 'mdi mdi-check', progress: false, completed: true});
+          this.setState({files: updatedFiles});
+          this.props.reload();
+        } else if (res.hasOwnProperty('error') && res.error === true){
+          updatedFiles = APK.listUpdate(updatedFiles, {id: res.apkId, iconRightClassName: 'mdi mdi-close', progress: false, error: true, errorText: res.errorMessage});
+          console.log(updatedFiles);
+          this.setState({files: updatedFiles});
+        } else {
+          // TODO treatment
+        }
       });
     } else {
       // something really wrong happened
       // TODO: treat error
     }
+  }
+
+  _onCleanClick() {
+    var updatedFiles = APK.listClean(this.state.files);
+    this.setState({files: updatedFiles});
   }
 
   _onCancel() {

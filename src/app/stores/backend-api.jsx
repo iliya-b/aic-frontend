@@ -112,6 +112,8 @@ var BackendAPI = {
   testCreate: function (token, projectId, instanceId, instanceName, APKId, cb) {
     // on success
     //
+    // on error
+    //     {"error":{"code":409,"message":"Conflict","description":""}}
     var url = AppConfig.backend.api + "/back/stack";
     var data = '{"tenantId":"'+projectId+'","stackName":"'+instanceName+'","stackId":"'+instanceId+'","appId":"'+APKId+'"}';
     this.apiCallAuth(url, data, cb, token);
@@ -120,11 +122,11 @@ var BackendAPI = {
 
 };
 
-function progressHandlingFunction(e){
-  console.log(e);
-  if(e.lengthComputable){
-    console.log({value:e.loaded,max:e.total});
-  }
-}
+// function progressHandlingFunction(e){
+//   console.log(e);
+//   if(e.lengthComputable){
+//     console.log({value:e.loaded,max:e.total});
+//   }
+// }
 
 module.exports = BackendAPI;

@@ -1,28 +1,38 @@
 'use strict';
 
-var { Auth } = require('../stores/auth.jsx');
+var { Auth } = require('./auth.jsx');
 var BackendAPI = require('./backend-api.jsx');
+// var { AppUtils } = require('../components/');
+var AppUtils = require('../components/shared/app-utils.jsx');
+
+console.log(AppUtils);
 
 var APK = {
 
   ERROR_DUPLICATED: 409,
 
   uploadFiles: function (projectId, files, cb) {
+    // apkId, progress, completed
     var token = Auth.getToken();
 
     files.map(function (file) {
       BackendAPI.apkUpload(token, projectId, file, (res) => { // callback progress
         console.log('cb progress');
         console.log(res);
+        if(res.lengthComputable){
+          cb( { apkId: file.preview, progress: parseInt(res.loaded/res.total*100) } );
+        } else {
+          cb( {  } );
+        }
       }, (res) => { // callback end upload
         console.log('res upload');
         console.log(res);
         if(res.hasOwnProperty('appId')) {
-          cb({file_uploaded:true});
-        } else if(res.hasOwnProperty('status') && res.status === APK.ERROR_DUPLICATED) {
-          cb({file_uploaded:false, error: 'Duplicated APK name file.'});
+          cb( { apkId: file.preview, completed:true } );
+        } else if(res.hasOwnProperty('code') && res.code === APK.ERROR_DUPLICATED) {
+          cb( { apkId: file.preview, error: true, errorMessage: 'Duplicated APK name file.'} );
         } else {
-          cb({file_uploaded:false, error:'Unknown'});
+          cb( { apkId: file.preview, error: true, errorMessage:'Unknown'} );
         }
       });
     })
@@ -77,6 +87,37 @@ var APK = {
     var token = Auth.getToken();
     BackendAPI.apkRemove(token, apkIds, (res) => {
       cb(res);
+    });
+  },
+
+
+  convertToListItems: function(files) {
+    return files.map(function (file) {
+      return {
+        id: file.preview,
+        key: file.name,
+        text: file.name,
+        size: file.size,
+        iconRightClassName: 'mdi mdi-upload',
+        progress: 0,
+        completed: false
+      };
+    });
+  },
+
+  listUpdate: function (apkList, apk) {
+    return apkList.map(function (apkItem) {
+      if (apkItem.id == apk.id) {
+        return AppUtils.extend(apkItem, apk);
+      } else {
+        return apkItem;
+      }
+    });
+  },
+
+  listClean: function (apkList) {
+    return apkList.filter(function (apkItem) {
+      return !apkItem.completed && !apkItem.error;
     });
   }
 

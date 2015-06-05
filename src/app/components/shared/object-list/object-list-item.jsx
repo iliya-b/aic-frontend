@@ -1,8 +1,10 @@
+/* jshint unused: false */
 var React = require('react');
 
 var mui = require('material-ui');
 var { FontIcon, Toggle, Checkbox, LinearProgress } = mui;
 var { StylePropable } = mui.Mixins;
+var { Transitions } = mui.Styles;
 
 var Types = {
   LINK: 'LINK',
@@ -121,7 +123,14 @@ var ObjectListItem = React.createClass({
       rootWhenDisabled: {
         cursor: 'default',
         color: this.context.muiTheme.palette.disabledColor
-      }
+      },
+      error: {
+        color: this.context.muiTheme.palette.errorColor,
+        fontSize: '12px',
+        lineHeight: '12px',
+        transition: Transitions.easeOut(),
+        marginTop: '-10px',
+      },
     };
     return styles;
   },
@@ -134,6 +143,7 @@ var ObjectListItem = React.createClass({
     var number;
     var toggleElement;
     var checkboxElement;
+    var progressElement;
     var {
         toggle,
         checkbox,
@@ -155,36 +165,14 @@ var ObjectListItem = React.createClass({
     if (this.props.data) { data = <span style={this.mergeAndPrefix(styles.data)}>{this.props.data}</span>;}
     if (this.props.number !== undefined) { number = <span style={this.mergeAndPrefix(styles.number)}>{this.props.number}</span>;}
     if (this.props.attribute !== undefined) { attribute = <span style={this.mergeAndPrefix(styles.style)}>{this.props.attribute}</span>;}
+    if (this.props.toggle) { toggleElement = <Toggle {...other} onToggle={this._handleToggle} style={styles.toggle}/>; }
+    if (this.props.checkbox) { checkboxElement = <Checkbox {...other} onCheck={this._handleCheck} style={styles.checkbox}/>; }
+    if (this.props.progress !== undefined && this.props.progress !== false ) { progressElement = <LinearProgress mode="determinate" value={progress} />; }
 
-    if (this.props.toggle) {
-      // [
-      //   toggle,
-      //   onClick,
-      //   onToggle,
-      //   onMouseOver,
-      //   onMouseOut,
-      //   children,
-      //   label,
-      //   style,
-      //   ...other
-      // ] = this.props;
-      toggleElement = <Toggle {...other} onToggle={this._handleToggle} style={styles.toggle}/>;
-    }
+    var errorTextElement = this.props.errorText ? (
+      <div style={styles.error}>{this.props.errorText}</div>
+    ) : null;
 
-    if (this.props.checkbox) {
-      // [
-      //   checkbox,
-      //   onClick,
-      //   onCheck,
-      //   onMouseOver,
-      //   onMouseOut,
-      //   children,
-      //   label,
-      //   style,
-      //   ...other
-      // ] = this.props;
-      checkboxElement = <Checkbox {...other} onCheck={this._handleCheck} style={styles.checkbox}/>;
-    }
 
     return (
       <div
@@ -209,9 +197,8 @@ var ObjectListItem = React.createClass({
         {toggleElement}
         {checkboxElement}
         {iconRight}
-        {progress !== 100 ? (
-        <LinearProgress mode="determinate" value={progress} />
-        ) : '' }
+        {progressElement}
+        {errorTextElement}
 
       </div>
     );
