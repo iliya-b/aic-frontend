@@ -29,7 +29,8 @@ var APK = {
         console.log(res);
         if(res.hasOwnProperty('appId')) {
           cb( { apkId: file.preview, completed:true } );
-        } else if(res.hasOwnProperty('code') && res.code === APK.ERROR_DUPLICATED) {
+        } else if((res.hasOwnProperty('code') && res.code === APK.ERROR_DUPLICATED) ||
+          (res.hasOwnProperty('status') && res.status === APK.ERROR_DUPLICATED)) {
           cb( { apkId: file.preview, error: true, errorMessage: 'Duplicated APK name file.'} );
         } else {
           cb( { apkId: file.preview, error: true, errorMessage:'Unknown'} );
