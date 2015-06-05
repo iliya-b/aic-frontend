@@ -1,9 +1,8 @@
 var React = require('react');
 
 var mui = require('material-ui');
-var { StylePropable } = mui.Mixins;
 
-var { Dialog, FlatButton, Toolbar, ToolbarGroup, IconButton } = mui;
+var { Dialog, FlatButton} = mui;
 var { APK } = require('../../../stores/');
 
 var ObjectList = require('../../shared/object-list/object-list.jsx');
@@ -14,12 +13,14 @@ var APKSelectionDialog = class extends React.Component{
     super(props);
 
     this.state = {
-      files: []
+      apks: [],
+      selectedIndex: null,
     };
 
     this._onCancel = this._onCancel.bind(this);
-    this._onDrop = this._onDrop.bind(this);
-    this._onCleanClick = this._onCleanClick.bind(this);
+    this._onItemClick = this._onItemClick.bind(this);
+    this._onSubmit = this._onSubmit.bind(this);
+
   }
 
   render() {
@@ -30,43 +31,30 @@ var APKSelectionDialog = class extends React.Component{
     } = this.props;
 
     var styles = {
-      dropzone: {
-        width: '100%'
-      },
-      toolbargroup: {
-        paddingTop: '3px',
-        float: 'left'
-      },
       objectlist: {
         maxHeight: '200px',
         overflowY: 'auto',
       },
-      cleanButton: {
-        marginLeft: '-14px'
-      }
     };
 
-    var loginActions = [
+    var actions = [
       <FlatButton
-        key="loginActionCancel"
-        label='Close'
+        key="cancel"
+        label='Cancel'
         secondary={true}
         onTouchTap={this._onCancel} />,
+      <FlatButton
+        key="submit"
+        label="Select"
+        primary={true}
+        onTouchTap={this._onSubmit} />
     ];
 
-
     return (
-      <Dialog title="APK Upload" actions={loginActions} {...other} ref="dialogIn" >
+      <Dialog title="APK Selection" actions={actions} {...other} ref="dialogIn" >
         <div>
-          {this.state.files.length > 0 ? (
-            <div>
-            <Toolbar style={styles.toolbar}>
-              <ToolbarGroup style={styles.toolbargroup}>
-                <IconButton style={styles.cleanButton} onTouchTap={this._onCleanClick} ref="upload" iconClassName="mdi mdi-broom" tooltip="Clean finished files"/>
-              </ToolbarGroup>
-            </Toolbar>
-            <ObjectList style={styles.objectlist} objectListItems={this.state.files} />
-            </div>
+          {this.state.apks.length > 0 ? (
+            <ObjectList selectedIndex={this.state.selectedIndex} style={styles.objectlist} objectListItems={this.state.apks} onItemTap={this._onItemClick} />
           ) : '' }
         </div>
       </Dialog>
@@ -77,59 +65,33 @@ var APKSelectionDialog = class extends React.Component{
     this.refs.dialogIn.show();
   }
 
-  _onDrop(files){
-    console.log('Received files: ', files);
-    var filesInfo = APK.convertToListItems(files);
-    var updatedFiles = this.state.files.concat(filesInfo);
-    this.setState({files: updatedFiles});
-    var projectId = this.getProjectId();
-    if (projectId !== null) {
-      APK.uploadFiles(projectId, files, (res) => {
-        updatedFiles = this.state.files;
-        console.log('res uploadfiles');
-        console.log(res);
-        if (res.hasOwnProperty('progress')){
-          updatedFiles = APK.listUpdate(updatedFiles, {id: res.apkId, progress: res.progress });
-          this.setState({files: updatedFiles});
-        } else if (res.hasOwnProperty('completed')){
-          updatedFiles = APK.listUpdate(updatedFiles, {id: res.apkId, iconRightClassName: 'mdi mdi-check', progress: false, completed: true});
-          this.setState({files: updatedFiles});
-          this.props.reload();
-        } else if (res.hasOwnProperty('error') && res.error === true){
-          updatedFiles = APK.listUpdate(updatedFiles, {id: res.apkId, iconRightClassName: 'mdi mdi-close', progress: false, error: true, errorText: res.errorMessage});
-          console.log(updatedFiles);
-          this.setState({files: updatedFiles});
-        } else {
-          // TODO treatment
-        }
-      });
-    } else {
-      // something really wrong happened
-      // TODO: treat error
-    }
-  }
-
-  _onCleanClick() {
-    var updatedFiles = APK.listClean(this.state.files);
-    this.setState({files: updatedFiles});
+  _onItemClick(e, index) {
+    this.setState({selectedIndex: index});
   }
 
   _onCancel() {
     this.refs.dialogIn.dismiss();
   }
 
+  _onSubmit() {
+    this.props.onSelect(this.state.apks[this.state.selectedIndex]);
+    this.refs.dialogIn.dismiss();
+  }
+
   getProjectId() {
-    var routerParams = this.context.router.getCurrentParams();
-    if (routerParams.hasOwnProperty('projectId')) {
-      return routerParams.projectId;
-    } else {
-      return null;
-    }
+    return this.props.projectId;
+  }
+
+  componentWillMount() {
+    APK.getAll( this.getProjectId(), (res) => {
+      var apks = res.map(function (item) {
+        return { key: item.id, id: item.id, text: item.name, name: item.name };
+      });
+      this.setState({apks: apks});
+    });
   }
 
 };
-
-APKSelectionDialog.mixins = [StylePropable];
 
 APKSelectionDialog.contextTypes = {
   muiTheme: React.PropTypes.object,
@@ -137,5 +99,3 @@ APKSelectionDialog.contextTypes = {
 }
 
 module.exports = APKSelectionDialog;
-
-

@@ -64,6 +64,12 @@ var ProjectCampaign = class extends React.Component{
           </Tab>
           <Tab label="APK" >
             <Paper style={style.paperCenter}>
+              {this.state.apk ? (
+              <div>
+                <TextField floatingLabelText="APK Name" value={this.state.apk.name} disabled={true} /><br />
+                <TextField floatingLabelText="APK ID" value={this.state.apk.id} disabled={true} /><br />
+              </div>
+              ) : null }
               <FlatButton
                 label="Select an APK"
                 onTouchTap={this._onAPKSelectClick}
@@ -128,20 +134,6 @@ var ProjectCampaign = class extends React.Component{
       // something really wrong happened
       // TODO: treat error
     }
-    this.reloadData();
-  }
-
-  reloadData(){
-    // console.log('reloading list:' + projectId);
-    Test.getAll( (res) => {
-      var instances = res.map(function (item) {
-        return { key: item.id,   text: item.name };
-      });
-      this.setState({instances: instances});
-    });
-    APK.getAll( projectId, (res) => {
-      this.setState({apks: res});
-    });
   }
 
   getProjectId() {
