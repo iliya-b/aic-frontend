@@ -3,7 +3,7 @@ var React = require('react');
 var mui = require('material-ui');
 var { Spacing } = mui.Styles;
 
-var { TogglableIcon, List } = require('../../components/');
+var { List } = require('../../components/');
 
 var { Test, APK } = require('../../stores/');
 

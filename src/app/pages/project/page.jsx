@@ -11,7 +11,7 @@ var menuItems = [
      { path: 'apks', text: 'APK List' },
      { path: 'settings', text: 'Settings'},
      { path: 'live', text: 'Live Mode'},
-     { path: 'tests', text: 'Tests'}
+     { path: 'campaign', text: 'Campaign'}
   ];
 
 var ProjectPage = React.createClass({

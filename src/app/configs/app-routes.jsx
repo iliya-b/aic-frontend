@@ -16,6 +16,7 @@ var ProjectSettings = require('../pages/project/settings.jsx');
 var ProjectApkList = require('../pages/project/apk-list.jsx');
 var ProjectLive = require('../pages/project/live.jsx');
 var ProjectTests = require('../pages/project/tests.jsx');
+var ProjectCampaign = require('../pages/project/campaign.jsx');
 
 
 // Routes //
@@ -31,6 +32,7 @@ var AppRoutes = (
         <Route name="settings" handler={ProjectSettings} />
         <Route name="live" handler={ProjectLive} />
         <Route name="tests" handler={ProjectTests} />
+        <Route name="campaign" handler={ProjectCampaign} />
         <Redirect from="/projects/:projectId" to="apks" />
       </Route>
       <Redirect from="/projects" to="project-list" />
