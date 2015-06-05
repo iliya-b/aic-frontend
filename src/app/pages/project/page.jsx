@@ -10,7 +10,8 @@ var { Spacing, Colors } = mui.Styles;
 var menuItems = [
      { path: 'apks', text: 'APK List' },
      { path: 'settings', text: 'Settings'},
-     { path: 'live', text: 'Live Mode'}
+     { path: 'live', text: 'Live Mode'},
+     { path: 'tests', text: 'Tests'}
   ];
 
 var ProjectPage = React.createClass({

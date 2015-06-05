@@ -3,4 +3,5 @@ module.exports = {
   RequireAuthComponent: require('./auth.jsx').RequireAuthComponent,
   Project: require('./project.jsx'),
   APK: require('./apk.jsx'),
+  Test: require('./test.jsx'),
 };

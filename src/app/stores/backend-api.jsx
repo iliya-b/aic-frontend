@@ -102,6 +102,22 @@ var BackendAPI = {
     }, token);
   },
 
+  instanceList: function (token, cb) {
+    // on success
+    //    {"results":[["330cd3fb-73f7-4e20-a9b4-9c2a05d91e9f","nexus"]]}
+    var url = AppConfig.backend.api + "/back/stack";
+    this.apiCallAuth(url, null, cb, token, 'GET');
+  },
+
+  testCreate: function (token, projectId, instanceId, instanceName, APKId, cb) {
+    // on success
+    //
+    var url = AppConfig.backend.api + "/back/stack";
+    var data = '{"tenantId":"'+projectId+'","stackName":"'+instanceName+'","stackId":"'+instanceId+'","appId":"'+APKId+'"}';
+    this.apiCallAuth(url, data, cb, token);
+  },
+
+
 };
 
 function progressHandlingFunction(e){

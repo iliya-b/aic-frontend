@@ -36,6 +36,8 @@ var APK = {
 
       var apks = res.map(function (apk) {
         return {
+          id: apk.id,
+          name: apk.name,
           apkId: apk.id,
           key: apk.id,
           text: apk.name,
