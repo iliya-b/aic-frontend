@@ -67,8 +67,8 @@ var LoginDialog = class extends React.Component{
         {this.state.loginSuccess ? successBox : (
           <div>
           {errorBox}
-          <TextField ref="loginEmail" errorText={this.state.loginEmailError} onChange={this.checkFields} floatingLabelText="login" disabled={this.state.blockFields} /><br />
-          <TextField ref="loginPassword" errorText={this.state.loginPasswordError} onChange={this.checkFields} floatingLabelText="password" type="password"  disabled={this.state.blockFields} />
+          <TextField ref="loginEmail" changed={false} errorText={this.state.loginEmailError} onChange={this.checkFields.bind(this, 'loginEmail')} floatingLabelText="login" disabled={this.state.blockFields} /><br />
+          <TextField ref="loginPassword" changed={false}  errorText={this.state.loginPasswordError} onChange={this.checkFields.bind(this, 'loginPassword')} floatingLabelText="password" type="password"  disabled={this.state.blockFields} />
           </div>
         )}
       </Dialog>
@@ -97,20 +97,28 @@ var LoginDialog = class extends React.Component{
   }
 
   cleanFields() {
-    this.refs.loginEmail.clearValue();
-    this.refs.loginPassword.clearValue();
+    // this.refs.loginEmail.clearValue();
+    // this.refs.loginEmail.props.changed = false;
+    // this.refs.loginPassword.clearValue();
+    // this.refs.loginPassword.props.changed = false;
   }
 
-  checkFields() {
-    // TODO : only set errorText to modified fields
+  checkFields(elem) {
     var noErrors = true;
     var errorMessage;
-    errorMessage = AppUtils.fieldIsRequired( this.refs.loginEmail );
-    this.setState({ loginEmailError: errorMessage});
-    noErrors = noErrors && (errorMessage === '');
-    errorMessage = AppUtils.fieldIsRequired( this.refs.loginPassword );
-    this.setState({ loginPasswordError: errorMessage});
-    noErrors = noErrors && (errorMessage === '');
+    var elementsToCheck = ['loginEmail', 'loginPassword'];
+    if(elem !== undefined && this.refs[elem].props.changed === false){
+      this.refs[elem].props.changed = true;
+    }
+    for (var i = 0; i < elementsToCheck.length ; i++) {
+      if (this.refs[elementsToCheck[i]] !== undefined && this.refs[elementsToCheck[i]].props.changed){
+        errorMessage = AppUtils.fieldIsRequired( this.refs[elementsToCheck[i]] );
+        var newState = {};
+        newState[elementsToCheck[i] + 'Error'] = errorMessage;
+        this.setState(newState);
+        noErrors = noErrors && (errorMessage === '');
+      }
+    }
     return noErrors;
   }
 
