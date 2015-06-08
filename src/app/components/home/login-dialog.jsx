@@ -97,10 +97,10 @@ var LoginDialog = class extends React.Component{
   }
 
   cleanFields() {
-    // this.refs.loginEmail.clearValue();
-    // this.refs.loginEmail.props.changed = false;
-    // this.refs.loginPassword.clearValue();
-    // this.refs.loginPassword.props.changed = false;
+    this.refs.loginEmail.clearValue();
+    this.refs.loginEmail.props.changed = false;
+    this.refs.loginPassword.clearValue();
+    this.refs.loginPassword.props.changed = false;
   }
 
   checkFields(elem) {
