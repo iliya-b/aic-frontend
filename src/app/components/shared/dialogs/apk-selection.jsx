@@ -84,9 +84,12 @@ var APKSelectionDialog = class extends React.Component{
 
   componentWillMount() {
     APK.getAll( this.getProjectId(), (res) => {
-      var apks = res.map(function (item) {
-        return { key: item.id, id: item.id, text: item.name, name: item.name };
-      });
+      var apks = [];
+      if (res !== undefined && res.length > 0){
+        apks = res.map(function (item) {
+          return { key: item.id, id: item.id, text: item.name, name: item.name };
+        });
+      }
       this.setState({apks: apks});
     });
   }

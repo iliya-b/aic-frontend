@@ -82,19 +82,21 @@ var ProjectApkList = class extends React.Component {
     this.setState({toDelete: []});
     var apks = this.state.apks;
 
-    var apksToDelete = indexToDelete.map(function (index) {
-      return apks[index];
-    }).map(function (apk) {
-      return apk.apkId;
-    });
+    if(indexToDelete.length > 0){
+      var apksToDelete = indexToDelete.map(function (index) {
+        return apks[index];
+      }).map(function (apk) {
+        return apk.apkId;
+      });
 
-    APK.removeByIds( apksToDelete, (res) => {
-      if(res.apks_deleted){
-        this.reloadList();
-      }else{
-        console.log('error when deleting apk'); // TODO: error control
-      }
-    });
+      APK.removeByIds( apksToDelete, (res) => {
+        if(res.apks_deleted){
+          this.reloadList();
+        }else{
+          console.log('error when deleting apk'); // TODO: error control
+        }
+      });
+    }
   }
 
   _onItemTap() { /*e, index, menuItem*/

@@ -9,13 +9,15 @@ var Test = {
     var token = Auth.getToken();
     BackendAPI.instanceList(token, (res) => {
 
-      var tests = res.results.map(function (test) {
-        return {
-          id: test[0],
-          name: test[1]
-        }
-      })
-
+      var tests = [];
+      if (res !== undefined && res.results !== undefined && res.results.length > 0){
+        tests = res.results.map(function (test) {
+          return {
+            id: test[0],
+            name: test[1]
+          }
+        });
+      }
       // { apkId: 'apk1', text: 'APK1', checkbox:true },
       cb(tests);
     });

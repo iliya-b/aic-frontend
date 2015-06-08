@@ -13,14 +13,17 @@ var Project = {
       // { tenants: [ {description: "test's project", enabled: true, id: "a532574a46954bf3a85dd6284ed8f5e8", name: "test"} ], tenants_links: [] }
       // project =
       // { projectId: 'project1', text: 'Project1' },
-      var projects = res.tenants.map(function (project) {
-        return {
-          id: project.id,
-          name: project.name,
-          text: project.name,
-          description: project.description,
-        }
-      })
+      var projects = [];
+      if (res !== undefined && res.tenants !== undefined && res.tenants.length > 0){
+        projects = res.tenants.map(function (project) {
+          return {
+            id: project.id,
+            name: project.name,
+            text: project.name,
+            description: project.description,
+          }
+        });
+      }
       cb(projects);
     });
   },

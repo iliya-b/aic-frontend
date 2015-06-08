@@ -140,9 +140,12 @@ var ProjectTests = class extends React.Component{
   reloadData(){
     // console.log('reloading list:' + projectId);
     Test.getAll( (res) => {
-      var instances = res.map(function (item) {
-        return { key: item.id,   text: item.name };
-      });
+      var instances = [];
+      if (res !== undefined && res.length > 0){
+        instances = res.map(function (item) {
+          return { key: item.id,   text: item.name };
+        });
+      }
       this.setState({instances: instances});
     });
     APK.getAll( projectId, (res) => {

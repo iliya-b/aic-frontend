@@ -85,9 +85,12 @@ var BackendAPI = {
     //    {"results":[["ab3e1736-ef99-44e0-b466-c015bc449b10","example.apk copy"],["ba435ea0-394a-447d-ba11-06ea6595fb96","example.apk"]]}
     var url = AppConfig.backend.api + "/back/application/" + projectId;
     this.apiCallAuth(url, null, (res) => {
-      var apks = res.results.map(function (apk) {
-        return { id: apk[0], name: apk[1] };
-      });
+      var apks = [];
+      if (res !== undefined && res.results !== undefined && res.results.length > 0){
+        apks = res.results.map(function (apk) {
+          return { id: apk[0], name: apk[1] };
+        });
+      }
       cb(apks);
     }, token, 'GET');
   },

@@ -15,28 +15,30 @@ var APK = {
     // apkId, progress, completed
     var token = Auth.getToken();
 
-    files.map(function (file) {
-      BackendAPI.apkUpload(token, projectId, file, (res) => { // callback progress
-        console.log('cb progress');
-        console.log(res);
-        if(res.lengthComputable){
-          cb( { apkId: file.preview, progress: parseInt(res.loaded/res.total*100) } );
-        } else {
-          cb( {  } );
-        }
-      }, (res) => { // callback end upload
-        console.log('res upload');
-        console.log(res);
-        if(res.hasOwnProperty('appId')) {
-          cb( { apkId: file.preview, completed:true } );
-        } else if((res.hasOwnProperty('code') && res.code === APK.ERROR_DUPLICATED) ||
-          (res.hasOwnProperty('status') && res.status === APK.ERROR_DUPLICATED)) {
-          cb( { apkId: file.preview, error: true, errorMessage: 'Duplicated APK name file.'} );
-        } else {
-          cb( { apkId: file.preview, error: true, errorMessage:'Unknown'} );
-        }
+    if (files !== undefined && files.length > 0){
+      files.map(function (file) {
+        BackendAPI.apkUpload(token, projectId, file, (res) => { // callback progress
+          console.log('cb progress');
+          console.log(res);
+          if(res.lengthComputable){
+            cb( { apkId: file.preview, progress: parseInt(res.loaded/res.total*100) } );
+          } else {
+            cb( {  } );
+          }
+        }, (res) => { // callback end upload
+          console.log('res upload');
+          console.log(res);
+          if(res.hasOwnProperty('appId')) {
+            cb( { apkId: file.preview, completed:true } );
+          } else if((res.hasOwnProperty('code') && res.code === APK.ERROR_DUPLICATED) ||
+            (res.hasOwnProperty('status') && res.status === APK.ERROR_DUPLICATED)) {
+            cb( { apkId: file.preview, error: true, errorMessage: 'Duplicated APK name file.'} );
+          } else {
+            cb( { apkId: file.preview, error: true, errorMessage:'Unknown'} );
+          }
+        });
       });
-    })
+    }
 
 
   },
@@ -44,18 +46,19 @@ var APK = {
   getAll: function (projectId, cb) {
     var token = Auth.getToken();
     BackendAPI.apkList(token, projectId, (res) => {
-
-      var apks = res.map(function (apk) {
-        return {
-          id: apk.id,
-          name: apk.name,
-          apkId: apk.id,
-          key: apk.id,
-          text: apk.name,
-          checkbox:true
-        }
-      })
-
+      var apks = [];
+      if (res !== undefined && res.length > 0){
+        apks = res.map(function (apk) {
+          return {
+            id: apk.id,
+            name: apk.name,
+            apkId: apk.id,
+            key: apk.id,
+            text: apk.name,
+            checkbox:true
+          }
+        });
+      }
       // { apkId: 'apk1', text: 'APK1', checkbox:true },
       cb(apks);
     });
@@ -93,17 +96,21 @@ var APK = {
 
 
   convertToListItems: function(files) {
-    return files.map(function (file) {
-      return {
-        id: file.preview,
-        key: file.name,
-        text: file.name,
-        size: file.size,
-        iconRightClassName: 'mdi mdi-upload',
-        progress: 0,
-        completed: false
-      };
-    });
+    if (files !== undefined && files.length > 0){
+      return files.map(function (file) {
+        return {
+          id: file.preview,
+          key: file.name,
+          text: file.name,
+          size: file.size,
+          iconRightClassName: 'mdi mdi-upload',
+          progress: 0,
+          completed: false
+        };
+      });
+    }else{
+      return [];
+    }
   },
 
   listUpdate: function (apkList, apk) {
