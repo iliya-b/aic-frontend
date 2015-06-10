@@ -9,6 +9,7 @@ var { Spacing, Colors } = mui.Styles;
 
 var menuItems = [
      { path: 'apks', text: 'APK List' },
+     { path: 'apks-test', text: 'APK Test List' },
      { path: 'settings', text: 'Settings'},
      { path: 'live', text: 'Live Mode'},
      { path: 'campaign', text: 'Campaign'}

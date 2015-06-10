@@ -6,8 +6,10 @@ module.exports = {
   SignUpDialog: require('./home/sign-up-dialog.jsx'),
   LoginDialog: require('./home/login-dialog.jsx'),
   APKUploadDialog: require('./project/apk-upload-dialog.jsx'),
+  APKTestUploadDialog: require('./project/apk-test-upload-dialog.jsx'),
   ObjectList: require('./shared/object-list/object-list.jsx'),
   AppUtils: require('./shared/app-utils.jsx'),
   APKSelectionDialog: require('./shared/dialogs/apk-selection.jsx'),
+  APKTestSelectionDialog: require('./shared/dialogs/apk-test-selection.jsx'),
   DeviceSelectionDialog: require('./shared/dialogs/device-selection.jsx'),
 };

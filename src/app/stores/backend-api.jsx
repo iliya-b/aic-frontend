@@ -105,6 +105,61 @@ var BackendAPI = {
     }, token);
   },
 
+  apkTestUpload: function (token, projectId, file, cbProgress, cb) {
+    // on error:
+    //    {"code":409,"message":"Error 1062 - #23000 - Duplicate entry 'example.apk' for key 'unique_name'"}
+    // on success:
+    //    {"appId":"ab3e1736-ef99-44e0-b466-c015bc449b10"}
+    var formData = new FormData();
+    formData.append('file', file);
+
+    $.ajax({
+      url: AppConfig.backend.api + "/back/test/" + projectId,
+      data: formData,
+      cache: false,
+      contentType: false,
+      processData: false,
+      type: 'POST',
+      headers: { "X-Auth-Token": token },
+      xhr: function() {  // Custom XMLHttpRequest
+            var myXhr = $.ajaxSettings.xhr();
+            if(myXhr.upload){ // Check if upload property exists
+                myXhr.upload.addEventListener('progress',cbProgress, false); // For handling the progress of the upload
+            }
+            return myXhr;
+        },
+    })
+    .always(function(data, textStatus, errorThrown) {
+      cb(data, textStatus, errorThrown);
+    });
+
+  },
+
+  apkTestList: function (token, projectId, cb) {
+    // on success
+    //    {"results":[["ab3e1736-ef99-44e0-b466-c015bc449b10","example.apk copy"],["ba435ea0-394a-447d-ba11-06ea6595fb96","example.apk"]]}
+    var url = AppConfig.backend.api + "/back/test/" + projectId;
+    this.apiCallAuth(url, null, (res) => {
+      var apks = [];
+      if (res !== undefined && res.results !== undefined && res.results.length > 0){
+        apks = res.results.map(function (apk) {
+          return { id: apk[0], name: apk[1] };
+        });
+      }
+      cb(apks);
+    }, token, 'GET');
+  },
+
+  apkTestRemove: function (token, ids, cb) {
+    var url = AppConfig.backend.api + "/back/test/selection";
+    var data = '{"ids": ["' + ids.join('","') + '"]}';
+    // var data = {ids: ids};
+    this.apiCallAuth(url, data, () => {
+      url = AppConfig.backend.api + "/back/test/selection";
+      this.apiCallAuth(url, null, cb, token, 'DELETE');
+    }, token);
+  },
+
   instanceList: function (token, cb) {
     // on success
     //    {"results":[["330cd3fb-73f7-4e20-a9b4-9c2a05d91e9f","nexus"]]}

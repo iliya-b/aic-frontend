@@ -32,6 +32,7 @@ var ProjectCampaign = class extends React.Component{
     this._onLauchCampaignSubmit = this._onLauchCampaignSubmit.bind(this);
     this._onDeviceSelect = this._onDeviceSelect.bind(this);
     this._onAPKSelect = this._onAPKSelect.bind(this);
+    // this._onAPKTestSelect = this._onAPKTestSelect.bind(this);
   }
 
   render() {
