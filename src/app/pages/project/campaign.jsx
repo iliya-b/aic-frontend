@@ -4,9 +4,10 @@ var mui = require('material-ui');
 var { Spacing } = mui.Styles;
 
 var { APKSelectionDialog,
+      APKTestSelectionDialog,
       DeviceSelectionDialog } = require('../../components/');
 
-var { Test, APK } = require('../../stores/');
+var { Test } = require('../../stores/');
 
 var {
   FlatButton,
@@ -25,14 +26,16 @@ var ProjectCampaign = class extends React.Component{
       res: '',
       device: null,
       apk: null,
+      apkTest: null,
     };
 
     this._onDeviceSelectClick = this._onDeviceSelectClick.bind(this);
     this._onAPKSelectClick = this._onAPKSelectClick.bind(this);
+    this._onAPKTestSelectClick = this._onAPKTestSelectClick.bind(this);
     this._onLauchCampaignSubmit = this._onLauchCampaignSubmit.bind(this);
     this._onDeviceSelect = this._onDeviceSelect.bind(this);
     this._onAPKSelect = this._onAPKSelect.bind(this);
-    // this._onAPKTestSelect = this._onAPKTestSelect.bind(this);
+    this._onAPKTestSelect = this._onAPKTestSelect.bind(this);
   }
 
   render() {
@@ -78,6 +81,21 @@ var ProjectCampaign = class extends React.Component{
                 primary={true} />
             </Paper>
           </Tab>
+          <Tab label="APK Test" >
+            <Paper style={style.paperCenter}>
+              {this.state.apkTest ? (
+              <div>
+                <TextField floatingLabelText="APK Test Name" value={this.state.apkTest.name} disabled={true} /><br />
+                <TextField floatingLabelText="APK Test ID" value={this.state.apkTest.id} disabled={true} /><br />
+              </div>
+              ) : null }
+              <FlatButton
+                label="Select an APK Test"
+                onTouchTap={this._onAPKTestSelectClick}
+                linkButton={true}
+                primary={true} />
+            </Paper>
+          </Tab>
           <Tab label="Launch" >
             <Paper style={style.paperCenter}>
               <FlatButton
@@ -89,6 +107,7 @@ var ProjectCampaign = class extends React.Component{
                 <TextField ref="instanceName" floatingLabelText="Device Name" value={this.state.device ? this.state.device.name : ''}  /><br />
                 <TextField ref="instanceId" floatingLabelText="Device ID" value={this.state.device ? this.state.device.id : ''} /><br />
                 <TextField ref="APKId" floatingLabelText="APK ID" value={this.state.apk ? this.state.apk.id : ''} /><br />
+                <TextField ref="TestId" floatingLabelText="APK Test ID" value={this.state.apkTest ? this.state.apkTest.id : ''} /><br />
                 <TextField ref="ProjectId" floatingLabelText="Project ID" value={projectId ? projectId: ''} /><br />
                 <p>{this.state.res}</p>
             </Paper>
@@ -97,6 +116,7 @@ var ProjectCampaign = class extends React.Component{
 
         <DeviceSelectionDialog projectId={projectId} onSelect={this._onDeviceSelect} ref="deviceDialog" />
         <APKSelectionDialog projectId={projectId} onSelect={this._onAPKSelect} ref="APKDialog" />
+        <APKTestSelectionDialog projectId={projectId} onSelect={this._onAPKTestSelect} ref="APKTestDialog" />
 
       </div>
     );
@@ -110,6 +130,10 @@ var ProjectCampaign = class extends React.Component{
     this.refs.APKDialog.show();
   }
 
+  _onAPKTestSelectClick() {
+    this.refs.APKTestDialog.show();
+  }
+
   _onDeviceSelect(selectedDevice) {
     this.setState({ device: selectedDevice });
   }
@@ -118,12 +142,17 @@ var ProjectCampaign = class extends React.Component{
     this.setState({ apk: selectedAPK });
   }
 
+  _onAPKTestSelect(selectedAPK) {
+    this.setState({ apkTest: selectedAPK });
+  }
+
   _onLauchCampaignSubmit(){
     var instanceName = this.refs.instanceName.getValue();
     var instanceId = this.refs.instanceId.getValue();
     var APKId = this.refs.APKId.getValue();
+    var TestId = this.refs.TestId.getValue();
     var ProjectId = this.refs.ProjectId.getValue();
-    Test.create(ProjectId, instanceId, instanceName, APKId, (res) => {
+    Test.create(ProjectId, instanceId, instanceName, APKId, TestId, (res) => {
       this.setState({res: res});
     });
   }

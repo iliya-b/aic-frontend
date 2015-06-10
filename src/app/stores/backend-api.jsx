@@ -167,13 +167,13 @@ var BackendAPI = {
     this.apiCallAuth(url, null, cb, token, 'GET');
   },
 
-  testCreate: function (token, projectId, instanceId, instanceName, APKId, cb) {
+  testCreate: function (token, projectId, instanceId, instanceName, APKId, APKTestId, cb) {
     // on success
     //
     // on error
     //     {"error":{"code":409,"message":"Conflict","description":""}}
     var url = AppConfig.backend.api + "/back/stack";
-    var data = '{"tenantId":"'+projectId+'","stackName":"'+instanceName+'","stackId":"'+instanceId+'","appId":"'+APKId+'"}';
+    var data = '{"tenantId":"'+projectId+'","stackName":"'+instanceName+'","stackId":"'+instanceId+'","appId":"'+APKId+'","testId":"'+APKTestId+'"}';
     this.apiCallAuth(url, data, cb, token);
   },
 

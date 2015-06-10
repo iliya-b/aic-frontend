@@ -23,9 +23,9 @@ var Test = {
     });
   },
 
-  create: function (projectId, instanceId, instanceName, APKId, cb) {
+  create: function (projectId, instanceId, instanceName, APKId, APKTestId, cb) {
     var token = Auth.getToken();
-    BackendAPI.testCreate(token, projectId, instanceId, instanceName, APKId, (res) => {
+    BackendAPI.testCreate(token, projectId, instanceId, instanceName, APKId, APKTestId, (res) => {
       cb(res);
     });
   }

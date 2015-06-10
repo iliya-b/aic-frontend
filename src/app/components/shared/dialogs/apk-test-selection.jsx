@@ -2,7 +2,7 @@ var React = require('react');
 
 var mui = require('material-ui');
 
-var { Dialog, FlatButton} = mui;
+var { Dialog, FlatButton } = mui;
 var { APKTest } = require('../../../stores/');
 
 var ObjectList = require('../../shared/object-list/object-list.jsx');

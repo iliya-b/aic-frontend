@@ -30,8 +30,8 @@ var APKTest = {
           console.log(res);
           if(res.hasOwnProperty('testId')) {
             cb( { apkId: file.preview, completed:true } );
-          } else if((res.hasOwnProperty('code') && res.code === APK.ERROR_DUPLICATED) ||
-            (res.hasOwnProperty('status') && res.status === APK.ERROR_DUPLICATED)) {
+          } else if((res.hasOwnProperty('code') && res.code === APKTest.ERROR_DUPLICATED) ||
+            (res.hasOwnProperty('status') && res.status === APKTest.ERROR_DUPLICATED)) {
             cb( { apkId: file.preview, error: true, errorMessage: 'Duplicated APK name file.'} );
           } else {
             cb( { apkId: file.preview, error: true, errorMessage:'Unknown'} );
