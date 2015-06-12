@@ -5,6 +5,8 @@ var BackendAPI = require('./backend-api.jsx');
 
 var Test = {
 
+  ERROR_CONFLICT: 409,
+
   getAll: function (cb) {
     var token = Auth.getToken();
     BackendAPI.instanceList(token, (res) => {
@@ -26,7 +28,15 @@ var Test = {
   create: function (projectId, instanceId, instanceName, APKId, APKTestId, cb) {
     var token = Auth.getToken();
     BackendAPI.testCreate(token, projectId, instanceId, instanceName, APKId, APKTestId, (res) => {
-      cb(res);
+      if(res.hasOwnProperty('results')) {
+        cb( { results: res.results, error:false } );
+      } else if((res.hasOwnProperty('code') && res.code === Test.ERROR_CONFLICT) ||
+        (res.hasOwnProperty('status') && res.status === Test.ERROR_CONFLICT) ||
+        (res.hasOwnProperty('error') && res.error.hasOwnProperty('code') && res.error.code === Test.ERROR_CONFLICT  ) ) {
+        cb( { results: "", error: true, errorMessage: 'Conflict'} );
+      } else {
+        cb( { results: "", error: true, errorMessage:'Unknown'} );
+      }
     });
   }
 

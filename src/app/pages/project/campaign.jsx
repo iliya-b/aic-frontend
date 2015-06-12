@@ -14,9 +14,16 @@ var {
   Paper,
   TextField,
   Tabs,
-  Tab } = mui;
+  Tab,
+  CircularProgress,
+  FontIcon } = mui;
 
 var projectId;
+
+var CAMPAIGN_NOT_STARTED = "CAMPAIGN_NOT_STARTED";
+    CAMPAIGN_STARTED     = "CAMPAIGN_STARTED";
+    CAMPAIGN_ERROR       = "CAMPAIGN_ERROR";
+    CAMPAIGN_SUCCESS     = "CAMPAIGN_SUCCESS";
 
 var ProjectCampaign = class extends React.Component{
 
@@ -27,15 +34,20 @@ var ProjectCampaign = class extends React.Component{
       device: null,
       apk: null,
       apkTest: null,
+      campaign: CAMPAIGN_NOT_STARTED,
+      errorMessage: ''
     };
 
     this._onDeviceSelectClick = this._onDeviceSelectClick.bind(this);
     this._onAPKSelectClick = this._onAPKSelectClick.bind(this);
     this._onAPKTestSelectClick = this._onAPKTestSelectClick.bind(this);
     this._onLauchCampaignSubmit = this._onLauchCampaignSubmit.bind(this);
+    this._onLauchAnotherCampaignSubmit = this._onLauchAnotherCampaignSubmit.bind(this);
     this._onDeviceSelect = this._onDeviceSelect.bind(this);
     this._onAPKSelect = this._onAPKSelect.bind(this);
     this._onAPKTestSelect = this._onAPKTestSelect.bind(this);
+    this.getLauchFieldsDisable = this.getLauchFieldsDisable.bind(this);
+
   }
 
   render() {
@@ -98,18 +110,65 @@ var ProjectCampaign = class extends React.Component{
           </Tab>
           <Tab label="Launch" >
             <Paper style={style.paperCenter}>
-              <FlatButton
-                label="Launch campaign"
-                onTouchTap={this._onLauchCampaignSubmit}
-                linkButton={true}
-                primary={true} />
-                <br />
-                <TextField ref="instanceName" floatingLabelText="Device Name" value={this.state.device ? this.state.device.name : ''}  /><br />
-                <TextField ref="instanceId" floatingLabelText="Device ID" value={this.state.device ? this.state.device.id : ''} /><br />
-                <TextField ref="APKId" floatingLabelText="APK ID" value={this.state.apk ? this.state.apk.id : ''} /><br />
-                <TextField ref="TestId" floatingLabelText="APK Test ID" value={this.state.apkTest ? this.state.apkTest.id : ''} /><br />
-                <TextField ref="ProjectId" floatingLabelText="Project ID" value={projectId ? projectId: ''} /><br />
-                <p>{this.state.res}</p>
+
+              {this.state.campaign == CAMPAIGN_NOT_STARTED ? (
+                <div>
+                  <FlatButton
+                    label="Launch campaign"
+                    onTouchTap={this._onLauchCampaignSubmit}
+                    linkButton={true}
+                    primary={true}
+                    disabled={this.getLauchFieldsDisable()} />
+                  <br />
+                  <TextField ref="instanceName" floatingLabelText="Device Name" value={this.state.device ? this.state.device.name : ''} disabled={this.getLauchFieldsDisable()}  /><br />
+                  <TextField ref="instanceId" floatingLabelText="Device ID" value={this.state.device ? this.state.device.id : ''} disabled={this.getLauchFieldsDisable()} /><br />
+                  <TextField ref="APKId" floatingLabelText="APK ID" value={this.state.apk ? this.state.apk.id : ''} disabled={this.getLauchFieldsDisable()} /><br />
+                  <TextField ref="TestId" floatingLabelText="APK Test ID" value={this.state.apkTest ? this.state.apkTest.id : ''} disabled={this.getLauchFieldsDisable()} /><br />
+                  <TextField ref="ProjectId" floatingLabelText="Project ID" value={projectId ? projectId: ''} disabled={this.getLauchFieldsDisable()} /><br />
+                </div>
+              ) : null }
+              {this.state.campaign == CAMPAIGN_STARTED ? (
+                <div>
+                  <p>Executing Campaign</p>
+                  <small>(This process can take several minutes)</small>
+                  <br />
+                  <CircularProgress mode="indeterminate" />
+                </div>
+              ) : null }
+              {(this.state.campaign == CAMPAIGN_SUCCESS ||
+                this.state.campaign == CAMPAIGN_ERROR) ? (
+                <div>
+                  <br />
+                  {this.state.campaign == CAMPAIGN_SUCCESS ? (
+                      <div style={{fontSize:'36px', color: 'green'}}>
+                        <FontIcon className="mdi mdi-check" style={{fontSize:'36px'}} />
+                        <span>Campaign successfully run</span>
+                      </div>
+                    ) : null }
+                  {this.state.campaign == CAMPAIGN_ERROR ? (
+                      <div style={{fontSize:'36px', color: 'red'}}>
+                        <FontIcon className="mdi mdi-close" style={{fontSize:'36px'}} />
+                        <span>Error: {this.state.errorMessage}</span>
+                      </div>
+                  ) : null }
+                  <br />
+                  <br />
+
+                  <Paper style={{padding:'10px 20px 20px 20px'}}>
+                  <h2>Results</h2>
+                  <p>{this.state.res}</p>
+                  </Paper>
+                  <br />
+                  <FlatButton
+                      label="Start another campaign"
+                      onTouchTap={this._onLauchAnotherCampaignSubmit}
+                      linkButton={true}
+                      primary={true} />
+
+                </div>
+              ) : null }
+
+
             </Paper>
           </Tab>
         </Tabs>
@@ -147,14 +206,27 @@ var ProjectCampaign = class extends React.Component{
   }
 
   _onLauchCampaignSubmit(){
+    this.setState({campaign: CAMPAIGN_STARTED});
     var instanceName = this.refs.instanceName.getValue();
     var instanceId = this.refs.instanceId.getValue();
     var APKId = this.refs.APKId.getValue();
     var TestId = this.refs.TestId.getValue();
     var ProjectId = this.refs.ProjectId.getValue();
     Test.create(ProjectId, instanceId, instanceName, APKId, TestId, (res) => {
-      this.setState({res: res});
+      if(res.error){
+        this.setState({res: res.results, campaign: CAMPAIGN_ERROR, errorMessage: res.errorMessage });
+      }else{
+        this.setState({res: res.results, campaign: CAMPAIGN_SUCCESS});
+      }
     });
+  }
+
+  _onLauchAnotherCampaignSubmit(){
+    this.setState({campaign: CAMPAIGN_NOT_STARTED});
+  }
+
+  getLauchFieldsDisable(){
+    return this.state.campaign == CAMPAIGN_STARTED;
   }
 
   componentWillMount() {
