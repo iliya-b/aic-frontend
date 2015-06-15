@@ -5,7 +5,8 @@ var { Spacing } = mui.Styles;
 
 var { APKSelectionDialog,
       APKTestSelectionDialog,
-      DeviceSelectionDialog } = require('../../components/');
+      DeviceSelectionDialog,
+      ObjectList } = require('../../components/');
 
 var { Test } = require('../../stores/');
 
@@ -57,6 +58,10 @@ var ProjectCampaign = class extends React.Component{
         padding: Spacing.desktopGutter
       },
     };
+
+    var results = this.state.res.length > 0 ? this.state.res.map(function (item) {
+      return <li>{item}</li>;
+    }) : null;
 
     return (
       <div>
@@ -155,8 +160,8 @@ var ProjectCampaign = class extends React.Component{
                   <br />
 
                   <Paper style={{padding:'10px 20px 20px 20px'}}>
-                  <h2>Results</h2>
-                  <p>{this.state.res}</p>
+                    <h2>Results</h2>
+                    <ul style={{textAlign: 'left', listStyle: 'none'}}>{results}</ul>
                   </Paper>
                   <br />
                   <FlatButton
@@ -213,10 +218,16 @@ var ProjectCampaign = class extends React.Component{
     var TestId = this.refs.TestId.getValue();
     var ProjectId = this.refs.ProjectId.getValue();
     Test.create(ProjectId, instanceId, instanceName, APKId, TestId, (res) => {
+      // .map(function (item) {
+      //   return { text: item };
+      // });
+      // console.log(res.results);
+      // console.log(resultsFlatten);
       if(res.error){
-        this.setState({res: res.results, campaign: CAMPAIGN_ERROR, errorMessage: res.errorMessage });
+        this.setState({res: [], campaign: CAMPAIGN_ERROR, errorMessage: res.errorMessage });
       }else{
-        this.setState({res: res.results, campaign: CAMPAIGN_SUCCESS});
+        var resultsFlatten = [].concat.apply([],res.results);
+        this.setState({res: resultsFlatten, campaign: CAMPAIGN_SUCCESS});
       }
     });
   }
