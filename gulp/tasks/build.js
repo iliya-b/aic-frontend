@@ -1,3 +1,3 @@
 var gulp = require('gulp');
 
-gulp.task('build', ['browserify', 'markup', 'less', 'mdi']);
+gulp.task('build', ['browserify', 'markup', 'less', 'mdi', 'novnc']);

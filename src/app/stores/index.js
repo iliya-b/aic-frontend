@@ -5,4 +5,5 @@ module.exports = {
   APK: require('./apk.jsx'),
   APKTest: require('./apk-test.jsx'),
   Test: require('./test.jsx'),
+  Live: require('./live.jsx'),
 };

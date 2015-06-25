@@ -11,7 +11,9 @@ module.exports = {
     },
     files: [
       dest + '/**'
-    ]
+    ],
+    open: false,
+    notify: false
   },
   less: {
     src: src + '/less/main.less',
@@ -34,6 +36,10 @@ module.exports = {
       files: './node_modules/mdi/fonts/**',
       dest: dest + '/fonts'
     },
+  },
+  novnc: {
+    src: ['./noVNC/include/base.css', './noVNC/include/*.js' ],
+    dest: dest + '/noVNC/'
   },
   jshint: {
     src: [ src + '/**/*.js', src + '/**/*.jsx'],

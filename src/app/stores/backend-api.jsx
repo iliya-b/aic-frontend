@@ -177,6 +177,20 @@ var BackendAPI = {
     this.apiCallAuth(url, data, cb, token);
   },
 
+  sensor: function (token, sensor, data, cb) {
+    var url = AppConfig.backend.api + "/back/sensor/" + sensor;
+    this.apiCallAuth(url, data, cb, token);
+  },
+
+  sensorBattery: function (token, value, cb) {
+    var data = '{"level":'+value+'}';
+    BackendAPI.sensor(token, 'battery', data, cb);
+  },
+
+  sensorAccelerometer: function (token, x, y, z, cb) {
+    var data = '{"x":'+x+',"y":'+y+',"z":'+z+'}';
+    BackendAPI.sensor(token, 'accelerometer', data, cb);
+  },
 
 };
 
