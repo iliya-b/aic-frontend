@@ -47,6 +47,24 @@ var ProjectLive = React.createClass({
     Live.flipRotation( res => {
       console.log(res);
       this.setState({rotation: Live.getRotation()});
+      setTimeout(function(){
+        // console.log(Live.getRotation() );
+        if(Live.getRotation() == 'horizontal'){
+          // console.log('h');
+          $('#novnciframe').css('width','800px').css('height','600px');
+        }else if(Live.getRotation() == 'vertical'){
+          // console.log('v');
+          $('#novnciframe').css('width','600px').css('height','800px');
+        }
+      }, 1500);
+    });
+  },
+
+  _onLocationSubmit(){
+    var lat = this.refs.lat.getValue();
+    var lon = this.refs.lon.getValue();
+    Live.setLocation( lat, lon, res => {
+      console.log(res);
     });
   },
 
@@ -103,10 +121,25 @@ var ProjectLive = React.createClass({
       sensorIconRotationVertical: {
         transform: 'rotate(45deg)'
       },
+      iframe: {
+        overflow: 'hidden'
+      },
+      iframeHorizontal: {
+        width: '800px',
+        height: '600px'
+      },
+      iframeVertical: {
+        width: '600px',
+        height: '800px'
+      }
     };
     style.sensorIconRotation = this.state.rotation == 'horizontal' ? this.mergeStyles(style.sensorIcon, style.sensorIconRotationHorizontal) :
                                this.state.rotation == 'vertical' ? this.mergeStyles(style.sensorIcon, style.sensorIconRotationVertical) :
                                style.sensorIcon;
+    // style.iframeRotation = this.state.rotation == 'horizontal' ? this.mergeStyles(style.iframe, style.iframeHorizontal) :
+    //                        this.state.rotation == 'vertical' ? this.mergeStyles(style.iframe, style.iframeVertical) :
+    //                        style.iframe;
+    style.iframeRotation = this.mergeStyles(style.iframe, style.iframeHorizontal) ;
      // <FontIcon style={style.device} className="mdi mdi-cellphone-android" />
      // <Paper style={style.sensors}>
      //              <TogglableIcon style={style.sensorIcon} isOn={true} iconName="map-marker" />
@@ -144,32 +177,38 @@ var ProjectLive = React.createClass({
             //     <List style={style.list} listItems={apks} onItemTap={this._onItemTap} />
             //   </Paper>
             // </Tab>
+// <br />
+//                   <TogglableIcon style={style.sensorIcon} isOn={true} iconName="map-marker"  />
+//                   <TextField ref="lat" floatingLabelText="latitude" />
+//                   <TextField ref="lon" floatingLabelText="longitude" />
+//                   <FlatButton
+//                     label="Submit"
+//                     primary={true}
+//                     onTouchTap={this._onLocationSubmit} />
     return (
       <div>
         <h2>Live</h2>
 
 
-          <Tabs>
-            <Tab label="Live Battery"  >
+          <Tabs initialSelectedIndex={1}>
+            <Tab label="Live"  >
               <Paper style={style.paperLive}>
                 <div>
-                  <iframe style={style.iframe} src="http://localhost:3000/vnc_auto_goby.html?host=10.2.1.106&port=5909" width="800" height="600" frameBorder="0" scrolling="no">Browser not compatible.</iframe>
+                  <iframe id="novnciframe" style={style.iframeRotation} src="http://localhost:3000/vnc_auto_goby.html?host=10.2.1.106&port=5909" frameBorder="0" scrolling="no">Browser not compatible.</iframe>
                 </div>
-                {sensorPanel}
-              </Paper>
-            </Tab>
-            <Tab label="Live Sensors"  >
-              <Paper style={style.paperLive}>
-                <div>
-                  <iframe style={style.iframe} src="http://localhost:3000/vnc_auto_goby.html?host=10.2.1.106&port=5901" width="800" height="600" frameBorder="0" scrolling="no">Browser not compatible.</iframe>
-                </div>
+
                 <Paper style={style.sensors}>
+                  <TogglableIcon style={style.sensorIcon} isOn={true} iconName="battery-charging-60" />
+                  <div style={style.sensorBox}>
+                    <Slider max={100} min={0} step={1} value={100} onChange={this._onBatteryChange} />
+                  </div> <br />
                   <TogglableIcon style={style.sensorIconRotation} isOn={true} iconName="screen-rotation" onClick={this._onRotationChange} />
-                  {this.state.rotation}
-                  <TogglableIcon style={style.sensorIcon} isOn={true} iconName="map-marker"  />
+                  <span>{this.state.rotation}</span>
                 </Paper>
+
               </Paper>
             </Tab>
+
           </Tabs>
 
       </div>

@@ -18,10 +18,11 @@ var Live = {
   rotation: {
     started: false,
     sets: {
-      horizontal: { x: 0, y: 9, z: 1, next: 'vertical'},
-      vertical:   { x: 1, y: 0, z: 9, next: 'horizontal'},
+      horizontal: { x: 0, y: 5.9, z: 0, next: 'vertical'},
+      vertical:   { x: 5.9, y: 0, z: 0, next: 'horizontal'},
     },
-    initial: 'horizontal'
+    initial: 'horizontal',
+    last: 'horizontal'
   },
 
 
@@ -55,15 +56,23 @@ var Live = {
   },
 
   flipRotation: function (cb) {
-    if(!this.rotation.started){
-      this.initiateRotation(cb);
-    } else {
+    // if(!this.rotation.started){
+    //   this.initiateRotation(cb);
+    // } else {
       this.doFlipRotation(cb);
-    }
+    // }
   },
 
   getRotation: function () {
     return this.rotation.last;
+  },
+
+
+  setLocation: function (lat, lon, cb) {
+    var token = Auth.getToken();
+    BackendAPI.sensorLocation(token, lat, lon, (res) => {
+      cb(res);
+    });
   },
 
 };

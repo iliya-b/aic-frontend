@@ -192,6 +192,10 @@ var BackendAPI = {
     BackendAPI.sensor(token, 'accelerometer', data, cb);
   },
 
+  sensorLocation: function (token, lat, lon, cb) {
+    var data = '{"latitude":'+lat+',"longitude":'+lon+'}';
+    BackendAPI.sensor(token, 'location', data, cb);
+  },
 };
 
 // function progressHandlingFunction(e){
