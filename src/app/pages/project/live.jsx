@@ -204,6 +204,14 @@ var ProjectLive = React.createClass({
                   </div> <br />
                   <TogglableIcon style={style.sensorIconRotation} isOn={true} iconName="screen-rotation" onClick={this._onRotationChange} />
                   <span>{this.state.rotation}</span>
+                  <br />
+                  <TogglableIcon style={style.sensorIcon} isOn={true} iconName="map-marker"  />
+                  <TextField ref="lat" floatingLabelText="latitude" />
+                  <TextField ref="lon" floatingLabelText="longitude" />
+                  <FlatButton
+                    label="Submit"
+                    primary={true}
+                    onTouchTap={this._onLocationSubmit} />
                 </Paper>
 
               </Paper>
