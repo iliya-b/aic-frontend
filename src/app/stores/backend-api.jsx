@@ -182,37 +182,37 @@ var BackendAPI = {
     this.apiCallAuth(url, data, cb, token);
   },
 
-  sensorBattery: function (token, value, cb) {
-    var data = '{"level":'+value+'}';
+  sensorBattery: function (token, projectId, value, cb) {
+    var data = '{"tenantId":"'+projectId+'","level":'+value+'}';
     this.sensor(token, 'battery', data, cb);
   },
 
-  sensorAccelerometer: function (token, x, y, z, cb) {
-    var data = '{"x":'+x+',"y":'+y+',"z":'+z+'}';
+  sensorAccelerometer: function (token, projectId, x, y, z, cb) {
+    var data = '{"tenantId":"'+projectId+'","x":'+x+',"y":'+y+',"z":'+z+'}';
     this.sensor(token, 'accelerometer', data, cb);
   },
 
-  sensorLocation: function (token, lat, lon, cb) {
-    var data = '{"latitude":'+lat+',"longitude":'+lon+'}';
+  sensorLocation: function (token, projectId, lat, lon, cb) {
+    var data = '{"tenantId":"'+projectId+'","latitude":'+lat+',"longitude":'+lon+'}';
     this.sensor(token, 'location', data, cb);
   },
 
-  recording: function (token, filename, start, cb) {
-    var data = '{"filename":"'+filename+'","start":'+start+'}';
+  recording: function (token, projectId, filename, start, cb) {
+    var data = '{"tenantId":"'+projectId+'","filename":"'+filename+'","start":'+start+'}';
     var url = AppConfig.backend.api + "/back/rabbit/recording";
     this.apiCallAuth(url, data, cb, token);
   },
 
-  recordingStart: function (token, filename, cb) {
-    this.recording(token, filename, 'true', cb);
+  recordingStart: function (token, projectId, filename, cb) {
+    this.recording(token, projectId, filename, 'true', cb);
   },
 
-  recordingStop: function (token, filename, cb) {
-    this.recording(token, filename, 'false', cb);
+  recordingStop: function (token, projectId, filename, cb) {
+    this.recording(token, projectId, filename, 'false', cb);
   },
 
-  screenshot: function (token, filename, cb) {
-    this.recording(token, filename, 'true', cb);
+  screenshot: function (token, projectId, filename, cb) {
+    this.recording(token, projectId, filename, 'true', cb);
   },
 
 };

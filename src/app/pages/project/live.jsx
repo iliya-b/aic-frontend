@@ -26,6 +26,8 @@ var apks = [
 
 var { Live } = require('../../stores/');
 
+var projectId = null;
+
 var ProjectLive = React.createClass({
 
   mixins: [StylePropable, StyleResizable],
@@ -40,13 +42,13 @@ var ProjectLive = React.createClass({
 
   _onBatteryChange(e, value) {
     var intValue = parseInt(value);
-    Live.setBattery(intValue, function (res) {
+    Live.setBattery(projectId, intValue, function (res) {
       console.log(res);
     });
   },
 
   _onRotationChange() {
-    Live.flipRotation( res => {
+    Live.flipRotation( projectId, res => {
       console.log(res);
       this.setState({rotation: Live.getRotation()});
       setTimeout(function(){
@@ -65,14 +67,14 @@ var ProjectLive = React.createClass({
   _onLocationSubmit(){
     var lat = this.refs.lat.getValue();
     var lon = this.refs.lon.getValue();
-    Live.setLocation( lat, lon, res => {
+    Live.setLocation( projectId, lat, lon, res => {
       console.log(res);
     });
   },
 
   _onRecordStart(){
     this.setState({recording: true});
-    Live.recordingStart( res => {
+    Live.recordingStart( projectId, res => {
       this.setState({recordingFileName: res.filename});
       console.log(res);
     });
@@ -80,13 +82,13 @@ var ProjectLive = React.createClass({
 
   _onRecordStop(){
     this.setState({recording: false});
-    Live.recordingStop( this.state.recordingFileName, res => {
+    Live.recordingStop( projectId, this.state.recordingFileName, res => {
       console.log(res);
     });
   },
 
   _onScreenshot(){
-    Live.screenshot( res => {
+    Live.screenshot( projectId, res => {
       console.log(res);
     });
   },
@@ -263,6 +265,24 @@ var ProjectLive = React.createClass({
 
       </div>
     );
+  },
+
+  componentDidMount() {
+    projectId = this.getProjectId();
+    if (projectId !== null) {
+    } else {
+      // something really wrong happened
+      // TODO: treat error
+    }
+  },
+
+  getProjectId() {
+    var routerParams = this.context.router.getCurrentParams();
+    if (routerParams.hasOwnProperty('projectId')) {
+      return routerParams.projectId;
+    } else {
+      return null;
+    }
   },
 
 });
