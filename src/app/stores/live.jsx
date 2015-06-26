@@ -75,6 +75,44 @@ var Live = {
     });
   },
 
+
+  createFileName: function (beginWith, endWith) {
+    return beginWith + Date.now() + endWith;
+  },
+
+  createVideoName: function () {
+    return this.createFileName('video','.mp4');
+  },
+
+  createImageName: function () {
+    return this.createFileName('snap','.bmp');
+  },
+
+  recordingStart: function (cb) {
+    var token = Auth.getToken();
+    var filename = this.createVideoName();
+    BackendAPI.recordingStart(token, filename, (res) => {
+      res.filename = filename;
+      cb(res);
+    });
+  },
+
+  recordingStop: function (filename, cb) {
+    var token = Auth.getToken();
+    BackendAPI.recordingStop(token, filename, (res) => {
+      cb(res);
+    });
+  },
+
+  screenshot: function (cb) {
+    var token = Auth.getToken();
+    var filename = this.createImageName();
+    BackendAPI.screenshot(token, filename, (res) => {
+      cb(res);
+    });
+  },
+
+
 };
 
 

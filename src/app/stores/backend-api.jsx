@@ -184,18 +184,37 @@ var BackendAPI = {
 
   sensorBattery: function (token, value, cb) {
     var data = '{"level":'+value+'}';
-    BackendAPI.sensor(token, 'battery', data, cb);
+    this.sensor(token, 'battery', data, cb);
   },
 
   sensorAccelerometer: function (token, x, y, z, cb) {
     var data = '{"x":'+x+',"y":'+y+',"z":'+z+'}';
-    BackendAPI.sensor(token, 'accelerometer', data, cb);
+    this.sensor(token, 'accelerometer', data, cb);
   },
 
   sensorLocation: function (token, lat, lon, cb) {
     var data = '{"latitude":'+lat+',"longitude":'+lon+'}';
-    BackendAPI.sensor(token, 'location', data, cb);
+    this.sensor(token, 'location', data, cb);
   },
+
+  recording: function (token, filename, start, cb) {
+    var data = '{"filename":"'+filename+'","start":'+start+'}';
+    var url = AppConfig.backend.api + "/back/rabbit/recording";
+    this.apiCallAuth(url, data, cb, token);
+  },
+
+  recordingStart: function (token, filename, cb) {
+    this.recording(token, filename, 'true', cb);
+  },
+
+  recordingStop: function (token, filename, cb) {
+    this.recording(token, filename, 'false', cb);
+  },
+
+  screenshot: function (token, filename, cb) {
+    this.recording(token, filename, 'true', cb);
+  },
+
 };
 
 // function progressHandlingFunction(e){

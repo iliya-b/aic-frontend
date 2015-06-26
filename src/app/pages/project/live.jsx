@@ -32,7 +32,9 @@ var ProjectLive = React.createClass({
 
   getInitialState: function() {
     return {
-      rotation: 'horizontal'
+      rotation: 'horizontal',
+      recording: false,
+      recordingFileName: '',
     };
   },
 
@@ -64,6 +66,27 @@ var ProjectLive = React.createClass({
     var lat = this.refs.lat.getValue();
     var lon = this.refs.lon.getValue();
     Live.setLocation( lat, lon, res => {
+      console.log(res);
+    });
+  },
+
+  _onRecordStart(){
+    this.setState({recording: true});
+    Live.recordingStart( res => {
+      this.setState({recordingFileName: res.filename});
+      console.log(res);
+    });
+  },
+
+  _onRecordStop(){
+    this.setState({recording: false});
+    Live.recordingStop( this.state.recordingFileName, res => {
+      console.log(res);
+    });
+  },
+
+  _onScreenshot(){
+    Live.screenshot( res => {
       console.log(res);
     });
   },
@@ -212,6 +235,25 @@ var ProjectLive = React.createClass({
                     label="Submit"
                     primary={true}
                     onTouchTap={this._onLocationSubmit} />
+                  <br />
+                  <TogglableIcon style={style.sensorIcon} isOn={true} iconName="file-video"  />
+                  <FlatButton
+                    label="Start recording"
+                    primary={true}
+                    disabled={this.state.recording}
+                    onTouchTap={this._onRecordStart} />
+                  <FlatButton
+                    label="Stop recording"
+                    primary={true}
+                    disabled={!this.state.recording}
+                    onTouchTap={this._onRecordStop} />
+                  <br />
+                  <TogglableIcon style={style.sensorIcon} isOn={true} iconName="file-image"  />
+                  <FlatButton
+                    label="Take screen shot"
+                    primary={true}
+                    disabled={this.state.recording}
+                    onTouchTap={this._onScreenshot} />
                 </Paper>
 
               </Paper>
