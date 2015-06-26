@@ -6,9 +6,9 @@ var BackendAPI = require('./backend-api.jsx');
 var Live = {
 
   /* Battery */
-  setBattery: function (value, cb) {
+  setBattery: function (projectId, value, cb) {
     var token = Auth.getToken();
-    BackendAPI.sensorBattery(token, value, (res) => {
+    BackendAPI.sensorBattery(token, projectId, value, (res) => {
       cb(res);
     });
   },
@@ -27,40 +27,21 @@ var Live = {
 
 
 
-  setAccelerometer: function (x, y, z, cb) {
+  setAccelerometer: function (projectId, x, y, z, cb) {
     var token = Auth.getToken();
-    BackendAPI.sensorAccelerometer(token, x, y, z, (res) => {
+    BackendAPI.sensorAccelerometer(token, projectId, x, y, z, (res) => {
       cb(res);
     });
   },
 
-  initiateRotation: function (cb) {
-    var initialRotation = this.rotation.sets[this.rotation.initial];
-    this.setAccelerometer(initialRotation.x, initialRotation.y, initialRotation.z, (res) => {
-      // cb(res);
-      console.log(res);
-      this.doFlipRotation(cb);
-    });
-    this.rotation.started = true;
-    this.rotation.last = this.rotation.initial;
-  },
-
-  doFlipRotation: function (cb) {
+  flipRotation: function (projectId, cb) {
     var nextRotation, lastRotation;
     lastRotation = this.rotation.sets[this.rotation.last];
     var nextRotation = this.rotation.sets[lastRotation.next];
     this.rotation.last = lastRotation.next;
-    this.setAccelerometer(nextRotation.x, nextRotation.y, nextRotation.z, (res) => {
+    this.setAccelerometer(projectId, nextRotation.x, nextRotation.y, nextRotation.z, (res) => {
       cb(res);
     });
-  },
-
-  flipRotation: function (cb) {
-    // if(!this.rotation.started){
-    //   this.initiateRotation(cb);
-    // } else {
-      this.doFlipRotation(cb);
-    // }
   },
 
   getRotation: function () {
@@ -68,9 +49,9 @@ var Live = {
   },
 
 
-  setLocation: function (lat, lon, cb) {
+  setLocation: function (projectId, lat, lon, cb) {
     var token = Auth.getToken();
-    BackendAPI.sensorLocation(token, lat, lon, (res) => {
+    BackendAPI.sensorLocation(token, projectId, lat, lon, (res) => {
       cb(res);
     });
   },
@@ -88,26 +69,26 @@ var Live = {
     return this.createFileName('snap','.bmp');
   },
 
-  recordingStart: function (cb) {
+  recordingStart: function (projectId, cb) {
     var token = Auth.getToken();
     var filename = this.createVideoName();
-    BackendAPI.recordingStart(token, filename, (res) => {
+    BackendAPI.recordingStart(token, projectId, filename, (res) => {
       res.filename = filename;
       cb(res);
     });
   },
 
-  recordingStop: function (filename, cb) {
+  recordingStop: function (projectId, filename, cb) {
     var token = Auth.getToken();
-    BackendAPI.recordingStop(token, filename, (res) => {
+    BackendAPI.recordingStop(token, projectId, filename, (res) => {
       cb(res);
     });
   },
 
-  screenshot: function (cb) {
+  screenshot: function (projectId, cb) {
     var token = Auth.getToken();
     var filename = this.createImageName();
-    BackendAPI.screenshot(token, filename, (res) => {
+    BackendAPI.screenshot(token, projectId, filename, (res) => {
       cb(res);
     });
   },
