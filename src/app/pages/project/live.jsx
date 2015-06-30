@@ -219,7 +219,7 @@ var ProjectLive = React.createClass({
             <Tab label="Live"  >
               <Paper style={style.paperLive}>
                 <div>
-                  <iframe id="novnciframe" style={style.iframeRotation} src="http://localhost:3000/vnc_auto_goby.html?host=10.2.1.106&port=5909" frameBorder="0" scrolling="no">Browser not compatible.</iframe>
+                  <iframe id="novnciframe" style={style.iframeRotation} src="/vnc_auto_goby.html?host=10.2.1.106&port=5909" frameBorder="0" scrolling="no">Browser not compatible.</iframe>
                 </div>
 
                 <Paper style={style.sensors}>
