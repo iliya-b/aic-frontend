@@ -3,7 +3,8 @@ var mui = require('material-ui');
 var ThemeManager = new mui.Styles.ThemeManager();
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
-var GobyPalette = require('../configs/goby-palette.jsx');
+// var GobyPalette = require('../configs/goby-palette.jsx');
+var GobyTheme = require('../configs/goby-theme.jsx');
 var { FullWidthSection } = require('../components/');
 var Colors = mui.Styles.Colors;
 
@@ -19,7 +20,8 @@ var Main = React.createClass({
   },
 
   componentWillMount() {
-    ThemeManager.setPalette(GobyPalette);
+    // ThemeManager.setPalette(GobyPalette);
+    ThemeManager.setTheme(GobyTheme);
   },
 
   childContextTypes: {

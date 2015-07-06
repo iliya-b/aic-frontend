@@ -10,6 +10,7 @@ var {
   FlatButton,
   FloatingActionButton,
   LeftNav,
+  Menu,
   MenuItem,
   RadioButton,
   RadioButtonGroup,
@@ -206,6 +207,9 @@ var ThemesPage = React.createClass({
                     label="disabled toggle"
                     defaultToggled={true}
                     disabled={true} />
+                </div>
+                <div style={styles.container}>
+                  <Menu menuItems={menuItems} />
                 </div>
               </div>
 
