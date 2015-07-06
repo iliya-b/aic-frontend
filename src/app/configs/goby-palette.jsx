@@ -18,6 +18,7 @@ var GobyPalette = {
   textLightColor: Colors.grey200,
   errorColor: Colors.red500,
   successColor: Colors.green500,
+  hoverColor: Colors.red500,
 };
 
 module.exports = GobyPalette;
