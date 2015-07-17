@@ -7,6 +7,7 @@ var reactify = require('gulp-reactify');
 var jsvalidate = require('gulp-jsvalidate');
 var babel = require("gulp-babel");
 var notify = require("gulp-notify");
+var jscs = require('gulp-jscs');
 
 gulp.task('lint', function() {
   return gulp.src(config.src)
@@ -25,9 +26,35 @@ gulp.task('lint', function() {
       "unused": true,
       'curly': true,
       'jquery': true,
+
+    // // jquery
+    // "boss": true,
+    // "curly": true,
+    // "eqeqeq": true,
+    // "eqnull": true,
+    // "expr": true,
+    // "immed": true,
+    // "noarg": true,
+    // "quotmark": "double",
+    // "smarttabs": true,
+    // "trailing": true,
+    // "undef": true,
+    // "unused": true
     }))
     .on('error', notify.onError('<%= error.message %>'))
     .pipe(jshint.reporter(stylish));
+});
+
+
+gulp.task('jscs', function () {
+  return gulp.src(config.src)
+    .pipe(react())
+    .pipe(jscs({"preset": "google"}));
+});
+
+
+gulp.task('watch-jscs', [], function() {
+  gulp.watch(config.src, ['jscs']);
 });
 
 // gulp.task('lint', function() {

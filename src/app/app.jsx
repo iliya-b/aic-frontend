@@ -1,9 +1,9 @@
-(function () {
+(function() {
 
-  var React = require('react'),
-    Router = require('react-router'),
-    AppRoutes = require('./configs/app-routes.jsx'),
-    injectTapEventPlugin = require("react-tap-event-plugin");
+  var React = require('react');
+  var Router = require('react-router');
+  var AppRoutes = require('./configs/app-routes.jsx');
+  var injectTapEventPlugin = require('react-tap-event-plugin');
 
   //Needed for React Developer Tools
   window.React = React;
@@ -26,7 +26,7 @@
     })
     // This is our callback function, whenever the url changes it will be called again.
     // Handler: The ReactComponent class that will be rendered
-    .run(function (Handler) {
+    .run(function(Handler) {
       React.render(<Handler/>, document.body);
     });
 
