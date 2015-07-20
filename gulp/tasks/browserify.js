@@ -36,6 +36,9 @@ gulp.task('browserify', function(callback) {
       bundleLogger.start(bundleConfig.outputName);
 
       return bundler
+        // replaces process.env.* for strings defined on
+        // environment variables
+        .transform('envify')
         .bundle()
         // Report compile errors
         .on('error', handleErrors)

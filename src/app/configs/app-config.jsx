@@ -1,15 +1,16 @@
 'use strict';
 
-var AppConfig = {
-  backend: {
-    api: 'http://10.2.0.143:12345', /* machine vertx running verticle http server */
-    // api: 'http://localhost:12345',
-    timeout: 5000 /* timeout for the api calls in milliseconds */
-  },
-  // backend: 'http://localhost:12345', /* machine vertx running verticle http server */
-  userHome: 'projects'
-};
+var AppConfig = {};
+
+AppConfig.backend = {};
+
+/* machine vertx running verticle http server */
+AppConfig.backend.api = process.env.BACKEND_API || 'http://localhost:12345';
+
+/* timeout for the api calls in milliseconds */
+AppConfig.backend.timeout = process.env.BACKEND_TIMEOUT || 5000 ;
+
+/* page where user lands after login */
+AppConfig.userHome = 'projects';
 
 module.exports = AppConfig;
-
-// TODO: implement flux, reflux, flummox, alt, etc https://github.com/acdlite/flummox
