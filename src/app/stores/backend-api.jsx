@@ -1,10 +1,19 @@
 'use strict';
 
 var AppConfig = require('../configs/app-config.jsx');
+var url = require('url') ;
 
 var BackendAPI = {
 
   ERROR: 0,
+
+  backendRoot: function(){
+    return url.format({
+      protocol: AppConfig.backend.protocol,
+      hostname: AppConfig.backend.host,
+      port: AppConfig.backend.port
+    });
+  },
 
   apiCall: function(url, data, cb, headers, method){
     method = (typeof method === 'undefined') ? 'POST' : method;
@@ -29,14 +38,14 @@ var BackendAPI = {
   },
 
   userLogin: function (email, pass, cb) {
-    var url = AppConfig.backend.api + "/back/user/login";
+    var url = this.backendRoot() + "/back/user/login";
     // var data = '{"auth":{"passwordCredentials":{"username":"'+email+'","password":"'+pass+'"}}}';
     var data = '{"passwordCredentials":{"username":"'+email+'","password":"'+pass+'"}}';
     this.apiCall(url, data, cb);
   },
 
   userRegister: function (email, pass, name, cb) {
-    var url = AppConfig.backend.api + "/back/user/register";
+    var url = this.backendRoot() + "/back/user/register";
     var data = '{"user":{"email":"'+email+'","password":"'+pass+'","name":"'+name+'"}}';
     this.apiCall(url, data, cb);
   },
@@ -46,7 +55,7 @@ var BackendAPI = {
   },
 
   userProjects: function (token, cb) {
-    var url = AppConfig.backend.api + "/back/project";
+    var url = this.backendRoot() + "/back/project";
     this.apiCallAuth(url, null, cb, token, 'GET');
   },
 
@@ -59,7 +68,7 @@ var BackendAPI = {
     formData.append('file', file);
 
     $.ajax({
-      url: AppConfig.backend.api + "/back/application/" + projectId,
+      url: this.backendRoot() + "/back/application/" + projectId,
       data: formData,
       cache: false,
       contentType: false,
@@ -83,7 +92,7 @@ var BackendAPI = {
   apkList: function (token, projectId, cb) {
     // on success
     //    {"results":[["ab3e1736-ef99-44e0-b466-c015bc449b10","example.apk copy"],["ba435ea0-394a-447d-ba11-06ea6595fb96","example.apk"]]}
-    var url = AppConfig.backend.api + "/back/application/" + projectId;
+    var url = this.backendRoot() + "/back/application/" + projectId;
     this.apiCallAuth(url, null, (res) => {
       var apks = [];
       if (res !== undefined && res.results !== undefined && res.results.length > 0){
@@ -96,11 +105,11 @@ var BackendAPI = {
   },
 
   apkRemove: function (token, ids, cb) {
-    var url = AppConfig.backend.api + "/back/application/selection";
+    var url = this.backendRoot() + "/back/application/selection";
     var data = '{"ids": ["' + ids.join('","') + '"]}';
     // var data = {ids: ids};
     this.apiCallAuth(url, data, () => {
-      url = AppConfig.backend.api + "/back/application/selection";
+      url = this.backendRoot() + "/back/application/selection";
       this.apiCallAuth(url, null, cb, token, 'DELETE');
     }, token);
   },
@@ -114,7 +123,7 @@ var BackendAPI = {
     formData.append('file', file);
 
     $.ajax({
-      url: AppConfig.backend.api + "/back/test/" + projectId,
+      url: this.backendRoot() + "/back/test/" + projectId,
       data: formData,
       cache: false,
       contentType: false,
@@ -138,7 +147,7 @@ var BackendAPI = {
   apkTestList: function (token, projectId, cb) {
     // on success
     //    {"results":[["ab3e1736-ef99-44e0-b466-c015bc449b10","example.apk copy"],["ba435ea0-394a-447d-ba11-06ea6595fb96","example.apk"]]}
-    var url = AppConfig.backend.api + "/back/test/" + projectId;
+    var url = this.backendRoot() + "/back/test/" + projectId;
     this.apiCallAuth(url, null, (res) => {
       var apks = [];
       if (res !== undefined && res.results !== undefined && res.results.length > 0){
@@ -151,11 +160,11 @@ var BackendAPI = {
   },
 
   apkTestRemove: function (token, ids, cb) {
-    var url = AppConfig.backend.api + "/back/test/selection";
+    var url = this.backendRoot() + "/back/test/selection";
     var data = '{"ids": ["' + ids.join('","') + '"]}';
     // var data = {ids: ids};
     this.apiCallAuth(url, data, () => {
-      url = AppConfig.backend.api + "/back/test/selection";
+      url = this.backendRoot() + "/back/test/selection";
       this.apiCallAuth(url, null, cb, token, 'DELETE');
     }, token);
   },
@@ -163,7 +172,7 @@ var BackendAPI = {
   instanceList: function (token, cb) {
     // on success
     //    {"results":[["330cd3fb-73f7-4e20-a9b4-9c2a05d91e9f","nexus"]]}
-    var url = AppConfig.backend.api + "/back/stack";
+    var url = this.backendRoot() + "/back/stack";
     this.apiCallAuth(url, null, cb, token, 'GET');
   },
 
@@ -172,13 +181,13 @@ var BackendAPI = {
     //
     // on error
     //     {"error":{"code":409,"message":"Conflict","description":""}}
-    var url = AppConfig.backend.api + "/back/stack";
+    var url = this.backendRoot() + "/back/stack";
     var data = '{"tenantId":"'+projectId+'","stackName":"'+instanceName+'","stackId":"'+instanceId+'","appId":"'+APKId+'","testId":"'+APKTestId+'"}';
     this.apiCallAuth(url, data, cb, token);
   },
 
   sensor: function (token, sensor, data, cb) {
-    var url = AppConfig.backend.api + "/back/sensor/" + sensor;
+    var url = this.backendRoot() + "/back/sensor/" + sensor;
     this.apiCallAuth(url, data, cb, token);
   },
 
@@ -199,7 +208,7 @@ var BackendAPI = {
 
   recording: function (token, filename, start, cb) {
     var data = '{"filename":"'+filename+'","start":'+start+'}';
-    var url = AppConfig.backend.api + "/back/rabbit/recording";
+    var url = this.backendRoot() + "/back/rabbit/recording";
     this.apiCallAuth(url, data, cb, token);
   },
 

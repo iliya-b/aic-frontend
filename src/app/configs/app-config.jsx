@@ -5,7 +5,9 @@ var AppConfig = {};
 AppConfig.backend = {};
 
 /* machine vertx running verticle http server */
-AppConfig.backend.api = process.env.BACKEND_API || 'http://localhost:12345';
+AppConfig.backend.protocol = process.env.BACKEND_PROTOCOL || 'http';
+AppConfig.backend.host = process.env.BACKEND_HOST || 'localhost';
+AppConfig.backend.port = process.env.BACKEND_PORT || '12345';
 
 /* timeout for the api calls in milliseconds */
 AppConfig.backend.timeout = process.env.BACKEND_TIMEOUT || 5000 ;
