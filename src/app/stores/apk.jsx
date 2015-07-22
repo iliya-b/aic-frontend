@@ -1,137 +1,90 @@
 'use strict';
 
-var { Auth } = require('./auth.jsx');
-var BackendAPI = require('./backend-api.jsx');
-// var { AppUtils } = require('../components/');
+// Reflux
+var Reflux = require('reflux');
+
+// APP
 var AppUtils = require('../components/shared/app-utils.jsx');
+var { APKActions } = require('../actions/');
 
-console.log(AppUtils);
+// Store
+var APKStore = Reflux.createStore({
 
-var APK = {
+  // Base Store //
 
-  ERROR_DUPLICATED: 409,
+  listenables: APKActions,
 
-  uploadFiles: function (projectId, files, cb) {
-    // apkId, progress, completed
-    var token = Auth.getToken();
+  init: function() {
+    this.apks = false;
+    this.itemsToDelete = [];
+    this.status = 'initial';
+  },
 
-    if (files !== undefined && files.length > 0){
-      files.map(function (file) {
-        BackendAPI.apkUpload(token, projectId, file, (res) => { // callback progress
-          console.log('cb progress');
-          console.log(res);
-          if(res.lengthComputable){
-            cb( { apkId: file.preview, progress: parseInt(res.loaded/res.total*100) } );
-          } else {
-            cb( {  } );
-          }
-        }, (res) => { // callback end upload
-          console.log('res upload');
-          console.log(res);
-          if(res.hasOwnProperty('appId')) {
-            cb( { apkId: file.preview, completed:true } );
-          } else if((res.hasOwnProperty('code') && res.code === APK.ERROR_DUPLICATED) ||
-            (res.hasOwnProperty('status') && res.status === APK.ERROR_DUPLICATED)) {
-            cb( { apkId: file.preview, error: true, errorMessage: 'Duplicated APK name file.'} );
-          } else {
-            cb( { apkId: file.preview, error: true, errorMessage:'Unknown'} );
-          }
-        });
-      });
+  getInitialState: function() {
+    return { apks: this.apks, itemsToDelete: this.itemsToDelete };
+  },
+
+  // Actions //
+
+  onToggleDelete: function(apkId) {
+    this.updateList( this.apks.map( function (item) {
+      return (item.id == apkId) ? AppUtils.extend(item, { toDelete: !item.toDelete }) : item;
+    }));
+  },
+
+  onDeleteSelectedCompleted: function() {
+    this.status = 'reloadList';
+    this.updateList( this.apks );
+  },
+
+  onLoadCompleted: function (data) {
+    var newList = data.map(function (apk) {
+          return { id: apk.id, name: apk.name, toDelete: this.isMarkedToDelete(apk.id) };
+        }, this);
+    switch(this.status){
+      case 'reloadList' :
+        var listIds = newList.map( function (item) { return item.id; } ) ;
+        this.itemsToDelete = this.itemsToDelete.filter( function (item) {
+            return listIds.indexOf(item) > -1 ;
+          });
+        this.status = 'deleteFinished';
+        break;
+      default:
+        break;
     }
-
-
+    this.updateList( newList );
   },
 
-  getAll: function (projectId, cb) {
-    var token = Auth.getToken();
-    BackendAPI.apkList(token, projectId, (res) => {
-      var apks = [];
-      if (res !== undefined && res.length > 0){
-        apks = res.map(function (apk) {
-          return {
-            id: apk.id,
-            name: apk.name,
-            apkId: apk.id,
-            key: apk.id,
-            text: apk.name,
-            checkbox:true
-          }
-        });
-      }
-      // { apkId: 'apk1', text: 'APK1', checkbox:true },
-      cb(apks);
-    });
+  // Methods //
+
+  updateList: function(newList){
+    this.apks = newList;
+    this.itemsToDelete = this.apks.reduce( function (previousValue, item) {
+      return item.toDelete ? previousValue.concat(item.id) : previousValue ;
+    } , []);
+    this.trigger( this.convertToListItems(newList), this.itemsToDelete, this.status );
   },
 
-  getOneById: function (projectId, cb) {
-    var project;
-    this.getAll( (projectList) => {
-        // console.log(projectId);
-        // console.log(projectList);
-        for (var i = projectList.length - 1; i >= 0; i--) {
-          if(projectList[i].id === projectId) {
-            project = projectList[i];
-            break;
-          }
-        }
-        cb(project);
-      }
-    );
-  },
-
-  getNameById: function (projectId, cb) {
-    this.getOneById( projectId, (project) => {
-        cb(project.name);
-      }
-    );
-  },
-
-  removeByIds: function (apkIds, cb) {
-    var token = Auth.getToken();
-    BackendAPI.apkRemove(token, apkIds, (res) => {
-      cb(res);
-    });
-  },
-
-
-  convertToListItems: function(files) {
-    if (files !== undefined && files.length > 0){
-      return files.map(function (file) {
-        return {
-          id: file.preview,
-          key: file.name,
-          text: file.name,
-          size: file.size,
-          iconRightClassName: 'mdi mdi-upload',
-          progress: 0,
-          completed: false
-        };
-      });
-    }else{
-      return [];
-    }
-  },
-
-  listUpdate: function (apkList, apk) {
-    return apkList.map(function (apkItem) {
-      if (apkItem.id == apk.id) {
-        return AppUtils.extend(apkItem, apk);
-      } else {
-        return apkItem;
+  convertToListItems: function(list){
+    return list.map(function (item) {
+      return {
+        id: item.id,
+        name: item.name,
+        apkId: item.id,
+        key: item.id,
+        text: item.name,
+        checkbox: true,
+        toDelete: item.toDelete,
+        checked: item.toDelete,
       }
     });
   },
 
-  listClean: function (apkList) {
-    return apkList.filter(function (apkItem) {
-      return !apkItem.completed && !apkItem.error;
-    });
-  }
+  isMarkedToDelete: function(id){
+    return (this.itemsToDelete.indexOf(id) > -1);
+  },
 
+});
 
-};
-
-
-module.exports = APK;
+module.exports = APKStore;
 

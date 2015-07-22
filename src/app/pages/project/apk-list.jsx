@@ -1,13 +1,21 @@
+// React
 var React = require('react');
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
+// Material design
 var mui = require('material-ui');
+var { Toolbar,
+      ToolbarGroup,
+      IconButton,
+      CircularProgress,
+      Paper } = mui;
 
-var { List, APKUploadDialog } = require('../../components/');
-
-var { Toolbar, ToolbarGroup, IconButton } = mui;
-
-var { APK } = require('../../stores/');
+// APP
+var { List,
+      APKUploadDialog,
+      AppUtils } = require('../../components/');
+var { APKStore } = require('../../stores/');
+var { APKActions } = require('../../actions/');
 
 var projectId = null;
 
@@ -16,21 +24,15 @@ var ProjectApkList = class extends React.Component {
   constructor(props) {
     super(props);
     this._onUploadClick = this._onUploadClick.bind(this);
-    this.reloadList = this.reloadList.bind(this);
     this._onDeleteClick = this._onDeleteClick.bind(this);
-
     this._onItemCheck = this._onItemCheck.bind(this);
-
-    this.state = {
-      apks: [],
-      toDelete: []
-    };
+    this._onStateChange = this._onStateChange.bind(this);
+    this.state = { apks: false, itemsToDelete: [], deleteClicked: false };
   }
 
   render() {
     var style = {
       toolbar: {
-        // width: '512px',
         paddingLeft: '10px',
       },
       toolbargroup1: {
@@ -41,10 +43,13 @@ var ProjectApkList = class extends React.Component {
         paddingRight: '6px',
         float: 'right',
       },
-      list: {
-        // width: '500px'
+      paper: {
+        textAlign: 'center',
+        padding: '20px'
+      },
+      iconDelete: {
+        color: this.state.deleteClicked ? 'rgba(0,0,0,0.3)' : 'rgba(0, 0, 0, 0.87)'
       }
-
     };
     return (
       <div>
@@ -54,18 +59,27 @@ var ProjectApkList = class extends React.Component {
             <IconButton onTouchTap={this._onUploadClick} ref="upload" iconClassName="mdi mdi-cloud-upload" tooltip="Upload APK file"/>
           </ToolbarGroup>
           <ReactCSSTransitionGroup transitionName="showHideTransition">
-            {this.state.toDelete.length > 0 ? (
+            { this.state.itemsToDelete && this.state.itemsToDelete.length > 0 ? (
             <ToolbarGroup style={style.toolbargroup2} key='deleteItems'>
-              <IconButton onTouchTap={this._onDeleteClick} iconClassName="mdi mdi-delete" tooltip="Delete selected"/>
+              <IconButton iconStyle={style.iconDelete} onTouchTap={this._onDeleteClick} iconClassName="mdi mdi-delete" tooltip="Delete selected"/>
             </ToolbarGroup>
             ) : ''}
           </ReactCSSTransitionGroup>
         </Toolbar>
+
         <APKUploadDialog ref="uploadDialog" reload={this.reloadList} />
 
-        {this.state.apks.length > 0 ? (
-        <List style={style.list} listItems={this.state.apks} onItemTap={this._onItemTap}  onCheck={this._onItemCheck} />
+        {this.state.apks === false ? (
+          <Paper style={style.paper}>
+            <CircularProgress mode="indeterminate" />
+          </Paper>
+          ) : null }
+
+        { this.state.apks && this.state.apks.length > 0 ? (
+        <List style={style.list} listItems={this.state.apks} onCheck={this._onItemCheck} />
         ) : null }
+
+
       </div>
     );
   }
@@ -75,76 +89,46 @@ var ProjectApkList = class extends React.Component {
   }
 
   _onDeleteClick() {
-    // console.log('deleting');
-    // console.log(this.state.toDelete);
-
-    var indexToDelete = this.state.toDelete;
-    this.setState({toDelete: []});
-    var apks = this.state.apks;
-
-    if(indexToDelete.length > 0){
-      var apksToDelete = indexToDelete.map(function (index) {
-        return apks[index];
-      }).map(function (apk) {
-        return apk.apkId;
-      });
-
-      APK.removeByIds( apksToDelete, (res) => {
-        if(res.apks_deleted){
-          this.reloadList();
-        }else{
-          console.log('error when deleting apk'); // TODO: error control
-        }
-      });
+    // Avoid multiple clicks
+    // TODO: Can be changed with disabled button on the new version of
+    // material ui
+    if(this.state.deleteClicked === false){
+      this.setState( { deleteClicked : true } );
+      APKActions.deleteSelected(this.state.itemsToDelete);
     }
   }
 
-  _onItemTap() { /*e, index, menuItem*/
-
-  }
-
-  _onItemCheck(e, index, menuItem) {
-    var newToDelete = this.state.toDelete;
-    if (menuItem === true) {
-      // item checked
-      newToDelete.push(index);
-    } else if (menuItem === false) {
-      // item unchecked
-      newToDelete = newToDelete.filter( function (item) {
-        return item !== index;
-      });
-    }
-    this.setState({toDelete: newToDelete});
-    this.render();
-    // console.log(e);
-    // console.log(index);
-    // console.log(menuItem);
-  }
-
-  componentDidMount() {
-    projectId = this.getProjectId();
-    if (projectId !== null) {
-    } else {
-      // something really wrong happened
-      // TODO: treat error
-    }
-    this.reloadList();
+  _onItemCheck(evt, index) {
+    var apkId = this.state.apks[index].id;
+    APKActions.toggleDelete(apkId);
   }
 
   reloadList(){
-    // console.log('reloading list:' + projectId);
-    APK.getAll( projectId, (res) => {
-      this.setState({apks: res});
-    });
+    APKActions.load(projectId);
   }
 
-  getProjectId() {
-    var routerParams = this.context.router.getCurrentParams();
-    if (routerParams.hasOwnProperty('projectId')) {
-      return routerParams.projectId;
-    } else {
-      return null;
+  _onStateChange( apks, itemsToDelete, flag ){
+    this.setState( { apks: apks, itemsToDelete: itemsToDelete } );
+    switch(flag){
+      case 'reloadList':
+        this.reloadList();
+        break;
+      case 'deleteFinished':
+        this.setState( { deleteClicked: false } );
+        break;
+      default:
+        break;
     }
+  }
+
+  componentDidMount() {
+    projectId = AppUtils.getProjectIdFromRouter(this.context.router);
+    this.unsubscribe = APKStore.listen( this._onStateChange );
+    this.reloadList();
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe(); // Subscribe and unsubscribe because we don't want to use the mixins
   }
 
 };
