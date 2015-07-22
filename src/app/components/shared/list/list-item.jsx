@@ -35,7 +35,8 @@ var ListItem = React.createClass({
     onClick: React.PropTypes.func,
     onToggle: React.PropTypes.func,
     onCheck: React.PropTypes.func,
-    selected: React.PropTypes.bool
+    selected: React.PropTypes.bool,
+    checked: React.PropTypes.bool,
   },
 
   statics: {
@@ -136,6 +137,7 @@ var ListItem = React.createClass({
     var checkboxElement;
     var toggle,
         checkbox,
+        checked,
         onClick,
         onToggle,
         onCheck,
@@ -181,7 +183,8 @@ var ListItem = React.createClass({
         style,
         ...other
       ] = this.props;
-      checkboxElement = <Checkbox {...other} onCheck={this._handleCheck} style={styles.checkbox}/>;
+      checked = this.props.checked;
+      checkboxElement = <Checkbox {...other} checked={checked} onCheck={this._handleCheck} style={styles.checkbox}/>;
     }
 
     return (
