@@ -25,6 +25,15 @@ var AppUtils = {
       }
     }
     return newObj;
+  },
+
+  getProjectIdFromRouter: function(router) {
+    var routerParams = router.getCurrentParams();
+    if (routerParams.hasOwnProperty('projectId')) {
+      return routerParams.projectId;
+    } else {
+      return null; // TODO: error handling
+    }
   }
 
 
