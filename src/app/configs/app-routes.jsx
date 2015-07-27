@@ -6,18 +6,18 @@ var DefaultRoute = Router.DefaultRoute;
 
 
 // Pages //
-var Main   = require('../pages/main.jsx');
-var Home   = require('../pages/home.jsx');
-var Themes = require('../pages/themes.jsx');
-var ProjectWrapper = require('../pages/project/wrapper.jsx');
-var ProjectList = require('../pages/project/list.jsx');
-var ProjectPage = require('../pages/project/page.jsx');
-var ProjectSettings = require('../pages/project/settings.jsx');
-var ProjectApkList = require('../pages/project/apk-list.jsx');
-var ProjectApkTestList = require('../pages/project/apk-test-list.jsx');
-var ProjectLive = require('../pages/project/live.jsx');
-var ProjectTests = require('../pages/project/tests.jsx');
-var ProjectCampaign = require('../pages/project/campaign.jsx');
+var Main   = require('../views/main.jsx');
+var Home   = require('../views/home.jsx');
+var Themes = require('../views/themes.jsx');
+var ProjectWrapper = require('../views/project/wrapper.jsx');
+var ProjectList = require('../views/project/list.jsx');
+var ProjectPage = require('../views/project/page.jsx');
+var ProjectSettings = require('../views/project/settings.jsx');
+var ProjectApkList = require('../views/project/apk-list.jsx');
+var ProjectApkTestList = require('../views/project/apk-test-list.jsx');
+var ProjectLive = require('../views/project/live.jsx');
+var ProjectTests = require('../views/project/tests.jsx');
+var ProjectCampaign = require('../views/project/campaign.jsx');
 
 
 // Routes //
