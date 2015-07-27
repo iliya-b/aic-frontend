@@ -5,8 +5,6 @@ var BackendAPI = require('./backend-api.jsx');
 // var { AppUtils } = require('../components/');
 var AppUtils = require('../components/shared/app-utils.jsx');
 
-console.log(AppUtils);
-
 var APKTest = {
 
   ERROR_DUPLICATED: 409,
