@@ -172,17 +172,18 @@ var ListItem = React.createClass({
     }
 
     if (this.props.checkbox) {
-      [
-        checkbox,
-        onClick,
-        onCheck,
-        onMouseOver,
-        onMouseOut,
-        children,
-        label,
-        style,
-        ...other
-      ] = this.props;
+      // FIXME: With the project require this section creates an error
+      // [
+      //   checkbox,
+      //   onClick,
+      //   onCheck,
+      //   onMouseOver,
+      //   onMouseOut,
+      //   children,
+      //   label,
+      //   style,
+      //   ...other
+      // ] = this.props;
       checked = this.props.checked;
       checkboxElement = <Checkbox {...other} checked={checked} onCheck={this._handleCheck} style={styles.checkbox}/>;
     }

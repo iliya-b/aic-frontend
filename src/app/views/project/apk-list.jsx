@@ -27,7 +27,7 @@ var ProjectApkList = class extends React.Component {
     this._onDeleteClick = this._onDeleteClick.bind(this);
     this._onItemCheck = this._onItemCheck.bind(this);
     this._onStateChange = this._onStateChange.bind(this);
-    this.state = { apks: false, itemsToDelete: [], deleteClicked: false };
+    this.state = { apks: [], itemsToDelete: [], deleteClicked: false };
   }
 
   render() {
@@ -69,7 +69,7 @@ var ProjectApkList = class extends React.Component {
 
         <APKUploadDialog ref="uploadDialog" reload={this.reloadList} />
 
-        {this.state.apks === false ? (
+        {this.state.apks && this.state.apks.length === 0 ? (
           <Paper style={style.paper}>
             <CircularProgress mode="indeterminate" />
           </Paper>
@@ -108,7 +108,7 @@ var ProjectApkList = class extends React.Component {
   }
 
   _onStateChange( apks, itemsToDelete, flag ){
-    this.setState( { apks: apks, itemsToDelete: itemsToDelete } );
+    this.setState( { apks: apks , itemsToDelete: itemsToDelete } );
     switch(flag){
       case 'reloadList':
         this.reloadList();
@@ -128,7 +128,8 @@ var ProjectApkList = class extends React.Component {
   }
 
   componentWillUnmount() {
-    this.unsubscribe(); // Subscribe and unsubscribe because we don't want to use the mixins
+    // Subscribe and unsubscribe because we don't want to use the mixins
+    this.unsubscribe();
   }
 
 };
