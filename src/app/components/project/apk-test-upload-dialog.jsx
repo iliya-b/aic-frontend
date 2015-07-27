@@ -1,27 +1,33 @@
+'use strict';
+
+// React
 var React = require('react');
 
+// Material design
 var mui = require('material-ui');
 var { StylePropable } = mui.Mixins;
-
 var { Dialog, FlatButton, Toolbar, ToolbarGroup, IconButton } = mui;
-var { APKTest } = require('../../stores/');
 
+// Vendors
 var Dropzone = require('react-dropzone');
 
-var ObjectList = require('../shared/object-list/object-list.jsx');
+// APP
+var ObjectList = require('goby/components/shared/object-list/object-list.jsx');
+var AppUtils = require('goby/components/shared/app-utils.jsx');
+var { APKTestUploadStore } = require('goby/stores');
+var { APKTestUploadActions } = require('goby/actions');
 
 var APKTestUploadDialog = class extends React.Component{
 
   constructor (props) {
     super(props);
 
-    this.state = {
-      files: []
-    };
-
     this._onCancel = this._onCancel.bind(this);
     this._onDrop = this._onDrop.bind(this);
     this._onCleanClick = this._onCleanClick.bind(this);
+    this._onStateChange = this._onStateChange.bind(this);
+
+    this.state = { files: [] };
   }
 
   render() {
@@ -83,53 +89,29 @@ var APKTestUploadDialog = class extends React.Component{
   }
 
   _onDrop(files){
-    console.log('Received files: ', files);
-    var filesInfo = APKTest.convertToListItems(files);
-    var updatedFiles = this.state.files.concat(filesInfo);
-    this.setState({files: updatedFiles});
-    var projectId = this.getProjectId();
-    if (projectId !== null) {
-      APKTest.uploadFiles(projectId, files, (res) => {
-        updatedFiles = this.state.files;
-        console.log('res uploadfiles');
-        console.log(res);
-        if (res.hasOwnProperty('progress')){
-          updatedFiles = APKTest.listUpdate(updatedFiles, {id: res.apkId, progress: res.progress });
-          this.setState({files: updatedFiles});
-        } else if (res.hasOwnProperty('completed')){
-          updatedFiles = APKTest.listUpdate(updatedFiles, {id: res.apkId, iconRightClassName: 'mdi mdi-check', progress: false, completed: true});
-          this.setState({files: updatedFiles});
-          this.props.reload();
-        } else if (res.hasOwnProperty('error') && res.error === true){
-          updatedFiles = APKTest.listUpdate(updatedFiles, {id: res.apkId, iconRightClassName: 'mdi mdi-close', progress: false, error: true, errorText: res.errorMessage});
-          console.log(updatedFiles);
-          this.setState({files: updatedFiles});
-        } else {
-          // TODO treatment
-        }
-      });
-    } else {
-      // something really wrong happened
-      // TODO: treat error
-    }
+    APKTestUploadActions.drop(this.state.projectId, files);
   }
 
   _onCleanClick() {
-    var updatedFiles = APKTest.listClean(this.state.files);
-    this.setState({files: updatedFiles});
+    APKTestUploadActions.clean();
   }
 
   _onCancel() {
     this.refs.dialogIn.dismiss();
   }
 
-  getProjectId() {
-    var routerParams = this.context.router.getCurrentParams();
-    if (routerParams.hasOwnProperty('projectId')) {
-      return routerParams.projectId;
-    } else {
-      return null;
-    }
+  _onStateChange( newState ){
+    this.setState( newState );
+  }
+
+  componentDidMount() {
+    var projectId = AppUtils.getProjectIdFromRouter(this.context.router);
+    APKTestUploadActions.setProjectId(projectId);
+    this.unsubscribe = APKTestUploadStore.listen( this._onStateChange );
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe(); // Subscribe and unsubscribe because we don't want to use the mixins
   }
 
 };
