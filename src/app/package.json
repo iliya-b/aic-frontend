@@ -1,0 +1,15 @@
+{
+  "name": "goby",
+  "description": "package for facilitate require within the project",
+  "repository": {
+    "type": "git",
+    "url": "git@git.android-in-cloud.com:aic_vm/front-end-app.git"
+  },
+  "version": "0.0.1",
+  "main": "index.js",
+  "browserify": {
+    "transform": [
+      ["babelify", { "stage": 0 } ]
+    ]
+  }
+}
