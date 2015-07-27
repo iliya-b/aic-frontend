@@ -4,9 +4,8 @@
 var Reflux = require('reflux');
 
 // APP
-// var { Auth, BackendAPI } = require('../stores/'); // TODO: Check why this does not work sometimes
-var { Auth } = require('../stores/auth.jsx');
-var BackendAPI = require('../stores/backend-api.jsx');
+var { Auth } = require('goby/stores/auth.jsx');
+var BackendAPI = require('goby/stores/backend-api.jsx');
 
 // Actions
 var APKUploadActions = Reflux.createActions({
