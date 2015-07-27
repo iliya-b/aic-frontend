@@ -1,3 +1,5 @@
+'use strict';
+
 // React
 var React = require('react');
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
@@ -107,9 +109,9 @@ var ProjectApkList = class extends React.Component {
     APKActions.load(projectId);
   }
 
-  _onStateChange( apks, itemsToDelete, flag ){
-    this.setState( { apks: apks , itemsToDelete: itemsToDelete } );
-    switch(flag){
+  _onStateChange( state ){
+    this.setState( state );
+    switch(this.state.status){
       case 'reloadList':
         this.reloadList();
         break;

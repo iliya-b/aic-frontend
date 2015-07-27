@@ -4,7 +4,7 @@
 var Reflux = require('reflux');
 
 // APP
-var { AppUtils } = require('goby/components');
+var AppUtils = require('goby/components/shared/app-utils.jsx');
 var { APKActions } = require('goby/actions');
 
 // Store
@@ -15,54 +15,46 @@ var APKStore = Reflux.createStore({
   listenables: APKActions,
 
   init: function() {
-    this.apks = false;
-    this.itemsToDelete = [];
-    this.status = 'initial';
-  },
-
-  getInitialState: function() {
-    return { apks: this.apks, itemsToDelete: this.itemsToDelete };
+    this.state = {};
+    this.state.apks = false;
+    this.state.itemsToDelete = [];
+    this.state.status = 'initial';
   },
 
   // Actions //
 
   onToggleDelete: function(apkId) {
-    this.updateList( this.apks.map( function (item) {
-      return (item.id == apkId) ? AppUtils.extend(item, { toDelete: !item.toDelete }) : item;
-    }));
+    this.state.apks = this.state.apks.map( function (item) {
+      return (item.id == apkId) ? AppUtils.extend(item, { toDelete: !item.toDelete, checked: !item.toDelete }) : item;
+    });
+    this.updateItemsToDelete();
+    this.updateState();
   },
 
   onDeleteSelectedCompleted: function() {
-    this.status = 'reloadList';
-    this.updateList( this.apks );
+    this.state.status = 'reloadList';
+    this.updateState();
   },
 
   onLoadCompleted: function (data) {
-    var newList = data.map(function (apk) {
-          return { id: apk.id, name: apk.name, toDelete: this.isMarkedToDelete(apk.id) };
-        }, this);
-    switch(this.status){
+    this.state.apks = this.convertToListItems(data.map(function (apk) {
+          return { id: apk.id, name: apk.name, toDelete: this.isMarkedToDelete(apk.id), checked: this.isMarkedToDelete(apk.id) };
+        }, this));
+    this.updateItemsToDelete();
+    switch(this.state.status){
       case 'reloadList' :
-        var listIds = newList.map( function (item) { return item.id; } ) ;
-        this.itemsToDelete = this.itemsToDelete.filter( function (item) {
-            return listIds.indexOf(item) > -1 ;
-          });
-        this.status = 'deleteFinished';
+        this.state.status = 'deleteFinished';
         break;
       default:
         break;
     }
-    this.updateList( newList );
+    this.updateState();
   },
 
   // Methods //
 
-  updateList: function(newList){
-    this.apks = newList;
-    this.itemsToDelete = this.apks.reduce( function (previousValue, item) {
-      return item.toDelete ? previousValue.concat(item.id) : previousValue ;
-    } , []);
-    this.trigger( this.convertToListItems(newList), this.itemsToDelete, this.status );
+  updateState: function(){
+    this.trigger( this.state );
   },
 
   convertToListItems: function(list){
@@ -81,8 +73,14 @@ var APKStore = Reflux.createStore({
   },
 
   isMarkedToDelete: function(id){
-    return (this.itemsToDelete.indexOf(id) > -1);
+    return (this.state.itemsToDelete.indexOf(id) > -1);
   },
+
+  updateItemsToDelete: function (){
+    this.state.itemsToDelete = this.state.apks.reduce( function (previousValue, item) {
+        return item.toDelete ? previousValue.concat(item.id) : previousValue ;
+      } , []);
+  }
 
 });
 

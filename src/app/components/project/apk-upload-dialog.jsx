@@ -1,3 +1,5 @@
+'use strict';
+
 // React
 var React = require('react');
 
@@ -9,10 +11,10 @@ var { Dialog, FlatButton, Toolbar, ToolbarGroup, IconButton } = mui;
 var Dropzone = require('react-dropzone');
 
 // APP
-var ObjectList = require('../shared/object-list/object-list.jsx');
-var { APKUploadStore } = require('../../stores/');
-var { APKUploadActions } = require('../../actions/');
-var AppUtils = require('../shared/app-utils.jsx');
+var ObjectList = require('goby/components/shared/object-list/object-list.jsx');
+var AppUtils = require('goby/components/shared/app-utils.jsx');
+var { APKUploadStore } = require('goby/stores');
+var { APKUploadActions } = require('goby/actions');
 
 var APKUploadDialog = class extends React.Component{
 
