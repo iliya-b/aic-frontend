@@ -13,6 +13,7 @@ var gulp         = require('gulp');
 var handleErrors = require('../util/handleErrors');
 var source       = require('vinyl-source-stream');
 var config       = require('../config').browserify;
+var babelify     = require('babelify');
 
 gulp.task('browserify', function(callback) {
 
@@ -22,7 +23,7 @@ gulp.task('browserify', function(callback) {
 
     var bundler = browserify({
       // Required watchify args
-      cache: {}, packageCache: {}, fullPaths: false,
+      cache: {}, packageCache: {}, fullPaths: false, paths: ['./lib'],
       // Specify the entry point of your app
       entries: bundleConfig.entries,
       // Add file extentions to make optional in your requires
@@ -36,6 +37,10 @@ gulp.task('browserify', function(callback) {
       bundleLogger.start(bundleConfig.outputName);
 
       return bundler
+        // .transform(babelify.configure({
+        //   // optional: ["es7.objectRestSpread"]
+        //   stage: 0
+        // }))
         // replaces process.env.* for strings defined on
         // environment variables
         .transform('envify')

@@ -45,6 +45,14 @@ module.exports = {
     src: [ src + '/**/*.js', src + '/**/*.jsx'],
     app: src + '/app/app.jsx'
   },
+  lib: {
+    src: '../src/app',
+    // If any dest is changed, .gitignore should be updated
+    dest: 'lib',
+    // If name is changed all the requires inside the project
+    // should be updated
+    name: 'goby',
+  },
   browserify: {
     // Enable source maps
     debug: true,

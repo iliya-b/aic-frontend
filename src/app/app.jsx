@@ -2,8 +2,8 @@
 
   var React = require('react');
   var Router = require('react-router');
-  var AppRoutes = require('./configs/app-routes.jsx');
   var injectTapEventPlugin = require('react-tap-event-plugin');
+  var AppRoutes = require('goby').Configs.AppRoutes;
 
   //Needed for React Developer Tools
   window.React = React;
