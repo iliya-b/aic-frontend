@@ -21,6 +21,7 @@ var BackendAPI = {
     $.ajax({
       url:  url,
       data: data,
+      xhrFields: {withCredentials: true},
       method: method,
       contentType: 'application/json;charset=UTF-8',
       processData: false,
