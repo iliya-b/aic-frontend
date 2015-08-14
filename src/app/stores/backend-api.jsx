@@ -74,6 +74,7 @@ var BackendAPI = {
       cache: false,
       contentType: false,
       processData: false,
+      xhrFields: {withCredentials: true},
       type: 'POST',
       headers: { "X-Auth-Token": token },
       xhr: function() {  // Custom XMLHttpRequest
@@ -129,6 +130,7 @@ var BackendAPI = {
       cache: false,
       contentType: false,
       processData: false,
+      xhrFields: {withCredentials: true},
       type: 'POST',
       headers: { "X-Auth-Token": token },
       xhr: function() {  // Custom XMLHttpRequest
