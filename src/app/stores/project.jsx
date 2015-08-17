@@ -34,7 +34,7 @@ var Project = {
         // console.log(projectId);
         // console.log(projectList);
         for (var i = projectList.length - 1; i >= 0; i--) {
-          if(projectList[i].id === projectId) {
+          if(projectList[i].id.toString() === projectId.toString()) {
             project = projectList[i];
             break;
           }
