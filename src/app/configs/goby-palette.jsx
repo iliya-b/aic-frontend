@@ -13,7 +13,7 @@ var GobyPalette = {
   canvasColor: Colors.white,
   borderColor: Colors.grey300,
   disabledColor: ColorManipulator.fade(Colors.darkBlack, 0.3),
-  logo1Color: '#378BC9',
+  logo1Color: '#2d8bcb',
   logo2Color: '#A2C846',
   textLightColor: Colors.grey200,
   errorColor: Colors.red500,

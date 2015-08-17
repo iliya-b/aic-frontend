@@ -21,6 +21,7 @@ var BackendAPI = {
     $.ajax({
       url:  url,
       data: data,
+      xhrFields: {withCredentials: true},
       method: method,
       contentType: 'application/json;charset=UTF-8',
       processData: false,
@@ -73,6 +74,7 @@ var BackendAPI = {
       cache: false,
       contentType: false,
       processData: false,
+      xhrFields: {withCredentials: true},
       type: 'POST',
       headers: { "X-Auth-Token": token },
       xhr: function() {  // Custom XMLHttpRequest
@@ -128,6 +130,7 @@ var BackendAPI = {
       cache: false,
       contentType: false,
       processData: false,
+      xhrFields: {withCredentials: true},
       type: 'POST',
       headers: { "X-Auth-Token": token },
       xhr: function() {  // Custom XMLHttpRequest
