@@ -17,8 +17,8 @@ var Auth = {
       //    Object {readyState: 4, responseText: "{"error":{"code":400,"message":"Bad request","description":""}}", responseJSON: Object, status: 400, statusText: "Bad Request"}
       //    Object {readyState: 4, responseText: "{"error":{"code":401,"message":"Unauthorized","description":""}}", responseJSON: Object, status: 401, statusText: "Unauthorized"}
       // on success Object {X-Auth-Token: "e824cc2f6dd34c90b2e693dd8ceb8789"}
-      console.log('result');
-      console.log(result);
+      // console.log('result');
+      // console.log(result);
       if (result.hasOwnProperty('status') &&
          (result.status === Auth.ERROR1 || result.status === Auth.ERROR2)){
         cb({

@@ -131,7 +131,7 @@ var LoginDialog = class extends React.Component{
       var email = this.refs.loginEmail.getValue();
       var pass = this.refs.loginPassword.getValue();
       Auth.login(email, pass, (results) => {
-        console.log(results);
+        // console.log(results);
         if (!results.authenticated){
           this.setState({ loginError: true, loginErrorMessage: results.errorMessage });
           this.unblockFields();

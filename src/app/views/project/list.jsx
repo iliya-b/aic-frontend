@@ -16,8 +16,8 @@ var ProjectList = class extends React.Component {
   }
 
   _onItemTap(e, index, menuItem) {
-    console.log(index);
-    console.log(menuItem);
+    // console.log(index);
+    // console.log(menuItem);
     this.context.router.transitionTo('project-page', {projectId: menuItem.id} );
   }
 
