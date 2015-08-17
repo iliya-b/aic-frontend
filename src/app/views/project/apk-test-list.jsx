@@ -113,9 +113,8 @@ var ProjectApkTestList = class extends React.Component {
 
   componentDidMount() {
     var projectId = AppUtils.getProjectIdFromRouter(this.context.router);
-    APKTestActions.setProjectId(projectId);
     this.unsubscribe = APKTestStore.listen( this._onStateChange );
-    this.reloadList();
+    APKTestActions.setProjectId(projectId);
   }
 
   componentWillUnmount() {

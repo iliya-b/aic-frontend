@@ -26,6 +26,7 @@ var APKTestStore = Reflux.createStore({
 
   onSetProjectId: function (projectId) {
     this.state.projectId = projectId;
+    this.state.status = 'reloadList';
     this.updateState();
   },
 
