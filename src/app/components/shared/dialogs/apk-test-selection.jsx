@@ -1,11 +1,19 @@
+'use strict';
+
+// React
 var React = require('react');
 
+// Material design
 var mui = require('material-ui');
-
 var { Dialog, FlatButton } = mui;
-var { APKTest } = require('../../../stores/');
 
-var ObjectList = require('../../shared/object-list/object-list.jsx');
+// APP
+var ObjectList = require('goby/components/shared/object-list/object-list.jsx');
+var AppUtils = require('goby/components/shared/app-utils.jsx');
+var { APKTestStore } = require('goby/stores');
+var { APKTestActions } = require('goby/actions');
+
+var projectId = null;
 
 var APKTestSelectionDialog = class extends React.Component{
 
@@ -20,6 +28,7 @@ var APKTestSelectionDialog = class extends React.Component{
     this._onCancel = this._onCancel.bind(this);
     this._onItemClick = this._onItemClick.bind(this);
     this._onSubmit = this._onSubmit.bind(this);
+    this._onStateChange = this._onStateChange.bind(this);
 
   }
 
@@ -78,20 +87,25 @@ var APKTestSelectionDialog = class extends React.Component{
     this.refs.dialogIn.dismiss();
   }
 
-  getProjectId() {
-    return this.props.projectId;
+  reloadList(){
+    APKTestActions.load(projectId);
+  }
+
+  _onStateChange( state ){
+    this.setState( state );
+    switch(this.state.status){
+      case 'reloadList':
+        this.reloadList();
+        break;
+      default:
+        break;
+    }
   }
 
   componentWillMount() {
-    APKTest.getAll( this.getProjectId(), (res) => {
-      var apks = [];
-      if (res !== undefined && res.length > 0){
-        apks = res.map(function (item) {
-          return { key: item.id, id: item.id, text: item.name, name: item.name };
-        });
-      }
-      this.setState({apks: apks});
-    });
+    projectId = AppUtils.getProjectIdFromRouter(this.context.router);
+    this.unsubscribe = APKTestStore.listen( this._onStateChange );
+    this.reloadList();
   }
 
 };
