@@ -71,12 +71,6 @@ var ProjectApkList = class extends React.Component {
 
         <APKUploadDialog ref="uploadDialog" reload={this.reloadList} />
 
-        {this.state.apks && this.state.apks.length === 0 ? (
-          <Paper style={style.paper}>
-            <CircularProgress mode="indeterminate" />
-          </Paper>
-          ) : null }
-
         { this.state.apks && this.state.apks.length > 0 ? (
         <List style={style.list} listItems={this.state.apks} onCheck={this._onItemCheck} />
         ) : null }

@@ -67,7 +67,7 @@ var ProjectApkTestList = class extends React.Component {
         </Toolbar>
         <APKTestUploadDialog ref="uploadDialog" reload={this.reloadList} />
 
-        {this.state.apks.length > 0 ? (
+        {this.state.apks && this.state.apks.length > 0 ? (
         <List style={style.list} listItems={this.state.apks} onItemTap={this._onItemTap}  onCheck={this._onItemCheck} />
         ) : null }
       </div>
