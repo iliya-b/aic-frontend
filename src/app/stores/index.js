@@ -7,6 +7,6 @@ module.exports = {
   APKTestStore: require('./apk-test.jsx'),
   APKTestUploadStore: require('./apk-test-upload.jsx'),
   Test: require('./test.jsx'),
-  Live: require('./live.jsx'),
+  LiveStore: require('./live.jsx'),
   BackendAPI: require('./backend-api.jsx'),
 };

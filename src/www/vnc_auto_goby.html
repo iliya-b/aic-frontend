@@ -83,6 +83,7 @@
 
         var rfb;
         var resizeTimeout;
+        var firstTry = false;
 
 
         function UIresize() {
@@ -131,6 +132,8 @@
         }
         function updateState(rfb, state, oldstate, msg) {
             var s, sb, cad, level;
+            console.log('updating');
+            console.log(arguments);
             s = $D('noVNC_status');
             sb = $D('noVNC_status_bar');
             cad = $D('sendCtrlAltDelButton');
@@ -176,8 +179,9 @@
             }
         }
 
+        var host, port, password, path;
         window.onscriptsload = function () {
-            var host, port, password, path, token;
+            var token;
 
             $D('sendCtrlAltDelButton').style.display = "inline";
             $D('sendCtrlAltDelButton').onclick = sendCtrlAltDel;
@@ -235,7 +239,13 @@
                 return; // don't continue trying to connect
             }
 
-            rfb.connect(host, port, password, path);
+            // connect after a while
+            // console.log("waiting to connect");
+            // setTimeout( function () {
+            //     console.log("connecting : " + host + "  " + port + "  " + password + "  " + path);
+                rfb.connect(host, port, password, path);
+
+            // }, 10000);
         };
         </script>
 

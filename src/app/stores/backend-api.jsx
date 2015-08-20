@@ -227,6 +227,18 @@ var BackendAPI = {
     this.recording(token, projectId, filename, 'true', cb);
   },
 
+  liveStart: function (token, cb) {
+    var url = this.backendRoot() + "/back/live/start";
+    var data = '{}';
+    this.apiCallAuth(url, data, cb, token);
+  },
+
+  liveStop: function (token, screenPort, cb) {
+    var url = this.backendRoot() + "/back/live/stop";
+    var data = '{"vncport":'+screenPort+'}';
+    this.apiCallAuth(url, data, cb, token, 'DELETE');
+  },
+
 };
 
 // function progressHandlingFunction(e){
