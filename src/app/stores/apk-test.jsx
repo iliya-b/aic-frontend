@@ -72,7 +72,7 @@ var APKTestStore = Reflux.createStore({
         apkId: item.id,
         key: item.id,
         text: item.name,
-        checkbox: true,
+        // checkbox: true,
         toDelete: item.toDelete,
         checked: item.toDelete,
       }
