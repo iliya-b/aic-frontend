@@ -83,7 +83,8 @@
 
         var rfb;
         var resizeTimeout;
-        var firstTry = false;
+        var triesCounter = 0;
+        var maxTries = 10;
 
 
         function UIresize() {
@@ -156,6 +157,15 @@
             if (typeof(msg) !== 'undefined') {
                 sb.setAttribute("class", "noVNC_status_" + level);
                 s.innerHTML = msg;
+            }
+
+            if (state === "disconnected" && oldstate === "failed" && triesCounter < maxTries) {
+                triesCounter = triesCounter+1;
+                console.log("trying again in : " + ((maxTries - triesCounter) * 1000));
+                setTimeout( function () {
+                    console.log("connecting : " + host + "  " + port + "  " + password + "  " + path);
+                    rfb.connect(host, port, password, path);
+                }, (maxTries - triesCounter) * 1000);
             }
         }
 
