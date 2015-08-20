@@ -15,4 +15,7 @@ AppConfig.backend.timeout = process.env.BACKEND_TIMEOUT || 5000 ;
 /* page where user lands after login */
 AppConfig.userHome = 'projects';
 
+/* debugging */
+AppConfig.debug = (process.env.FRONT_DEBUG === 'true') || false;
+
 module.exports = AppConfig;
