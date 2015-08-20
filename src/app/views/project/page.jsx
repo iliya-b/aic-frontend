@@ -4,8 +4,12 @@ var Router = require('react-router');
 var { RouteHandler, State } = Router;
 
 var mui = require('material-ui');
-var { Menu } = mui;
+// var { Menu } = mui;
+var Menu = require('material-ui/lib/menus/menu.js');
+var MenuItem = require('material-ui/lib/menus/menu-item.js');
 var { Spacing, Colors } = mui.Styles;
+var ObjectListItem = require('goby/components/shared/object-list/object-list-item.jsx');
+var ObjectList = require('goby/components/shared/object-list/object-list.jsx');
 
 var menuItems = [
      { path: 'apks', text: 'APK List' },
@@ -19,9 +23,10 @@ var ProjectPage = React.createClass({
 
   mixins: [ State ],
 
+  // _onItemTap(index, e) { //, index, menuItem
   _onItemTap(e, index, menuItem) {
     var { projectId } = this.context.router.getCurrentParams();
-    this.context.router.transitionTo(menuItem.path, {projectId: projectId } );
+    this.context.router.transitionTo(menuItems[index].path, {projectId: projectId } );
   },
 
   _getSelectedIndex() {
@@ -43,6 +48,7 @@ var ProjectPage = React.createClass({
       menu: {
         position: 'absolute',
         top: '0px',
+        left: '0px',
         width: subNavWidth
       },
       content: {
@@ -52,6 +58,9 @@ var ProjectPage = React.createClass({
         marginLeft: subNavWidth,
         borderLeft: 'solid 1px ' + Colors.grey300,
         minHeight: '90vh'
+      },
+      menuItemSelected: {
+        color: this.context.muiTheme.palette.accent1Color
       }
     };
 
@@ -60,16 +69,21 @@ var ProjectPage = React.createClass({
 
   render: function() {
     var styles = this.getStyles();
-    // var { projectId } = this.context.router.getCurrentParams();
+    // var menusItems = menuItems.map(function (item, index) {
+    //   return <MenuItem key={index} primaryText={item.text} path={item.path} onTouchTap={this._onItemTap.bind(this, index)} style={this._getSelectedIndex() == index ? styles.menuItemSelected : null } />
+    // }, this);
+    // var menusItems = menuItems.map(function (item, index) {
+    //   return <ObjectListItem key={index} index={index} text="ka" />
+    // }, this);
+    // console.log(menusItems);
+        // <div style={styles.menu} >
+        // {menusItems}
+        // </div>
+        // <ObjectList style={styles.menu} objectListItems={menuItems} />
     return (
       <div style={styles.root}>
-        <Menu
-          style={styles.menu}
-          ref="menuItems"
-          zDepth={0}
-          menuItems={menuItems}
-          onItemTap={this._onItemTap}
-          selectedIndex={this._getSelectedIndex()} />
+
+        <ObjectList style={styles.menu} objectListItems={menuItems} zDepth={0} selectedIndex={this._getSelectedIndex()} onItemTap={this._onItemTap} />
 
         <div style={styles.content}>
 

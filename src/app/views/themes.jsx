@@ -10,8 +10,6 @@ var {
   FlatButton,
   FloatingActionButton,
   LeftNav,
-  Menu,
-  MenuItem,
   RadioButton,
   RadioButtonGroup,
   RaisedButton,
@@ -19,6 +17,9 @@ var {
   Slider,
   TextField,
   Toggle} = mui;
+
+var Menu = require('material-ui/lib/menus/menu.js');
+var MenuItem = require('material-ui/lib/menus/menu-item.js');
 
 var {StylePropable, StyleResizable} = mui.Mixins;
 
@@ -84,6 +85,10 @@ var ThemesPage = React.createClass({
         letterSpacing: '0',
         fontWeight: Typography.fontWeightMedium,
         color: Typography.textDarkBlack
+      },
+      menu: {
+        position: 'relative',
+        float: 'left'
       }
     };
 
@@ -115,9 +120,12 @@ var ThemesPage = React.createClass({
       { route: 'get-started', text: 'Get Started' },
       { route: 'customization', text: 'Customization' },
       { route: 'component', text: 'Component' },
-      { type: MenuItem.Types.SUBHEADER, text: 'Resources' },
       {
-         type: MenuItem.Types.LINK,
+        // type: MenuItem.Types.SUBHEADER,
+        text: 'Resources'
+      },
+      {
+         // type: MenuItem.Types.LINK,
          payload: 'https://github.com/callemall/material-ui',
          text: 'GitHub'
       },
@@ -126,7 +134,7 @@ var ThemesPage = React.createClass({
          disabled: true
       },
       {
-         type: MenuItem.Types.LINK,
+         // type: MenuItem.Types.LINK,
          payload: 'https://www.google.com',
          text: 'Disabled Link',
          disabled: true
@@ -209,7 +217,13 @@ var ThemesPage = React.createClass({
                     disabled={true} />
                 </div>
                 <div style={styles.container}>
-                  <Menu menuItems={menuItems} />
+
+                  <Menu style={styles.menu}>
+                    <MenuItem primaryText="Maps" />
+                    <MenuItem primaryText="Books" />
+                    <MenuItem primaryText="Flights" />
+                    <MenuItem primaryText="Apps" />
+                  </Menu>
                 </div>
               </div>
 

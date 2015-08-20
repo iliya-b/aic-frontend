@@ -1,7 +1,8 @@
 var React = require('react');
 
-var mui = require('material-ui');
-var { Menu } = mui;
+// var mui = require('material-ui');
+// var { Menu } = mui;
+var ObjectList = require('goby/components/shared/object-list/object-list.jsx');
 var { Project } = require('../../stores/');
 
 var ProjectList = class extends React.Component {
@@ -26,9 +27,10 @@ var ProjectList = class extends React.Component {
   }
 
   render() {
+    // <Menu menuItems={this.getProjects()} onItemTap={this._onItemTap} />
     return (
       <div>
-        <Menu menuItems={this.getProjects()} onItemTap={this._onItemTap} />
+        <ObjectList objectListItems={this.getProjects()} zDepth={0} onItemTap={this._onItemTap} />
       </div>
     );
   }

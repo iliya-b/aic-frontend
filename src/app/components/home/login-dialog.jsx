@@ -26,6 +26,7 @@ var LoginDialog = class extends React.Component{
     this._onLoginSubmit = this._onLoginSubmit.bind(this);
     this._onLoginCancel = this._onLoginCancel.bind(this);
     this.checkFields = this.checkFields.bind(this);
+    this.cleanFields = this.cleanFields.bind(this);
   }
 
   render() {
@@ -63,7 +64,7 @@ var LoginDialog = class extends React.Component{
 
     //style={this.mergeAndPrefix(styles.root,style)}
     return (
-      <Dialog title="Login" actions={loginActions} {...other} ref="loginDialogIn" >
+      <Dialog title="Login" actions={loginActions} {...other} ref="loginDialogIn" onShow={this.cleanFields} >
         {this.state.loginSuccess ? successBox : (
           <div>
           {errorBox}
@@ -84,15 +85,16 @@ var LoginDialog = class extends React.Component{
       loginEmailError: '',
       loginPasswordError: '',
       });
-    this.cleanFields();
+
     this.refs.loginDialogIn.show();
+    // this.cleanFields();
   }
 
-  blockFields() {
+  blockFields(){
     this.setState({ blockFields: true });
   }
 
-  unblockFields() {
+  unblockFields(){
     this.setState({ blockFields: false });
   }
 

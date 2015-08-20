@@ -26,12 +26,12 @@ var Main = React.createClass({
 
   childContextTypes: {
     muiTheme: React.PropTypes.object,
-    router: React.PropTypes.func
+    router: React.PropTypes.func,
   },
 
   getChildContext: function() {
     return {
-      muiTheme: ThemeManager.getCurrentTheme()
+      muiTheme: ThemeManager.getCurrentTheme(),
     };
   },
 
@@ -40,20 +40,20 @@ var Main = React.createClass({
     return {
       footer: {
         backgroundColor: Colors.grey900,
-        textAlign: 'center'
+        textAlign: 'center',
       },
       a: {
-        color: darkWhite
+        color: darkWhite,
       },
       p: {
         margin: '0 auto',
         padding: '0 0 24px 0',
         color: Colors.lightWhite,
-        maxWidth: '335px'
+        maxWidth: '335px',
       },
       iconButton: {
-        color: darkWhite
-      }
+        color: darkWhite,
+      },
     };
   },
 
@@ -69,17 +69,17 @@ var Main = React.createClass({
       </div>
 
     );
-  }
+  },
 
 });
 
 Main.contextTypes = {
   router: React.PropTypes.func,
-  muiTheme: React.PropTypes.object
+  muiTheme: React.PropTypes.object,
 };
 
 Main.childContextTypes = {
-  muiTheme: React.PropTypes.object
+  muiTheme: React.PropTypes.object,
 };
 
 module.exports = Main;
