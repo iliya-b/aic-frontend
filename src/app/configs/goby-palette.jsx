@@ -13,12 +13,12 @@ var GobyPalette = {
   canvasColor: Colors.white,
   borderColor: Colors.grey300,
   disabledColor: ColorManipulator.fade(Colors.darkBlack, 0.3),
-  logo1Color: '#2d8bcb',
+  logo1Color: '#2D8BCB',
   logo2Color: '#A2C846',
   textLightColor: Colors.grey200,
   errorColor: Colors.red500,
   successColor: Colors.green500,
-  hoverColor: Colors.red500,
+  hoverColor: Colors.lightBlue100,
 };
 
 module.exports = GobyPalette;

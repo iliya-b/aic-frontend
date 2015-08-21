@@ -3,6 +3,7 @@ var mui = require('material-ui');
 var Colors = mui.Styles.Colors;
 var Spacing = mui.Styles.Spacing;
 var ColorManipulator = mui.Utils.ColorManipulator;
+var GobyPalette = require('goby/configs/goby-palette.jsx');
 
 
 /**
@@ -14,24 +15,7 @@ var GobyTheme = {
   spacing: Spacing,
   contentFontFamily: 'Roboto, sans-serif',
   getPalette() {
-    return {
-      primary1Color: Colors.lightBlue500,
-      primary2Color: Colors.lightBlue700,
-      primary3Color: Colors.lightBlue300,
-      accent1Color: Colors.lightGreen500,
-      accent2Color: Colors.lightGreen700,
-      accent3Color: Colors.lightGreen300,
-      textColor: Colors.darkBlack,
-      canvasColor: Colors.white,
-      borderColor: Colors.grey300,
-      disabledColor: ColorManipulator.fade(Colors.darkBlack, 0.3),
-      logo1Color: '#378BC9',
-      logo2Color: '#A2C846',
-      textLightColor: Colors.grey200,
-      errorColor: Colors.red500,
-      successColor: Colors.green500,
-      hoverColor: Colors.lightBlue100,
-    };
+    return GobyPalette;
   },
   getComponentThemes(palette, spacing) {
     spacing = spacing || Spacing;
