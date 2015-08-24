@@ -24,7 +24,8 @@ var ProjectLive = class extends React.Component{
     this._onStateChange = this._onStateChange.bind(this);
     this._onLiveStart = this._onLiveStart.bind(this);
     this._onLiveStop = this._onLiveStop.bind(this);
-    this._onDebug = this._onDebug.bind(this);
+    // this._onDebug = this._onDebug.bind(this);
+    // this._onLiveAction = this._onLiveAction.bind(this);
   }
 
   render() {
@@ -38,6 +39,19 @@ var ProjectLive = class extends React.Component{
         padding: Spacing.desktopGutter,
         minHeight: (600 + Spacing.desktopGutter*2) + 'px',
       },
+      error: {
+        icon: {
+          color: this.context.muiTheme.palette.errorColor,
+          fontSize: '50px',
+          float: 'left',
+        },
+        message: {
+          color: this.context.muiTheme.palette.errorColor,
+        },
+        status: {
+          display: 'none',
+        },
+      }
     };
 
     return  <div>
@@ -52,83 +66,75 @@ var ProjectLive = class extends React.Component{
                   <h3>Debug</h3>
 
                   <FlatButton
+                      label="Search"
+                      primary={true}
+                      onTouchTap={this._onDebug.bind(this, 'check')} />
+
+                  <FlatButton
+                      label="Start"
+                      primary={true}
+                      onTouchTap={this._onDebug.bind(this, 'start')} />
+
+                  <FlatButton
+                      label="Connect"
+                      primary={true}
+                      onTouchTap={this._onDebug.bind(this, 'connect')} />
+
+                  <FlatButton
                       label="Set State"
                       primary={true}
-                      onTouchTap={this._onDebug} />
+                      onTouchTap={this._onDebug.bind(this, 'setState')} />
 
                 </Paper>
                 <br />
               </div>
               ) : null}
 
-              <Tabs initialSelectedIndex={1}>
-                <Tab label="Live"  >
 
-                  {/* Starting live */}
-                  {this.state && (this.state.live.status === 'LIVE_STATUS_INITIALIZED') ? (
-                  <Paper style={style.paperCenter}>
+              {/* Live failed */}
+              {this.state && this.state.live.status.substr(-6) === 'FAILED' ? (
+              <Paper style={style.paperCenter}>
 
+                  <span style={style.error.icon} className='mdi mdi-android' />
+                  <p style={style.error.status}>{this.state.live.status}</p>
+                  <p style={style.error.message}>{this.state.live.message}</p>
+
+              </Paper>
+              ) : null}
+
+              {/* Live started */}
+              {this.state && (this.state.live.status === 'LIVE_STATUS_CONNECTING' || this.state.live.status === 'LIVE_STATUS_CONNECTED') ? (
+              <Paper style={style.paperLive}>
+
+                  <div>
+                    <LiveScreen />
+                    <LiveSensors />
+                    <br />
+                    <Paper style={style.paperCenter}>
                       <FlatButton
-                        label="Start Live"
+                        label="Stop Live"
                         primary={true}
-                        disabled={this.state.live.status === 'LIVE_STATUS_STARTING'}
-                        onTouchTap={this._onLiveStart} />
+                        disabled={this.state.live.status === 'LIVE_STATUS_STOPPING'}
+                        onTouchTap={this._onLiveStop} />
+                    </Paper>
+                  </div>
 
-                  </Paper>
-                  ) : null}
+              </Paper>
+              ) : null}
 
-                  {/* Live loading */}
-                  {this.state && (this.state.live.status === 'LIVE_STATUS_STARTING' || this.state.live.status === 'LIVE_STATUS_STOPPING') ? (
-                  <Paper style={style.paperCenter}>
-                    <CircularProgress mode="indeterminate" size={2} />
-                  </Paper>
-                  ) : null}
+               {/* Live stopped */}
+              {this.state && (this.state.live.status === 'LIVE_STATUS_STOPPED') ? (
+              <Paper style={style.paperCenter}>
 
-                  {/* Live failed */}
-                  {this.state && this.state.live.status === 'LIVE_STATUS_FAILED' ? (
-                  <Paper style={style.paperCenter}>
+                  <p>Your live session was sucessfully stopped.</p>
 
-                      <p>Something went wrong...</p>
+                  <FlatButton
+                    label="Start New Live"
+                    primary={true}
+                    onTouchTap={this._onLiveAction.bind(this, 'restart')} />
 
-                  </Paper>
-                  ) : null}
-
-                  {/* Live started */}
-                  {this.state && (this.state.live.status === 'LIVE_STATUS_STARTED') ? (
-                  <Paper style={style.paperLive}>
-
-                      <div>
-                        <LiveScreen />
-                        <LiveSensors />
-                        <br />
-                        <Paper style={style.paperCenter}>
-                          <FlatButton
-                            label="Stop Live"
-                            primary={true}
-                            disabled={this.state.live.status === 'LIVE_STATUS_STOPPING'}
-                            onTouchTap={this._onLiveStop} />
-                        </Paper>
-                      </div>
-
-                  </Paper>
-                  ) : null}
-
-                   {/* Live stopped */}
-                  {this.state && (this.state.live.status === 'LIVE_STATUS_STOPPED') ? (
-                  <Paper style={style.paperCenter}>
-
-                      <p>Your live session was sucessfully stopped.</p>
-
-                      <FlatButton
-                        label="Start New Live"
-                        primary={true}
-                        onTouchTap={this._onLiveStart} />
-
-                  </Paper>
-                  ) : null}
-
-                </Tab>
-              </Tabs>
+              </Paper>
+              ) : null}
 
             </div>;
 
@@ -146,22 +152,45 @@ var ProjectLive = class extends React.Component{
     LiveActions.liveStop( this.state.live.screen.port );
   }
 
-  _onDebug(){
-    LiveActions.setState({
-      live: {
-        status: 'LIVE_STATUS_STARTED',
-        screen: {
-          ip: '10.2.0.156',
-          port: '5901',
-          rotation: 'horizontal',
-        },
-        delayedRotation: 'horizontal',
-        rotationSets: {
-          horizontal: { x: 0, y: 5.9, z: 0, next: 'vertical'},
-          vertical:   { x: 5.9, y: 0, z: 0, next: 'horizontal'},
-        },
-      }
-    });
+  _onLiveAction(actionName){
+    // console.log(arguments);
+    switch(actionName){
+      case 'check':
+        LiveActions.liveCheck();
+        break;
+      case 'start':
+        LiveActions.liveStart();
+        break;
+      case 'restart':
+        LiveActions.liveReset();
+        break;
+      case 'connect':
+        LiveActions.liveConnect(this.state.live.screen.ip, this.state.live.screen.port);
+        break;
+    }
+  }
+
+  _onDebug(actionName){
+    // console.log(arguments);
+    switch(actionName){
+      case 'check':
+        LiveActions.liveCheck();
+        break;
+      case 'start':
+        LiveActions.liveStart();
+        break;
+      case 'connect':
+        LiveActions.liveConnect(this.state.live.screen.ip, this.state.live.screen.port);
+        break;
+      case 'setState':
+        var newState = this.state;
+        newState.live.status = 'LIVE_STATUS_CONNECTED';
+        newState.live.screen.ip = '10.2.0.156';
+        newState.live.screen.port = '5901';
+        LiveActions.setState(newState);
+        break;
+    }
+
   }
 
   componentDidMount() {

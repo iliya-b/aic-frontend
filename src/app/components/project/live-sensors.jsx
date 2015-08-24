@@ -71,7 +71,7 @@ var LiveSensors = class extends React.Component{
 
               <TogglableIcon style={style.sensorIcon} isOn={true} iconName="battery-charging-60" />
               <div style={style.sensorBox}>
-                <Slider max={100} min={0} step={1} value={100} onChange={this._onBatteryChange} />
+                <Slider name='battery' max={100} min={0} step={1} value={this.state.live.battery} onChange={this._onBatteryChange} />
               </div> <br />
               <TogglableIcon style={style.sensorIconRotation} isOn={true} iconName="screen-rotation" onClick={this._onRotationChange} />
               <span>{this.state.live ? this.state.live.screen.rotation : ''}</span>

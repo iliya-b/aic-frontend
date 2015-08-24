@@ -39,12 +39,16 @@ var LiveScreen = class extends React.Component{
       vncUrl = "/vnc_auto_goby.html?host=" + this.state.live.screen.ip + "&port=" + this.state.live.screen.port ;
     }
     return  <div>
-
+              {/*
               <iframe id="novnciframe" style={style.iframeRotation}
                 src={vncUrl}
                 frameBorder="0" scrolling="no">
                 Browser not compatible.
               </iframe>
+              */}
+              <canvas id="noVNC_canvas" width="640px" height="20px">
+                  Canvas not supported.
+              </canvas>
 
             </div>
   }
