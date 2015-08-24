@@ -11,6 +11,13 @@ Example:
 git clone git@git.android-in-cloud.com:aic_vm/front-end-app.git -b proto1 --recursive
 ```
 
+If the repository is already cloned but without the subprojects, you
+can use, for example, the following git command to initialize them.
+
+```
+git submodule update --init
+```
+
 Development installation
 ========================
 
