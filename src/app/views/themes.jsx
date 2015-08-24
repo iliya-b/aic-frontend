@@ -20,6 +20,7 @@ var {
 
 var Menu = require('material-ui/lib/menus/menu.js');
 var MenuItem = require('material-ui/lib/menus/menu-item.js');
+var LiveBoxStatus = require('goby/components/project/live-box-status.jsx');
 
 var {StylePropable, StyleResizable} = mui.Mixins;
 
@@ -144,6 +145,11 @@ var ThemesPage = React.createClass({
         return (
             <div>
             <ClearFix>
+              <RaisedButton linkButton={true} href="/" secondary={true} label="Back to Home" />
+            </ClearFix>
+
+            <ClearFix>
+
 
               <div style={styles.group}>
                 <div style={styles.containerCentered}>
@@ -279,6 +285,56 @@ var ThemesPage = React.createClass({
                 </div>
               </div>
           </ClearFix>
+
+          <ClearFix>
+              <div>
+                <LiveBoxStatus typeName="search" status="doing" isFirst={true} />
+                <LiveBoxStatus typeName="create" status="doing" />
+                <LiveBoxStatus typeName="connect" status="doing" />
+                {/*
+                <LiveBoxStatus typeName="open" status="doing" />
+                <LiveBoxStatus typeName="ready" status="doing" />
+                */}
+                <LiveBoxStatus typeName="close" status="doing" isLast={true} />
+                <LiveBoxStatus typeName="load" status="doing" />
+              </div>
+
+              <div>
+                <LiveBoxStatus typeName="search" status="success" isFirst={true} />
+                <LiveBoxStatus typeName="create" status="success" />
+                <LiveBoxStatus typeName="connect" status="success" />
+                {/*
+                <LiveBoxStatus typeName="open" status="success" />
+                <LiveBoxStatus typeName="ready" status="success" />
+                */}
+                <LiveBoxStatus typeName="close" status="success" isLast={true} />
+                <LiveBoxStatus typeName="load" status="success" />
+              </div>
+
+              <div>
+                <LiveBoxStatus typeName="search" status="fail" isFirst={true} />
+                <LiveBoxStatus typeName="create" status="fail" />
+                <LiveBoxStatus typeName="connect" status="fail" />
+                {/*
+                <LiveBoxStatus typeName="open" status="fail" />
+                <LiveBoxStatus typeName="ready" status="fail" />
+                */}
+                <LiveBoxStatus typeName="close" status="fail" isLast={true} />
+                <LiveBoxStatus typeName="load" status="fail" />
+              </div>
+
+              <div>
+                <LiveBoxStatus typeName="search" status="disable" isFirst={true} />
+                <LiveBoxStatus typeName="create" status="disable" />
+                <LiveBoxStatus typeName="connect" status="disable" />
+                {/*
+                <LiveBoxStatus typeName="open" status="disable" />
+                <LiveBoxStatus typeName="ready" status="disable" />
+                */}
+                <LiveBoxStatus typeName="close" status="disable" isLast={true} />
+                <LiveBoxStatus typeName="load" status="disable" />
+              </div>
+            </ClearFix>
 
             </div>
         );

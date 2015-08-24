@@ -30,6 +30,13 @@ var LiveStore =  Reflux.createStore({
       vertical:   { x: 5.9, y: 0, z: 0, next: 'horizontal'},
     };
     this.state.live.recordingFileName = '';
+    this.state.live.boxes = [
+      { typeName: 'search', status: 'disable', enabled: true, isFirst: true },
+      { typeName: 'create', status: 'disable', enabled: false },
+      { typeName: 'load', status: 'disable', enabled: true },
+      { typeName: 'connect', status: 'disable', enabled: true },
+      { typeName: 'close', status: 'disable', enabled: true, isLast: true },
+    ];
   },
 
   // Actions //
@@ -66,7 +73,7 @@ var LiveStore =  Reflux.createStore({
   },
 
   onLiveStartFailed: function(errorMessage){
-    this.state.live.status = 'LIVE_STATUS_FAILED';
+    this.state.live.status = 'LIVE_STATUS_START_FAILED';
     this.state.live.message = errorMessage;
     this.updateState();
   },
@@ -87,7 +94,7 @@ var LiveStore =  Reflux.createStore({
   },
 
   onLiveStopFailed: function(errorMessage){
-    this.state.live.status = 'LIVE_STATUS_FAILED';
+    this.state.live.status = 'LIVE_STATUS_STOP_FAILED';
     this.state.live.message = errorMessage;
     this.updateState();
   },
@@ -120,7 +127,28 @@ var LiveStore =  Reflux.createStore({
 
   // Methods //
 
+  changeBoxes: function (typeName, newStatus) {
+    this.state.live.boxes = this.state.live.boxes.map(
+      function(item) {
+        return item.typeName === typeName ? AppUtils.extend(item, { status: newStatus }) : item ;
+      }
+    );
+  },
+
+  statusUpdating: {
+    'LIVE_STATUS_INITIATING':   { typeName: 'search', newStatus: 'doing' },
+    'LIVE_STATUS_INITIALIZED':  { typeName: 'search', newStatus: 'success'},
+    'LIVE_STATUS_STARTING':     { typeName: 'load',   newStatus: 'doing'},
+    'LIVE_STATUS_STARTED':      { typeName: 'load',   newStatus: 'success'},
+    'LIVE_STATUS_START_FAILED': { typeName: 'load',   newStatus: 'fail'},
+    'LIVE_STATUS_STOPPING':     { typeName: 'close',  newStatus: 'doing'},
+    'LIVE_STATUS_STOPPED':      { typeName: 'close',  newStatus: 'success'},
+    'LIVE_STATUS_STOP_FAILED':  { typeName: 'close',  newStatus: 'fail'},
+  },
+
   updateState: function(){
+    var actualStatus = this.statusUpdating[this.state.live.status];
+    this.changeBoxes(actualStatus.typeName, actualStatus.newStatus);
     this.trigger( this.state );
   },
 

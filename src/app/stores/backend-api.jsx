@@ -239,6 +239,13 @@ var BackendAPI = {
     this.apiCallAuth(url, data, cb, token, 'DELETE');
   },
 
+  liveCheck: function (token, cb) {
+    // var url = this.backendRoot() + "/back/live/check";
+    // var data = '{}';
+    // this.apiCallAuth(url, data, cb, token, 'GET');
+    cb({error: 'not-found'});
+  },
+
 };
 
 // function progressHandlingFunction(e){

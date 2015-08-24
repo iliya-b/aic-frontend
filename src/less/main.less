@@ -68,3 +68,38 @@ body {
   border: 1px solid rgb(139, 195, 74);
   background: #dcedc8;
 }
+
+
+
+@keyframes liveIconMagnify {
+  from { transform: rotate(0deg) translateX(10px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(10px) rotate(-360deg); }
+}
+
+
+@jumpyWidth: 15px;
+@keyframes liveIconJumpy {
+  0% { transform: rotate(180deg) translateX(@jumpyWidth) rotate(-180deg); opacity: 1 }
+  80%   { transform: rotate(360deg) translateX(@jumpyWidth) rotate(-360deg); opacity: 1 }
+  90% { transform: rotate(360deg) translateX(@jumpyWidth) rotate(-360deg); opacity: 0 }
+  95% { transform: rotate(180deg) translateX(@jumpyWidth) rotate(-180deg); opacity: 0 }
+  100% { transform: rotate(180deg) translateX(@jumpyWidth) rotate(-180deg); opacity: 1 }
+}
+
+@sidesMinX: -10px;
+@sidesMaxX: 15px;
+@sidesMaxY: 8px;
+@keyframes liveIconSides {
+  0% { transform: translateX(@sidesMinX); }
+  25%   { transform: translateX(@sidesMaxX) ; }
+  50%   { transform: translateX(@sidesMaxX) translateY(@sidesMaxY) rotateY(-180deg); }
+  75%   { transform: translateX(@sidesMinX) translateY(@sidesMaxY)  rotateY(-180deg); }
+  100%   { transform: translateX(@sidesMinX) translateY(0px)  rotateY(0); }
+}
+
+
+
+@keyframes liveIconRotate {
+  from { transform: rotate(0deg) ; }
+  to   { transform: rotate(360deg) ; }
+}

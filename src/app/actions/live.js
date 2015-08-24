@@ -13,6 +13,7 @@ var LiveActions = Reflux.createActions({
   'loadState': {},
   'setState': {},
   'setDelayedRotation': {},
+  'liveCheck': {asyncResult: true},
   'liveStart': {asyncResult: true},
   'liveStop': {asyncResult: true},
   'setSensorBattery': {asyncResult: true},
@@ -24,6 +25,14 @@ var LiveActions = Reflux.createActions({
 });
 
 // Listeners for asynchronous Backend API calls
+
+LiveActions.liveCheck.listen(function () {
+  var token = Auth.getToken();
+  BackendAPI.liveCheck(token, (res) => {
+    this.completed( res );
+  });
+});
+
 LiveActions.liveStart.listen(function () {
   var token = Auth.getToken();
   BackendAPI.liveStart(token, (res) => {
