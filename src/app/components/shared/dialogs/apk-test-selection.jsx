@@ -5,7 +5,7 @@ var React = require('react');
 
 // Material design
 var mui = require('material-ui');
-var { Dialog, FlatButton } = mui;
+var { Dialog, FlatButton, Table, Paper } = mui;
 
 // APP
 var ObjectList = require('goby/components/shared/object-list/object-list.jsx');
@@ -22,11 +22,12 @@ var APKTestSelectionDialog = class extends React.Component{
 
     this.state = {
       apks: [],
+      apksData: [],
       selectedIndex: null,
     };
 
     this._onCancel = this._onCancel.bind(this);
-    this._onItemClick = this._onItemClick.bind(this);
+    this._onRowSelection = this._onRowSelection.bind(this);
     this._onSubmit = this._onSubmit.bind(this);
     this._onStateChange = this._onStateChange.bind(this);
 
@@ -61,21 +62,29 @@ var APKTestSelectionDialog = class extends React.Component{
 
     return (
       <Dialog title="APK Test Selection" actions={actions} {...other} ref="dialogIn" >
-        <div>
-          {this.state.apks.length > 0 ? (
-            <ObjectList selectedIndex={this.state.selectedIndex} style={styles.objectlist} objectListItems={this.state.apks} onItemTap={this._onItemClick} />
-          ) : '' }
-        </div>
+        <Paper>
+          <Table
+            height="100%"
+            columnOrder={['name']}
+            rowData={this.state.apksData}
+            showRowHover={true}
+            selectable={true}
+            multiSelectable={true}
+            canSelectAll={true}
+            deselectOnClickaway={false}
+            onRowSelection={this._onRowSelection} />
+        </Paper>
       </Dialog>
       );
   }
 
   show(){
     this.refs.dialogIn.show();
+    this.setState( { selectedIndex: [] } ); // FIXME: Previous selection
   }
 
-  _onItemClick(e, index) {
-    this.setState({selectedIndex: index});
+  _onRowSelection(selectedRows) {
+    this.setState({selectedIndex: selectedRows});
   }
 
   _onCancel() {
@@ -83,7 +92,9 @@ var APKTestSelectionDialog = class extends React.Component{
   }
 
   _onSubmit() {
-    this.props.onSelect(this.state.apks[this.state.selectedIndex]);
+    this.props.onSelect( this.state.apks.filter(function (item, index) {
+      return this.state.selectedIndex.indexOf(index) > -1;
+    }, this) );
     this.refs.dialogIn.dismiss();
   }
 
@@ -92,6 +103,9 @@ var APKTestSelectionDialog = class extends React.Component{
   }
 
   _onStateChange( state ){
+    state.apksData = state.apks.map(function (item) {
+      return { name: { content: item.name }, apkId:item.apkId, selected: item.checked };
+    });
     this.setState( state );
     switch(this.state.status){
       case 'reloadList':

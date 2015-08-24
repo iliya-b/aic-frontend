@@ -33,8 +33,8 @@ var ProjectCampaign = class extends React.Component{
     this.state = {
       res: '',
       device: null,
-      apk: null,
-      apkTest: null,
+      apk: [],
+      apkTest: [],
       campaign: CAMPAIGN_NOT_STARTED,
       errorMessage: ''
     };
@@ -47,11 +47,12 @@ var ProjectCampaign = class extends React.Component{
     this._onDeviceSelect = this._onDeviceSelect.bind(this);
     this._onAPKSelect = this._onAPKSelect.bind(this);
     this._onAPKTestSelect = this._onAPKTestSelect.bind(this);
-    this.getLauchFieldsDisable = this.getLauchFieldsDisable.bind(this);
+    // this.getLauchFieldsDisable = this.getLauchFieldsDisable.bind(this);
 
   }
 
   render() {
+    console.log(this.state);
     var style = {
       paperCenter: {
         textAlign: 'center',
@@ -59,8 +60,22 @@ var ProjectCampaign = class extends React.Component{
       },
     };
 
-    var results = this.state.res.length > 0 ? this.state.res.map(function (item) {
+    var results = (this.state.res && this.state.res.length > 0) ? this.state.res.map(function (item) {
       return <li>{item}</li>;
+    }) : null;
+
+    var apksRendered = this.state.apk ? this.state.apk.map(function (item, index) {
+      return <div key={index}>
+                <TextField floatingLabelText="APK Name" value={item.name} disabled={true} /><br />
+                <TextField floatingLabelText="APK ID" value={item.id} disabled={true} /><br />
+              </div>
+    }) : null;
+
+    var apksTestRendered = this.state.apkTest ? this.state.apkTest.map(function (item, index) {
+      return <div key={index}>
+                <TextField floatingLabelText="APK Test Name" value={item.name} disabled={true} /><br />
+                <TextField floatingLabelText="APK Test ID" value={item.id} disabled={true} /><br />
+              </div>
     }) : null;
 
     return (
@@ -85,12 +100,7 @@ var ProjectCampaign = class extends React.Component{
           </Tab>
           <Tab label="APK" >
             <Paper style={style.paperCenter}>
-              {this.state.apk ? (
-              <div>
-                <TextField floatingLabelText="APK Name" value={this.state.apk.name} disabled={true} /><br />
-                <TextField floatingLabelText="APK ID" value={this.state.apk.id} disabled={true} /><br />
-              </div>
-              ) : null }
+              {apksRendered}
               <FlatButton
                 label="Select an APK"
                 onTouchTap={this._onAPKSelectClick}
@@ -100,12 +110,7 @@ var ProjectCampaign = class extends React.Component{
           </Tab>
           <Tab label="APK Test" >
             <Paper style={style.paperCenter}>
-              {this.state.apkTest ? (
-              <div>
-                <TextField floatingLabelText="APK Test Name" value={this.state.apkTest.name} disabled={true} /><br />
-                <TextField floatingLabelText="APK Test ID" value={this.state.apkTest.id} disabled={true} /><br />
-              </div>
-              ) : null }
+              {apksTestRendered}
               <FlatButton
                 label="Select an APK Test"
                 onTouchTap={this._onAPKTestSelectClick}
@@ -122,14 +127,13 @@ var ProjectCampaign = class extends React.Component{
                     label="Launch campaign"
                     onTouchTap={this._onLauchCampaignSubmit}
                     linkButton={true}
-                    primary={true}
-                    disabled={this.getLauchFieldsDisable()} />
+                    primary={true} />
                   <br />
-                  <TextField ref="instanceName" floatingLabelText="Device Name" value={this.state.device ? this.state.device.name : ''} disabled={this.getLauchFieldsDisable()}  /><br />
-                  <TextField ref="instanceId" floatingLabelText="Device ID" value={this.state.device ? this.state.device.id : ''} disabled={this.getLauchFieldsDisable()} /><br />
-                  <TextField ref="APKId" floatingLabelText="APK ID" value={this.state.apk ? this.state.apk.id : ''} disabled={this.getLauchFieldsDisable()} /><br />
-                  <TextField ref="TestId" floatingLabelText="APK Test ID" value={this.state.apkTest ? this.state.apkTest.id : ''} disabled={this.getLauchFieldsDisable()} /><br />
-                  <TextField ref="ProjectId" floatingLabelText="Project ID" value={projectId ? projectId: ''} disabled={this.getLauchFieldsDisable()} /><br />
+                  <TextField ref="instanceName" floatingLabelText="Device Name" value={this.state.device ? this.state.device.name : ''} disabled={true}  /><br />
+                  <TextField ref="instanceId" floatingLabelText="Device ID" value={this.state.device ? this.state.device.id : ''} disabled={true} /><br />
+                  {apksRendered}
+                  {apksTestRendered}
+                  <TextField ref="ProjectId" floatingLabelText="Project ID" value={projectId ? projectId: ''} disabled={true} /><br />
                 </div>
               ) : null }
               {this.state.campaign == CAMPAIGN_STARTED ? (
@@ -211,13 +215,23 @@ var ProjectCampaign = class extends React.Component{
   }
 
   _onLauchCampaignSubmit(){
-    this.setState({campaign: CAMPAIGN_STARTED});
+
+    this.setState({campaign: 'CAMPAIGN_STARTED'});
+
     var instanceName = this.refs.instanceName.getValue();
     var instanceId = this.refs.instanceId.getValue();
-    var APKId = this.refs.APKId.getValue();
-    var TestId = this.refs.TestId.getValue();
+    // var APKId = this.refs.APKId.getValue();
+    // var TestId = this.refs.TestId.getValue();
+
+    var APKIds = this.state.apk.map(function (item) {
+      return item.apkId;
+    });
+    var TestIds = this.state.apkTest.map(function (item) {
+      return item.apkId;
+    });
+
     var ProjectId = this.refs.ProjectId.getValue();
-    Test.create(ProjectId, instanceId, instanceName, APKId, TestId, (res) => {
+    Test.create(ProjectId, instanceId, instanceName, APKIds, TestIds, (res) => {
       // .map(function (item) {
       //   return { text: item };
       // });
@@ -236,9 +250,9 @@ var ProjectCampaign = class extends React.Component{
     this.setState({campaign: CAMPAIGN_NOT_STARTED});
   }
 
-  getLauchFieldsDisable(){
-    return this.state.campaign == CAMPAIGN_STARTED;
-  }
+  // getLauchFieldsDisable(){
+  //   return this.state.campaign == CAMPAIGN_STARTED;
+  // }
 
   componentWillMount() {
     projectId = this.getProjectId();
