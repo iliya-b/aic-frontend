@@ -66,11 +66,11 @@ var LoginDialog = class extends React.Component{
     return (
       <Dialog title="Login" actions={loginActions} {...other} ref="loginDialogIn" onShow={this.cleanFields} >
         {this.state.loginSuccess ? successBox : (
-          <div>
+          <form onsubmit={this._onLoginSubmit}>
           {errorBox}
-          <TextField ref="loginEmail" changed={false} errorText={this.state.loginEmailError} onChange={this.checkFields.bind(this, 'loginEmail')} floatingLabelText="login" disabled={this.state.blockFields} /><br />
-          <TextField ref="loginPassword" changed={false}  errorText={this.state.loginPasswordError} onChange={this.checkFields.bind(this, 'loginPassword')} floatingLabelText="password" type="password"  disabled={this.state.blockFields} />
-          </div>
+          <TextField onEnterKeyDown={this._onLoginSubmit} ref="loginEmail" changed={false} errorText={this.state.loginEmailError} onChange={this.checkFields.bind(this, 'loginEmail')} floatingLabelText="login" disabled={this.state.blockFields} /><br />
+          <TextField onEnterKeyDown={this._onLoginSubmit} ref="loginPassword" changed={false}  errorText={this.state.loginPasswordError} onChange={this.checkFields.bind(this, 'loginPassword')} floatingLabelText="password" type="password"  disabled={this.state.blockFields} />
+          </form>
         )}
       </Dialog>
       );
