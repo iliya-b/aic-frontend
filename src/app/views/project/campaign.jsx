@@ -17,7 +17,8 @@ var {
   Tabs,
   Tab,
   CircularProgress,
-  FontIcon } = mui;
+  FontIcon,
+  RaisedButton } = mui;
 
 var projectId;
 
@@ -52,7 +53,6 @@ var ProjectCampaign = class extends React.Component{
   }
 
   render() {
-    console.log(this.state);
     var style = {
       paperCenter: {
         textAlign: 'center',
@@ -121,13 +121,15 @@ var ProjectCampaign = class extends React.Component{
           <Tab label="Launch" >
             <Paper style={style.paperCenter}>
 
-              {this.state.campaign == CAMPAIGN_NOT_STARTED ? (
+              {this.state.campaign === CAMPAIGN_NOT_STARTED ? (
                 <div>
-                  <FlatButton
+
+                  {this.state.campaign !== CAMPAIGN_STARTED ?
+                    <FlatButton
                     label="Launch campaign"
-                    onTouchTap={this._onLauchCampaignSubmit}
+                    onClick={this._onLauchCampaignSubmit}
                     linkButton={true}
-                    primary={true} />
+                    primary={true} /> : null }
                   <br />
                   <TextField ref="instanceName" floatingLabelText="Device Name" value={this.state.device ? this.state.device.name : ''} disabled={true}  /><br />
                   <TextField ref="instanceId" floatingLabelText="Device ID" value={this.state.device ? this.state.device.id : ''} disabled={true} /><br />
@@ -156,7 +158,7 @@ var ProjectCampaign = class extends React.Component{
                     ) : null }
                   {this.state.campaign == CAMPAIGN_ERROR ? (
                       <div style={{fontSize:'36px', color: 'red'}}>
-                        <FontIcon className="mdi mdi-close" style={{fontSize:'36px'}} />
+                        <FontIcon className="mdi mdi-close" style={{fontSize:'36px', color: 'red'}} />
                         <span>Error: {this.state.errorMessage}</span>
                       </div>
                   ) : null }
@@ -170,7 +172,7 @@ var ProjectCampaign = class extends React.Component{
                   <br />
                   <FlatButton
                       label="Start another campaign"
-                      onTouchTap={this._onLauchAnotherCampaignSubmit}
+                      onClick={this._onLauchAnotherCampaignSubmit}
                       linkButton={true}
                       primary={true} />
 
@@ -216,12 +218,10 @@ var ProjectCampaign = class extends React.Component{
 
   _onLauchCampaignSubmit(){
 
-    this.setState({campaign: 'CAMPAIGN_STARTED'});
+    this.setState({campaign: CAMPAIGN_STARTED});
 
     var instanceName = this.refs.instanceName.getValue();
     var instanceId = this.refs.instanceId.getValue();
-    // var APKId = this.refs.APKId.getValue();
-    // var TestId = this.refs.TestId.getValue();
 
     var APKIds = this.state.apk.map(function (item) {
       return item.apkId;
@@ -232,16 +232,20 @@ var ProjectCampaign = class extends React.Component{
 
     var ProjectId = this.refs.ProjectId.getValue();
     Test.create(ProjectId, instanceId, instanceName, APKIds, TestIds, (res) => {
-      // .map(function (item) {
-      //   return { text: item };
-      // });
-      // console.log(res.results);
-      // console.log(resultsFlatten);
-      if(res.error){
-        this.setState({res: [], campaign: CAMPAIGN_ERROR, errorMessage: res.errorMessage });
-      }else{
-        var resultsFlatten = [].concat.apply([],res.results);
+      var resultsFlatten;
+      if(res && res.hasOwnProperty('results')){
+        if(Array.isArray(res.results)){
+          resultsFlatten = [].concat.apply([],res.results);
+        }else{
+          resultsFlatten = res.results;
+        }
         this.setState({res: resultsFlatten, campaign: CAMPAIGN_SUCCESS});
+      }else{
+        if(res && res.hasOwnProperty('errorMessage')){
+          this.setState({res: [], campaign: CAMPAIGN_ERROR, errorMessage: res.errorMessage });
+        }else{
+          this.setState({res: [], campaign: CAMPAIGN_ERROR, errorMessage: 'Error: no response or badly formatted.' });
+        }
       }
     });
   }

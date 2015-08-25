@@ -33,9 +33,9 @@ var Test = {
       } else if((res.hasOwnProperty('code') && res.code === Test.ERROR_CONFLICT) ||
         (res.hasOwnProperty('status') && res.status === Test.ERROR_CONFLICT) ||
         (res.hasOwnProperty('error') && res.error.hasOwnProperty('code') && res.error.code === Test.ERROR_CONFLICT  ) ) {
-        cb( { results: "", error: true, errorMessage: 'Conflict'} );
+        cb( { error: true, errorMessage: 'Conflict'} );
       } else {
-        cb( { results: "", error: true, errorMessage:'Unknown'} );
+        cb( { error: true, errorMessage:'Unknown'} );
       }
     });
   }
