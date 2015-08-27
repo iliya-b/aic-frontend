@@ -27,18 +27,24 @@ var LiveScreen = class extends React.Component{
         width: '600px',
         height: '800px'
       },
-      iframeRotation: {},
+      iframeRotation: {
+        display: 'none',
+        height: '0px',
+        width: '0px',
+      },
     };
 
-    var vncUrl = '';
-    if (this.state.hasOwnProperty('live')) {
+    // var vncUrl = '';
+    if (this.state.hasOwnProperty('live') && this.state.live.status === 'LIVE_STATUS_CONNECTED' ) {
       style.iframeRotation =  this.state.live.delayedRotation === 'horizontal' ? style.iframeHorizontal :
                               this.state.live.delayedRotation === 'vertical' ? style.iframeVertical :
                               {};
 
-      vncUrl = "/vnc_auto_goby.html?host=" + this.state.live.screen.ip + "&port=" + this.state.live.screen.port ;
+      // vncUrl = "/vnc_auto_goby.html?host=" + this.state.live.screen.ip + "&port=" + this.state.live.screen.port ;
+      // style.iframeRotation.display = this.state.live.status === 'LIVE_STATUS_CONNECTED' ? 'initial' : 'none';
     }
-    return  <div>
+
+    return  <div style={style.iframeRotation}>
               {/*
               <iframe id="novnciframe" style={style.iframeRotation}
                 src={vncUrl}
@@ -46,7 +52,7 @@ var LiveScreen = class extends React.Component{
                 Browser not compatible.
               </iframe>
               */}
-              <canvas id="noVNC_canvas" width="640px" height="20px">
+              <canvas id="noVNC_canvas">
                   Canvas not supported.
               </canvas>
 

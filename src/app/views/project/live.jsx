@@ -37,7 +37,6 @@ var ProjectLive = class extends React.Component{
       },
       paperLive: {
         padding: Spacing.desktopGutter,
-        minHeight: (600 + Spacing.desktopGutter*2) + 'px',
       },
       error: {
         icon: {
@@ -71,9 +70,14 @@ var ProjectLive = class extends React.Component{
                       onTouchTap={this._onDebug.bind(this, 'check')} />
 
                   <FlatButton
-                      label="Start"
+                      label="Create"
                       primary={true}
                       onTouchTap={this._onDebug.bind(this, 'start')} />
+
+                  <FlatButton
+                      label="Load"
+                      primary={true}
+                      onTouchTap={this._onDebug.bind(this, 'load')} />
 
                   <FlatButton
                       label="Connect"
@@ -81,9 +85,16 @@ var ProjectLive = class extends React.Component{
                       onTouchTap={this._onDebug.bind(this, 'connect')} />
 
                   <FlatButton
+                      label="Close"
+                      primary={true}
+                      onTouchTap={this._onDebug.bind(this, 'close')} />
+
+                  <FlatButton
                       label="Set State"
                       primary={true}
                       onTouchTap={this._onDebug.bind(this, 'setState')} />
+
+                  <input onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur} />
 
                 </Paper>
                 <br />
@@ -106,9 +117,17 @@ var ProjectLive = class extends React.Component{
               {this.state && (this.state.live.status === 'LIVE_STATUS_CONNECTING' || this.state.live.status === 'LIVE_STATUS_CONNECTED') ? (
               <Paper style={style.paperLive}>
 
-                  <div>
+                    {this.state.live.status === 'LIVE_STATUS_CONNECTING' ? (
+                      <div style={style.paperCenter}>
+                        <CircularProgress mode="indeterminate" size={2} />
+                      </div>
+                    ) : null }
+
                     <LiveScreen />
-                    <LiveSensors />
+
+                    {this.state.live.status === 'LIVE_STATUS_CONNECTED' ? (
+                    <div>
+                    <LiveSensors onInputFocus={this._onInputFocus} onInputBlur={this._onInputBlur} />
                     <br />
                     <Paper style={style.paperCenter}>
                       <FlatButton
@@ -117,7 +136,8 @@ var ProjectLive = class extends React.Component{
                         disabled={this.state.live.status === 'LIVE_STATUS_STOPPING'}
                         onTouchTap={this._onLiveStop} />
                     </Paper>
-                  </div>
+                    </div>
+                    ) : null }
 
               </Paper>
               ) : null}
@@ -182,15 +202,35 @@ var ProjectLive = class extends React.Component{
       case 'connect':
         LiveActions.liveConnect(this.state.live.screen.ip, this.state.live.screen.port);
         break;
+      case 'close':
+        LiveActions.liveStop( this.state.live.screen.port );
+        break;
       case 'setState':
         var newState = this.state;
-        newState.live.status = 'LIVE_STATUS_CONNECTED';
+        newState.live.status = 'LIVE_STATUS_CONNECTING';
         newState.live.screen.ip = '10.2.0.156';
         newState.live.screen.port = '5901';
+        newState.live.screen.rotation = 'horizontal';
+        newState.live.delayedRotation = 'horizontal';
         LiveActions.setState(newState);
         break;
     }
 
+  }
+
+  _onInputFocus() {
+    console.log('focus');
+    if (!window.rfb) return;
+    console.log('rfb exists?');
+    window.rfb.get_keyboard().set_focused(false);
+    window.rfb.get_mouse().set_focused(false);
+  }
+
+  _onInputBlur() {
+      if (!window.rfb) return;
+
+      window.rfb.get_keyboard().set_focused(true);
+      window.rfb.get_mouse().set_focused(true);
   }
 
   componentDidMount() {

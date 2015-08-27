@@ -77,8 +77,8 @@ var LiveSensors = class extends React.Component{
               <span>{this.state.live ? this.state.live.screen.rotation : ''}</span>
               <br />
               <TogglableIcon style={style.sensorIcon} isOn={true} iconName="map-marker"  />
-              <TextField ref="lat" floatingLabelText="latitude" />
-              <TextField ref="lon" floatingLabelText="longitude" />
+              <TextField ref="lat" floatingLabelText="latitude" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur} />
+              <TextField ref="lon" floatingLabelText="longitude" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur} />
               <FlatButton
                 label="Submit"
                 primary={true}

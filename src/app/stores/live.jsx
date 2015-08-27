@@ -91,7 +91,7 @@ var LiveStore =  Reflux.createStore({
     this.updateState();
   },
 
-  onLiveStartFailed: function(errorMessage){
+  onLiveStartFailure: function(errorMessage){
     this.state.live.status = 'LIVE_STATUS_START_FAILED';
     this.state.live.message = errorMessage;
     this.updateState();
@@ -108,7 +108,7 @@ var LiveStore =  Reflux.createStore({
     this.updateState();
   },
 
-  onLiveConnectFailed: function(errorMessage){
+  onLiveConnectFailure: function(errorMessage){
     this.state.live.status = 'LIVE_STATUS_CONNECT_FAILED';
     this.state.live.message = errorMessage;
     this.updateState();
@@ -121,11 +121,7 @@ var LiveStore =  Reflux.createStore({
   },
 
   onLiveStopCompleted: function(){
-    this.state.live.screen.ip = null;
-    this.state.live.screen.port = null;
-    this.state.live.screen.rotation = null;
-    this.state.live.delayedRotation = null;
-    this.state.live.battery = 100;
+    this.resetMachine();
     this.state.live.status = 'LIVE_STATUS_STOPPED';
     this.updateState();
   },
@@ -173,13 +169,18 @@ var LiveStore =  Reflux.createStore({
 
   // Status Box
 
-  resetLive: function () {
-    this.state.live = {};
-    this.state.live.screen = {}
+  resetMachine: function () {
     this.state.live.screen.ip = null;
     this.state.live.screen.port = null;
     this.state.live.screen.rotation = null;
     this.state.live.delayedRotation = null;
+    this.state.live.battery = 100;
+  },
+
+  resetLive: function () {
+    this.state.live = {};
+    this.state.live.screen = {}
+    this.resetMachine();
     this.state.live.recording = false;
     this.state.live.rotationSets = {
       horizontal: { x: 0, y: 5.9, z: 0, next: 'vertical'},

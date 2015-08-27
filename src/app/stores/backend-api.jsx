@@ -1,6 +1,6 @@
 'use strict';
 
-var AppConfig = require('../configs/app-config.jsx');
+var AppConfig = require('goby/configs/app-config.jsx');
 var url = require('url') ;
 
 var BackendAPI = {
@@ -30,7 +30,14 @@ var BackendAPI = {
       // timeout: AppConfig.backend.timeout
     })
     .always(function(data, textStatus, errorThrown) {
-      cb(data, textStatus, errorThrown);
+      // User is not logged in
+      if (textStatus === 'error' && errorThrown === 'Unauthorized') {
+        // TODO: Must be changed to state etc...
+        var { Auth } = require('./auth.jsx');
+        Auth.logout();
+      }else{
+        cb(data, textStatus, errorThrown);
+      }
     });
   },
 
