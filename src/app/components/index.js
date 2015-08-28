@@ -7,12 +7,15 @@ module.exports = {
   /* Project */
   APKUploadDialog: require('./project/apk-upload-dialog.jsx'),
   APKTestUploadDialog: require('./project/apk-test-upload-dialog.jsx'),
+  AreaStatus: require('./project/area-status.jsx'),
+  BoxStatus: require('./project/box-status.jsx'),
 
     /* Live */
     LiveSensors: require('./project/live-sensors.jsx'),
     LiveScreen: require('./project/live-screen.jsx'),
-    LiveStatus: require('./project/live-status.jsx'),
-    LiveBoxStatus: require('./project/live-box-status.jsx'),
+
+    /* Campaign */
+
 
   /* Shared */
   ObjectList: require('./shared/object-list/object-list.jsx'),

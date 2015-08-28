@@ -1,15 +1,11 @@
+'use strict';
+
+// React
 var React = require('react');
 
+// Material design
 var mui = require('material-ui');
 var { Spacing } = mui.Styles;
-
-var { APKSelectionDialog,
-      APKTestSelectionDialog,
-      DeviceSelectionDialog,
-      ObjectList } = require('../../components/');
-
-var { Test } = require('../../stores/');
-
 var {
   FlatButton,
   Paper,
@@ -20,12 +16,16 @@ var {
   FontIcon,
   RaisedButton } = mui;
 
-var projectId;
+// APP
+var { APKSelectionDialog,
+      APKTestSelectionDialog,
+      DeviceSelectionDialog,
+      ObjectList,
+      AreaStatus,
+      AppUtils } = require('goby/components');
 
-var CAMPAIGN_NOT_STARTED = "CAMPAIGN_NOT_STARTED";
-var CAMPAIGN_STARTED     = "CAMPAIGN_STARTED";
-var CAMPAIGN_ERROR       = "CAMPAIGN_ERROR";
-var CAMPAIGN_SUCCESS     = "CAMPAIGN_SUCCESS";
+var { CampaignStore } = require('goby/stores');
+var { CampaignActions } = require('goby/actions');
 
 var ProjectCampaign = class extends React.Component{
 
@@ -36,7 +36,7 @@ var ProjectCampaign = class extends React.Component{
       device: null,
       apk: [],
       apkTest: [],
-      campaign: CAMPAIGN_NOT_STARTED,
+      campaign: 'CAMPAIGN_NOT_STARTED',
       errorMessage: ''
     };
 
@@ -49,7 +49,7 @@ var ProjectCampaign = class extends React.Component{
     this._onAPKSelect = this._onAPKSelect.bind(this);
     this._onAPKTestSelect = this._onAPKTestSelect.bind(this);
     // this.getLauchFieldsDisable = this.getLauchFieldsDisable.bind(this);
-
+    this._onStateChange = this._onStateChange.bind(this);
   }
 
   render() {
@@ -80,6 +80,9 @@ var ProjectCampaign = class extends React.Component{
 
     return (
       <div>
+
+        <AreaStatus typeName='campaign' />
+
         <h2>Campaign</h2>
 
         <Tabs>
@@ -121,10 +124,10 @@ var ProjectCampaign = class extends React.Component{
           <Tab label="Launch" >
             <Paper style={style.paperCenter}>
 
-              {this.state.campaign === CAMPAIGN_NOT_STARTED ? (
+              {this.state.campaign === 'CAMPAIGN_NOT_STARTED' ? (
                 <div>
 
-                  {this.state.campaign !== CAMPAIGN_STARTED ?
+                  {this.state.campaign !== 'CAMPAIGN_STARTED' ?
                     <FlatButton
                     label="Launch campaign"
                     onClick={this._onLauchCampaignSubmit}
@@ -135,10 +138,10 @@ var ProjectCampaign = class extends React.Component{
                   <TextField ref="instanceId" floatingLabelText="Device ID" value={this.state.device ? this.state.device.id : ''} disabled={true} /><br />
                   {apksRendered}
                   {apksTestRendered}
-                  <TextField ref="ProjectId" floatingLabelText="Project ID" value={projectId ? projectId: ''} disabled={true} /><br />
+                  <TextField ref="ProjectId" floatingLabelText="Project ID" value={''} disabled={true} /><br />
                 </div>
               ) : null }
-              {this.state.campaign == CAMPAIGN_STARTED ? (
+              {this.state.campaign == 'CAMPAIGN_STARTED' ? (
                 <div>
                   <p>Executing Campaign</p>
                   <small>(This process can take several minutes)</small>
@@ -146,17 +149,17 @@ var ProjectCampaign = class extends React.Component{
                   <CircularProgress mode="indeterminate" />
                 </div>
               ) : null }
-              {(this.state.campaign == CAMPAIGN_SUCCESS ||
-                this.state.campaign == CAMPAIGN_ERROR) ? (
+              {(this.state.campaign == 'CAMPAIGN_SUCCESS' ||
+                this.state.campaign == 'CAMPAIGN_ERROR') ? (
                 <div>
                   <br />
-                  {this.state.campaign == CAMPAIGN_SUCCESS ? (
+                  {this.state.campaign == 'CAMPAIGN_SUCCESS' ? (
                       <div style={{fontSize:'36px', color: 'green'}}>
                         <FontIcon className="mdi mdi-check" style={{fontSize:'36px'}} />
                         <span>Campaign successfully run</span>
                       </div>
                     ) : null }
-                  {this.state.campaign == CAMPAIGN_ERROR ? (
+                  {this.state.campaign == 'CAMPAIGN_ERROR' ? (
                       <div style={{fontSize:'36px', color: 'red'}}>
                         <FontIcon className="mdi mdi-close" style={{fontSize:'36px', color: 'red'}} />
                         <span>Error: {this.state.errorMessage}</span>
@@ -184,9 +187,9 @@ var ProjectCampaign = class extends React.Component{
           </Tab>
         </Tabs>
 
-        <DeviceSelectionDialog projectId={projectId} onSelect={this._onDeviceSelect} ref="deviceDialog" />
-        <APKSelectionDialog projectId={projectId} onSelect={this._onAPKSelect} ref="APKDialog" />
-        <APKTestSelectionDialog projectId={projectId} onSelect={this._onAPKTestSelect} ref="APKTestDialog" />
+        <DeviceSelectionDialog projectId={null} onSelect={this._onDeviceSelect} ref="deviceDialog" />
+        <APKSelectionDialog projectId={null} onSelect={this._onAPKSelect} ref="APKDialog" />
+        <APKTestSelectionDialog projectId={null} onSelect={this._onAPKTestSelect} ref="APKTestDialog" />
 
       </div>
     );
@@ -218,65 +221,63 @@ var ProjectCampaign = class extends React.Component{
 
   _onLauchCampaignSubmit(){
 
-    this.setState({campaign: CAMPAIGN_STARTED});
+    // this.setState({campaign: CAMPAIGN_STARTED});
 
-    var instanceName = this.refs.instanceName.getValue();
-    var instanceId = this.refs.instanceId.getValue();
+    // var instanceName = this.refs.instanceName.getValue();
+    // var instanceId = this.refs.instanceId.getValue();
 
-    var APKIds = this.state.apk.map(function (item) {
-      return item.apkId;
-    });
-    var TestIds = this.state.apkTest.map(function (item) {
-      return item.apkId;
-    });
+    // var APKIds = this.state.apk.map(function (item) {
+    //   return item.apkId;
+    // });
+    // var TestIds = this.state.apkTest.map(function (item) {
+    //   return item.apkId;
+    // });
 
-    var ProjectId = this.refs.ProjectId.getValue();
-    Test.create(ProjectId, instanceId, instanceName, APKIds, TestIds, (res) => {
-      var resultsFlatten;
-      if(res && res.hasOwnProperty('results')){
-        if(Array.isArray(res.results)){
-          resultsFlatten = [].concat.apply([],res.results);
-        }else{
-          resultsFlatten = res.results;
-        }
-        this.setState({res: resultsFlatten, campaign: CAMPAIGN_SUCCESS});
-      }else{
-        if(res && res.hasOwnProperty('errorMessage')){
-          this.setState({res: [], campaign: CAMPAIGN_ERROR, errorMessage: res.errorMessage });
-        }else{
-          this.setState({res: [], campaign: CAMPAIGN_ERROR, errorMessage: 'Error: no response or badly formatted.' });
-        }
-      }
-    });
+    // var ProjectId = this.refs.ProjectId.getValue();
+    // Test.create(ProjectId, instanceId, instanceName, APKIds, TestIds, (res) => {
+    //   var resultsFlatten;
+    //   if(res && res.hasOwnProperty('results')){
+    //     if(Array.isArray(res.results)){
+    //       resultsFlatten = [].concat.apply([],res.results);
+    //     }else{
+    //       resultsFlatten = res.results;
+    //     }
+    //     this.setState({res: resultsFlatten, campaign: CAMPAIGN_SUCCESS});
+    //   }else{
+    //     if(res && res.hasOwnProperty('errorMessage')){
+    //       this.setState({res: [], campaign: CAMPAIGN_ERROR, errorMessage: res.errorMessage });
+    //     }else{
+    //       this.setState({res: [], campaign: CAMPAIGN_ERROR, errorMessage: 'Error: no response or badly formatted.' });
+    //     }
+    //   }
+    // });
   }
 
   _onLauchAnotherCampaignSubmit(){
-    this.setState({campaign: CAMPAIGN_NOT_STARTED});
+    // this.setState({campaign: CAMPAIGN_NOT_STARTED});
   }
 
   // getLauchFieldsDisable(){
   //   return this.state.campaign == CAMPAIGN_STARTED;
   // }
 
-  componentWillMount() {
-    projectId = this.getProjectId();
-    if (projectId !== null) {
-    } else {
-      // something really wrong happened
-      // TODO: treat error
-    }
+  _onStateChange( state ){
+    this.setState( state );
   }
 
-  getProjectId() {
-    var routerParams = this.context.router.getCurrentParams();
-    if (routerParams.hasOwnProperty('projectId')) {
-      return routerParams.projectId;
-    } else {
-      return null;
-    }
+  componentDidMount() {
+    var projectId = AppUtils.getProjectIdFromRouter(this.context.router);
+    this.unsubscribe = CampaignStore.listen( this._onStateChange );
+    CampaignActions.setProjectId(projectId);
+  }
+
+  componentWillUnmount() {
+    // Subscribe and unsubscribe because we don't want to use the mixins
+    this.unsubscribe();
   }
 
 };
+
 
 ProjectCampaign.contextTypes = {
   router: React.PropTypes.func,

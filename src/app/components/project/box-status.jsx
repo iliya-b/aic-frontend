@@ -10,7 +10,7 @@ var { FontIcon, Paper } = mui;
 // APP
 var AppUtils = require('goby/components/shared/app-utils.jsx');
 
-var LiveBoxStatus = class extends React.Component{
+var BoxStatus = class extends React.Component{
 
   render() {
     var {
@@ -418,8 +418,8 @@ var LiveBoxStatus = class extends React.Component{
 
 };
 
-LiveBoxStatus.contextTypes = {
+BoxStatus.contextTypes = {
   muiTheme: React.PropTypes.object
 }
 
-module.exports = LiveBoxStatus;
+module.exports = BoxStatus;

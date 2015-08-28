@@ -9,17 +9,24 @@ var { Spacing } = mui.Styles;
 var { FontIcon, Paper } = mui;
 
 // APP
-var { LiveStore } = require('goby/stores');
-var { LiveActions } = require('goby/actions');
+var GobyStores = require('goby/stores');
+var GobyActions = require('goby/actions');
 var LiveBoxStatus = require('goby/components/project/live-box-status.jsx');
 var AppUtils = require('goby/components/shared/app-utils.jsx');
 
-var LiveStatus = class extends React.Component{
+var loadedStore;
+var loadedActions;
+
+var AreaStatus = class extends React.Component{
 
   constructor(props) {
     super(props);
     this._onStateChange = this._onStateChange.bind(this);
     this.state = {};
+    if (this.props.typeName){
+      loadedStore = GobyStores[ AppUtils.capitalize(this.props.typeName) + 'Store'];
+      loadedActions = GobyActions[ AppUtils.capitalize(this.props.typeName) + 'Actions'];
+    }
   }
 
   render() {
@@ -32,9 +39,9 @@ var LiveStatus = class extends React.Component{
       }
     };
 
-    if (this.state.hasOwnProperty('live')) {
-      boxesTags = this.state.live.boxes.map(function (item, index) {
-        return item.enabled ? <LiveBoxStatus key={index} typeName={item.typeName} status={item.status} isFirst={item.isFirst} isLast={item.isLast} /> : null;
+    if (this.state.hasOwnProperty(this.props.typeName)) {
+      boxesTags = this.state[this.props.typeName].boxes.map(function (item, index) {
+        return item.enabled ? <LiveBoxStatus key={index} typeName={item.typeName} status={item.status} isFirst={item.isFirst} isLast={item.isLast} objectName={item.objectName} /> : null;
       });
     }
 
@@ -48,8 +55,8 @@ var LiveStatus = class extends React.Component{
   }
 
   componentDidMount() {
-    this.unsubscribe = LiveStore.listen( this._onStateChange );
-    LiveActions.loadState();
+    this.unsubscribe = loadedStore.listen( this._onStateChange );
+    loadedActions.loadState();
   }
 
   componentWillUnmount() {
@@ -59,9 +66,9 @@ var LiveStatus = class extends React.Component{
 
 };
 
-LiveStatus.contextTypes = {
+AreaStatus.contextTypes = {
   muiTheme: React.PropTypes.object,
   router: React.PropTypes.func
 }
 
-module.exports = LiveStatus;
+module.exports = AreaStatus;

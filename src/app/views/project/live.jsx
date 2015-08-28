@@ -12,7 +12,7 @@ var { Tabs, Tab, Paper, FlatButton, CircularProgress } = mui;
 var { AppUtils,
       LiveScreen,
       LiveSensors,
-      LiveStatus } = require('goby/components');
+      AreaStatus } = require('goby/components');
 var { LiveStore } = require('goby/stores');
 var { LiveActions } = require('goby/actions');
 var AppConfig = require('goby/configs/app-config.jsx');
@@ -51,7 +51,7 @@ var ProjectLive = class extends React.Component{
 
     return  <div>
 
-              <LiveStatus />
+              <AreaStatus typeName='live' />
 
               {/* Debugging */}
               {AppConfig.debug ? (

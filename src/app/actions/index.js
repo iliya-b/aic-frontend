@@ -4,4 +4,5 @@ module.exports = {
   APKTestActions: require('./apk-test.js'),
   APKTestUploadActions: require('./apk-test-upload.js'),
   LiveActions: require('./live.js'),
+  CampaignActions: require('./campaign.js'),
 };
