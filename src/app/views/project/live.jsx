@@ -22,10 +22,6 @@ var ProjectLive = class extends React.Component{
   constructor(props) {
     super(props);
     this._onStateChange = this._onStateChange.bind(this);
-    this._onLiveStart = this._onLiveStart.bind(this);
-    this._onLiveStop = this._onLiveStop.bind(this);
-    // this._onDebug = this._onDebug.bind(this);
-    // this._onLiveAction = this._onLiveAction.bind(this);
   }
 
   render() {
@@ -67,32 +63,32 @@ var ProjectLive = class extends React.Component{
                   <FlatButton
                       label="Search"
                       primary={true}
-                      onTouchTap={this._onDebug.bind(this, 'check')} />
+                      onTouchTap={this._onLiveAction.bind(this, 'check')} />
 
                   <FlatButton
                       label="Create"
                       primary={true}
-                      onTouchTap={this._onDebug.bind(this, 'start')} />
+                      onTouchTap={this._onLiveAction.bind(this, 'start')} />
 
                   <FlatButton
                       label="Load"
                       primary={true}
-                      onTouchTap={this._onDebug.bind(this, 'load')} />
+                      onTouchTap={this._onLiveAction.bind(this, 'load')} />
 
                   <FlatButton
                       label="Connect"
                       primary={true}
-                      onTouchTap={this._onDebug.bind(this, 'connect')} />
+                      onTouchTap={this._onLiveAction.bind(this, 'connect')} />
 
                   <FlatButton
                       label="Close"
                       primary={true}
-                      onTouchTap={this._onDebug.bind(this, 'close')} />
+                      onTouchTap={this._onLiveAction.bind(this, 'close')} />
 
                   <FlatButton
                       label="Set State"
                       primary={true}
-                      onTouchTap={this._onDebug.bind(this, 'setState')} />
+                      onTouchTap={this._onLiveAction.bind(this, 'setState')} />
 
                   <input onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur} />
 
@@ -134,7 +130,7 @@ var ProjectLive = class extends React.Component{
                         label="Stop Live"
                         primary={true}
                         disabled={this.state.live.status === 'LIVE_STATUS_STOPPING'}
-                        onTouchTap={this._onLiveStop} />
+                        onTouchTap={this._onLiveAction.bind(this, 'close')} />
                     </Paper>
                     </div>
                     ) : null }
@@ -164,14 +160,6 @@ var ProjectLive = class extends React.Component{
     this.setState( state );
   }
 
-  _onLiveStart(){
-    LiveActions.liveStart();
-  }
-
-  _onLiveStop(){
-    LiveActions.liveStop( this.state.live.screen.port );
-  }
-
   _onLiveAction(actionName){
     // console.log(arguments);
     switch(actionName){
@@ -187,25 +175,11 @@ var ProjectLive = class extends React.Component{
       case 'connect':
         LiveActions.liveConnect(this.state.live.screen.ip, this.state.live.screen.port);
         break;
-    }
-  }
-
-  _onDebug(actionName){
-    // console.log(arguments);
-    switch(actionName){
-      case 'check':
-        LiveActions.liveCheck();
-        break;
-      case 'start':
-        LiveActions.liveStart();
-        break;
-      case 'connect':
-        LiveActions.liveConnect(this.state.live.screen.ip, this.state.live.screen.port);
-        break;
       case 'close':
         LiveActions.liveStop( this.state.live.screen.port );
         break;
       case 'setState':
+        if (!AppConfig.debug) { return; }
         var newState = this.state;
         newState.live.status = 'LIVE_STATUS_CONNECTING';
         newState.live.screen.ip = '10.2.0.156';
@@ -215,7 +189,6 @@ var ProjectLive = class extends React.Component{
         LiveActions.setState(newState);
         break;
     }
-
   }
 
   _onInputFocus() {

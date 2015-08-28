@@ -53,13 +53,15 @@ var LoginDialog = class extends React.Component{
         key="loginActionCancel"
         label={this.state.loginSuccess ? 'Close' : 'Cancel'}
         secondary={true}
-        onTouchTap={this._onLoginCancel} />,
+        onTouchTap={this._onLoginCancel}
+        className="btLoginCancel"  />,
       <FlatButton
         key="loginActionSubmit"
         label="Submit"
         primary={true}
         onTouchTap={this._onLoginSubmit}
-        style={styles.submit} />
+        style={styles.submit}
+        className="btLoginSubmit"  />
     ];
 
     //style={this.mergeAndPrefix(styles.root,style)}
@@ -68,8 +70,8 @@ var LoginDialog = class extends React.Component{
         {this.state.loginSuccess ? successBox : (
           <form onsubmit={this._onLoginSubmit}>
           {errorBox}
-          <TextField onEnterKeyDown={this._onLoginSubmit} ref="loginEmail" changed={false} errorText={this.state.loginEmailError} onChange={this.checkFields.bind(this, 'loginEmail')} floatingLabelText="login" disabled={this.state.blockFields} /><br />
-          <TextField onEnterKeyDown={this._onLoginSubmit} ref="loginPassword" changed={false}  errorText={this.state.loginPasswordError} onChange={this.checkFields.bind(this, 'loginPassword')} floatingLabelText="password" type="password"  disabled={this.state.blockFields} />
+          <TextField className="loginEmail" onEnterKeyDown={this._onLoginSubmit} ref="loginEmail" changed={false} errorText={this.state.loginEmailError} onChange={this.checkFields.bind(this, 'loginEmail')} floatingLabelText="login" disabled={this.state.blockFields} /><br />
+          <TextField className="loginPassword" onEnterKeyDown={this._onLoginSubmit} ref="loginPassword" changed={false}  errorText={this.state.loginPasswordError} onChange={this.checkFields.bind(this, 'loginPassword')} floatingLabelText="password" type="password"  disabled={this.state.blockFields} />
           </form>
         )}
       </Dialog>

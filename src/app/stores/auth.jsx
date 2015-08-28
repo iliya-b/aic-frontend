@@ -2,6 +2,8 @@
 
 var React = require('react');
 
+var url = require('url');
+
 var AppConfig = require('../configs/app-config.jsx');
 var BackendAPI = require('./backend-api.jsx');
 
@@ -84,23 +86,56 @@ var Auth = {
 
   onChange: function () {},
 
-  requireAuth: function (transition) {
+  requireAuth: function (routerOrTransition) {
     if (!Auth.loggedIn()) {
-      this.redirectTo(transition, 'home', {'nextPath' : transition.path});
+      this.redirectTo(routerOrTransition, 'home', {'nextPath' : this.getPath(routerOrTransition)});
     }
   },
 
-  userHome: function (transition) {
+  // userHome: function (transition) {
+  //   if (Auth.loggedIn()) {
+  //     this.redirectTo(transition, AppConfig.userHome);
+  //   }
+  // },
+
+  redirectIfLogged: function (routerOrTransition) {
     if (Auth.loggedIn()) {
-      this.redirectTo(transition, AppConfig.userHome);
+      var urlQuery = this.getQuery(routerOrTransition);
+      var nextPath = urlQuery ? urlQuery.nextPath : null;
+      if (nextPath) {
+        // Go to the visited page that required authentication
+        this.redirectTo(routerOrTransition, nextPath);
+      } else {
+        // Go to the default user home
+        this.redirectTo(routerOrTransition, AppConfig.userHome);
+      }
     }
   },
 
-  redirectTo: function (transition, page, query) {
-    if (typeof transition.redirect == 'function'){
-      transition.redirect(page, {}, query);
-    }else if (typeof transition.transitionTo  == 'function'){
-      transition.transitionTo(page, {}, query);
+  getQuery: function (routerOrTransition) {
+    var currentPath = this.getPath(routerOrTransition);
+    var urlParsed = url.parse(currentPath, true);
+    return urlParsed.query;
+  },
+
+  getPath: function (routerOrTransition) {
+    if (routerOrTransition.hasOwnProperty('path')){
+      return routerOrTransition.path;
+    // transition case
+    }else if(typeof routerOrTransition.getCurrentPath  === 'function'){
+      return routerOrTransition.getCurrentPath();
+    }else{
+      return null;
+    }
+  },
+
+  redirectTo: function (routerOrTransition, page, query) {
+    // router case
+    if (typeof routerOrTransition.redirect == 'function'){
+      routerOrTransition.redirect(page, {}, query);
+    // transition case
+    }else if (typeof routerOrTransition.transitionTo  == 'function'){
+      routerOrTransition.transitionTo(page, {}, query);
     }
   }
 

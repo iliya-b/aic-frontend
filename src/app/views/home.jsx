@@ -14,6 +14,7 @@ var Home = class extends React.Component {
     super(props);
     this._onLoginClick = this._onLoginClick.bind(this);
     this._onSignUpClick = this._onSignUpClick.bind(this);
+    // this.willTransitionTo = this.willTransitionTo.bind(this);
   }
 
   render() {
@@ -77,7 +78,8 @@ var Home = class extends React.Component {
               onTouchTap={this._onLoginClick}
               linkButton={true}
               style={styles.buttonStyle}
-              primary={true} />
+              primary={true}
+              className="btLogin" />
             <LoginDialog ref="loginDialog" />
             <RaisedButton
               label="Sign Up"
@@ -99,6 +101,11 @@ var Home = class extends React.Component {
     this.refs.signUpDialog.show();
   }
 
+  // // Example with componentWillMount
+  // componentWillMount(){
+  //   Auth.redirectIfLogged(this.context.router);
+  // }
+
 };
 
 Home.contextTypes = {
@@ -107,7 +114,7 @@ Home.contextTypes = {
 }
 
 Home.willTransitionTo = function(transition) {
-  Auth.userHome(transition);
+  Auth.redirectIfLogged(transition);
 };
 
 module.exports = Home;

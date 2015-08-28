@@ -1,4 +1,9 @@
+'use strict';
+
+// React
 var React = require('react');
+
+// Material UI
 var mui = require('material-ui');
 
 var {
@@ -20,13 +25,16 @@ var {
 
 var Menu = require('material-ui/lib/menus/menu.js');
 var MenuItem = require('material-ui/lib/menus/menu-item.js');
-var LiveBoxStatus = require('goby/components/project/live-box-status.jsx');
 
 var {StylePropable, StyleResizable} = mui.Mixins;
 
 var Typography = mui.Styles.Typography;
-
 var ThemeManager = new mui.Styles.ThemeManager();
+
+// APP
+
+var LiveBoxStatus = require('goby/components/project/live-box-status.jsx');
+var SessionEndedDialog = require('goby/components/main/session-ended-dialog.jsx');
 
 var ThemesPage = React.createClass({
 
@@ -336,6 +344,14 @@ var ThemesPage = React.createClass({
               </div>
             </ClearFix>
 
+            <ClearFix>
+
+              <RaisedButton label="Session Ended Dialog" ref="btSessionEnded" primary={true} onClick={this.handleClickSessionEnded} />
+              <SessionEndedDialog ref="sessionEndedDialog" />
+
+            </ClearFix>
+
+
             </div>
         );
     },
@@ -348,6 +364,10 @@ var ThemesPage = React.createClass({
       ThemeManager.setTheme(ThemeManager.types.DARK);
     }
     this.setState({isThemeDark: !this.state.isThemeDark});
+  },
+
+  handleClickSessionEnded: function() {
+    this.refs.sessionEndedDialog.show();
   },
 
   handleAction: function() {
