@@ -1,14 +1,22 @@
+'use strict';
+
+// React
 var React = require('react');
-var mui = require('material-ui');
-var ThemeManager = new mui.Styles.ThemeManager();
+
+// Router
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
-// var GobyPalette = require('../configs/goby-palette.jsx');
-var GobyTheme = require('../configs/goby-theme.jsx');
-var { FullWidthSection } = require('../components/');
-var Colors = mui.Styles.Colors;
 
+// Material design
+var mui = require('material-ui');
+var ThemeManager = new mui.Styles.ThemeManager();
+var Colors = mui.Styles.Colors;
 var { RaisedButton } = mui;
+
+// APP
+var AppConfig = require('goby/configs/app-config.jsx');
+var GobyTheme = require('goby/configs/goby-theme.jsx');
+var { FullWidthSection } = require('goby/components');
 
 var Main = React.createClass({
 
@@ -64,7 +72,10 @@ var Main = React.createClass({
         <RouteHandler />
         <FullWidthSection useContent={true} style={styles.footer}>
           <p style={styles.p}>COPYRIGHT © AiC</p>
+
+          {AppConfig.debug ? (
           <RaisedButton label="Test Theme" primary={true}  onClick={this._onThemeClick} />
+          ) : null }
         </FullWidthSection>
       </div>
 

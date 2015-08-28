@@ -34,7 +34,11 @@ var AppUtils = {
     } else {
       return null; // TODO: error handling
     }
-  }
+  },
+
+  capitalize: function(word) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  },
 
 
 };

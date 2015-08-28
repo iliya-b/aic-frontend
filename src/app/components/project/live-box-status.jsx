@@ -7,6 +7,9 @@ var React = require('react');
 var mui = require('material-ui');
 var { FontIcon, Paper } = mui;
 
+// APP
+var AppUtils = require('goby/components/shared/app-utils.jsx');
+
 var LiveBoxStatus = class extends React.Component{
 
   render() {
@@ -16,10 +19,12 @@ var LiveBoxStatus = class extends React.Component{
       subStatus,
       isLast,
       isFirst,
+      objectName,
       ...other
     } = this.props;
 
     var message;
+    var statusIcons;
     var colorIcon = (status === 'disable' ? this.context.muiTheme.palette.disabledColor :
                      status === 'fail' ? this.context.muiTheme.palette.errorColor :
                      this.context.muiTheme.palette.accent1Color );
@@ -72,6 +77,7 @@ var LiveBoxStatus = class extends React.Component{
       },
     };
 
+    objectName = objectName ? objectName : 'session';
     iconsNMessages = {
       'success': 'mdi mdi-check',
       'fail': 'mdi mdi-close',
@@ -103,9 +109,9 @@ var LiveBoxStatus = class extends React.Component{
                     }],
                 },
       'create': {
-                  'success': 'Session created',
-                  'fail': 'Session not created',
-                  '': 'Creating new session',
+                  'success': AppUtils.capitalize(objectName) + ' created',
+                  'fail': AppUtils.capitalize(objectName) + ' not created',
+                  '': 'Creating new ' + objectName,
                   'icons': [{
                       'className': 'mdi mdi-cloud',
                       'style': {
@@ -267,15 +273,123 @@ var LiveBoxStatus = class extends React.Component{
                   'fail': 'Session not ready' ,
                   '': 'Preparing session',
                 },
+      'prepare': {
+                  'success': 'Campaign ready',
+                  'fail': 'Prepare failed',
+                  '': 'Preparing campaign',
+                  'icons':[{
+                      'className': 'mdi mdi-android',
+                      'style': {
+                        color: colorAndro,
+                        fontSize: '15px',
+                        position: 'absolute',
+                        top: '22px',
+                        left: '27px',
+                      },
+                    },{
+                      'className': 'mdi mdi-cellphone-android',
+                      'style': {
+                        color: colorAndro,
+                        fontSize: '35px',
+                        position: 'absolute',
+                        top: '13px',
+                        left: '17px',
+                      },
+                    },{
+                      'className': 'mdi mdi-file',
+                      'style': {
+                        color: colorAndro,
+                        fontSize: '35px',
+                        position: 'absolute',
+                        top: '13px',
+                        left: '48px',
+                      },
+                    },{
+                      'className': ( status === 'success' ? 'mdi mdi-check' : ( status === 'fail' || status === 'not-found' ) ? 'mdi mdi-close' : 'mdi mdi-magnify' ) ,
+                      'style': {
+                        color: ( status === 'not-found' ? this.context.muiTheme.palette.errorColor  : colorIcon) ,
+                        fontSize: '30px',
+                        position: 'absolute',
+                        top: (status === 'doing' ? '18px' : '18px'),
+                        left: (status === 'doing' ? '39px' : '36px'),
+                        textShadow: '-1px -1px #FFFFFF,1px -1px #FFFFFF,-1px 1px #FFFFFF,1px 1px #FFFFFF',
+                        animation: ( status === 'doing' ? 'liveIconMagnify 5s linear infinite' : 'initial'),
+                      },
+                    }],
+                },
+      'run': {
+                  'success': 'Tests finished',
+                  'fail': 'Tests failed to run',
+                  '': 'Running tests',
+                  'icons':[{
+                      'className': 'mdi mdi-android',
+                      'style': {
+                        color: colorAndro,
+                        fontSize: '35px',
+                        position: 'absolute',
+                        top: '13px',
+                        left: '32px',
+                      },
+                    },{
+                      'className': ( status === 'success' ? 'mdi mdi-check' : ( status === 'fail' || status === 'not-found' ) ? 'mdi mdi-close' : 'mdi mdi-settings' ) ,
+                      'style': {
+                        color: ( status === 'not-found' ? this.context.muiTheme.palette.errorColor  : colorIcon) ,
+                        fontSize: '30px',
+                        position: 'absolute',
+                        top: (status === 'doing' || status === 'disable' ? '24px' : '11px'),
+                        left: (status === 'doing' || status === 'disable' ? '46px' : '46px'),
+                        textShadow: '-1px -1px #FFFFFF,1px -1px #FFFFFF,-1px 1px #FFFFFF,1px 1px #FFFFFF',
+                        animation: ( status === 'doing' ? 'liveIconRotate 5s linear infinite' : 'initial'),
+                      },
+                    }],
+                },
+      'result': {
+                  'success': 'Results downloaded',
+                  'fail': 'Results not downloaded',
+                  '': 'Downloading results',
+                  'icons': [{
+                      'className': 'mdi mdi-file',
+                      'style': {
+                        color: colorAndro,
+                        fontSize: '43px',
+                        top: '11px',
+                        left: ( status === 'doing' ? '48px' : '30px' ),
+                        position: 'absolute',
+                      },
+                    },{
+                      'className': 'mdi mdi-android',
+                      'style': {
+                        color: ( status === 'doing' ? colorAndro : '#FFFFFF' ),
+                        position: 'absolute',
+                        top: ( status === 'doing' ? '20px' : '23px' ),
+                        left: ( status === 'doing' ? '30px' : '39px' ),
+                        textShadow: ( status === 'doing' ? '-1px -1px #FFFFFF,1px -1px #FFFFFF,-1px 1px #FFFFFF,1px 1px #FFFFFF' : '' ),
+                        animation: ( status === 'doing' ? 'liveIconJumpy 3s linear infinite' : 'initial'),
+                        fontSize: '23px',
+                      },
+                    },{
+                      'className':  ( status === 'success' ? 'mdi mdi-check' : status === 'fail' ? 'mdi mdi-close' : 'mdi mdi-plus' ) ,
+                      'style': {
+                        color: colorIcon,
+                        position: 'absolute',
+                        top: ( status === 'doing' ? '14px' : '25px' ),
+                        left: ( status === 'doing' ? '37px' : '50px' ),
+                        textShadow: '-1px -1px #FFFFFF,1px -1px #FFFFFF,-1px 1px #FFFFFF,1px 1px #FFFFFF',
+                        animation: ( status === 'doing' ? 'liveIconJumpy 3s linear infinite' : 'initial'),
+                        fontSize: '30px'
+                      },
+                    }],
+                },
     };
 
-    statusFound = status in iconsNMessages[typeName] ? status : '';
-    message = iconsNMessages[typeName][statusFound];
-
-    var statusIcons = iconsNMessages[typeName]['icons'] === undefined ? null :
+    if ( typeName in iconsNMessages ){
+      statusFound = status in iconsNMessages[typeName] ? status : '';
+      message = iconsNMessages[typeName][statusFound];
+      statusIcons = iconsNMessages[typeName]['icons'] === undefined ? null :
                       iconsNMessages[typeName]['icons'].map(function (item, index) {
                         return  <span style={item.style} className={item.className} key={index} />
                       })  ;
+    }
 
     return  <div style={styles.wrapper}>
 
