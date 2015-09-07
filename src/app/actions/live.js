@@ -14,7 +14,7 @@ var LiveActions = Reflux.createActions({
   'setState': {},
   'liveReset': {},
   'setDelayedRotation': {},
-  'liveCheck': {asyncResult: true},
+  'liveCheck': { children: ["completed","failure"] },
   'liveStart': { children: ["completed","failure"] },
   'liveConnect': { children: ["completed","failure"] },
   'liveStop': {asyncResult: true},
@@ -41,7 +41,13 @@ LiveActions.setProjectId.listen(function () {
 LiveActions.liveCheck.listen(function () {
   var token = Auth.getToken();
   BackendAPI.liveCheck(token, (res) => {
-    this.completed( res.error !== 'not-found' );
+    if ( res.hasOwnProperty('token') ) {
+      var WebsocketActions = require('goby/actions/websocket.js');
+      WebsocketActions.connect(res.token);
+    }else{
+      this.failure('It was not possible to check for a live session.');
+    }
+    // this.completed( res.error !== 'not-found' );
   });
 });
 
@@ -76,6 +82,8 @@ LiveActions.liveConnect.listen(function (vmhost, vmport) {
 });
 
 LiveActions.liveStop.listen(function (screenPort) {
+  var WebsocketActions = require('goby/actions/websocket.js');
+  WebsocketActions.close();
   if (window.rfb) {
     window.rfb.disconnect();
   }

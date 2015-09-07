@@ -252,10 +252,12 @@ var BackendAPI = {
     // var url = this.backendRoot() + "/back/live/check";
     // var data = '{}';
     // this.apiCallAuth(url, data, cb, token, 'GET');
-    setTimeout(function () {
-      cb({error: 'not-found'});
-    },5000);
-
+    // setTimeout(function () {
+    //   cb({error: 'not-found'});
+    // },5000);
+    var url = this.backendRoot() + "/back/live/start";
+    var data = '{}';
+    this.apiCallAuth(url, data, cb, token);
   },
 
 };

@@ -13,7 +13,21 @@ module.exports = {
       dest + '/**'
     ],
     open: false,
-    notify: false
+    ghostMode: false,
+    notify: false,
+    // proxy: {
+    //   target: "http://localhost:3000",
+    //   ws: true,
+    // },
+    socket: {
+      // namespace: '/browser-sync',
+      // domain: 'localhost:3000',
+      path: "/browser-sync/socket.io",
+      clientPath: '/browser-sync',
+      namespace: "/browser-sync",
+      domain: 'localhost:3000',
+      port: 3000,
+    },
   },
   less: {
     src: src + '/less/main.less',

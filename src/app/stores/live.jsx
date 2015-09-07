@@ -70,7 +70,7 @@ var LiveStore =  Reflux.createStore({
     this.updateState();
   },
 
-  onLiveCheckFailed: function(errorMessage){
+  onLiveCheckFailure: function(errorMessage){
     this.state.live.status = 'LIVE_STATUS_CHECK_FAILED';
     this.state.live.message = errorMessage;
     this.updateState();

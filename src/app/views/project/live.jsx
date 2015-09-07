@@ -167,6 +167,9 @@ var ProjectLive = class extends React.Component{
 
   _onStateChange( state ){
     this.setState( state );
+    if(state.live.status === 'LIVE_STATUS_INITIALIZED'){
+      LiveActions.liveCheck();
+    }
   }
 
   _onLiveAction(actionName){

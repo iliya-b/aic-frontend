@@ -33,7 +33,7 @@ var ThemeManager = new mui.Styles.ThemeManager();
 
 // APP
 
-var LiveBoxStatus = require('goby/components/project/live-box-status.jsx');
+var BoxStatus = require('goby/components/project/box-status.jsx');
 var SessionEndedDialog = require('goby/components/main/session-ended-dialog.jsx');
 
 var ThemesPage = React.createClass({
@@ -156,14 +156,14 @@ var ThemesPage = React.createClass({
 
     var boxesLive = allStatus.map(function(itemStatus, indexStatus){
       var boxes = this.map(function(itemBox, indexBox, arrayBox){
-        return <LiveBoxStatus key={indexBox} objectName='session' typeName={itemBox} status={itemStatus} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox+1)} />
+        return <BoxStatus key={indexBox} objectName='session' typeName={itemBox} status={itemStatus} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox+1)} />
       });
       return <div key={indexStatus}>{boxes}</div>;
     }, allLiveTypes);
 
     var boxesCampaign = allStatus.map(function(itemStatus, indexStatus){
       var boxes = this.map(function(itemBox, indexBox, arrayBox){
-        return <LiveBoxStatus key={indexBox} objectName='campaign' typeName={itemBox} status={itemStatus} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox+1)} />
+        return <BoxStatus key={indexBox} objectName='campaign' typeName={itemBox} status={itemStatus} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox+1)} />
       });
       return <div key={indexStatus}>{boxes}</div>;
     }, allCampaignTypes);

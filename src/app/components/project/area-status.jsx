@@ -11,7 +11,7 @@ var { FontIcon, Paper } = mui;
 // APP
 var GobyStores = require('goby/stores');
 var GobyActions = require('goby/actions');
-var LiveBoxStatus = require('goby/components/project/live-box-status.jsx');
+var BoxStatus = require('goby/components/project/box-status.jsx');
 var AppUtils = require('goby/components/shared/app-utils.jsx');
 
 var loadedStore;
@@ -41,7 +41,7 @@ var AreaStatus = class extends React.Component{
 
     if (this.state.hasOwnProperty(this.props.typeName)) {
       boxesTags = this.state[this.props.typeName].boxes.map(function (item, index) {
-        return item.enabled ? <LiveBoxStatus key={index} typeName={item.typeName} status={item.status} isFirst={item.isFirst} isLast={item.isLast} objectName={item.objectName} /> : null;
+        return item.enabled ? <BoxStatus key={index} typeName={item.typeName} status={item.status} isFirst={item.isFirst} isLast={item.isLast} objectName={item.objectName} /> : null;
       });
     }
 
