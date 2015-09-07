@@ -40,6 +40,24 @@ var CampaignStore =  Reflux.createStore({
     this.updateState();
   },
 
+  // Create
+
+  onCreate: function(){
+    this.state.campaign.status = 'CAMPAIGN_STATUS_CREATING';
+    this.updateState();
+  },
+
+  onCreateCompleted: function(){
+    this.state.campaign.sessionFound = sessionFound;
+    this.state.campaign.status = sessionFound ? 'LIVE_STATUS_CHECK_FOUND' : 'LIVE_STATUS_CHECK_NOTFOUND';
+    this.updateState();
+  },
+
+  onCreateFailure: function(errorMessage){
+    this.state.campaign.status = 'CAMPAIGN_STATUS_CREATE_FAILED';
+    this.state.campaign.message = errorMessage;
+    this.updateState();
+  },
 
   // Methods //
 

@@ -43,7 +43,7 @@ var ProjectCampaign = class extends React.Component{
     this._onDeviceSelectClick = this._onDeviceSelectClick.bind(this);
     this._onAPKSelectClick = this._onAPKSelectClick.bind(this);
     this._onAPKTestSelectClick = this._onAPKTestSelectClick.bind(this);
-    this._onLauchCampaignSubmit = this._onLauchCampaignSubmit.bind(this);
+    this._onLaunchCampaignSubmit = this._onLaunchCampaignSubmit.bind(this);
     this._onLauchAnotherCampaignSubmit = this._onLauchAnotherCampaignSubmit.bind(this);
     this._onDeviceSelect = this._onDeviceSelect.bind(this);
     this._onAPKSelect = this._onAPKSelect.bind(this);
@@ -124,13 +124,13 @@ var ProjectCampaign = class extends React.Component{
           <Tab label="Launch" >
             <Paper style={style.paperCenter}>
 
-              {this.state.campaign === 'CAMPAIGN_NOT_STARTED' ? (
+              {this.state.campaign.status === 'CAMPAIGN_STATUS_PREPARING' ? (
                 <div>
 
                   {this.state.campaign !== 'CAMPAIGN_STARTED' ?
                     <FlatButton
                     label="Launch campaign"
-                    onClick={this._onLauchCampaignSubmit}
+                    onClick={this._onLaunchCampaignSubmit}
                     linkButton={true}
                     primary={true} /> : null }
                   <br />
@@ -219,7 +219,9 @@ var ProjectCampaign = class extends React.Component{
     this.setState({ apkTest: selectedAPK });
   }
 
-  _onLauchCampaignSubmit(){
+  _onLaunchCampaignSubmit(){
+
+    CampaignActions.create(this.state.campaign);
 
     // this.setState({campaign: CAMPAIGN_STARTED});
 
