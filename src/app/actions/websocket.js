@@ -26,13 +26,21 @@ var WebsocketActions = Reflux.createActions({
 // Listeners for asynchronous Backend API calls
 
 WebsocketActions.connect.listen(function (token, service) {
+  var actionServiceName;
 
-  console.log('Trying to connect to Websocket');
+  console.log('Trying to connect to Websocket', service);
+
+  actionServiceName = service ? AppUtils.capitalize(service) + 'Actions' : null;
+
+  if (service === undefined || service === '' || !GobyActions.hasOwnProperty(actionServiceName)){
+    console.error('You must inform a valid service for the websocket connection');
+    return;
+  }
 
   GobyWebsocket = new SockJS(BackendAPI.backendRoot() + '/back/sock');
 
   GobyWebsocket.gobyService = service;
-  loadedActions[service] = GobyActions[ AppUtils.capitalize(service) + 'Actions'];
+  loadedActions[service] = GobyActions[ actionServiceName ];
 
   GobyWebsocket.onopen = function() {
     console.log('websocket open');

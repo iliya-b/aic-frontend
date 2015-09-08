@@ -164,6 +164,27 @@ var LiveStore =  Reflux.createStore({
     this.updateState();
   },
 
+  // Socket Message
+  onSocketMessage: function (message) {
+    var messageParsed = JSON.parse(message.data);
+    console.log('onSocketMessage', messageParsed);
+    if (messageParsed.hasOwnProperty('message')) {
+      switch( messageParsed.message ){
+        case 'Stack created':
+          LiveActions.liveCheck.completed(false);
+          break;
+        case 'Docker created':
+          console.log('docker created');
+          LiveActions.liveStart.completed( messageParsed.data.vncip, messageParsed.data.vncport );
+          LiveActions.liveConnect( messageParsed.data.vncip, messageParsed.data.vncport );
+          break;
+      }
+    }else if(messageParsed.hasOwnProperty('error')) {
+      // TODO: is it going to be always liveCheck errors?
+      LiveActions.liveCheck.failure(messageParsed.error);
+    }
+  },
+
   // Methods //
 
 

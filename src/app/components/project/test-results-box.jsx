@@ -18,22 +18,22 @@ var TestResultsBox = class extends React.Component{
 
     console.log(this.props.results);
 
-    var resultsRendered = this.props.results.map(function(item){
-      var testCasesRendered = item.testCases.map(function(testCase){
+    var resultsRendered = this.props.results.map(function(item, index){
+      var testCasesRendered = item.testCases.map(function(testCase, testCaseIndex){
         var status = testCase.failure ? 'failure' : 'pass';
         var failure = testCase.failure ? <div>
           <p>{testCase.failure.content}</p>
           <p>{testCase.failure.message}</p>
           <p>{testCase.failure.type}</p>
           </div> : null;
-        return  <CardText>
+        return  <CardText key={testCaseIndex} expandable={true}>
                   <p>class: {testCase.className}</p>
                   <p>name: {testCase.name}</p>
                   <p>status: {status}</p>
                   {failure}
                 </CardText>
       });
-      return  <Card expandable={true}>
+      return  <Card expandable={true} key={index}>
                 <CardHeader
                   title={item.name}
                   subtitle={item.testCases.length + " test cases, " + item.time + " time"}

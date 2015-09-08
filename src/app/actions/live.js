@@ -14,6 +14,7 @@ var LiveActions = Reflux.createActions({
   'setState': {},
   'liveReset': {},
   'setDelayedRotation': {},
+  'socketMessage': {},
   'liveCheck': { children: ["completed","failure"] },
   'liveStart': { children: ["completed","failure"] },
   'liveConnect': { children: ["completed","failure"] },
@@ -43,7 +44,7 @@ LiveActions.liveCheck.listen(function () {
   BackendAPI.liveCheck(token, (res) => {
     if ( res.hasOwnProperty('token') ) {
       var WebsocketActions = require('goby/actions/websocket.js');
-      WebsocketActions.connect(res.token);
+      WebsocketActions.connect(res.token, 'live');
     }else{
       this.failure('It was not possible to check for a live session.');
     }
