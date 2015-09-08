@@ -172,6 +172,7 @@ var LiveStore =  Reflux.createStore({
       switch( messageParsed.message ){
         case 'Stack created':
           LiveActions.liveCheck.completed(false);
+          LiveActions.liveStart();
           break;
         case 'Docker created':
           console.log('docker created');

@@ -52,25 +52,27 @@ LiveActions.liveCheck.listen(function () {
   });
 });
 
-LiveActions.liveStart.listen(function () {
-  var token = Auth.getToken();
-  BackendAPI.liveStart(token, (res) => {
-    console.log(res);
-    if (res.hasOwnProperty('responseJSON') ) {
-      res = res.responseJSON;
-    }
-    console.log(res);
-    if (res.hasOwnProperty('vncip') && res.hasOwnProperty('vncport') ) {
-      this.completed( res.vncip, res.vncport );
-    }else{
-      if ( res.hasOwnProperty('error') && res.error.hasOwnProperty('message')  ) {
-        this.failure( res.error.message );
-      }else{
-        this.failure( 'Error on the create session request.' );
-      }
-    }
-  });
-});
+// Out of date, now it is done by websocket message
+// BUT it should be reversed when websocket turn to be only notification
+// LiveActions.liveStart.listen(function () {
+//   var token = Auth.getToken();
+//   BackendAPI.liveStart(token, (res) => {
+//     console.log(res);
+//     if (res.hasOwnProperty('responseJSON') ) {
+//       res = res.responseJSON;
+//     }
+//     console.log(res);
+//     if (res.hasOwnProperty('vncip') && res.hasOwnProperty('vncport') ) {
+//       this.completed( res.vncip, res.vncport );
+//     }else{
+//       if ( res.hasOwnProperty('error') && res.error.hasOwnProperty('message')  ) {
+//         this.failure( res.error.message );
+//       }else{
+//         this.failure( 'Error on the create session request.' );
+//       }
+//     }
+//   });
+// });
 
 LiveActions.liveConnect.listen(function (vmhost, vmport) {
   LiveActions.tryConnection( vmhost, vmport, (res) => {
@@ -118,7 +120,7 @@ LiveActions.setSensorLocation.listen(function (projectId, lat, lon) {
 
 LiveActions.recordStart.listen(function (projectId) {
   var token = Auth.getToken();
-  var filename = this.createVideoName();
+  var filename = LiveActions.createVideoName();
   BackendAPI.recordingStart(token, projectId, filename, (res) => {
     res.filename = filename;
     this.completed( res );
@@ -134,7 +136,7 @@ LiveActions.recordStop.listen(function (projectId, filename) {
 
 LiveActions.screenshot.listen(function (projectId, filename) {
   var token = Auth.getToken();
-  var filename = this.createImageName();
+  var filename = LiveActions.createImageName();
   BackendAPI.screenshot(token, projectId, filename, (res) => {
     this.completed( res );
   });

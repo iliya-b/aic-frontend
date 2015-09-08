@@ -183,6 +183,7 @@ var ProjectLive = class extends React.Component{
         break;
       case 'restart':
         LiveActions.liveReset();
+        LiveActions.liveCheck();
         break;
       case 'connect':
         LiveActions.liveConnect(this.state.live.screen.ip, this.state.live.screen.port);
@@ -222,8 +223,10 @@ var ProjectLive = class extends React.Component{
   }
 
   componentDidMount() {
+    console.log('componentDidMount');
     var projectId = AppUtils.getProjectIdFromRouter(this.context.router);
     this.unsubscribe = LiveStore.listen( this._onStateChange );
+    LiveActions.liveReset();
     LiveActions.setProjectId(projectId);
   }
 

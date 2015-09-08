@@ -5,6 +5,7 @@ var React = require('react');
 
 // Material UI
 var mui = require('material-ui');
+var { Spacing } = mui.Styles;
 
 var {
   Checkbox,
@@ -21,7 +22,8 @@ var {
   Snackbar,
   Slider,
   TextField,
-  Toggle} = mui;
+  Toggle,
+  Paper} = mui;
 
 var Menu = require('material-ui/lib/menus/menu.js');
 var MenuItem = require('material-ui/lib/menus/menu-item.js');
@@ -75,6 +77,12 @@ var ThemesPage = React.createClass({
         width: '100px',
         margin: '0 auto',
         marginBottom: '64px',
+      },
+      center: {
+        textAlign: 'center',
+      },
+      spacing: {
+        padding: Spacing.desktopGutter,
       },
       textfield: {
         width: '100%',
@@ -335,7 +343,19 @@ var ThemesPage = React.createClass({
 
             <ClearFix>
 
-            <TestResultsBox results={results} />
+            <Paper style={styles.spacing}>
+
+              <TestResultsBox results={results} />
+
+              <br />
+
+              <div style={styles.center} >
+              <FlatButton
+                label="Start new campaign"
+                primary={true} />
+              </div>
+
+            </Paper>
 
             </ClearFix>
 
