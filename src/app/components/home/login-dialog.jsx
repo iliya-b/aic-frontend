@@ -140,14 +140,15 @@ var LoginDialog = class extends React.Component{
           this.setState({ loginError: true, loginErrorMessage: results.errorMessage });
           this.unblockFields();
         } else {
-          // Success login
-          if (nextPath) {
-            // Go to the visited page that required authentication
-            router.replaceWith(nextPath);
-          } else {
-            // Go to the default user home
-            Auth.userHome(router);
-          }
+          Auth.redirectIfLogged(router);
+          // // Success login
+          // if (nextPath) {
+          //   // Go to the visited page that required authentication
+          //   router.replaceWith(nextPath);
+          // } else {
+          //   // Go to the default user home
+          //   Auth.redirectIfLogged(router);
+          // }
         }
       });
     }
