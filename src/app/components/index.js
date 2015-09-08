@@ -1,5 +1,8 @@
 module.exports = {
 
+  /* Main */
+  SessionEndedDialog: require('./main/session-ended-dialog.jsx'),
+
   /* Home */
   SignUpDialog: require('./home/sign-up-dialog.jsx'),
   LoginDialog: require('./home/login-dialog.jsx'),
@@ -15,7 +18,7 @@ module.exports = {
     LiveScreen: require('./project/live-screen.jsx'),
 
     /* Campaign */
-
+    TestResultsBox: require('./project/test-results-box.jsx'),
 
   /* Shared */
   ObjectList: require('./shared/object-list/object-list.jsx'),

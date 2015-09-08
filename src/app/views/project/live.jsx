@@ -147,7 +147,7 @@ var ProjectLive = class extends React.Component{
               </Paper>
               ) : null}
 
-               {/* Live stopped */}
+              {/* Live stopped */}
               {this.state && (this.state.live.status === 'LIVE_STATUS_STOPPED') ? (
               <Paper style={style.paperCenter}>
 

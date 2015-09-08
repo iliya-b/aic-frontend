@@ -22,7 +22,8 @@ var { APKSelectionDialog,
       DeviceSelectionDialog,
       ObjectList,
       AreaStatus,
-      AppUtils } = require('goby/components');
+      AppUtils,
+      TestResultsBox } = require('goby/components');
 
 var { CampaignStore } = require('goby/stores');
 var { CampaignActions } = require('goby/actions');
@@ -36,7 +37,6 @@ var ProjectCampaign = class extends React.Component{
       device: null,
       apk: [],
       apkTest: [],
-      campaign: 'CAMPAIGN_NOT_STARTED',
       errorMessage: ''
     };
 
@@ -83,8 +83,9 @@ var ProjectCampaign = class extends React.Component{
 
         <AreaStatus typeName='campaign' />
 
-        <h2>Campaign</h2>
+        {this.state && this.state.campaign && this.state.campaign.status === 'CAMPAIGN_STATUS_PREPARING' ? (
 
+        <div>
         <Tabs>
           <Tab label="Device" >
             <Paper style={style.paperCenter}>
@@ -124,15 +125,12 @@ var ProjectCampaign = class extends React.Component{
           <Tab label="Launch" >
             <Paper style={style.paperCenter}>
 
-              {this.state.campaign.status === 'CAMPAIGN_STATUS_PREPARING' ? (
                 <div>
-
-                  {this.state.campaign !== 'CAMPAIGN_STARTED' ?
-                    <FlatButton
+                  <FlatButton
                     label="Launch campaign"
                     onClick={this._onLaunchCampaignSubmit}
                     linkButton={true}
-                    primary={true} /> : null }
+                    primary={true} />
                   <br />
                   <TextField ref="instanceName" floatingLabelText="Device Name" value={this.state.device ? this.state.device.name : ''} disabled={true}  /><br />
                   <TextField ref="instanceId" floatingLabelText="Device ID" value={this.state.device ? this.state.device.id : ''} disabled={true} /><br />
@@ -140,48 +138,6 @@ var ProjectCampaign = class extends React.Component{
                   {apksTestRendered}
                   <TextField ref="ProjectId" floatingLabelText="Project ID" value={''} disabled={true} /><br />
                 </div>
-              ) : null }
-              {this.state.campaign == 'CAMPAIGN_STARTED' ? (
-                <div>
-                  <p>Executing Campaign</p>
-                  <small>(This process can take several minutes)</small>
-                  <br />
-                  <CircularProgress mode="indeterminate" />
-                </div>
-              ) : null }
-              {(this.state.campaign == 'CAMPAIGN_SUCCESS' ||
-                this.state.campaign == 'CAMPAIGN_ERROR') ? (
-                <div>
-                  <br />
-                  {this.state.campaign == 'CAMPAIGN_SUCCESS' ? (
-                      <div style={{fontSize:'36px', color: 'green'}}>
-                        <FontIcon className="mdi mdi-check" style={{fontSize:'36px'}} />
-                        <span>Campaign successfully run</span>
-                      </div>
-                    ) : null }
-                  {this.state.campaign == 'CAMPAIGN_ERROR' ? (
-                      <div style={{fontSize:'36px', color: 'red'}}>
-                        <FontIcon className="mdi mdi-close" style={{fontSize:'36px', color: 'red'}} />
-                        <span>Error: {this.state.errorMessage}</span>
-                      </div>
-                  ) : null }
-                  <br />
-                  <br />
-
-                  <Paper style={{padding:'10px 20px 20px 20px'}}>
-                    <h2>Results</h2>
-                    <ul style={{textAlign: 'left', listStyle: 'none'}}>{results}</ul>
-                  </Paper>
-                  <br />
-                  <FlatButton
-                      label="Start another campaign"
-                      onClick={this._onLauchAnotherCampaignSubmit}
-                      linkButton={true}
-                      primary={true} />
-
-                </div>
-              ) : null }
-
 
             </Paper>
           </Tab>
@@ -190,6 +146,37 @@ var ProjectCampaign = class extends React.Component{
         <DeviceSelectionDialog projectId={null} onSelect={this._onDeviceSelect} ref="deviceDialog" />
         <APKSelectionDialog projectId={null} onSelect={this._onAPKSelect} ref="APKDialog" />
         <APKTestSelectionDialog projectId={null} onSelect={this._onAPKTestSelect} ref="APKTestDialog" />
+        </div>
+        ) : null } {/* CAMPAIGN_STATUS_PREPARING */}
+
+
+        {/* Campaign failed */}
+        {this.state && this.state.campaign && this.state.campaign.status.substr(-6) === 'FAILED' ? (
+        <Paper style={style.paperCenter}>
+
+            <span style={style.error.icon} className='mdi mdi-android' />
+            <p style={style.error.status}>{this.state.campaign.status}</p>
+            <p style={style.error.message}>{this.state.campaign.message}</p>
+
+        </Paper>
+        ) : null}
+
+
+        {/* Campaign results received */}
+        {this.state && this.state.campaign && (this.state.campaign.status === 'CAMPAIGN_STATUS_RESULTED') ? (
+        <Paper style={style.paperCenter}>
+
+            <p>Campaign successfully ran.</p>
+
+            <TestResultsBox results={this.state.campaign.results} />
+
+            <FlatButton
+              label="Start new campaign"
+              primary={true}
+              onClick={this._onLauchAnotherCampaignSubmit} />
+
+        </Paper>
+        ) : null}
 
       </div>
     );
@@ -221,38 +208,19 @@ var ProjectCampaign = class extends React.Component{
 
   _onLaunchCampaignSubmit(){
 
-    CampaignActions.create(this.state.campaign);
+    var projectId = this.state.campaign.projectId;
+    var instanceId = this.state.device.id;
+    var instanceName = this.state.device.name;
 
-    // this.setState({campaign: CAMPAIGN_STARTED});
+    var APKIds = this.state.apk.map(function (item) {
+      return item.apkId;
+    });
+    var APKTestIds = this.state.apkTest.map(function (item) {
+      return item.apkId;
+    });
 
-    // var instanceName = this.refs.instanceName.getValue();
-    // var instanceId = this.refs.instanceId.getValue();
+    CampaignActions.create(projectId, instanceId, instanceName, APKIds, APKTestIds);
 
-    // var APKIds = this.state.apk.map(function (item) {
-    //   return item.apkId;
-    // });
-    // var TestIds = this.state.apkTest.map(function (item) {
-    //   return item.apkId;
-    // });
-
-    // var ProjectId = this.refs.ProjectId.getValue();
-    // Test.create(ProjectId, instanceId, instanceName, APKIds, TestIds, (res) => {
-    //   var resultsFlatten;
-    //   if(res && res.hasOwnProperty('results')){
-    //     if(Array.isArray(res.results)){
-    //       resultsFlatten = [].concat.apply([],res.results);
-    //     }else{
-    //       resultsFlatten = res.results;
-    //     }
-    //     this.setState({res: resultsFlatten, campaign: CAMPAIGN_SUCCESS});
-    //   }else{
-    //     if(res && res.hasOwnProperty('errorMessage')){
-    //       this.setState({res: [], campaign: CAMPAIGN_ERROR, errorMessage: res.errorMessage });
-    //     }else{
-    //       this.setState({res: [], campaign: CAMPAIGN_ERROR, errorMessage: 'Error: no response or badly formatted.' });
-    //     }
-    //   }
-    // });
   }
 
   _onLauchAnotherCampaignSubmit(){

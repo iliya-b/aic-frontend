@@ -6,10 +6,14 @@ var Reflux = require('reflux');
 // APP
 var { Auth } = require('goby/stores/auth.jsx');
 var BackendAPI = require('goby/stores/backend-api.jsx');
+var AppUtils = require('goby/components/shared/app-utils.jsx');
+var GobyActions = require('goby/actions');
 
 // Websocket
 var GobyWebsocket;
-// var GobyWebsocket = require('socket.io-client')(BackendAPI.backendRoot() + '/back/sock', { multiplex: false } );
+
+// Actions
+var loadedActions = {};
 
 // Actions
 var WebsocketActions = Reflux.createActions({
@@ -21,11 +25,14 @@ var WebsocketActions = Reflux.createActions({
 
 // Listeners for asynchronous Backend API calls
 
-WebsocketActions.connect.listen(function (token) {
+WebsocketActions.connect.listen(function (token, service) {
 
   console.log('Trying to connect to Websocket');
 
   GobyWebsocket = new SockJS(BackendAPI.backendRoot() + '/back/sock');
+
+  GobyWebsocket.gobyService = service;
+  loadedActions[service] = GobyActions[ AppUtils.capitalize(service) + 'Actions'];
 
   GobyWebsocket.onopen = function() {
     console.log('websocket open');
@@ -35,26 +42,26 @@ WebsocketActions.connect.listen(function (token) {
   };
 
   GobyWebsocket.onmessage = function(e) {
-    var LiveActions = require('goby/actions/live.js');
     console.log('websocket message', e.data , this);
     var res = JSON.parse(e.data);
+    loadedActions[GobyWebsocket.gobyService].socketMessage(e);
     console.log(res);
-    if (res.hasOwnProperty('message')) {
-      switch( res.message ){
-        case 'Stack created':
-          LiveActions.liveCheck.completed(false);
-          break;
-        case 'Docker created':
-          console.log('docker created');
-          LiveActions.liveStart.completed( res.data.vncip, res.data.vncport );
-          LiveActions.liveConnect( res.data.vncip, res.data.vncport );
-          break;
-      }
-      WebsocketActions.message(e.data);
-    }else if(res.hasOwnProperty('error')) {
-      // TODO: is it going to be always liveCheck errors?
-      LiveActions.liveCheck.failure(res.error);
-    }
+    // if (res.hasOwnProperty('message')) {
+    //   switch( res.message ){
+    //     case 'Stack created':
+    //       LiveActions.liveCheck.completed(false);
+    //       break;
+    //     case 'Docker created':
+    //       console.log('docker created');
+    //       LiveActions.liveStart.completed( res.data.vncip, res.data.vncport );
+    //       LiveActions.liveConnect( res.data.vncip, res.data.vncport );
+    //       break;
+    //   }
+    //   WebsocketActions.message(e.data);
+    // }else if(res.hasOwnProperty('error')) {
+    //   // TODO: is it going to be always liveCheck errors?
+    //   LiveActions.liveCheck.failure(res.error);
+    // }
   };
 
   GobyWebsocket.onerror = function(e) {

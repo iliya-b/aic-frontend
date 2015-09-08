@@ -43,18 +43,82 @@ var CampaignStore =  Reflux.createStore({
   // Create
 
   onCreate: function(){
+    this.state.campaign.status = 'CAMPAIGN_STATUS_PREPARED';
+    this.updateState();
     this.state.campaign.status = 'CAMPAIGN_STATUS_CREATING';
     this.updateState();
   },
 
   onCreateCompleted: function(){
-    this.state.campaign.sessionFound = sessionFound;
-    this.state.campaign.status = sessionFound ? 'LIVE_STATUS_CHECK_FOUND' : 'LIVE_STATUS_CHECK_NOTFOUND';
+    this.state.campaign.status = 'CAMPAIGN_STATUS_CREATED';
     this.updateState();
   },
 
   onCreateFailure: function(errorMessage){
     this.state.campaign.status = 'CAMPAIGN_STATUS_CREATE_FAILED';
+    this.state.campaign.message = errorMessage;
+    this.updateState();
+  },
+
+  // SocketMessage
+  onSocketMessage: function (message) {
+    var messageParsed = JSON.parse(message.data);
+    console.log('onSocketMessage', messageParsed);
+    if (messageParsed.hasOwnProperty('message')) {
+      switch( messageParsed.message ){
+        case 'Stack created':
+
+          break;
+        case 'Docker created':
+          CampaignActions.create.completed();
+          CampaignActions.run();
+          break;
+        case 'Tests listed':
+          CampaignActions.run.completed();
+          CampaignActions.result();
+          break;
+        case 'Tests ran':
+          CampaignActions.result.completed(messageParsed.data.testSuites);
+      }
+    }else if(messageParsed.hasOwnProperty('error')) {
+      // TODO: check errors?
+
+    }
+  },
+
+  // Run
+
+  onRun: function(){
+    this.state.campaign.status = 'CAMPAIGN_STATUS_RUNNING';
+    this.updateState();
+  },
+
+  onRunCompleted: function(){
+    this.state.campaign.status = 'CAMPAIGN_STATUS_RAN';
+    this.updateState();
+  },
+
+  onRunFailure: function(errorMessage){
+    this.state.campaign.status = 'CAMPAIGN_STATUS_RUN_FAILED';
+    this.state.campaign.message = errorMessage;
+    this.updateState();
+  },
+
+  // Result
+
+  onResult: function(){
+    this.state.campaign.status = 'CAMPAIGN_STATUS_RESULTING';
+    this.updateState();
+  },
+
+  onResultCompleted: function(results){
+    this.state.campaign.results = results;
+    this.state.campaign.status = 'CAMPAIGN_STATUS_RESULTED';
+    this.updateState();
+  },
+
+  onResultFailure: function(errorMessage){
+    this.state.campaign.status = 'CAMPAIGN_STATUS_RESULT_FAILED';
     this.state.campaign.message = errorMessage;
     this.updateState();
   },
@@ -94,32 +158,29 @@ var CampaignStore =  Reflux.createStore({
     'CAMPAIGN_STATUS_INITIATING':   { typeName: '', newStatus: '' },
 
     'CAMPAIGN_STATUS_PREPARING':     { typeName: 'prepare', newStatus: 'doing'},
-    'LIVE_STATUS_CHECK_FOUND':  { typeName: 'search', newStatus: 'success'},
-    'LIVE_STATUS_CHECK_NOTFOUND':{ typeName: 'search', newStatus: 'not-found'},
-    'LIVE_STATUS_CHECK_FAILED': { typeName: 'search', newStatus: 'fail'},
+    'CAMPAIGN_STATUS_PREPARED':     { typeName: 'prepare', newStatus: 'success'},
+    'CAMPAIGN_STATUS_PREPARE_FAILED':     { typeName: 'prepare', newStatus: 'fail'},
 
-    'LIVE_STATUS_LOADING':      { typeName: 'load',   newStatus: 'doing'},
-    'LIVE_STATUS_LOADED':       { typeName: 'load',   newStatus: 'success'},
-    'LIVE_STATUS_LOAD_FAILED':  { typeName: 'load',   newStatus: 'fail'},
+    'CAMPAIGN_STATUS_CREATING':     { typeName: 'create',   newStatus: 'doing'},
+    'CAMPAIGN_STATUS_CREATED':      { typeName: 'create',   newStatus: 'success'},
+    'CAMPAIGN_STATUS_CREATE_FAILED': { typeName: 'create',   newStatus: 'fail'},
 
-    'LIVE_STATUS_STARTING':     { typeName: 'create',   newStatus: 'doing'},
-    'LIVE_STATUS_STARTED':      { typeName: 'create',   newStatus: 'success'},
-    'LIVE_STATUS_START_FAILED': { typeName: 'create',   newStatus: 'fail'},
+    'CAMPAIGN_STATUS_RUNNING':     { typeName: 'run',   newStatus: 'doing'},
+    'CAMPAIGN_STATUS_RAN':      { typeName: 'run',   newStatus: 'success'},
+    'CAMPAIGN_STATUS_RUN_FAILED': { typeName: 'run',   newStatus: 'fail'},
 
-    'LIVE_STATUS_CONNECTING':     { typeName: 'connect',   newStatus: 'doing'},
-    'LIVE_STATUS_CONNECTED':      { typeName: 'connect',   newStatus: 'success'},
-    'LIVE_STATUS_CONNECT_FAILED': { typeName: 'connect',   newStatus: 'fail'},
+    'CAMPAIGN_STATUS_RESULTING':     { typeName: 'result',   newStatus: 'doing'},
+    'CAMPAIGN_STATUS_RESULTED':      { typeName: 'result',   newStatus: 'success'},
+    'CAMPAIGN_STATUS_RESULT_FAILED': { typeName: 'result',   newStatus: 'fail'},
 
-    'LIVE_STATUS_STOPPING':     { typeName: 'close',  newStatus: 'doing'},
-    'LIVE_STATUS_STOPPED':      { typeName: 'close',  newStatus: 'success'},
-    'LIVE_STATUS_STOP_FAILED':  { typeName: 'close',  newStatus: 'fail'},
-
-    'LIVE_STATUS_RESET':          { typeName: '', newStatus: '' },
+    'CAMPAIGN_STATUS_RESET':          { typeName: '', newStatus: '' },
   },
 
   // State update
 
   updateState: function(){
+    console.log('updateState');
+    console.log(this.state.campaign.status);
     var actualStatus = this.statusUpdating[this.state.campaign.status];
     this.changeBoxes(actualStatus.typeName, 'status', actualStatus.newStatus);
     this.trigger( this.state );
