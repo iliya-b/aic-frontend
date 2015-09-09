@@ -181,8 +181,15 @@ var LiveStore =  Reflux.createStore({
           break;
       }
     }else if(messageParsed.hasOwnProperty('error')) {
-      // TODO: is it going to be always liveCheck errors?
-      LiveActions.liveCheck.failure(messageParsed.error);
+
+      switch( this.state.live.status ){
+        case 'LIVE_STATUS_CHECKING':
+          LiveActions.liveCheck.failure(messageParsed.error);
+          break;
+        case 'LIVE_STATUS_STARTING':
+          LiveActions.liveStart.failure(messageParsed.error);
+          break;
+      }
     }
   },
 

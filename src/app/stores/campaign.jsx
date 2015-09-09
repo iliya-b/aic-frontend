@@ -81,7 +81,18 @@ var CampaignStore =  Reflux.createStore({
           CampaignActions.result.completed(messageParsed.data.testSuites);
       }
     }else if(messageParsed.hasOwnProperty('error')) {
-      // TODO: check errors?
+
+      switch( this.state.campaign.status ){
+        case 'CAMPAIGN_STATUS_CREATING':
+          CampaignActions.create.failure(messageParsed.error);
+          break;
+        case 'CAMPAIGN_STATUS_RUNNING':
+          CampaignActions.run.failure(messageParsed.error);
+          break;
+        case 'CAMPAIGN_STATUS_RESULTING':
+          CampaignActions.result.failure(messageParsed.error);
+          break;
+      }
 
     }
   },

@@ -96,9 +96,12 @@ var BoxStatus = class extends React.Component{
                         left: '32px',
                       },
                     },{
-                      'className': ( status === 'success' ? 'mdi mdi-check' : ( status === 'fail' || status === 'not-found' ) ? 'mdi mdi-close' : 'mdi mdi-magnify' ) ,
+                      'className': ( status === 'success' ? 'mdi mdi-check' :
+                                     status === 'fail' ? 'mdi mdi-close' :
+                                     status === 'not-found' ? 'mdi mdi-help' :
+                                     'mdi mdi-magnify' ) ,
                       'style': {
-                        color: ( status === 'not-found' ? this.context.muiTheme.palette.errorColor  : colorIcon) ,
+                        color: colorIcon, //( status === 'not-found' ? this.context.muiTheme.palette.errorColor  : colorIcon) ,
                         fontSize: '30px',
                         position: 'absolute',
                         top: (status === 'doing' ? '18px' : '11px'),

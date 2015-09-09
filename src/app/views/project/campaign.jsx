@@ -58,6 +58,19 @@ var ProjectCampaign = class extends React.Component{
         textAlign: 'center',
         padding: Spacing.desktopGutter
       },
+      error: {
+        icon: {
+          color: this.context.muiTheme.palette.errorColor,
+          fontSize: '50px',
+          float: 'left',
+        },
+        message: {
+          color: this.context.muiTheme.palette.errorColor,
+        },
+        status: {
+          display: 'none',
+        },
+      },
     };
 
     var results = (this.state.res && this.state.res.length > 0) ? this.state.res.map(function (item) {

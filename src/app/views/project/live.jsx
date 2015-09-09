@@ -46,7 +46,7 @@ var ProjectLive = class extends React.Component{
         status: {
           display: 'none',
         },
-      }
+      },
     };
 
     // FIXME: put url parser
