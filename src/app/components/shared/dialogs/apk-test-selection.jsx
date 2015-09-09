@@ -5,7 +5,15 @@ var React = require('react');
 
 // Material design
 var mui = require('material-ui');
-var { Dialog, FlatButton, Table, Paper } = mui;
+var { Dialog,
+      FlatButton,
+      Table,
+      TableHeader,
+      TableHeaderColumn,
+      TableBody,
+      TableRow,
+      TableRowColumn,
+      Paper } = mui;
 
 // APP
 var ObjectList = require('goby/components/shared/object-list/object-list.jsx');
@@ -60,19 +68,29 @@ var APKTestSelectionDialog = class extends React.Component{
         onTouchTap={this._onSubmit} />
     ];
 
+    var rows = this.state.apksData.map(function (item, index) {
+      var isSelected = this.state.selectedIndex ? this.state.selectedIndex.indexOf(index) > -1 : false ;
+      return  <TableRow key={index} selected={isSelected}>
+                <TableRowColumn>{item.name.content}</TableRowColumn>
+              </TableRow>;
+    }, this);
+
     return (
       <Dialog title="APK Test Selection" actions={actions} {...other} ref="dialogIn" >
         <Paper>
           <Table
             height="100%"
-            columnOrder={['name']}
-            rowData={this.state.apksData}
             showRowHover={true}
             selectable={true}
             multiSelectable={true}
             canSelectAll={true}
             deselectOnClickaway={false}
-            onRowSelection={this._onRowSelection} />
+            onRowSelection={this._onRowSelection} >
+            <TableBody></TableBody>
+            <TableBody>
+            {rows}
+            </TableBody>
+          </Table>
         </Paper>
       </Dialog>
       );
@@ -103,9 +121,10 @@ var APKTestSelectionDialog = class extends React.Component{
   }
 
   _onStateChange( state ){
-    state.apksData = state.apks.map(function (item) {
-      return { name: { content: item.name }, apkId:item.apkId, selected: item.checked };
-    });
+    state.apksData = state.apks.map(function (item, index) {
+      var isSelected = this.state.selectedIndex ? this.state.selectedIndex.indexOf(index) > -1 : false ;
+      return { name: { content: item.name }, apkId:item.apkId, selected: isSelected };
+    }, this);
     this.setState( state );
     switch(this.state.status){
       case 'reloadList':
