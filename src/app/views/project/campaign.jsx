@@ -278,6 +278,7 @@ var ProjectCampaign = class extends React.Component{
   componentDidMount() {
     var projectId = AppUtils.getProjectIdFromRouter(this.context.router);
     this.unsubscribe = CampaignStore.listen( this._onStateChange );
+    CampaignActions.reset();
     CampaignActions.setProjectId(projectId);
   }
 

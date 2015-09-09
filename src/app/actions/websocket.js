@@ -37,6 +37,13 @@ WebsocketActions.connect.listen(function (token, service) {
     return;
   }
 
+  // Close previously opened websocket
+  if (GobyWebsocket && typeof GobyWebsocket.close === 'function' ){
+    console.log('Websocket closing prev');
+    GobyWebsocket.close();
+  }
+
+  // Open new connection
   GobyWebsocket = new SockJS(BackendAPI.backendRoot() + '/back/sock');
 
   GobyWebsocket.gobyService = service;
