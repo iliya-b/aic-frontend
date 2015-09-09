@@ -30,5 +30,6 @@ module.exports = {
   InfoBox: require('./shared/info-box.jsx'),
   TogglableIcon: require('./shared/togglable-icon.jsx'),
   List: require('./shared/list/list.jsx'),
+  AvatarProgress: require('./shared/avatar-progress.jsx'),
 
 };

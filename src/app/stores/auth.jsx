@@ -92,6 +92,7 @@ var Auth = {
     }
   },
 
+  // Change if needed to redirectIfLogged
   // userHome: function (transition) {
   //   if (Auth.loggedIn()) {
   //     this.redirectTo(transition, AppConfig.userHome);

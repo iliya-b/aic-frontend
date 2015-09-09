@@ -23,7 +23,8 @@ var {
   Slider,
   TextField,
   Toggle,
-  Paper} = mui;
+  Paper,
+  FontIcon} = mui;
 
 var Menu = require('material-ui/lib/menus/menu.js');
 var MenuItem = require('material-ui/lib/menus/menu-item.js');
@@ -37,7 +38,8 @@ var ThemeManager = new mui.Styles.ThemeManager();
 
 var { BoxStatus,
       SessionEndedDialog,
-      TestResultsBox } = require('goby/components');
+      TestResultsBox,
+      AvatarProgress } = require('goby/components');
 
 var ThemesPage = React.createClass({
 
@@ -107,7 +109,12 @@ var ThemesPage = React.createClass({
       menu: {
         position: 'relative',
         float: 'left'
-      }
+      },
+      avatarProgressAndro: {
+        color: 'blue',
+        foregroundColor: 'red',
+        backgroundColor: '#3ABB57',
+      },
     };
 
     if (this.isDeviceSize(StyleResizable.statics.Sizes.MEDIUM)) {
@@ -342,8 +349,60 @@ var ThemesPage = React.createClass({
             </ClearFix>
 
             <ClearFix>
+            <AvatarProgress
+              progress={0}
+              icon={<FontIcon className="mdi mdi-android" />}
+              color={styles.avatarProgressAndro.color}
+              backgroundColor={styles.avatarProgressAndro.backgroundColor}
+              foregroundColor={styles.avatarProgressAndro.foregroundColor} />
+
+            <AvatarProgress
+              style={{marginLeft:'10px'}}
+              progress={12}
+              icon={<FontIcon className="mdi mdi-android" />}
+              color={styles.avatarProgressAndro.color}
+              backgroundColor={styles.avatarProgressAndro.backgroundColor}
+              foregroundColor={styles.avatarProgressAndro.foregroundColor} />
+
+            <AvatarProgress
+              style={{marginLeft:'10px'}}
+              progress={25}
+              icon={<FontIcon className="mdi mdi-android" />}
+              color={styles.avatarProgressAndro.color}
+              backgroundColor={styles.avatarProgressAndro.backgroundColor}
+              foregroundColor={styles.avatarProgressAndro.foregroundColor} />
+
+            <AvatarProgress
+              style={{marginLeft:'10px'}}
+              progress={50}
+              icon={<FontIcon className="mdi mdi-android" />}
+              color={styles.avatarProgressAndro.color}
+              backgroundColor={styles.avatarProgressAndro.backgroundColor}
+              foregroundColor={styles.avatarProgressAndro.foregroundColor} />
+
+            <AvatarProgress
+              style={{marginLeft:'10px'}}
+              progress={75}
+              icon={<FontIcon className="mdi mdi-android" />}
+              color={styles.avatarProgressAndro.color}
+              backgroundColor={styles.avatarProgressAndro.backgroundColor}
+              foregroundColor={styles.avatarProgressAndro.foregroundColor} />
+
+            <AvatarProgress
+              style={{marginLeft:'10px'}}
+              progress={100}
+              icon={<FontIcon className="mdi mdi-android" />}
+              color={styles.avatarProgressAndro.color}
+              backgroundColor={styles.avatarProgressAndro.backgroundColor}
+              foregroundColor={styles.avatarProgressAndro.foregroundColor} />
+
+            </ClearFix>
+
+            <ClearFix>
 
             <Paper style={styles.spacing}>
+
+              <h2>Results</h2>
 
               <TestResultsBox results={results} />
 

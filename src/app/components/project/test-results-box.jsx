@@ -10,7 +10,11 @@ var { Paper,
       CardHeader,
       CardText,
       CardActions,
-      Avatar } = mui;
+      Avatar,
+      FontIcon } = mui;
+
+// APP
+var AvatarProgress = require('goby/components/shared/avatar-progress.jsx');
 
 var TestResultsBox = class extends React.Component{
 
@@ -33,10 +37,18 @@ var TestResultsBox = class extends React.Component{
                   {failure}
                 </CardText>
       });
+      // var testProgress = <Avatar style={{color:'red'}}>A</Avatar>;
+      var testProgress = <AvatarProgress
+        icon={<FontIcon className="mdi mdi-android" />}
+        color='white'
+        backgroundColor='blue'
+        foregroundColor='red' /> ;
+
       return  <Card expandable={true} key={index}>
                 <CardHeader
                   title={item.name}
                   subtitle={item.testCases.length + " test cases, " + item.time + " time"}
+                  avatar={testProgress}
                   showExpandableButton={true}>
                 </CardHeader>
                 {testCasesRendered}
