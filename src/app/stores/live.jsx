@@ -231,7 +231,7 @@ var LiveStore =  Reflux.createStore({
 
   changeBoxes: function (typeName, field, newValue) {
     // console.log(this.state);
-    console.log(arguments);
+    // console.log(arguments);
     var replacement = {};
     replacement[field] = newValue;
     this.state.live.boxes = this.state.live.boxes.map(

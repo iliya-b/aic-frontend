@@ -165,7 +165,7 @@ var CampaignStore =  Reflux.createStore({
 
   changeBoxes: function (typeName, field, newValue) {
     // console.log(this.state);
-    console.log(arguments);
+    // console.log(arguments);
     var replacement = {};
     replacement[field] = newValue;
     this.state.campaign.boxes = this.state.campaign.boxes.map(
@@ -200,8 +200,8 @@ var CampaignStore =  Reflux.createStore({
   // State update
 
   updateState: function(){
-    console.log('updateState');
-    console.log(this.state.campaign.status);
+    // console.log('updateState');
+    // console.log(this.state.campaign.status);
     var actualStatus = this.statusUpdating[this.state.campaign.status];
     this.changeBoxes(actualStatus.typeName, 'status', actualStatus.newStatus);
     this.trigger( this.state );

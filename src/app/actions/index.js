@@ -5,4 +5,5 @@ module.exports = {
   APKTestUploadActions: require('./apk-test-upload.js'),
   LiveActions: require('./live.js'),
   CampaignActions: require('./campaign.js'),
+  AuthActions: require('./auth.js'),
 };

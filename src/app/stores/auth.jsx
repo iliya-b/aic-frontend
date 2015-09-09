@@ -146,7 +146,7 @@ var RequireAuthComponent = class extends React.Component {
 };
 
 RequireAuthComponent.willTransitionTo = function (transition) {
-    Auth.requireAuth(transition);
+  Auth.requireAuth(transition);
 };
 
 module.exports = {
