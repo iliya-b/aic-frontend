@@ -12,7 +12,13 @@ var { Paper,
       CardText,
       CardActions,
       Avatar,
-      FontIcon } = mui;
+      FontIcon,
+      Table,
+      TableHeader,
+      TableHeaderColumn,
+      TableBody,
+      TableRow,
+      TableRowColumn } = mui;
 
 // APP
 var AvatarProgress = require('goby/components/shared/avatar-progress.jsx');
@@ -27,22 +33,26 @@ var TestResultsBox = class extends React.Component{
 
     var resultsRendered = this.props.results.map(function(item, index){
       var testCasesRendered = item.testCases.map(function(testCase, testCaseIndex){
-        var status = testCase.failure ? 'failure' : 'pass';
-        var failure = testCase.failure ? <div>
-          <p>{testCase.failure.content}</p>
-          <p>{testCase.failure.message}</p>
-          <p>{testCase.failure.type}</p>
-          </div> : null;
-        return  <CardText key={testCaseIndex} expandable={true}>
-                  <p>class: {testCase.className}</p>
-                  <p>name: {testCase.name}</p>
-                  <p>status: {status}</p>
-                  {failure}
-                </CardText>
-      });
+        var statusIcon = testCase.failure ? <FontIcon className='mdi mdi-close' style={{color:this.context.muiTheme.palette.errorColor}} /> :
+                                            <FontIcon className='mdi mdi-check' style={{color:this.context.muiTheme.palette.successColor}} />;
+        var failure = testCase.failure ? <TableRow key={testCaseIndex+'-failure'}>
+            <TableRowColumn></TableRowColumn>
+            <TableRowColumn colSpan="2" style={{color:this.context.muiTheme.palette.errorColor}}>
+              <p><strong>{testCase.failure.message}</strong></p>
+              <p>{testCase.failure.type}</p>
+              <p>{testCase.failure.content}</p>
+            </TableRowColumn>
+          </TableRow> : null;
+        var rowInfo = <TableRow key={testCaseIndex} style={failure ? {borderBottomWidth:0} : {}} >
+                                <TableRowColumn style={{width:'50px'}}>{statusIcon}</TableRowColumn>
+                                <TableRowColumn>{testCase.className}</TableRowColumn>
+                                <TableRowColumn>{testCase.name}</TableRowColumn>
+                              </TableRow>;
+        return failure ? [rowInfo,failure] : [rowInfo] ;
+      }, this);
 
       var totalTests = item.testCases.length;
-      var totalFailedTests = item.testCases.reduce(function(testCase, testCaseIndex, previous){
+      var totalFailedTests = item.testCases.reduce(function(previous, testCase){
         return  testCase.failure ? 1 + previous : previous;  }, 0);
       var percentageFailedTests = Math.round(totalFailedTests/totalTests*100);
       var totalPassedTests = totalTests - totalFailedTests;
@@ -51,7 +61,8 @@ var TestResultsBox = class extends React.Component{
         icon={<FontIcon className="mdi mdi-android" />}
         style={{marginRight: Spacing.desktopGutter}}
         progress={percentageFailedTests}
-        color={totalFailedTests ? this.context.muiTheme.palette.errorColor : this.context.muiTheme.palette.successColor }
+        color='rgba(0, 0, 0, 0.54)'
+        // color={totalFailedTests ? this.context.muiTheme.palette.errorColor : this.context.muiTheme.palette.successColor }
         backgroundColor={this.context.muiTheme.palette.successColor}
         foregroundColor={this.context.muiTheme.palette.errorColor} /> ;
 
@@ -61,6 +72,19 @@ var TestResultsBox = class extends React.Component{
           {item.time} time
         </div>;
 
+      var tableTests = <Table selectable={false}>
+                  <TableHeader displaySelectAll={false} adjustForCheckbox={false} >
+                    <TableRow>
+                      <TableHeaderColumn style={{width:'50px'}}>Status</TableHeaderColumn>
+                      <TableHeaderColumn>Class</TableHeaderColumn>
+                      <TableHeaderColumn>Name</TableHeaderColumn>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody displayRowCheckbox={false}>
+                  {testCasesRendered}
+                  </TableBody>
+                </Table>;
+
       return  <Card expandable={true} key={index}>
                 <CardHeader
                   title={item.name}
@@ -68,7 +92,9 @@ var TestResultsBox = class extends React.Component{
                   avatar={testProgress}
                   showExpandableButton={true}>
                 </CardHeader>
-                {testCasesRendered}
+                <CardText expandable={true}>
+                {tableTests}
+                </CardText>
               </Card>;
     }, this);
 
