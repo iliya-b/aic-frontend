@@ -111,9 +111,9 @@ var ThemesPage = React.createClass({
         float: 'left'
       },
       avatarProgressAndro: {
-        color: 'blue',
-        foregroundColor: 'red',
-        backgroundColor: '#3ABB57',
+        color: '#7ABF27',
+        foregroundColor: '#0DCAC9',
+        backgroundColor: '#A2A2A2',
       },
     };
 

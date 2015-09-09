@@ -13,6 +13,7 @@ var AvatarProgress = class extends React.Component{
 
     var {
       backgroundColor,
+      foregroundColor,
       color,
       icon,
       size,
@@ -33,7 +34,16 @@ var AvatarProgress = class extends React.Component{
       },
       outer: {
         fill: 'transparent',
-        stroke: 'red',
+        stroke: foregroundColor,
+        strokeWidth: '5px',
+        strokeDasharray: '106px',
+        transition: 'stroke-dashoffset 1s',
+        WebkitAnimationPlayState: 'running',
+        MozTransform: 'rotate(-89deg) translateX(-190px)',
+      },
+      outerBG: {
+        fill: 'transparent',
+        stroke: backgroundColor,
         strokeWidth: '5px',
         strokeDasharray: '106px',
         transition: 'stroke-dashoffset 1s',
@@ -43,7 +53,7 @@ var AvatarProgress = class extends React.Component{
       figcaption: {
         width: '30px',
         height: '30px',
-        border: '5px solid #3ABB57',
+        border: '5px solid transparent',
         borderRadius: '30px',
         // lineHeight: '50px',
       },
@@ -87,6 +97,7 @@ var AvatarProgress = class extends React.Component{
 
     return  <figure className="chart" data-percent={progress} style={StylePropable.mergeStyles(styles.chart, style)}>
               <svg width="40" height="40" style={styles.svg}>
+                <circle style={styles.outerBG} cx="170" cy="20" r="17" transform="rotate(-90, 95, 95)"/>
                 <circle style={styles.outer} className="outer" cx="170" cy="20" r="17" transform="rotate(-90, 95, 95)"/>
               </svg>
               <figcaption style={styles.figcaption}>

@@ -81,6 +81,7 @@ var Home = class extends React.Component {
               primary={true}
               className="btLogin" />
             <LoginDialog ref="loginDialog" />
+            {/*
             <RaisedButton
               label="Sign Up"
               onTouchTap={this._onSignUpClick}
@@ -88,6 +89,7 @@ var Home = class extends React.Component {
               style={styles.buttonStyle}
               primary={true} />
             <SignUpDialog ref="signUpDialog" />
+            */}
           </div>
       </FullWidthSection>
     );
