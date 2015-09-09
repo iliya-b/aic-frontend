@@ -27,8 +27,7 @@ var CampaignStore =  Reflux.createStore({
   // Set project
   onSetProjectId: function (projectId) {
     this.state.projectId = projectId;
-    this.state.campaign.status = 'CAMPAIGN_STATUS_PREPARING';
-    this.updateState();
+    this.setPreparing();
   },
 
   onLoadState: function () {
@@ -37,6 +36,17 @@ var CampaignStore =  Reflux.createStore({
 
   onSetState: function (newState) {
     this.state = newState;
+    this.updateState();
+  },
+
+  // Restart
+  onRestart: function (projectId) {
+    this.reset();
+    this.setPreparing();
+  },
+
+  setPreparing: function () {
+    this.state.campaign.status = 'CAMPAIGN_STATUS_PREPARING';
     this.updateState();
   },
 
