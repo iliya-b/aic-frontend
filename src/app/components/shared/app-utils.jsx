@@ -40,6 +40,10 @@ var AppUtils = {
     return word.charAt(0).toUpperCase() + word.slice(1);
   },
 
+  pluralize: function (count, word) {
+    return count === 1 ? word : word + 's';
+  },
+
 
 };
 

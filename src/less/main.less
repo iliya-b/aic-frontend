@@ -110,13 +110,15 @@ body {
 
 // http://codepen.io/kyledws/pen/Gvelt/
 
-@chartPercStep: 5.37;
+@chatTotalLen: 106;
+@chatTotalSteps: 100;
+@chartPercStep: @chatTotalLen/@chatTotalSteps;
 
 /* Set the initial values for the animation */
-.generate-chart-initial(100);
+.generate-chart-initial(@chatTotalSteps);
 .generate-chart-initial(@n, @i: 0) when (@i =< @n) {
   .chart[data-percent='@{i}'] .outer {
-    stroke-dashoffset: ((100 - @i)*@chartPercStep);
+    stroke-dashoffset: ((@chatTotalSteps - @i)*@chartPercStep);
     -webkit-animation: 'show@{i}' 2s;
     animation: 'show@{i}' 2s;
   }
@@ -124,15 +126,15 @@ body {
 }
 
 /* Keyframes for the initial animation */
-.generate-chart-keyframes(100);
+.generate-chart-keyframes(@chatTotalSteps);
 .generate-chart-keyframes(@n, @i: 0) when (@i =< @n) {
   @-webkit-keyframes 'show@{i}' {
-    from {stroke-dashoffset: 537;}
-    to {stroke-dashoffset: ((100 - @i)*@chartPercStep);}
+    from {stroke-dashoffset: @chatTotalLen;}
+    to {stroke-dashoffset: ((@chatTotalSteps - @i)*@chartPercStep);}
   }
   @keyframes 'show@{i}' {
-    from {stroke-dashoffset: 537;}
-    to {stroke-dashoffset: ((100 - @i)*@chartPercStep);}
+    from {stroke-dashoffset: @chatTotalLen;}
+    to {stroke-dashoffset: ((@chatTotalSteps - @i)*@chartPercStep);}
   }
   .generate-chart-keyframes(@n, (@i + 1));
 }

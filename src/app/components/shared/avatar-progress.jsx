@@ -34,19 +34,18 @@ var AvatarProgress = class extends React.Component{
       outer: {
         fill: 'transparent',
         stroke: 'red',
-        strokeWidth: '20',
-        strokeDasharray: '537',
+        strokeWidth: '5px',
+        strokeDasharray: '106px',
         transition: 'stroke-dashoffset 1s',
         WebkitAnimationPlayState: 'running',
         MozTransform: 'rotate(-89deg) translateX(-190px)',
       },
       figcaption: {
-        padding: '50px 25px',
-        width: '100px',
-        height: '50px',
-        border: '20px solid #3ABB57',
-        borderRadius: '100px',
-        lineHeight: '50px',
+        width: '30px',
+        height: '30px',
+        border: '5px solid #3ABB57',
+        borderRadius: '30px',
+        // lineHeight: '50px',
       },
       svg: {
         position: 'absolute',
@@ -56,9 +55,11 @@ var AvatarProgress = class extends React.Component{
       chart: {
         position: 'relative',
         display: 'inline-block',
-        color: '#999',
-        fontSize: '20px',
-        textAlign: 'center',
+        /* So it can be override by props styles */
+        marginLeft: 0,
+        marginRight: 0,
+        marginTop: 0,
+        marginBottom: 0,
       },
     };
 
@@ -71,7 +72,7 @@ var AvatarProgress = class extends React.Component{
     }, style);
 
     const styleIcon = {
-      margin: 8,
+      margin: '3px',
     };
 
     const iconElement = icon ? React.cloneElement(icon, {
@@ -84,21 +85,15 @@ var AvatarProgress = class extends React.Component{
 
     // <circle style={styles.outer} className="outer" cx="95" cy="95" r="85" transform="rotate(-90, 95, 95)"/>
 
-    return  <div>
-            <figure className="chart" data-percent={progress} style={styles.chart}>
-              <svg width="200" height="200" style={styles.svg}>
-                <circle style={styles.outer} className="outer" cx="50" cy="50" r="45" transform="rotate(-90, 95, 95)"/>
+    return  <figure className="chart" data-percent={progress} style={StylePropable.mergeStyles(styles.chart, style)}>
+              <svg width="40" height="40" style={styles.svg}>
+                <circle style={styles.outer} className="outer" cx="170" cy="20" r="17" transform="rotate(-90, 95, 95)"/>
               </svg>
-             <figcaption style={styles.figcaption}>
+              <figcaption style={styles.figcaption}>
                 {iconElement}
                 {this.props.children}
               </figcaption>
             </figure>
-            <div {...other} style={styles.root} >
-              {iconElement}
-                {this.props.children}
-            </div>
-            </div>
   }
 
 };
