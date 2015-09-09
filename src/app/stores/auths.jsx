@@ -35,7 +35,7 @@ var AuthStore =  Reflux.createStore({
 
   onLoginFailure: function (errorMessage) {
     this.state.login.message = errorMessage;
-    this.state.login.status = 'LOGIN_CONNECT_FAILED';
+    this.state.login.status = 'LOGIN_STATUS_CONNECT_FAILED';
     this.updateState();
   },
 

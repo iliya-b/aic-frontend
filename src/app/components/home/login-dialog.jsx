@@ -10,7 +10,8 @@ var { Dialog,
       FlatButton } = mui;
 
 // APP
-var { Auths } = require('goby/stores');
+var { AuthStore } = require('goby/stores');
+var { AuthActions } = require('goby/actions');
 var AppUtils = require('goby/components/shared/app-utils.jsx');
 
 var LoginDialog = class extends React.Component{
@@ -18,6 +19,9 @@ var LoginDialog = class extends React.Component{
   constructor (props) {
     super(props);
     this._onLoginSubmit = this._onLoginSubmit.bind(this);
+    this._onLoginCancel = this._onLoginCancel.bind(this);
+    this._onStateChange = this._onStateChange.bind(this);
+    this.validFields = this.validFields.bind(this);
   }
 
   render() {
@@ -37,15 +41,17 @@ var LoginDialog = class extends React.Component{
         className='btLoginSubmit'  />
     ];
 
-    var errorBox = null;
+    var errorBox = this.state && this.state.login.status === 'LOGIN_STATUS_CONNECT_FAILED' ? <div style={{color:this.context.muiTheme.palette.errorColor}}>{this.state.login.message}</div> : null ;
 
     return (
       <Dialog title='Login' actions={loginActions} ref='loginDialogIn' onShow={this.cleanFields} >
+        {this.state ?
         <form onsubmit={this._onLoginSubmit}>
         {errorBox}
-        <TextField className='loginEmail' onEnterKeyDown={this._onLoginSubmit} ref='loginEmail' changed={false} errorText={'this.state.loginEmailError'} floatingLabelText='login' disabled={this.state.blockFields} /><br />
-        <TextField className='loginPassword' onEnterKeyDown={this._onLoginSubmit} ref='loginPassword' changed={false}  errorText={'this.state.loginPasswordError'} floatingLabelText='password' type='password'  disabled={this.state.blockFields} />
+        <TextField className='loginEmail' onEnterKeyDown={this._onLoginSubmit} ref='loginEmail' onChange={this.validFields} errorText={this.state.hasOwnProperty('loginEmailError') ? this.state.loginEmailError : ''} floatingLabelText='login' disabled={this.state.login.status === 'LOGIN_STATUS_CONNECTING'} /><br />
+        <TextField className='loginPassword' onEnterKeyDown={this._onLoginSubmit} ref='loginPassword' onChange={this.validFields} errorText={this.state.hasOwnProperty('loginPasswordError') ? this.state.loginPasswordError : ''} floatingLabelText='password' type='password' disabled={this.state.login.status === 'LOGIN_STATUS_CONNECTING'} />
         </form>
+        : null}
       </Dialog>
       );
   }
@@ -54,36 +60,22 @@ var LoginDialog = class extends React.Component{
     this.refs.loginDialogIn.show();
   }
 
-  blockFields(){
-    this.setState({ blockFields: true });
-  }
-
-  unblockFields(){
-    this.setState({ blockFields: false });
-  }
-
   validFields(){
-    return this.refs.loginEmail.getValue() && this.refs.loginPassword.getValue();
+    var newState = this.state;
+    var fieldAreValid = ['loginEmail', 'loginPassword'].reduce(function (previous, item) {
+      newState[item + 'Error'] = AppUtils.fieldIsRequired( previous[1].refs[ item ] );
+      return [previous[0] && !AppUtils.isEmpty( previous[1].refs[ item ].getValue() ), previous[1]];
+    },  [ true, this ] );
+    this.setState( newState );
+    return fieldAreValid[0];
   }
 
   _onLoginSubmit(e) {
     e.preventDefault();
     if(this.validFields()){
-      this.blockFields();
-      var { router } = this.context;
-      var nextPath = router.getCurrentQuery().nextPath;
       var email = this.refs.loginEmail.getValue();
       var pass = this.refs.loginPassword.getValue();
-      AuthStore.login(email, pass);
-      // Auth.login(email, pass, (results) => {
-      //   console.log(results);
-      //   if ( results.hasOwnProperty('authenticated') && results.authenticated === true ){
-      //     Auth.redirectIfLogged(router);
-      //   } else {
-      //     this.setState({ loginError: true, loginErrorMessage: results.hasOwnProperty('errorMessage') ? results.errorMessage : 'Unknown error' });
-      //     this.unblockFields();
-      //   }
-      // });
+      AuthActions.login(email, pass);
     }
   }
 
@@ -91,12 +83,16 @@ var LoginDialog = class extends React.Component{
     this.refs.loginDialogIn.dismiss();
   }
 
-  _onStateChange(){
-
+  _onStateChange(newState){
+    if (newState.login.status === 'LOGIN_STATUS_CONNECTED'){
+      AuthActions.redirect(this.context.router);
+    }
+    this.setState(newState);
   }
 
   componentDidMount() {
     this.unsubscribe = AuthStore.listen( this._onStateChange );
+    AuthStore.init();
   }
 
   componentWillUnmount() {

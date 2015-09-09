@@ -15,9 +15,10 @@ var BackendAPI = {
     });
   },
 
-  apiCall: function(url, data, cb, headers, method){
+  apiCall: function(url, data, cb, headers, method, authRequired){
     method = (typeof method === 'undefined') ? 'POST' : method;
     headers = (typeof headers === 'undefined') ? {} : headers;
+    authRequired = (typeof authRequired === 'undefined') ? true : authRequired;
     $.ajax({
       url:  url,
       data: data,
@@ -31,7 +32,7 @@ var BackendAPI = {
     })
     .always(function(data, textStatus, errorThrown) {
       // User is not logged in
-      if (textStatus === 'error' && errorThrown === 'Unauthorized') {
+      if (authRequired && textStatus === 'error' && errorThrown === 'Unauthorized') {
         // TODO: Must be changed to state etc...
         var { Auth } = require('./auth.jsx');
         Auth.logout();
@@ -49,7 +50,7 @@ var BackendAPI = {
     var url = this.backendRoot() + "/back/user/login";
     // var data = '{"auth":{"passwordCredentials":{"username":"'+email+'","password":"'+pass+'"}}}';
     var data = '{"passwordCredentials":{"username":"'+email+'","password":"'+pass+'"}}';
-    this.apiCall(url, data, cb);
+    this.apiCall(url, data, cb, undefined, undefined, false);
   },
 
   userRegister: function (email, pass, name, cb) {

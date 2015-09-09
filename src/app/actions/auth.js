@@ -3,6 +3,9 @@
 // Reflux
 var Reflux = require('reflux');
 
+// url
+var url = require('url');
+
 // APP
 var BackendAPI = require('goby/stores/backend-api.jsx');
 
@@ -33,5 +36,44 @@ AuthActions.login.listen(function (login, pass) {
     }
   });
 });
+
+AuthActions.redirect = function (routerOrTransition) {
+  var urlQuery = AuthActions.getQuery(routerOrTransition);
+  var nextPath = urlQuery ? urlQuery.nextPath : null;
+  if (nextPath) {
+    // Go to the visited page that required authentication
+    AuthActions.redirectTo(routerOrTransition, nextPath);
+  } else {
+    // Go to the default user home
+    AuthActions.redirectTo(routerOrTransition, AppConfig.userHome);
+  }
+};
+
+AuthActions.getQuery = function (routerOrTransition) {
+  var currentPath = AuthActions.getPath(routerOrTransition);
+  var urlParsed = url.parse(currentPath, true);
+  return urlParsed.query;
+};
+
+AuthActions.getPath = function (routerOrTransition) {
+  if (routerOrTransition.hasOwnProperty('path')){
+    return routerOrTransition.path;
+  // transition case
+  }else if(typeof routerOrTransition.getCurrentPath  === 'function'){
+    return routerOrTransition.getCurrentPath();
+  }else{
+    return null;
+  }
+};
+
+AuthActions.redirectTo = function (routerOrTransition, page, query) {
+  // router case
+  if (typeof routerOrTransition.redirect == 'function'){
+    routerOrTransition.redirect(page, {}, query);
+  // transition case
+  }else if (typeof routerOrTransition.transitionTo  == 'function'){
+    routerOrTransition.transitionTo(page, {}, query);
+  }
+};
 
 module.exports = AuthActions;
