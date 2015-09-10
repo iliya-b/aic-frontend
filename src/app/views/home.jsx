@@ -116,7 +116,8 @@ Home.contextTypes = {
 }
 
 Home.willTransitionTo = function(transition) {
-  Auth.redirectIfLogged(transition);
+  // TODO: check if user is logged and redirect
+  // Auth.redirectIfLogged(transition);
 };
 
 module.exports = Home;

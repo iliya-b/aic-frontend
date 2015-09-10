@@ -7,7 +7,7 @@ var { Dialog, FlatButton } = mui;
 
 var InfoBox = require('../shared/info-box.jsx');
 var AppUtils = require('../shared/app-utils.jsx');
-var { Auth } = require('goby/stores/auth.jsx');
+var { AuthActions } = require('goby/actions');
 
 var SessionEndedDialog = class extends React.Component{
 
@@ -43,7 +43,8 @@ var SessionEndedDialog = class extends React.Component{
   }
 
   _onClose() {
-    Auth.requireAuth(this.context.router);
+    // this.context.router.transitionTo('main');
+    AuthActions.redirectDisconnected(this.context.router);
     this.refs.sessionEndedDialog.dismiss();
   }
 

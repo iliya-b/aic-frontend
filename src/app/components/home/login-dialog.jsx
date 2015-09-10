@@ -48,8 +48,8 @@ var LoginDialog = class extends React.Component{
         {this.state ?
         <form onsubmit={this._onLoginSubmit}>
         {errorBox}
-        <TextField className='loginEmail' onEnterKeyDown={this._onLoginSubmit} ref='loginEmail' onChange={this.validFields} errorText={this.state.hasOwnProperty('loginEmailError') ? this.state.loginEmailError : ''} floatingLabelText='login' disabled={this.state.login.status === 'LOGIN_STATUS_CONNECTING'} /><br />
-        <TextField className='loginPassword' onEnterKeyDown={this._onLoginSubmit} ref='loginPassword' onChange={this.validFields} errorText={this.state.hasOwnProperty('loginPasswordError') ? this.state.loginPasswordError : ''} floatingLabelText='password' type='password' disabled={this.state.login.status === 'LOGIN_STATUS_CONNECTING'} />
+        <TextField className='loginEmail' onEnterKeyDown={this._onLoginSubmit} ref='loginEmail' onChange={this._onFieldChange.bind(this, 'loginEmail')} errorText={this.state.hasOwnProperty('loginEmailError') ? this.state.loginEmailError : ''} floatingLabelText='login' disabled={this.state.login.status === 'LOGIN_STATUS_CONNECTING'} /><br />
+        <TextField className='loginPassword' onEnterKeyDown={this._onLoginSubmit} ref='loginPassword' onChange={this._onFieldChange.bind(this, 'loginPassword')} errorText={this.state.hasOwnProperty('loginPasswordError') ? this.state.loginPasswordError : ''} floatingLabelText='password' type='password' disabled={this.state.login.status === 'LOGIN_STATUS_CONNECTING'} />
         </form>
         : null}
       </Dialog>
@@ -57,13 +57,23 @@ var LoginDialog = class extends React.Component{
   }
 
   show(){
+    this.setState( { fieldsChanged : [], loginEmailError: '', loginPasswordError: '' } );
     this.refs.loginDialogIn.show();
   }
 
-  validFields(){
-    var newState = this.state;
+  _onFieldChange(ref){
+    var fieldsChanged = this.state.fieldsChanged ? this.state.fieldsChanged : [];
+    fieldsChanged.push(ref);
+    this.validFields( AppUtils.extend(this.state , { fieldsChanged : fieldsChanged } ) )
+  }
+
+  validFields(newState){
+    // console.log('newState');
+    // console.log(newState);
     var fieldAreValid = ['loginEmail', 'loginPassword'].reduce(function (previous, item) {
-      newState[item + 'Error'] = AppUtils.fieldIsRequired( previous[1].refs[ item ] );
+      if ( newState.fieldsChanged && newState.fieldsChanged.indexOf(item) > -1 ) {
+        newState[item + 'Error'] = AppUtils.fieldIsRequired( previous[1].refs[ item ] );
+      }
       return [previous[0] && !AppUtils.isEmpty( previous[1].refs[ item ].getValue() ), previous[1]];
     },  [ true, this ] );
     this.setState( newState );
@@ -72,7 +82,7 @@ var LoginDialog = class extends React.Component{
 
   _onLoginSubmit(e) {
     e.preventDefault();
-    if(this.validFields()){
+    if(this.validFields( AppUtils.extend(this.state , { fieldsChanged : ['loginEmail', 'loginPassword'] } ) )){
       var email = this.refs.loginEmail.getValue();
       var pass = this.refs.loginPassword.getValue();
       AuthActions.login(email, pass);
@@ -85,7 +95,7 @@ var LoginDialog = class extends React.Component{
 
   _onStateChange(newState){
     if (newState.login.status === 'LOGIN_STATUS_CONNECTED'){
-      AuthActions.redirect(this.context.router);
+      AuthActions.redirectConnected(this.context.router);
     }
     this.setState(newState);
   }

@@ -41,18 +41,18 @@ var AuthStore =  Reflux.createStore({
 
   // Logout
   onLogout: function () {
-    this.state.login.status = 'LOGIN_STATUS_CLOSING';
+    this.state.login.status = 'LOGIN_STATUS_DISCONNECTING';
     this.updateState();
   },
 
   onLogoutCompleted: function () {
-    this.state.login.status = 'LOGIN_STATUS_CLOSED';
+    this.state.login.status = 'LOGIN_STATUS_DISCONNECTED';
     this.updateState();
   },
 
   onLogoutFailure: function (errorMessage) {
     this.state.login.message = errorMessage;
-    this.state.login.status = 'LOGIN_STATUS_CLOSE_FAILED';
+    this.state.login.status = 'LOGIN_STATUS_DISCONNECT_FAILED';
     this.updateState();
   },
 

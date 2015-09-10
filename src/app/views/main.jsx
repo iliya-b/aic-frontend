@@ -16,32 +16,43 @@ var { RaisedButton } = mui;
 // APP
 var AppConfig = require('goby/configs/app-config.jsx');
 var GobyTheme = require('goby/configs/goby-theme.jsx');
-var { FullWidthSection } = require('goby/components');
+var { FullWidthSection,
+      SessionEndedDialog } = require('goby/components');
+var { AuthStore } = require('goby/stores');
+var { AuthActions } = require('goby/actions');
 
-var Main = React.createClass({
+var Main = class extends React.Component{
+
+  constructor (props) {
+    super(props);
+    this._onThemeClick = this._onThemeClick.bind(this);
+    this._onHomeClick = this._onHomeClick.bind(this);
+    this._onStateChange = this._onStateChange.bind(this);
+  }
 
   _onThemeClick() {
     this.context.router.transitionTo('theme-test');
-  },
+  }
+
   _onHomeClick() {
     this.context.router.transitionTo('home');
-  },
+  }
 
   componentWillMount() {
     // ThemeManager.setPalette(GobyPalette);
     ThemeManager.setTheme(GobyTheme);
-  },
+  }
 
-  childContextTypes: {
-    muiTheme: React.PropTypes.object,
-    router: React.PropTypes.func,
-  },
-
-  getChildContext: function() {
+  getChildContext() {
     return {
       muiTheme: ThemeManager.getCurrentTheme(),
     };
-  },
+  }
+
+  // childContextTypes: {
+  //   muiTheme: React.PropTypes.object,
+  //   router: React.PropTypes.func,
+  // },
 
   getStyles() {
     var darkWhite = Colors.darkWhite;
@@ -63,9 +74,9 @@ var Main = React.createClass({
         color: darkWhite,
       },
     };
-  },
+  }
 
-  render: function() {
+  render() {
     var styles = this.getStyles();
     return (
       <div>
@@ -77,12 +88,31 @@ var Main = React.createClass({
           <RaisedButton label="Test Theme" primary={true}  onClick={this._onThemeClick} />
           ) : null }
         </FullWidthSection>
+        <SessionEndedDialog ref="sessionEndedDialog" />
       </div>
 
     );
-  },
+  }
 
-});
+  _onStateChange(newState){
+    if (newState.login.status === 'LOGIN_STATUS_DISCONNECTED' && AuthActions.getPath(this.context.router) !== '/' ){
+      this.refs.sessionEndedDialog.show();
+    }
+    // this.setState(newState);
+    // console.log('changed main state' , newState ,  AuthActions.getPath(this.context.router));
+  }
+
+  componentDidMount() {
+    this.unsubscribe = AuthStore.listen( this._onStateChange );
+    AuthStore.init();
+  }
+
+  componentWillUnmount() {
+    // Subscribe and unsubscribe because we don't want to use the mixins
+    this.unsubscribe();
+  }
+
+};
 
 Main.contextTypes = {
   router: React.PropTypes.func,

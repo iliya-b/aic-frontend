@@ -8,6 +8,7 @@ var url = require('url');
 
 // APP
 var BackendAPI = require('goby/stores/backend-api.jsx');
+var AppConfig = require('goby/configs/app-config.jsx');
 
 // Actions
 var AuthActions = Reflux.createActions({
@@ -37,7 +38,11 @@ AuthActions.login.listen(function (login, pass) {
   });
 });
 
-AuthActions.redirect = function (routerOrTransition) {
+AuthActions.redirectDisconnected = function (routerOrTransition) {
+  this.redirectTo(routerOrTransition, 'home', {'nextPath' : this.getPath(routerOrTransition)});
+};
+
+AuthActions.redirectConnected = function (routerOrTransition) {
   var urlQuery = AuthActions.getQuery(routerOrTransition);
   var nextPath = urlQuery ? urlQuery.nextPath : null;
   if (nextPath) {
@@ -67,13 +72,21 @@ AuthActions.getPath = function (routerOrTransition) {
 };
 
 AuthActions.redirectTo = function (routerOrTransition, page, query) {
-  // router case
-  if (typeof routerOrTransition.redirect == 'function'){
-    routerOrTransition.redirect(page, {}, query);
   // transition case
-  }else if (typeof routerOrTransition.transitionTo  == 'function'){
+  if (typeof routerOrTransition.redirect === 'function'){
+    routerOrTransition.redirect(page, {}, query);
+  // router case
+  }else if (typeof routerOrTransition.transitionTo  === 'function'){
     routerOrTransition.transitionTo(page, {}, query);
   }
 };
+
+
+AuthActions.logout.listen(function () {
+  // TODO: Should logout send information to the backend?
+  // normally this action is called when the backend
+  // sent us a unauthorized response
+  this.completed();
+});
 
 module.exports = AuthActions;
