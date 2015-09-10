@@ -68,31 +68,37 @@ var ProjectLive = class extends React.Component{
 
                   <FlatButton
                       label="Search"
+                      title="Search"
                       primary={true}
                       onTouchTap={this._onLiveAction.bind(this, 'check')} />
 
                   <FlatButton
                       label="Create"
+                      title="Create"
                       primary={true}
                       onTouchTap={this._onLiveAction.bind(this, 'start')} />
 
                   <FlatButton
                       label="Load"
+                      title="Load"
                       primary={true}
                       onTouchTap={this._onLiveAction.bind(this, 'load')} />
 
                   <FlatButton
                       label="Connect"
+                      title="Connect"
                       primary={true}
                       onTouchTap={this._onLiveAction.bind(this, 'connect')} />
 
                   <FlatButton
                       label="Close"
+                      title="Close"
                       primary={true}
                       onTouchTap={this._onLiveAction.bind(this, 'close')} />
 
                   <FlatButton
                       label="Set State"
+                      title="Set State"
                       primary={true}
                       onTouchTap={this._onLiveAction.bind(this, 'setState')} />
 
@@ -134,6 +140,7 @@ var ProjectLive = class extends React.Component{
                     <Paper style={style.paperCenter}>
                       <FlatButton
                         label="Stop Live"
+                        title="Stop Live"
                         primary={true}
                         disabled={this.state.live.status === 'LIVE_STATUS_STOPPING'}
                         onTouchTap={this._onLiveAction.bind(this, 'close')} />
@@ -155,6 +162,7 @@ var ProjectLive = class extends React.Component{
 
                   <FlatButton
                     label="Start New Live"
+                    title="Start New Live"
                     primary={true}
                     onTouchTap={this._onLiveAction.bind(this, 'restart')} />
 

@@ -52,11 +52,13 @@ var SignUpDialog = class extends React.Component{
       <FlatButton
         key="signUpActionCancel"
         label={this.state.signUpSuccess ? 'Close' : 'Cancel'}
+        title={this.state.signUpSuccess ? 'Close' : 'Cancel'}
         secondary={true}
         onTouchTap={this._onSignUpCancel} />,
       <FlatButton
         key="signUpActionSubmit"
         label="Submit"
+        title="Submit"
         primary={true}
         onTouchTap={this._onSignUpSubmit}
         style={styles.submit} />

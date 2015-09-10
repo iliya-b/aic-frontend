@@ -114,6 +114,7 @@ var ProjectCampaign = class extends React.Component{
 
             <FlatButton
                 label="Set Results"
+                title="Set Results"
                 primary={true}
                 onTouchTap={this._onStateChange.bind(this, { campaign: {status: 'CAMPAIGN_STATUS_RESULTED', results: results} } )} />
 
@@ -136,6 +137,7 @@ var ProjectCampaign = class extends React.Component{
               ) : null }
               <FlatButton
                 label="Select a device"
+                title="Select a device"
                 onTouchTap={this._onDeviceSelectClick}
                 linkButton={true}
                 primary={true} />
@@ -146,6 +148,7 @@ var ProjectCampaign = class extends React.Component{
               {apksRendered}
               <FlatButton
                 label="Select an APK"
+                title="Select an APK"
                 onTouchTap={this._onAPKSelectClick}
                 linkButton={true}
                 primary={true} />
@@ -156,6 +159,7 @@ var ProjectCampaign = class extends React.Component{
               {apksTestRendered}
               <FlatButton
                 label="Select an APK Test"
+                title="Select an APK Test"
                 onTouchTap={this._onAPKTestSelectClick}
                 linkButton={true}
                 primary={true} />
@@ -167,6 +171,7 @@ var ProjectCampaign = class extends React.Component{
                 <div>
                   <FlatButton
                     label="Launch campaign"
+                    title="Launch campaign"
                     onClick={this._onLaunchCampaignSubmit}
                     linkButton={true}
                     primary={true} />
@@ -214,6 +219,7 @@ var ProjectCampaign = class extends React.Component{
           <div style={style.center} >
             <FlatButton
               label="Start new campaign"
+              title="Start new campaign"
               primary={true}
               onClick={this._onLauchAnotherCampaignSubmit} />
           </div>

@@ -52,12 +52,14 @@ var LoginDialog = class extends React.Component{
       <FlatButton
         key="loginActionCancel"
         label={this.state.loginSuccess ? 'Close' : 'Cancel'}
+        title={this.state.loginSuccess ? 'Close' : 'Cancel'}
         secondary={true}
         onTouchTap={this._onLoginCancel}
         className="btLoginCancel"  />,
       <FlatButton
         key="loginActionSubmit"
         label="Submit"
+        title="Submit"
         primary={true}
         onTouchTap={this._onLoginSubmit}
         style={styles.submit}

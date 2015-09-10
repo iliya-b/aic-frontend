@@ -85,7 +85,7 @@ var Main = class extends React.Component{
           <p style={styles.p}>COPYRIGHT © AiC</p>
 
           {AppConfig.debug ? (
-          <RaisedButton label="Test Theme" primary={true}  onClick={this._onThemeClick} />
+          <RaisedButton label="Test Theme" title="Test Theme" primary={true}  onClick={this._onThemeClick} />
           ) : null }
         </FullWidthSection>
         <SessionEndedDialog ref="sessionEndedDialog" />

@@ -55,12 +55,12 @@ var ProjectApkTestList = class extends React.Component {
         <h2>APK Test List</h2>
         <Toolbar style={style.toolbar}>
           <ToolbarGroup style={style.toolbargroup1}>
-            <IconButton onTouchTap={this._onUploadClick} ref="upload" iconClassName="mdi mdi-cloud-upload" tooltip="Upload APK file"/>
+            <IconButton onTouchTap={this._onUploadClick} ref="upload" iconClassName="mdi mdi-cloud-upload" tooltip="Upload APK file" title="Upload APK file" />
           </ToolbarGroup>
           <ReactCSSTransitionGroup transitionName="showHideTransition">
             {this.state.itemsToDelete.length > 0 ? (
             <ToolbarGroup style={style.toolbargroup2} key='deleteItems'>
-              <IconButton onTouchTap={this._onDeleteClick} iconClassName="mdi mdi-delete" tooltip="Delete selected"/>
+              <IconButton onTouchTap={this._onDeleteClick} iconClassName="mdi mdi-delete" tooltip="Delete selected" title="Delete selected" />
             </ToolbarGroup>
             ) : ''}
           </ReactCSSTransitionGroup>

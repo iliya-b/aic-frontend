@@ -80,15 +80,16 @@ var Home = class extends React.Component {
             </h2>
             <RaisedButton
               label="Login"
+              title="Login"
               onTouchTap={this._onLoginClick}
               linkButton={true}
               style={styles.buttonStyle}
-              primary={true}
-              className="btLogin" />
+              primary={true} />
             <LoginDialog ref="loginDialog" />
             {/*
             <RaisedButton
               label="Sign Up"
+              title="Sign Up"
               onTouchTap={this._onSignUpClick}
               linkButton={true}
               style={styles.buttonStyle}

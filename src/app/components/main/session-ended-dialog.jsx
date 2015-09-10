@@ -29,6 +29,7 @@ var SessionEndedDialog = class extends React.Component {
       <FlatButton
         key="sessionEndedActionClose"
         label='Go to homepage'
+        title='Go to homepage'
         secondary={true}
         onTouchTap={this._onClose} />,
     ];

@@ -60,11 +60,13 @@ var APKSelectionDialog = class extends React.Component{
       <FlatButton
         key="cancel"
         label='Cancel'
+        title='Cancel'
         secondary={true}
         onTouchTap={this._onCancel} />,
       <FlatButton
         key="submit"
         label="Select"
+        title="Select"
         primary={true}
         onTouchTap={this._onSubmit} />
     ];

@@ -58,6 +58,7 @@ var APKTestUploadDialog = class extends React.Component{
       <FlatButton
         key="loginActionCancel"
         label='Close'
+        title='Close'
         secondary={true}
         onTouchTap={this._onCancel} />,
     ];
@@ -70,7 +71,7 @@ var APKTestUploadDialog = class extends React.Component{
             <div>
             <Toolbar style={styles.toolbar}>
               <ToolbarGroup style={styles.toolbargroup}>
-                <IconButton style={styles.cleanButton} onTouchTap={this._onCleanClick} ref="upload" iconClassName="mdi mdi-broom" tooltip="Clean finished files"/>
+                <IconButton style={styles.cleanButton} onTouchTap={this._onCleanClick} ref="upload" iconClassName="mdi mdi-broom" tooltip="Clean finished files" title="Clean finished files" />
               </ToolbarGroup>
             </Toolbar>
             <ObjectList style={styles.objectlist} objectListItems={this.state.files} />

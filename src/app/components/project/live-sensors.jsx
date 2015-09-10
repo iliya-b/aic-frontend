@@ -81,17 +81,20 @@ var LiveSensors = class extends React.Component{
               <TextField ref="lon" floatingLabelText="longitude" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur} />
               <FlatButton
                 label="Submit"
+                title="Submit"
                 primary={true}
                 onTouchTap={this._onLocationSubmit} />
               <br />
               <TogglableIcon style={style.sensorIcon} isOn={true} iconName="file-video"  />
               <FlatButton
                 label="Start recording"
+                title="Start recording"
                 primary={true}
                 disabled={this.state.live.recording}
                 onTouchTap={this._onRecordStart} />
               <FlatButton
                 label="Stop recording"
+                title="Stop recording"
                 primary={true}
                 disabled={!this.state.live.recording}
                 onTouchTap={this._onRecordStop} />
@@ -99,6 +102,7 @@ var LiveSensors = class extends React.Component{
               <TogglableIcon style={style.sensorIcon} isOn={true} iconName="file-image"  />
               <FlatButton
                 label="Take screen shot"
+                title="Take screen shot"
                 primary={true}
                 disabled={this.state.live.recording}
                 onTouchTap={this._onScreenshot} />
