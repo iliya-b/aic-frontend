@@ -9,8 +9,6 @@ module.exports = {
     List: require('./project/list.jsx'),
     Live: require('./project/live.jsx'),
     Page: require('./project/page.jsx'),
-    Settings: require('./project/settings.jsx'),
-    Tests: require('./project/tests.jsx'),
     Wrapper: require('./project/wrapper.jsx'),
   }
 };

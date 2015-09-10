@@ -1,24 +1,25 @@
+'use strict';
+
+// React
 var React = require('react');
+
+// Router
 var Router = require('react-router');
 var Route = Router.Route;
 var Redirect = Router.Redirect;
 var DefaultRoute = Router.DefaultRoute;
 
-
 // Pages //
-var Main   = require('../views/main.jsx');
-var Home   = require('../views/home.jsx');
-var Themes = require('../views/themes.jsx');
-var ProjectWrapper = require('../views/project/wrapper.jsx');
-var ProjectList = require('../views/project/list.jsx');
-var ProjectPage = require('../views/project/page.jsx');
-var ProjectSettings = require('../views/project/settings.jsx');
-var ProjectApkList = require('../views/project/apk-list.jsx');
-var ProjectApkTestList = require('../views/project/apk-test-list.jsx');
-var ProjectLive = require('../views/project/live.jsx');
-var ProjectTests = require('../views/project/tests.jsx');
-var ProjectCampaign = require('../views/project/campaign.jsx');
-
+var Main   = require('goby/views/main.jsx');
+var Home   = require('goby/views/home.jsx');
+var Themes = require('goby/views/themes.jsx');
+var ProjectWrapper = require('goby/views/project/wrapper.jsx');
+var ProjectList = require('goby/views/project/list.jsx');
+var ProjectPage = require('goby/views/project/page.jsx');
+var ProjectApkList = require('goby/views/project/apk-list.jsx');
+var ProjectApkTestList = require('goby/views/project/apk-test-list.jsx');
+var ProjectLive = require('goby/views/project/live.jsx');
+var ProjectCampaign = require('goby/views/project/campaign.jsx');
 
 // Routes //
 var AppRoutes = (
@@ -31,9 +32,7 @@ var AppRoutes = (
       <Route name="project-page" path=":projectId" handler={ProjectPage}>
         <Route name="apks" handler={ProjectApkList} />
         <Route name="apks-test" handler={ProjectApkTestList} />
-        <Route name="settings" handler={ProjectSettings} />
         <Route name="live" handler={ProjectLive} />
-        <Route name="tests" handler={ProjectTests} />
         <Route name="campaign" handler={ProjectCampaign} />
         <Redirect from="/projects/:projectId" to="apks" />
       </Route>
