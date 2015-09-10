@@ -95,11 +95,12 @@ var Main = class extends React.Component{
   }
 
   _onStateChange(newState){
-    if (newState.login.status === 'LOGIN_STATUS_DISCONNECTED' && AuthActions.getPath(this.context.router) !== '/' ){
+    var currentPathName = AuthActions.getPathName(this.context.router);
+    if (newState.login.status === 'LOGIN_STATUS_DISCONNECTED' && currentPathName !== '/' && currentPathName !== '/home' ){
       this.refs.sessionEndedDialog.show();
     }
-    // this.setState(newState);
-    // console.log('changed main state' , newState ,  AuthActions.getPath(this.context.router));
+    this.setState(newState);
+    console.log('changed main state' , newState ,  currentPathName);
   }
 
   componentDidMount() {

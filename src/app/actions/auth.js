@@ -71,6 +71,12 @@ AuthActions.getPath = function (routerOrTransition) {
   }
 };
 
+AuthActions.getPathName = function (routerOrTransition) {
+  var currentPath = AuthActions.getPath(routerOrTransition);
+  var urlParsed = url.parse(currentPath, true);
+  return urlParsed.pathname;
+};
+
 AuthActions.redirectTo = function (routerOrTransition, page, query) {
   // transition case
   if (typeof routerOrTransition.redirect === 'function'){

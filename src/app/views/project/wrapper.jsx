@@ -1,15 +1,21 @@
+'use strict';
+
+// React
 var React = require('react');
 
+// Material design
 var mui = require('material-ui');
 var { AppBar } = mui;
 
+// Router
 var Router = require('react-router');
 var { RouteHandler } = Router;
 
-var { Auth, RequireAuthComponent, Project } = require('../../stores/');
+// APP
+var { AuthActions } = require('goby/actions');
+var { Project } = require('goby/stores');
 
-// var ProjectWrapper = RequireAuth( class extends React.Component {
-var ProjectWrapper = class extends RequireAuthComponent {
+var ProjectWrapper = class extends React.Component {
 
   constructor (props) {
     super(props);
@@ -26,8 +32,8 @@ var ProjectWrapper = class extends RequireAuthComponent {
   }
 
   _onRightIconButtonTouchTap() {
-    Auth.logout();
-    Auth.requireAuth(this.context.router);
+    AuthActions.logout();
+    AuthActions.redirectDisconnected(this.context.router);
   }
 
   render() {

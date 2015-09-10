@@ -1,12 +1,17 @@
+'use strict';
+
+// React
 var React = require('react');
 
+// Material design
 var mui = require('material-ui');
 var { Typography } = mui.Styles;
-
-var { FullWidthSection, LoginDialog, SignUpDialog } = require('../components/');
-var { Auth } = require('../stores/auth.jsx');
-
 var { RaisedButton } = mui;
+
+// APP
+var { FullWidthSection,
+      LoginDialog,
+      SignUpDialog } = require('goby/components');
 
 var Home = class extends React.Component {
 

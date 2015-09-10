@@ -1,15 +1,18 @@
+'use strict';
+
+// React
 var React = require('react');
 
+// Material design
 var mui = require('material-ui');
-var { StylePropable } = mui.Mixins;
+var { Dialog,
+      FlatButton } = mui;
 
-var { Dialog, FlatButton } = mui;
-
-var InfoBox = require('../shared/info-box.jsx');
-var AppUtils = require('../shared/app-utils.jsx');
+// APP
+var InfoBox = require('goby/components/shared/info-box.jsx');
 var { AuthActions } = require('goby/actions');
 
-var SessionEndedDialog = class extends React.Component{
+var SessionEndedDialog = class extends React.Component {
 
   constructor (props) {
     super(props);
@@ -19,7 +22,6 @@ var SessionEndedDialog = class extends React.Component{
   render() {
 
     var {
-      // style,
       ...other
     } = this.props;
 
@@ -43,7 +45,6 @@ var SessionEndedDialog = class extends React.Component{
   }
 
   _onClose() {
-    // this.context.router.transitionTo('main');
     AuthActions.redirectDisconnected(this.context.router);
     this.refs.sessionEndedDialog.dismiss();
   }
