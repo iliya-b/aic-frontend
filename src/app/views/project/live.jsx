@@ -109,6 +109,16 @@ var ProjectLive = class extends React.Component{
               </div>
               ) : null}
 
+              {/* Live begin */}
+              {this.state && this.state.live.status === 'LIVE_STATUS_INITIALIZED' ? (
+                <Paper style={style.paperCenter}>
+                  <FlatButton
+                        label="Start New Live"
+                        title="Start New Live"
+                        primary={true}
+                        onTouchTap={this._onLiveAction.bind(this, 'check')} />
+                </Paper>
+              ) : null}
 
               {/* Live failed */}
               {this.state && this.state.live.status.substr(-6) === 'FAILED' ? (
@@ -175,9 +185,9 @@ var ProjectLive = class extends React.Component{
 
   _onStateChange( state ){
     this.setState( state );
-    if(state.live.status === 'LIVE_STATUS_INITIALIZED'){
-      LiveActions.liveCheck();
-    }
+    // if(state.live.status === 'LIVE_STATUS_INITIALIZED'){
+      // LiveActions.liveCheck();
+    // }
   }
 
   _onLiveAction(actionName){
