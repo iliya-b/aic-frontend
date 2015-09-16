@@ -1,6 +1,5 @@
 'use strict';
 
-var AppConfig = require('goby/configs/app-config.jsx');
 var url = require('url') ;
 
 var BackendAPI = {
@@ -8,10 +7,11 @@ var BackendAPI = {
   ERROR: 0,
 
   backendRoot: function(){
+    // FIXME: Not the best to have globals
     return url.format({
-      protocol: AppConfig.backend.protocol,
-      hostname: AppConfig.backend.host,
-      port: AppConfig.backend.port
+      protocol: window.GobyAppGlobals.config.backend.protocol,
+      hostname: window.GobyAppGlobals.config.backend.host,
+      port: window.GobyAppGlobals.config.backend.port
     });
   },
 
@@ -28,7 +28,7 @@ var BackendAPI = {
       processData: false,
       dataType: 'json',
       headers: headers,
-      // timeout: AppConfig.backend.timeout
+      // timeout: AppConfig.config.backend.timeout
     })
     .always(function(data, textStatus, errorThrown) {
       // User is not logged in

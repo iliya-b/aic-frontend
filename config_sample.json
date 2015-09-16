@@ -1,0 +1,10 @@
+{
+  "backend": {
+    "protocol": "http",
+    "host": "localhost",
+    "port": 12345,
+    "timeout": 5000
+  },
+  "userHome": "projects",
+  "debug": true
+}

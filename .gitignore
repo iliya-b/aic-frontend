@@ -1,4 +1,4 @@
 build
 node_modules
 lib
-front_env
+config.json

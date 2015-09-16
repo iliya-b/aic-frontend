@@ -6,4 +6,5 @@ module.exports = {
   LiveActions: require('./live.js'),
   CampaignActions: require('./campaign.js'),
   AuthActions: require('./auth.js'),
+  AppConfigActions: require('./app-config.js'),
 };

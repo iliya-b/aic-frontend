@@ -55,6 +55,10 @@ module.exports = {
     src: ['./noVNC/include/base.css', './noVNC/include/*.js' ],
     dest: dest + '/noVNC/'
   },
+  config: {
+    src: ['./config.json' ],
+    dest: dest + '/'
+  },
   jshint: {
     src: [ src + '/**/*.js', src + '/**/*.jsx'],
     app: src + '/app/app.jsx'

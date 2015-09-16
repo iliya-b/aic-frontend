@@ -9,7 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "gulp",
-    "postinstall": "gulp lib"
+    "postinstall": "gulp lib",
+    "build": "gulp build"
   },
   "browserify": {
     "transform": [

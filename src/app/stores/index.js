@@ -1,6 +1,4 @@
 module.exports = {
-  Auth: require('./auth.jsx').Auth,
-  RequireAuthComponent: require('./auth.jsx').RequireAuthComponent,
   AuthStore: require('./auths.jsx'),
   Project: require('./project.jsx'),
   APKStore: require('./apk.jsx'),
@@ -11,4 +9,5 @@ module.exports = {
   LiveStore: require('./live.jsx'),
   CampaignStore: require('./campaign.jsx'),
   BackendAPI: require('./backend-api.jsx'),
+  AppConfigStore: require('./app-config.jsx'),
 };

@@ -8,7 +8,6 @@ var url = require('url');
 
 // APP
 var BackendAPI = require('goby/stores/backend-api.jsx');
-var AppConfig = require('goby/configs/app-config.jsx');
 
 // Actions
 var AuthActions = Reflux.createActions({
@@ -50,7 +49,7 @@ AuthActions.redirectConnected = function (routerOrTransition) {
     AuthActions.redirectTo(routerOrTransition, nextPath);
   } else {
     // Go to the default user home
-    AuthActions.redirectTo(routerOrTransition, AppConfig.userHome);
+    AuthActions.redirectTo(routerOrTransition, window.GobyAppGlobals.config.userHome);
   }
 };
 

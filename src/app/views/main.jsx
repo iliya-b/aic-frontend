@@ -14,12 +14,13 @@ var Colors = mui.Styles.Colors;
 var { RaisedButton } = mui;
 
 // APP
-var AppConfig = require('goby/configs/app-config.jsx');
 var GobyTheme = require('goby/configs/goby-theme.jsx');
 var { FullWidthSection,
       SessionEndedDialog } = require('goby/components');
-var { AuthStore } = require('goby/stores');
-var { AuthActions } = require('goby/actions');
+var { AuthStore,
+      AppConfigStore } = require('goby/stores');
+var { AuthActions,
+      AppConfigActions } = require('goby/actions');
 
 var Main = class extends React.Component{
 
@@ -28,6 +29,8 @@ var Main = class extends React.Component{
     this._onThemeClick = this._onThemeClick.bind(this);
     this._onHomeClick = this._onHomeClick.bind(this);
     this._onStateChange = this._onStateChange.bind(this);
+    this.state = {};
+    this.unsubscribe = [];
   }
 
   _onThemeClick() {
@@ -46,23 +49,18 @@ var Main = class extends React.Component{
   getChildContext() {
     return {
       muiTheme: ThemeManager.getCurrentTheme(),
+      appConfig: this.state.config ? this.state.config : {} ,
     };
   }
 
-  // childContextTypes: {
-  //   muiTheme: React.PropTypes.object,
-  //   router: React.PropTypes.func,
-  // },
-
-  getStyles() {
-    var darkWhite = Colors.darkWhite;
-    return {
+  render() {
+    var styles = {
       footer: {
         backgroundColor: Colors.grey900,
         textAlign: 'center',
       },
       a: {
-        color: darkWhite,
+        color: Colors.darkWhite,
       },
       p: {
         margin: '0 auto',
@@ -71,46 +69,73 @@ var Main = class extends React.Component{
         maxWidth: '335px',
       },
       iconButton: {
-        color: darkWhite,
+        color: Colors.darkWhite,
+      },
+      root: {
+        backgroundColor: ThemeManager.getCurrentTheme().palette.logo1Color,
+        overflow: 'hidden',
+        width: '100vw',
+        height: '100vh',
+        color: 'white',
+        textAlign: 'center',
       },
     };
-  }
-
-  render() {
-    var styles = this.getStyles();
+    console.log('render state ', this.state);
     return (
       <div>
-        <RouteHandler />
-        <FullWidthSection useContent={true} style={styles.footer}>
-          <p style={styles.p}>COPYRIGHT © AiC</p>
+        {this.state.config && this.state.config.isLoaded && !this.state.config.hasErrors  ? (
+        <div>
+          <RouteHandler />
+          <FullWidthSection useContent={true} style={styles.footer}>
+            <p style={styles.p}>COPYRIGHT © AiC</p>
 
-          {AppConfig.debug ? (
-          <RaisedButton label="Test Theme" title="Test Theme" primary={true}  onClick={this._onThemeClick} />
-          ) : null }
+            {this.state.config.debug ? (
+            <RaisedButton label="Test Theme" title="Test Theme" primary={true}  onClick={this._onThemeClick} />
+            ) : null }
+          </FullWidthSection>
+          <SessionEndedDialog ref="sessionEndedDialog" />
+        </div>
+        ) : this.state.config && this.state.config.isLoaded && this.state.config.hasErrors ? (
+        <FullWidthSection style={styles.root}>
+          It was not possible to load the application.
         </FullWidthSection>
-        <SessionEndedDialog ref="sessionEndedDialog" />
+        ) : (
+        <FullWidthSection style={styles.root}>
+          Loading application configuration.
+        </FullWidthSection>
+        )}
       </div>
 
     );
   }
 
   _onStateChange(newState){
-    var currentPathName = AuthActions.getPathName(this.context.router);
-    if (newState.login.status === 'LOGIN_STATUS_DISCONNECTED' && currentPathName !== '/' && currentPathName !== '/home' ){
-      this.refs.sessionEndedDialog.show();
+    console.log('main new state');
+    if ( newState.login ) {
+      var currentPathName = AuthActions.getPathName(this.context.router);
+      if (newState.login.status === 'LOGIN_STATUS_DISCONNECTED' && currentPathName !== '/' && currentPathName !== '/home' ){
+        this.refs.sessionEndedDialog.show();
+      }
+      this.setState(newState);
+      console.log('changed main state' , newState ,  currentPathName);
     }
-    this.setState(newState);
-    console.log('changed main state' , newState ,  currentPathName);
+    if ( newState.config ) {
+      window.GobyAppGlobals.config = newState.config;
+      console.log('main new state config', newState, window.GobyAppGlobals);
+      this.setState(newState); // Set state MUST be the last call
+    }
   }
 
   componentDidMount() {
-    this.unsubscribe = AuthStore.listen( this._onStateChange );
+    this.unsubscribe.push(AuthStore.listen( this._onStateChange ));
     AuthStore.init();
+    this.unsubscribe.push(AppConfigStore.listen( this._onStateChange ));
+    AppConfigActions.load();
   }
 
   componentWillUnmount() {
     // Subscribe and unsubscribe because we don't want to use the mixins
-    this.unsubscribe();
+    this.unsubscribe.map( function(func){ func(); } );
   }
 
 };
@@ -118,10 +143,12 @@ var Main = class extends React.Component{
 Main.contextTypes = {
   router: React.PropTypes.func,
   muiTheme: React.PropTypes.object,
+  appConfig: React.PropTypes.object,
 };
 
 Main.childContextTypes = {
   muiTheme: React.PropTypes.object,
+  appConfig: React.PropTypes.object,
 };
 
 module.exports = Main;
