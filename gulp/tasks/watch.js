@@ -10,5 +10,6 @@ var config = require('../config');
 gulp.task('watch', ['setWatch', 'browserSync'], function() {
   gulp.watch(config.less.watch, ['less']);
   gulp.watch(config.markup.src, ['markup']);
+  gulp.watch(config.config.watch, ['configWatch']);
   // gulp.watch(config.jshint.src, ['lint']);
 });

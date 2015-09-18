@@ -57,6 +57,7 @@ module.exports = {
   },
   config: {
     src: ['./config_sample.json' ],
+    watch: ['./config.json' ],
     dest: dest + '/'
   },
   jshint: {
