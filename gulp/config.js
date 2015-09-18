@@ -56,7 +56,7 @@ module.exports = {
     dest: dest + '/noVNC/'
   },
   config: {
-    src: ['./config.json' ],
+    src: ['./config_sample.json' ],
     dest: dest + '/'
   },
   jshint: {
