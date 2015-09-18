@@ -19,6 +19,7 @@ var BackendAPI = {
     method = (typeof method === 'undefined') ? 'POST' : method;
     headers = (typeof headers === 'undefined') ? {} : headers;
     authRequired = (typeof authRequired === 'undefined') ? true : authRequired;
+    data = (typeof data === 'undefined') ? '' : data;
     $.ajax({
       url:  url,
       data: data,
@@ -37,7 +38,7 @@ var BackendAPI = {
         // var { Auth } = require('./auth.jsx');
         // Auth.logout();
         var { AuthActions } = require('goby/actions');
-        AuthActions.logout();
+        AuthActions.logout.completed();
       }else{
         cb(data, textStatus, errorThrown);
       }
@@ -61,8 +62,9 @@ var BackendAPI = {
     this.apiCall(url, data, cb);
   },
 
-  userLogout: function() {
-    // TODO!!
+  userLogout: function(cb) {
+    var url = this.backendRoot() + "/back/user/logout";
+    this.apiCall(url, undefined, cb, undefined, undefined, false);
   },
 
   userProjects: function (token, cb) {
@@ -264,12 +266,5 @@ var BackendAPI = {
   },
 
 };
-
-// function progressHandlingFunction(e){
-//   console.log(e);
-//   if(e.lengthComputable){
-//     console.log({value:e.loaded,max:e.total});
-//   }
-// }
 
 module.exports = BackendAPI;

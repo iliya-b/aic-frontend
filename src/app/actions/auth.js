@@ -88,10 +88,18 @@ AuthActions.redirectTo = function (routerOrTransition, page, query) {
 
 
 AuthActions.logout.listen(function () {
-  // TODO: Should logout send information to the backend?
-  // normally this action is called when the backend
-  // sent us a unauthorized response
-  this.completed();
+  BackendAPI.userLogout( (result) => {
+    console.log('logout', result);
+    // if (result.hasOwnProperty('status') &&
+    //    (result.status === 400 || result.status === 401 )){
+    //   this.failure('It was not possible to login. Error: ' + result.statusText);
+    // }else if (result.hasOwnProperty('X-Auth-Token')){
+    //   localStorage.token = result['X-Auth-Token'];
+    //   this.completed();
+    // }else{
+    //   this.failure('It was not possible to login.');
+    // }
+  });
 });
 
 module.exports = AuthActions;
