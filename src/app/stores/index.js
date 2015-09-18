@@ -5,7 +5,6 @@ module.exports = {
   APKUploadStore: require('./apk-upload.jsx'),
   APKTestStore: require('./apk-test.jsx'),
   APKTestUploadStore: require('./apk-test-upload.jsx'),
-  Test: require('./test.jsx'),
   LiveStore: require('./live.jsx'),
   CampaignStore: require('./campaign.jsx'),
   BackendAPI: require('./backend-api.jsx'),
