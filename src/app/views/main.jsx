@@ -97,7 +97,8 @@ var Main = class extends React.Component{
         </div>
         ) : this.state.config && this.state.config.isLoaded && this.state.config.hasErrors ? (
         <FullWidthSection style={styles.root}>
-          It was not possible to load the application.
+          It was not possible to load the application. <br />
+          Please contact administrator to verify the application installation.
         </FullWidthSection>
         ) : (
         <FullWidthSection style={styles.root}>

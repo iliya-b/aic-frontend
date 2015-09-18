@@ -16,9 +16,11 @@ AppConfigActions.load.listen(function () {
     })
     .done(function(data, textStatus, errorThrown) {
       AppConfigActions.load.completed(data);
+      // console.log('configjx', 'done', arguments);
     })
     .fail(function(data, textStatus, errorThrown) {
       AppConfigActions.load.failure(errorThrown);
+      // console.log('configjx', 'fail', arguments);
     });
 });
 
