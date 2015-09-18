@@ -24,7 +24,6 @@ var { APKSelectionDialog,
       AreaStatus,
       AppUtils,
       TestResultsBox } = require('goby/components');
-var AppConfig = require('goby/configs/app-config.jsx');
 
 var { CampaignStore } = require('goby/stores');
 var { CampaignActions } = require('goby/actions');
@@ -106,7 +105,7 @@ var ProjectCampaign = class extends React.Component{
         <AreaStatus typeName='campaign' />
 
         {/* Debugging */}
-        {AppConfig.debug ? (
+        {this.context.appConfig.debug ? (
         <div>
           <Paper style={style.paperCenter}>
 
@@ -298,7 +297,8 @@ var ProjectCampaign = class extends React.Component{
 
 ProjectCampaign.contextTypes = {
   router: React.PropTypes.func,
-  muiTheme: React.PropTypes.object
+  muiTheme: React.PropTypes.object,
+  appConfig: React.PropTypes.object
 }
 
 module.exports = ProjectCampaign;

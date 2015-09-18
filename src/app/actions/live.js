@@ -4,7 +4,6 @@
 var Reflux = require('reflux');
 
 // APP
-var { Auth } = require('goby/stores/auth.jsx');
 var BackendAPI = require('goby/stores/backend-api.jsx');
 
 // Actions
@@ -40,7 +39,7 @@ LiveActions.setProjectId.listen(function () {
 });
 
 LiveActions.liveCheck.listen(function () {
-  var token = Auth.getToken();
+  var token = '';
   BackendAPI.liveCheck(token, (res) => {
     if ( res.hasOwnProperty('token') ) {
       var WebsocketActions = require('goby/actions/websocket.js');

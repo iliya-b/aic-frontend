@@ -4,7 +4,6 @@
 var Reflux = require('reflux');
 
 // APP
-var { Auth } = require('goby/stores/auth.jsx');
 var BackendAPI = require('goby/stores/backend-api.jsx');
 var AppUtils = require('goby/components/shared/app-utils.jsx');
 var GobyActions = require('goby/actions');

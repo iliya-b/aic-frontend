@@ -4,7 +4,6 @@
 var Reflux = require('reflux');
 
 // APP
-var { Auth } = require('goby/stores/auth.jsx');
 var BackendAPI = require('goby/stores/backend-api.jsx');
 
 // Actions
@@ -19,7 +18,7 @@ APKTestUploadActions.drop.listen(function (projectId, files) {
   var ERROR_DUPLICATED = 409;
 
   if (projectId !== null && files !== undefined && files.length > 0){
-    var token = Auth.getToken();
+    var token = '';
     files.map(function (file) {
       BackendAPI.apkTestUpload(token, projectId, file, (res) => { // callback progress
         if(res.lengthComputable){

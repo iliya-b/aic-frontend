@@ -4,7 +4,6 @@
 var Reflux = require('reflux');
 
 // APP
-var { Auth } = require('goby/stores/auth.jsx');
 var BackendAPI = require('goby/stores/backend-api.jsx');
 
 // Actions
@@ -16,7 +15,7 @@ var APKActions = Reflux.createActions({
 
 // Listeners for asynchronous Backend API calls
 APKActions.load.listen(function (projectId) {
-  var token = Auth.getToken();
+  var token = '';
   BackendAPI.apkList(token, projectId, (res) => {
     this.completed( res );
   });
@@ -24,7 +23,7 @@ APKActions.load.listen(function (projectId) {
 
 
 APKActions.deleteSelected.listen(function (apkIds) {
-  var token = Auth.getToken();
+  var token = '';
   BackendAPI.apkRemove(token, apkIds, (res) => {
     this.completed(res);
   });

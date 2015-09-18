@@ -15,7 +15,6 @@ var { AppUtils,
       AreaStatus } = require('goby/components');
 var { LiveStore } = require('goby/stores');
 var { LiveActions } = require('goby/actions');
-var AppConfig = require('goby/configs/app-config.jsx');
 
 var ProjectLive = class extends React.Component{
 
@@ -60,7 +59,7 @@ var ProjectLive = class extends React.Component{
               <AreaStatus typeName='live' />
 
               {/* Debugging */}
-              {AppConfig.debug ? (
+              {this.context.appConfig.debug ? (
               <div>
                 <Paper style={style.paperCenter}>
 
@@ -210,7 +209,7 @@ var ProjectLive = class extends React.Component{
         LiveActions.liveStop( this.state.live.screen.port );
         break;
       case 'setState':
-        if (!AppConfig.debug) { return; }
+        if (!this.context.appConfig.debug) { return; }
         var newState = this.state;
         newState.live.status = 'LIVE_STATUS_CONNECTING';
         newState.live.screen.ip = '10.2.0.156';
@@ -257,7 +256,8 @@ var ProjectLive = class extends React.Component{
 
 ProjectLive.contextTypes = {
   router: React.PropTypes.func,
-  muiTheme: React.PropTypes.object
+  muiTheme: React.PropTypes.object,
+  appConfig: React.PropTypes.object
 };
 
 module.exports = ProjectLive;

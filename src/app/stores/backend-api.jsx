@@ -35,8 +35,6 @@ var BackendAPI = {
       // User is not logged in
       if (authRequired && textStatus === 'error' && errorThrown === 'Unauthorized') {
         // TODO: Must be changed to state etc...
-        // var { Auth } = require('./auth.jsx');
-        // Auth.logout();
         var { AuthActions } = require('goby/actions');
         AuthActions.logout.completed();
       }else{

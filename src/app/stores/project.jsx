@@ -1,12 +1,11 @@
 'use strict';
 
-var { Auth } = require('../stores/auth.jsx');
 var BackendAPI = require('./backend-api.jsx');
 
 var Project = {
 
   getAll: function (cb) {
-    var token = Auth.getToken();
+    var token = '';
     BackendAPI.userProjects(token, (res) => {
       // console.log(res);
       // res =

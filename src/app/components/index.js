@@ -4,7 +4,6 @@ module.exports = {
   SessionEndedDialog: require('./main/session-ended-dialog.jsx'),
 
   /* Home */
-  SignUpDialog: require('./home/sign-up-dialog.jsx'),
   LoginDialog: require('./home/login-dialog.jsx'),
 
   /* Project */
