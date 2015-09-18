@@ -80,7 +80,7 @@ var Main = class extends React.Component{
         textAlign: 'center',
       },
     };
-    console.log('render state ', this.state);
+    // console.log('render state ', this.state);
     return (
       <div>
         {this.state.config && this.state.config.isLoaded && !this.state.config.hasErrors  ? (
@@ -111,18 +111,18 @@ var Main = class extends React.Component{
   }
 
   _onStateChange(newState){
-    console.log('main new state');
+    // console.log('main new state');
     if ( newState.login ) {
       var currentPathName = AuthActions.getPathName(this.context.router);
       if (newState.login.status === 'LOGIN_STATUS_DISCONNECTED' && currentPathName !== '/' && currentPathName !== '/home' ){
         this.refs.sessionEndedDialog.show();
       }
       this.setState(newState);
-      console.log('changed main state' , newState ,  currentPathName);
+      // console.log('changed main state' , newState ,  currentPathName);
     }
     if ( newState.config ) {
       window.GobyAppGlobals.config = newState.config;
-      console.log('main new state config', newState, window.GobyAppGlobals);
+      // console.log('main new state config', newState, window.GobyAppGlobals);
       this.setState(newState); // Set state MUST be the last call
     }
   }

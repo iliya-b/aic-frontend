@@ -25,7 +25,6 @@ var AppConfigStore =  Reflux.createStore({
   },
 
   onLoadCompleted: function(data){
-    console.log('config loaded');
     this.state.config = data;
     this.state.config.isLoaded = true;
     this.state.config.hasErrors = false;

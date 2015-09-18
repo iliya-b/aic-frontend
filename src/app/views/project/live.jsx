@@ -241,7 +241,7 @@ var ProjectLive = class extends React.Component{
   }
 
   componentDidMount() {
-    console.log('componentDidMount');
+    // console.log('componentDidMount');
     var projectId = AppUtils.getProjectIdFromRouter(this.context.router);
     this.unsubscribe = LiveStore.listen( this._onStateChange );
     LiveActions.liveReset();

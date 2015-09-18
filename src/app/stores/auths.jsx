@@ -4,7 +4,6 @@
 var Reflux = require('reflux');
 
 // APP
-// var AppUtils = require('goby/components/shared/app-utils.jsx');
 var { AuthActions } = require('goby/actions');
 
 // Store
@@ -28,7 +27,6 @@ var AuthStore =  Reflux.createStore({
   },
 
   onLoginCompleted: function (message) {
-    console.log('onLoginCompleted', message);
     this.state.login.status = 'LOGIN_STATUS_CONNECTED';
     this.updateState();
   },
