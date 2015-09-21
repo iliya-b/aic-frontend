@@ -100,6 +100,9 @@ var APKUploadDialog = class extends React.Component{
   }
 
   _onStateChange( newState ){
+    if ( newState.hasOwnProperty('shouldReloadAPKList') && newState.shouldReloadAPKList === true ) {
+      this.props.reload();
+    }
     this.setState( newState );
   }
 

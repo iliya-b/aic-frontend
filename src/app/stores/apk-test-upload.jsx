@@ -51,17 +51,18 @@ var APKTestUploadStore =  Reflux.createStore({
 
   onDropCompleted: function(apkId){
     this.listUpdate({id: apkId, iconRightClassName: 'mdi mdi-check', progress: false, completed: true } );
-    this.updateState();
+    this.updateState(true);
   },
 
   onDropFailed: function(apkId, errorMessage){
     this.listUpdate({id: apkId, iconRightClassName: 'mdi mdi-close', progress: false, error: true, errorText: errorMessage } );
-    this.updateState();
+    this.updateState(true);
   },
 
   // Methods //
 
-  updateState: function(){
+  updateState: function( shouldReloadAPKList ){
+    this.state.shouldReloadAPKList = shouldReloadAPKList || false;
     this.trigger( this.state );
   },
 

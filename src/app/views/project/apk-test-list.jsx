@@ -27,6 +27,7 @@ var ProjectApkTestList = class extends React.Component {
     this._onDeleteClick = this._onDeleteClick.bind(this);
     this._onItemCheck = this._onItemCheck.bind(this);
     this._onStateChange = this._onStateChange.bind(this);
+    this.reloadList = this.reloadList.bind(this);
 
     this.state = { apks: [], itemsToDelete: [], deleteClicked: false };
   }
