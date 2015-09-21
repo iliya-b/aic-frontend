@@ -26,6 +26,6 @@ gulp.task('configWatch', function() {
       throw err;
     }
   })});
-  return gulp.src(config.src)
+  return gulp.src(config.watch)
     .pipe(gulp.dest(config.dest));
 });
