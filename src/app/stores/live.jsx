@@ -170,11 +170,11 @@ var LiveStore =  Reflux.createStore({
     console.log('onSocketMessage', messageParsed);
     if (messageParsed.hasOwnProperty('message')) {
       switch( messageParsed.message ){
-        case 'Stack created':
+        case 'Stack retrieval or creation finished':
           LiveActions.liveCheck.completed(false);
           LiveActions.liveStart();
           break;
-        case 'Docker created':
+        case 'Docker created and ready.':
           console.log('docker created');
           LiveActions.liveStart.completed( messageParsed.data.vncip, messageParsed.data.vncport );
           LiveActions.liveConnect( messageParsed.data.vncip, messageParsed.data.vncport );

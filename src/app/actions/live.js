@@ -54,7 +54,7 @@ LiveActions.liveCheck.listen(function () {
 // Out of date, now it is done by websocket message
 // BUT it should be reversed when websocket turn to be only notification
 // LiveActions.liveStart.listen(function () {
-//   var token = Auth.getToken();
+//   var token = '';
 //   BackendAPI.liveStart(token, (res) => {
 //     console.log(res);
 //     if (res.hasOwnProperty('responseJSON') ) {
@@ -89,7 +89,7 @@ LiveActions.liveStop.listen(function (screenPort) {
   if (window.rfb) {
     window.rfb.disconnect();
   }
-  var token = Auth.getToken();
+  var token = '';
   BackendAPI.liveStop(token, screenPort, (res) => {
     this.completed( res );
   });
@@ -97,28 +97,28 @@ LiveActions.liveStop.listen(function (screenPort) {
 });
 
 LiveActions.setSensorBattery.listen(function (projectId, value) {
-  var token = Auth.getToken();
+  var token = '';
   BackendAPI.sensorBattery(token, projectId, value, (res) => {
     this.completed( res );
   });
 });
 
 LiveActions.setSensorAccelerometer.listen(function (projectId, x, y, z) {
-  var token = Auth.getToken();
+  var token = '';
   BackendAPI.sensorAccelerometer(token, projectId, x, y, z, (res) => {
     this.completed( res );
   });
 });
 
 LiveActions.setSensorLocation.listen(function (projectId, lat, lon) {
-  var token = Auth.getToken();
+  var token = '';
   BackendAPI.sensorLocation(token, projectId, lat, lon, (res) => {
     this.completed( res );
   });
 });
 
 LiveActions.recordStart.listen(function (projectId) {
-  var token = Auth.getToken();
+  var token = '';
   var filename = LiveActions.createVideoName();
   BackendAPI.recordingStart(token, projectId, filename, (res) => {
     res.filename = filename;
@@ -127,14 +127,14 @@ LiveActions.recordStart.listen(function (projectId) {
 });
 
 LiveActions.recordStop.listen(function (projectId, filename) {
-  var token = Auth.getToken();
+  var token = '';
   BackendAPI.recordingStop(token, projectId, filename, (res) => {
     this.completed( res );
   });
 });
 
 LiveActions.screenshot.listen(function (projectId, filename) {
-  var token = Auth.getToken();
+  var token = '';
   var filename = LiveActions.createImageName();
   BackendAPI.screenshot(token, projectId, filename, (res) => {
     this.completed( res );

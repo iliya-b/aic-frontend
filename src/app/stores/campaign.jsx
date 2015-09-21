@@ -76,14 +76,14 @@ var CampaignStore =  Reflux.createStore({
     console.log('onSocketMessage', messageParsed);
     if (messageParsed.hasOwnProperty('message')) {
       switch( messageParsed.message ){
-        case 'Stack created':
+        case 'Stack retrieval or creation finished':
 
           break;
-        case 'Docker created':
+        case 'Docker created and ready.':
           CampaignActions.create.completed();
           CampaignActions.run();
           break;
-        case 'Tests listed':
+        case 'Test packages list received, instrumentation started':
           CampaignActions.run.completed();
           CampaignActions.result();
           break;
