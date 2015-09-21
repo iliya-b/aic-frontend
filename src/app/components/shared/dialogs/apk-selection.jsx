@@ -155,6 +155,10 @@ var APKSelectionDialog = class extends React.Component{
     this.reloadList();
   }
 
+  componentWillUnmount() {
+    this.unsubscribe(); // Subscribe and unsubscribe because we don't want to use the mixins
+  }
+
 };
 
 APKSelectionDialog.contextTypes = {
