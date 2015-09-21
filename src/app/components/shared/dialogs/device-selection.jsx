@@ -1,11 +1,17 @@
+'use strict';
+
+// React
 var React = require('react');
 
+// Material design
 var mui = require('material-ui');
+var { Dialog,
+      FlatButton } = mui;
 
-var { Dialog, FlatButton} = mui;
-var { Test } = require('../../../stores/');
-
-var ObjectList = require('../../shared/object-list/object-list.jsx');
+// APP
+var ObjectList = require('goby/components/shared/object-list/object-list.jsx');
+var { CampaignStore } = require('goby/stores');
+var { CampaignActions } = require('goby/actions');
 
 var DeviceSelectionDialog = class extends React.Component{
 
@@ -20,6 +26,7 @@ var DeviceSelectionDialog = class extends React.Component{
     this._onCancel = this._onCancel.bind(this);
     this._onItemClick = this._onItemClick.bind(this);
     this._onSubmit = this._onSubmit.bind(this);
+    this._onStateChange = this._onStateChange.bind(this);
 
   }
 
@@ -80,20 +87,21 @@ var DeviceSelectionDialog = class extends React.Component{
     this.refs.dialogIn.dismiss();
   }
 
-  getProjectId() {
-    this.props.projectId;
+  _onStateChange( state ){
+    if ( state.hasOwnProperty('availableDevices') ) {
+      this.setState( { devices : state.availableDevices.map(function (item) {
+          return { key: item.id, id: item.id, text: item.name, name: item.name };
+        }) } );
+    }
   }
 
   componentWillMount() {
-    Test.getAll( (res) => {
-      var instances = [];
-      if (res !== undefined && res.length > 0){
-        instances = res.map(function (item) {
-          return { key: item.id, id: item.id, text: item.name, name: item.name };
-        });
-      }
-      this.setState({devices: instances});
-    });
+    this.unsubscribe = CampaignStore.listen( this._onStateChange );
+    CampaignActions.loadDevices();
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe(); // Subscribe and unsubscribe because we don't want to use the mixins
   }
 
 };

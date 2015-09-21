@@ -107,6 +107,20 @@ var CampaignStore =  Reflux.createStore({
     }
   },
 
+  // Load Devices
+
+  onLoadDevices: function(){
+  },
+
+  onLoadDevicesCompleted: function(devices){
+    this.state.availableDevices = devices;
+    this.updateState();
+  },
+
+  onLoadDevicesFailure: function(errorMessage){
+    throw 'error'; // TODO: failure
+  },
+
   // Run
 
   onRun: function(){
