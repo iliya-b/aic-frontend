@@ -81,7 +81,8 @@ var Home = class extends React.Component {
             <RaisedButton
               label="Login"
               title="Login"
-              onTouchTap={this._onLoginClick}
+              href="#"
+              onClick={this._onLoginClick}
               linkButton={true}
               style={styles.buttonStyle}
               primary={true} />
@@ -101,7 +102,8 @@ var Home = class extends React.Component {
     );
   }
 
-  _onLoginClick() {
+  _onLoginClick(e) {
+    e.preventDefault();
     this.refs.loginDialog.show();
   }
 

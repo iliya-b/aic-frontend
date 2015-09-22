@@ -50,13 +50,13 @@ var DeviceSelectionDialog = class extends React.Component{
         label='Cancel'
         title='Cancel'
         secondary={true}
-        onTouchTap={this._onCancel} />,
+        onClick={this._onCancel} />,
       <FlatButton
         key="submit"
         label="Select"
         title="Select"
         primary={true}
-        onTouchTap={this._onSubmit} />
+        onClick={this._onSubmit} />
     ];
 
     return (
@@ -78,11 +78,13 @@ var DeviceSelectionDialog = class extends React.Component{
     this.setState({selectedIndex: index});
   }
 
-  _onCancel() {
+  _onCancel(e) {
+    e.preventDefault();
     this.refs.dialogIn.dismiss();
   }
 
-  _onSubmit() {
+  _onSubmit(e) {
+    e.preventDefault();
     this.props.onSelect(this.state.devices[this.state.selectedIndex]);
     this.refs.dialogIn.dismiss();
   }

@@ -82,41 +82,47 @@ var LiveSensors = class extends React.Component{
               <FlatButton
                 label="Submit"
                 title="Submit"
+                href='#'
                 primary={true}
-                onTouchTap={this._onLocationSubmit} />
+                onClick={this._onLocationSubmit} />
               <br />
               <TogglableIcon style={style.sensorIcon} isOn={true} iconName="file-video"  />
               <FlatButton
                 label="Start recording"
                 title="Start recording"
+                href='#'
                 primary={true}
                 disabled={this.state.live.recording}
-                onTouchTap={this._onRecordStart} />
+                onClick={this._onRecordStart} />
               <FlatButton
                 label="Stop recording"
                 title="Stop recording"
+                href='#'
                 primary={true}
                 disabled={!this.state.live.recording}
-                onTouchTap={this._onRecordStop} />
+                onClick={this._onRecordStop} />
               <br />
               <TogglableIcon style={style.sensorIcon} isOn={true} iconName="file-image"  />
               <FlatButton
                 label="Take screen shot"
                 title="Take screen shot"
+                href='#'
                 primary={true}
                 disabled={this.state.live.recording}
-                onTouchTap={this._onScreenshot} />
+                onClick={this._onScreenshot} />
 
             </Paper>
             ) : null ;
   }
 
   _onBatteryChange(e, value) {
+    e.preventDefault();
     var intValue = parseInt(value);
     LiveActions.setSensorBattery(this.state.projectId, value);
   }
 
-  _onRotationChange() {
+  _onRotationChange(e) {
+    e.preventDefault();
     var newRotationName = this.state.live.rotationSets[this.state.live.screen.rotation].next;
     var newRotationValue = this.state.live.rotationSets[newRotationName];
     LiveActions.setSensorAccelerometer(this.state.projectId, newRotationValue.x, newRotationValue.y, newRotationValue.z, newRotationName );
@@ -137,21 +143,25 @@ var LiveSensors = class extends React.Component{
     // }, 1500);
   }
 
-  _onLocationSubmit() {
+  _onLocationSubmit(e) {
+    e.preventDefault();
     var lat = this.refs.lat.getValue();
     var lon = this.refs.lon.getValue();
     LiveActions.setSensorLocation(this.state.projectId, lat, lon);
   }
 
-  _onRecordStart() {
+  _onRecordStart(e) {
+    e.preventDefault();
     LiveActions.recordStart(this.state.projectId);
   }
 
-  _onRecordStop() {
+  _onRecordStop(e) {
+    e.preventDefault();
     LiveActions.recordStop(this.state.projectId, this.state.live.recordingFileName );
   }
 
-  _onScreenshot() {
+  _onScreenshot(e) {
+    e.preventDefault();
     LiveActions.screenshot(this.state.projectId);
   }
 

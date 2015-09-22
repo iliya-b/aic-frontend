@@ -30,8 +30,9 @@ var SessionEndedDialog = class extends React.Component {
         key="sessionEndedActionClose"
         label='Go to homepage'
         title='Go to homepage'
+        href='#'
         secondary={true}
-        onTouchTap={this._onClose} />,
+        onClick={this._onClose} />,
     ];
 
     return (
@@ -45,7 +46,8 @@ var SessionEndedDialog = class extends React.Component {
     this.refs.sessionEndedDialog.show();
   }
 
-  _onClose() {
+  _onClose(e) {
+    e.preventDefault();
     AuthActions.redirectDisconnected(this.context.router);
     this.refs.sessionEndedDialog.dismiss();
   }

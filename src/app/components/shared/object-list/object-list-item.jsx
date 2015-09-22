@@ -144,6 +144,7 @@ var ObjectListItem = React.createClass({
     var toggleElement;
     var checkboxElement;
     var progressElement;
+    var childrenElements;
     var {
         toggle,
         checkbox,
@@ -155,6 +156,8 @@ var ObjectListItem = React.createClass({
         children,
         label,
         style,
+        title,
+        href,
         progress,
         ...other } = this.props;
 
@@ -168,6 +171,7 @@ var ObjectListItem = React.createClass({
     if (this.props.toggle) { toggleElement = <Toggle {...other} onToggle={this._handleToggle} style={styles.toggle}/>; }
     if (this.props.checkbox) { checkboxElement = <Checkbox {...other} onCheck={this._handleCheck} style={styles.checkbox}/>; }
     if (this.props.progress !== undefined && this.props.progress !== false ) { progressElement = <LinearProgress mode="determinate" value={progress} />; }
+    if (this.props.children) { childrenElements = <a title={title} href={href}>{this.props.children}</a>; }
 
     var errorTextElement = this.props.errorText ? (
       <div style={styles.error}>{this.props.errorText}</div>
@@ -190,7 +194,7 @@ var ObjectListItem = React.createClass({
           this.props.disabled && styles.rootWhenDisabled)}>
 
         {icon}
-        {this.props.children}
+        {childrenElements}
         {data}
         {attribute}
         {number}

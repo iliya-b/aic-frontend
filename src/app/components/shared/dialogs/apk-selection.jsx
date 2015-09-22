@@ -61,14 +61,16 @@ var APKSelectionDialog = class extends React.Component{
         key="cancel"
         label='Cancel'
         title='Cancel'
+        href='#'
         secondary={true}
-        onTouchTap={this._onCancel} />,
+        onClick={this._onCancel} />,
       <FlatButton
         key="submit"
         label="Select"
         title="Select"
+        href='#'
         primary={true}
-        onTouchTap={this._onSubmit} />
+        onClick={this._onSubmit} />
     ];
 
     var rows = this.state.apksData.map(function (item, index) {
@@ -117,11 +119,13 @@ var APKSelectionDialog = class extends React.Component{
     this.setState( { selectedIndex: selectedRows } );
   }
 
-  _onCancel() {
+  _onCancel(e) {
+    e.preventDefault();
     this.refs.dialogIn.dismiss();
   }
 
-  _onSubmit() {
+  _onSubmit(e) {
+    e.preventDefault();
     this.props.onSelect( this.state.apks.filter(function (item, index) {
       return this.state.selectedIndex.indexOf(index) > -1;
     }, this) );

@@ -66,6 +66,13 @@ var ProjectLive = class extends React.Component{
                   <h3>Debug</h3>
 
                   <FlatButton
+                      label="Test"
+                      title="Test"
+                      href="#"
+                      primary={true}
+                      onTouchTap={this._onLiveAction.bind(this, 'test')} />
+
+                  <FlatButton
                       label="Search"
                       title="Search"
                       primary={true}
@@ -189,9 +196,13 @@ var ProjectLive = class extends React.Component{
     // }
   }
 
-  _onLiveAction(actionName){
+  _onLiveAction(actionName, e){
     // console.log(arguments);
     switch(actionName){
+      case 'test':
+        console.log(arguments);
+
+        break;
       case 'check':
         LiveActions.liveCheck();
         break;

@@ -146,6 +146,7 @@ var ObjectList = React.createClass({
         check,
         onClick,
         key,
+        title,
         ...other
       } = objectListItem;
 
@@ -165,6 +166,7 @@ var ObjectList = React.createClass({
               number={number}
               toggle={toggle}
               check={check}
+              title={title}
               onToggle={this.props.onToggle}
               onCheck={this.props.onCheck}
               disabled={isDisabled}

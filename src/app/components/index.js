@@ -30,5 +30,7 @@ module.exports = {
   TogglableIcon: require('./shared/togglable-icon.jsx'),
   List: require('./shared/list/list.jsx'),
   AvatarProgress: require('./shared/avatar-progress.jsx'),
+  LogBox: require('./shared/log-box.jsx'),
+  LogBoxRow: require('./shared/log-box-row.jsx'),
 
 };

@@ -91,7 +91,8 @@ var LoginDialog = class extends React.Component{
     }
   }
 
-  _onLoginCancel() {
+  _onLoginCancel(e) {
+    e.preventDefault();
     this.refs.loginDialogIn.dismiss();
   }
 

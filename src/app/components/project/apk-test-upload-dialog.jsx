@@ -59,8 +59,9 @@ var APKTestUploadDialog = class extends React.Component{
         key="loginActionCancel"
         label='Close'
         title='Close'
+        href='#'
         secondary={true}
-        onTouchTap={this._onCancel} />,
+        onClick={this._onCancel} />,
     ];
 
 
@@ -97,7 +98,8 @@ var APKTestUploadDialog = class extends React.Component{
     APKTestUploadActions.clean();
   }
 
-  _onCancel() {
+  _onCancel(e) {
+    e.preventDefault();
     this.refs.dialogIn.dismiss();
   }
 

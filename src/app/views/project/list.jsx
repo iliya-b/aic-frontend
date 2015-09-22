@@ -2,8 +2,12 @@ var React = require('react');
 
 // var mui = require('material-ui');
 // var { Menu } = mui;
-var ObjectList = require('goby/components/shared/object-list/object-list.jsx');
-var { Project } = require('../../stores/');
+var Menu = require('material-ui/lib/menus/menu.js');
+var MenuItem = require('material-ui/lib/menus/menu-item.js');
+
+var { ObjectList,
+      AppUtils } = require('goby/components');
+var { Project } = require('goby/stores');
 
 var ProjectList = class extends React.Component {
 
@@ -16,23 +20,34 @@ var ProjectList = class extends React.Component {
     // console.log('passing cons');
   }
 
-  _onItemTap(e, index, menuItem) {
+  // _onItemTap(e, index, menuItem) { // version with ObjectList
+  _onItemTap(index, e) {
     // console.log(index);
     // console.log(menuItem);
-    this.context.router.transitionTo('project-page', {projectId: menuItem.id} );
+    // console.log(arguments);
+    e.preventDefault();
+    this.context.router.transitionTo('project-page', {projectId: this.getProjects()[index].id} );
   }
 
   getProjects(){
-    return this.state.projects;
+    return this.state.projects; //.map(function(v){return AppUtils.extend( v, {title: v.text, href: '#'} ) });
   }
 
   render() {
     // <Menu menuItems={this.getProjects()} onItemTap={this._onItemTap} />
-    return (
-      <div>
+    var menusItems = this.getProjects().map(function (item, index) {
+      return <MenuItem key={index} primaryText={item.text}
+        path={item.path} onClick={this._onItemTap.bind(this, index)}
+        title={item.text} href='#' />
+    }, this);
+    return  <div style={{position: 'initial'}}>
+              <Menu style={{position: 'initial'}} zDepth={0}>
+                {menusItems}
+              </Menu>
+            </div>;
+      /*<div>
         <ObjectList objectListItems={this.getProjects()} zDepth={0} onItemTap={this._onItemTap} />
-      </div>
-    );
+      </div>*/
   }
 
   componentDidMount() {

@@ -15,8 +15,8 @@ var menuItems = [
      { path: 'apks', text: 'APK List' },
      { path: 'apks-test', text: 'APK Test List' },
      //{ path: 'settings', text: 'Settings'},
-     { path: 'live', text: 'Live Mode'},
-     { path: 'campaign', text: 'Campaign'}
+     { path: 'live', text: 'Live Mode' },
+     { path: 'campaign', text: 'Campaign' }
   ];
 
 var ProjectPage = React.createClass({
@@ -25,6 +25,14 @@ var ProjectPage = React.createClass({
 
   // _onItemTap(index, e) { //, index, menuItem
   _onItemTap(e, index, menuItem) {
+    // console.log(arguments);
+    var { projectId } = this.context.router.getCurrentParams();
+    this.context.router.transitionTo(menuItems[index].path, {projectId: projectId } );
+  },
+
+  _onItemClick(index, e) {
+    // console.log(arguments);
+    e.preventDefault();
     var { projectId } = this.context.router.getCurrentParams();
     this.context.router.transitionTo(menuItems[index].path, {projectId: projectId } );
   },
@@ -39,8 +47,11 @@ var ProjectPage = React.createClass({
     }
   },
 
+  // 192px - 224 / 24+8
+
   getStyles: function(){
-    var subNavWidth = Spacing.desktopKeylineIncrement * 3 + 'px';
+    // var subNavWidth = Spacing.desktopKeylineIncrement * 3 ;
+    var subNavWidth = 56 * 3 ;
     var styles = {
       root: {
         position: 'relative'
@@ -49,7 +60,7 @@ var ProjectPage = React.createClass({
         position: 'absolute',
         top: '0px',
         left: '0px',
-        width: subNavWidth
+        width: subNavWidth,
       },
       content: {
         boxSizing: 'border-box',
@@ -69,6 +80,12 @@ var ProjectPage = React.createClass({
 
   render: function() {
     var styles = this.getStyles();
+    var menusItems = menuItems.map(function (item, index) {
+      return <MenuItem key={index} primaryText={item.text}
+        path={item.path} onClick={this._onItemClick.bind(this, index)}
+        title={item.text} href='#'
+        style={this._getSelectedIndex() == index ? styles.menuItemSelected : null } />
+    }, this);
     // var menusItems = menuItems.map(function (item, index) {
     //   return <MenuItem key={index} primaryText={item.text} path={item.path} onTouchTap={this._onItemTap.bind(this, index)} style={this._getSelectedIndex() == index ? styles.menuItemSelected : null } />
     // }, this);
@@ -83,7 +100,13 @@ var ProjectPage = React.createClass({
     return (
       <div style={styles.root}>
 
-        <ObjectList style={styles.menu} objectListItems={menuItems} zDepth={0} selectedIndex={this._getSelectedIndex()} onItemTap={this._onItemTap} />
+        {/*<ObjectList style={styles.menu} objectListItems={menuItems} zDepth={0} selectedIndex={this._getSelectedIndex()} onItemTap={this._onItemTap} />*/}
+
+        <div style={{width:100}}>
+        <Menu style={styles.menu} zDepth={0}>
+          {menusItems}
+        </Menu>
+        </div>
 
         <div style={styles.content}>
 
