@@ -50,8 +50,8 @@ var LoginDialog = class extends React.Component{
         {this.state ?
         <form onsubmit={this._onLoginSubmit}>
         {errorBox}
-        <TextField className='loginEmail' onEnterKeyDown={this._onLoginSubmit} ref='loginEmail' onChange={this._onFieldChange.bind(this, 'loginEmail')} errorText={this.state.hasOwnProperty('loginEmailError') ? this.state.loginEmailError : ''} floatingLabelText='login' disabled={this.state.login.status === 'LOGIN_STATUS_CONNECTING'} /><br />
-        <TextField className='loginPassword' onEnterKeyDown={this._onLoginSubmit} ref='loginPassword' onChange={this._onFieldChange.bind(this, 'loginPassword')} errorText={this.state.hasOwnProperty('loginPasswordError') ? this.state.loginPasswordError : ''} floatingLabelText='password' type='password' disabled={this.state.login.status === 'LOGIN_STATUS_CONNECTING'} />
+        <TextField name='fieldLogin' className='loginEmail' onEnterKeyDown={this._onLoginSubmit} ref='loginEmail' onChange={this._onFieldChange.bind(this, 'loginEmail')} errorText={this.state.hasOwnProperty('loginEmailError') ? this.state.loginEmailError : ''} floatingLabelText='login' disabled={this.state.login.status === 'LOGIN_STATUS_CONNECTING'} /><br />
+        <TextField name='fieldPassword' className='loginPassword' onEnterKeyDown={this._onLoginSubmit} ref='loginPassword' onChange={this._onFieldChange.bind(this, 'loginPassword')} errorText={this.state.hasOwnProperty('loginPasswordError') ? this.state.loginPasswordError : ''} floatingLabelText='password' type='password' disabled={this.state.login.status === 'LOGIN_STATUS_CONNECTING'} />
         </form>
         : null}
       </Dialog>
