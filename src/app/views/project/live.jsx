@@ -112,8 +112,8 @@ var ProjectLive = class extends React.Component{
               {this.state && this.state.live.status === 'LIVE_STATUS_INITIALIZED' ? (
                 <Paper style={style.paperCenter}>
                   <FlatButton
-                        label="Start New Live"
-                        title="Start New Live"
+                        label="Start New Live Session"
+                        title="Start New Live Session"
                         primary={true}
                         onTouchTap={this._onLiveAction.bind(this, 'check')} />
                 </Paper>
@@ -170,8 +170,8 @@ var ProjectLive = class extends React.Component{
                   <p>Your live session was sucessfully stopped.</p>
 
                   <FlatButton
-                    label="Start New Live"
-                    title="Start New Live"
+                    label="Start New Live Session"
+                    title="Start New Live Session"
                     primary={true}
                     onTouchTap={this._onLiveAction.bind(this, 'restart')} />
 
