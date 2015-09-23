@@ -63,7 +63,7 @@ var LogBox = class extends React.Component{
     var backgrounds = ['#fff','#eee']; // ODD, EVEN
     var rowsCount = this.props.children ? this.props.children.length : 0;
     var logRows = this.props.children ? this.props.children.map( function(v,i){
-        return React.cloneElement(v, { style: { backgroundColor: backgrounds[(i+(rowsCount%2))%2] } }) ;  // , time: { color: 'red' }
+        return React.cloneElement(v, { style: { backgroundColor: backgrounds[(1+i+(rowsCount%2))%2] } }) ;  // , time: { color: 'red' }
       } ) : null;
 
     // <svg style={style.svg} viewBox="0 0 24 24"><path d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"></path></svg>

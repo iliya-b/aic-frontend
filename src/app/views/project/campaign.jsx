@@ -23,7 +23,9 @@ var { APKSelectionDialog,
       ObjectList,
       AreaStatus,
       AppUtils,
-      TestResultsBox } = require('goby/components');
+      TestResultsBox,
+      LogBox,
+      LogBoxRow } = require('goby/components');
 
 var { CampaignStore } = require('goby/stores');
 var { CampaignActions } = require('goby/actions');
@@ -78,14 +80,11 @@ var ProjectCampaign = class extends React.Component{
         },
       },
       infoArea: {
-
+        width: 547,
+        margin: '0 auto',
         paddingBottom: Spacing.desktopGutter + 'px',
       }
     };
-
-    var results = (this.state.res && this.state.res.length > 0) ? this.state.res.map(function (item) {
-      return <li>{item}</li>;
-    }) : null;
 
     var apksRendered = this.state.apk ? this.state.apk.map(function (item, index) {
       return <div key={index}>
@@ -101,12 +100,19 @@ var ProjectCampaign = class extends React.Component{
               </div>
     }) : null;
 
-    var results = [{"properties":[],"testCases":[{"className":"com.zenika.aic.core.libs.ParserTest","name":"testAndroidTestCaseSetupProperly"},{"className":"com.zenika.aic.core.libs.ParserTest","name":"testApplicationTestCaseSetUpProperly"},{"className":"com.zenika.aic.demo.sensor.BatteryTestCase","name":"testUS1","failure":{"message":"Battery level not found","type":"junit.framework.AssertionFailedError","content":"junit.framework.AssertionFailedError: Battery level not found\r\r\n\tat junit.framework.Assert.fail(Assert.java:50)\r\r\n\tat junit.framework.Assert.assertTrue(Assert.java:20)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.setLevel(BatteryTestCase.java:73)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.testUS1(BatteryTestCase.java:36)\r\r\n\tat java.lang.reflect.Method.invokeNative(Native Method)\r\r\n\tat java.lang.reflect.Method.invoke(Method.java:515)\r\r\n\tat android.test.InstrumentationTestCase.runMethod(InstrumentationTestCase.java:214)\r\r\n\tat android.test.InstrumentationTestCase.runTest(InstrumentationTestCase.java:199)\r\r\n\tat junit.framework.TestCase.runBare(TestCase.java:134)\r\r\n\tat junit.framework.TestResult$1.protect(TestResult.java:115)\r\r\n\tat junit.framework.TestResult.runProtected(TestResult.java:133)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestResult.runProtected(DelegatingTestResult.java:90)\r\r\n\tat junit.framework.TestResult.run(TestResult.java:118)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestResult.run(AndroidTestResult.java:49)\r\r\n\tat junit.framework.TestCase.run(TestCase.java:124)\r\r\n\tat android.support.test.internal.runner.junit3.NonLeakyTestSuite$NonLeakyTest.run(NonLeakyTestSuite.java:63)\r\r\n\tat junit.framework.TestSuite.runTest(TestSuite.java:243)\r\r\n\tat junit.framework.TestSuite.run(TestSuite.java:238)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestSuite.run(DelegatingTestSuite.java:103)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestSuite.run(AndroidTestSuite.java:63)\r\r\n\tat android.support.test.internal.runner.junit3.JUnit38ClassRunner.run(JUnit38ClassRunner.java:90)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:24)\r\r\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)\r\r\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)\r\r\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)\r\r\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)\r\r\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)\r\r\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:300)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:157)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:136)\r\r\n\tat android.support.test.runner.AndroidJUnitRunner.onStart(AndroidJUnitRunner.java:270)\r\r\n\tat android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1701)\r\r\n\r"}},{"className":"com.zenika.aic.demo.sensor.BatteryTestCase","name":"testUS2","failure":{"message":"Battery level not found","type":"junit.framework.AssertionFailedError","content":"junit.framework.AssertionFailedError: Battery level not found\r\r\n\tat junit.framework.Assert.fail(Assert.java:50)\r\r\n\tat junit.framework.Assert.assertTrue(Assert.java:20)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.setLevel(BatteryTestCase.java:82)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.testUS2(BatteryTestCase.java:40)\r\r\n\tat java.lang.reflect.Method.invokeNative(Native Method)\r\r\n\tat java.lang.reflect.Method.invoke(Method.java:515)\r\r\n\tat android.test.InstrumentationTestCase.runMethod(InstrumentationTestCase.java:214)\r\r\n\tat android.test.InstrumentationTestCase.runTest(InstrumentationTestCase.java:199)\r\r\n\tat junit.framework.TestCase.runBare(TestCase.java:134)\r\r\n\tat junit.framework.TestResult$1.protect(TestResult.java:115)\r\r\n\tat junit.framework.TestResult.runProtected(TestResult.java:133)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestResult.runProtected(DelegatingTestResult.java:90)\r\r\n\tat junit.framework.TestResult.run(TestResult.java:118)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestResult.run(AndroidTestResult.java:49)\r\r\n\tat junit.framework.TestCase.run(TestCase.java:124)\r\r\n\tat android.support.test.internal.runner.junit3.NonLeakyTestSuite$NonLeakyTest.run(NonLeakyTestSuite.java:63)\r\r\n\tat junit.framework.TestSuite.runTest(TestSuite.java:243)\r\r\n\tat junit.framework.TestSuite.run(TestSuite.java:238)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestSuite.run(DelegatingTestSuite.java:103)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestSuite.run(AndroidTestSuite.java:63)\r\r\n\tat android.support.test.internal.runner.junit3.JUnit38ClassRunner.run(JUnit38ClassRunner.java:90)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:24)\r\r\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)\r\r\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)\r\r\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)\r\r\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)\r\r\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)\r\r\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:300)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:157)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:136)\r\r\n\tat android.support.test.runner.AndroidJUnitRunner.onStart(AndroidJUnitRunner.java:270)\r\r\n\tat android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1701)\r\r\n\r"}}],"time":"0.0","name":"APK test"}];
+    var logBoxRows = (this.state && this.state.campaign) ? this.state.campaign.logBox.map( function(v,i){ return <LogBoxRow key={i} time={v.time}>{v.message}</LogBoxRow> }  ) : null;
 
     return (
       <div>
 
-        <AreaStatus typeName='campaign' />
+        <div style={style.infoArea}>
+          <AreaStatus typeName='campaign' /><br />
+          <div style={{width:547}}>
+            <LogBox>
+            {logBoxRows}
+            </LogBox>
+          </div>
+        </div>
 
         {/* Debugging */}
         {this.context.appConfig.debug ? (
@@ -119,7 +125,7 @@ var ProjectCampaign = class extends React.Component{
                 label="Set Results"
                 title="Set Results"
                 primary={true}
-                onTouchTap={this._onStateChange.bind(this, { campaign: {status: 'CAMPAIGN_STATUS_RESULTED', results: results} } )} />
+                onTouchTap={this._onStateChange.bind(this, { campaign: {status: 'CAMPAIGN_STATUS_RESULTED', results: []} } )} />
 
           </Paper>
           <br />

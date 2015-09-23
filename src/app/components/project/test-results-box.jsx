@@ -23,6 +23,7 @@ var { Paper,
 // APP
 var AvatarProgress = require('goby/components/shared/avatar-progress.jsx');
 var AppUtils = require('goby/components/shared/app-utils.jsx');
+var CodeBox = require('goby/components/shared/code-box.jsx');
 
 var TestResultsBox = class extends React.Component{
 
@@ -40,7 +41,7 @@ var TestResultsBox = class extends React.Component{
             <TableRowColumn colSpan="2" style={{color:this.context.muiTheme.palette.errorColor}}>
               <p><strong>{testCase.failure.message}</strong></p>
               <p>{testCase.failure.type}</p>
-              <p>{testCase.failure.content}</p>
+              <CodeBox>{testCase.failure.content}</CodeBox>
             </TableRowColumn>
           </TableRow> : null;
         var rowInfo = <TableRow key={testCaseIndex} style={failure ? {borderBottomWidth:0} : {}} >

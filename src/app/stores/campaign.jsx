@@ -19,6 +19,7 @@ var CampaignStore =  Reflux.createStore({
     this.state.projectId = false;
     this.reset();
     this.state.campaign.status = 'CAMPAIGN_STATUS_INITIATING';
+    this.onLogMessage('Initiating campaign.');
     this.updateState();
   },
 
@@ -41,11 +42,13 @@ var CampaignStore =  Reflux.createStore({
 
   // Restart
   onRestart: function (projectId) {
+    this.onLogMessage('Restarting campaign.');
     this.reset();
     this.setPreparing();
   },
 
   setPreparing: function () {
+    this.onLogMessage('Preparing campaign.');
     this.state.campaign.status = 'CAMPAIGN_STATUS_PREPARING';
     this.updateState();
   },
@@ -53,18 +56,22 @@ var CampaignStore =  Reflux.createStore({
   // Create
 
   onCreate: function(){
+    this.onLogMessage('Campaign prepared.');
     this.state.campaign.status = 'CAMPAIGN_STATUS_PREPARED';
     this.updateState();
+    this.onLogMessage('Creating campaign.');
     this.state.campaign.status = 'CAMPAIGN_STATUS_CREATING';
     this.updateState();
   },
 
   onCreateCompleted: function(){
+    this.onLogMessage('Creating created.');
     this.state.campaign.status = 'CAMPAIGN_STATUS_CREATED';
     this.updateState();
   },
 
   onCreateFailure: function(errorMessage){
+    this.onLogMessage(errorMessage);
     this.state.campaign.status = 'CAMPAIGN_STATUS_CREATE_FAILED';
     this.state.campaign.message = errorMessage;
     this.updateState();
@@ -75,6 +82,7 @@ var CampaignStore =  Reflux.createStore({
     var messageParsed = JSON.parse(message.data);
     console.log('onSocketMessage', messageParsed);
     if (messageParsed.hasOwnProperty('message')) {
+      this.onLogMessage(messageParsed.message);
       switch( messageParsed.message ){
         case 'Stack retrieval or creation finished':
 
@@ -118,6 +126,7 @@ var CampaignStore =  Reflux.createStore({
   },
 
   onLoadDevicesFailure: function(errorMessage){
+    this.onLogMessage(errorMessage);
     throw 'error'; // TODO: failure
   },
 
@@ -134,6 +143,7 @@ var CampaignStore =  Reflux.createStore({
   },
 
   onRunFailure: function(errorMessage){
+    this.onLogMessage(errorMessage);
     this.state.campaign.status = 'CAMPAIGN_STATUS_RUN_FAILED';
     this.state.campaign.message = errorMessage;
     this.updateState();
@@ -153,9 +163,16 @@ var CampaignStore =  Reflux.createStore({
   },
 
   onResultFailure: function(errorMessage){
+    this.onLogMessage(errorMessage);
     this.state.campaign.status = 'CAMPAIGN_STATUS_RESULT_FAILED';
     this.state.campaign.message = errorMessage;
     this.updateState();
+  },
+
+  // Log Message
+
+  onLogMessage: function (message) {
+    this.state.campaign.logBox.unshift({ time: AppUtils.getDate() , message: message });
   },
 
   // Methods //
@@ -165,6 +182,7 @@ var CampaignStore =  Reflux.createStore({
 
   reset: function () {
     this.state.campaign = {};
+    this.state.campaign.logBox = [];
     this.resetBoxes();
   },
 

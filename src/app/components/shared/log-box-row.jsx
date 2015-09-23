@@ -33,7 +33,7 @@ var LogBoxRow = class extends React.Component{
         padding: Spacing.desktopGutterMini/2,
       },
       time: {
-        color: this.props.style.time ? this.props.style.time.color : GobyPalette.accent1Color ,
+        color: this.props.style.time ? this.props.style.time.color : Colors.grey600 ,
         marginRight: 4,
       }
     };

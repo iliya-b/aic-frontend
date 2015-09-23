@@ -213,8 +213,8 @@ LiveActions.tryWebsocket = function () {
 
 LiveActions.tryConnection = function ( vmhost, vmport, cb ) {
 
+  window.INCLUDE_URI = "/noVNC/"; // This is noVNC dependent
   // FIXME: probably not the best way to set global var.
-  window.INCLUDE_URI = "/noVNC/";
   window.AiClive = {
     host: vmhost,
     port: vmport,

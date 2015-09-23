@@ -14,6 +14,7 @@ var CampaignActions = Reflux.createActions({
   'reset': {},
   'restart': {},
   'socketMessage': {},
+  'logMessage': {},
   'prepare': { children: ["completed","failure"] },
   'create': { children: ["completed","failure"] },
   'run': { children: ["completed","failure"] },
