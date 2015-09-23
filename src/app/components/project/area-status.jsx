@@ -32,12 +32,6 @@ var AreaStatus = class extends React.Component{
   render() {
     var boxes;
     var boxesTags;
-    var styles = {
-      boxes: {
-        textAlign: 'center',
-        paddingBottom: Spacing.desktopGutter + 'px',
-      }
-    };
 
     if (this.state.hasOwnProperty(this.props.typeName)) {
       boxesTags = this.state[this.props.typeName].boxes.map(function (item, index) {
@@ -45,7 +39,7 @@ var AreaStatus = class extends React.Component{
       });
     }
 
-    return  <div style={styles.boxes}>
+    return  <div style={this.props.style}>
               {boxesTags}
             </div>
   }

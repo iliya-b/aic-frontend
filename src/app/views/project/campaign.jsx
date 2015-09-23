@@ -77,6 +77,10 @@ var ProjectCampaign = class extends React.Component{
           display: 'none',
         },
       },
+      infoArea: {
+
+        paddingBottom: Spacing.desktopGutter + 'px',
+      }
     };
 
     var results = (this.state.res && this.state.res.length > 0) ? this.state.res.map(function (item) {

@@ -41,14 +41,15 @@ var { BoxStatus,
       TestResultsBox,
       AvatarProgress,
       LogBox,
-      LogBoxRow } = require('goby/components');
+      LogBoxRow,
+      AppUtils } = require('goby/components');
 
 // var logBoxRef = Array.apply(0, Array(8)).map(function (v, i) { return { message: 'Message ' + i , time: i }; });
 var logBoxRef = [
-{time:1,message:"Stack creation scheduled"},
-{time:2,message:"Stack retrieval or creation finished"},
-{time:3,message:"Docker creation scheduled."},
-{time:4,message:"Docker created and ready."},
+{time: AppUtils.getDate(), message:"Stack creation scheduled"},
+{time: AppUtils.getDate(), message:"Stack retrieval or creation finished"},
+{time: AppUtils.getDate(), message:"Docker creation scheduled."},
+{time: AppUtils.getDate(), message:"Docker created and ready."},
 ];
 
 var ThemesPage = React.createClass({

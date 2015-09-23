@@ -44,6 +44,12 @@ var AppUtils = {
     return count === 1 ? word : word + 's';
   },
 
+  getDate: function (){
+    return new Date().toISOString()
+      .replace(/T/, ' ')
+      .replace(/Z/, '')
+  },
+
 
 };
 

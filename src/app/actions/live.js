@@ -14,6 +14,7 @@ var LiveActions = Reflux.createActions({
   'liveReset': {},
   'setDelayedRotation': {},
   'socketMessage': {},
+  'logMessage': {},
   'liveCheck': { children: ["completed","failure"] },
   'liveStart': { children: ["completed","failure"] },
   'liveConnect': { children: ["completed","failure"] },
@@ -159,13 +160,16 @@ window.onscriptsload = function () {
     console.log(arguments);
     if (state === 'normal') {
       window.AiClive.completed = true;
+      LiveActions.logMessage('noVNC utils loaded.');
       LiveActions.liveConnect.completed();
     }
   };
   try {
-     window.rfb = new RFB({'target':$D('noVNC_canvas'),'onUpdateState':  updateState});
+    LiveActions.logMessage('Creating noVNC client.');
+    window.rfb = new RFB({'target':$D('noVNC_canvas'),'onUpdateState':  updateState});
   } catch (exc) {
     window.AiClive.completed = true;
+    LiveActions.logMessage('Unable to create noVNC client.');
     LiveActions.liveConnect.failure('Unable to create noVNC client (' + exc + ').');
   }
   LiveActions.tryWebsocket();
@@ -174,6 +178,7 @@ window.onscriptsload = function () {
 LiveActions.tryWebsocket = function () {
 
   try {
+    LiveActions.logMessage('Connecting to VNC session.');
     window.AiClive.socket = new WebSocket("ws://" + window.AiClive.host + ":" + window.AiClive.port, 'base64');
     window.AiClive.socket.onerror=function(){
       console.log("socket test on error");
@@ -181,6 +186,7 @@ LiveActions.tryWebsocket = function () {
       console.log(LiveActions);
       if (window.AiClive.errorCount >= window.AiClive.maxTries){
         window.AiClive.completed = true;
+        LiveActions.logMessage('Unable to connect session (websockify error).');
         LiveActions.liveConnect.failure('Unable to connect session (websockify error).');
       }else{
         window.AiClive.errorCount += 1;
@@ -222,6 +228,7 @@ LiveActions.tryConnection = function ( vmhost, vmport, cb ) {
     timeoutcb: null,
   };
 
+  LiveActions.logMessage('Loading noVNC utils.');
   // Load supporting scripts
   Util.load_scripts(["webutil.js", "base64.js", "websock.js", "des.js",
                      "keysymdef.js", "keyboard.js", "input.js", "display.js",
@@ -230,22 +237,27 @@ LiveActions.tryConnection = function ( vmhost, vmport, cb ) {
   setTimeout(function () {
     if ( !window.AiClive.completed ){
       window.AiClive.completed = true;
+      LiveActions.logMessage('noVNC utils load failed.');
       LiveActions.liveConnect.failure('Unable to connect session (timeout error).');
     }
   }, window.AiClive.timeout);
 };
 
 LiveActions.tryLoadNoVNC = function( cb ) {
+  LiveActions.logMessage('Loading noVNC core.');
   $.getScript( '/noVNC/util.js' )
   .done(function() {
     if(typeof Util !== 'undefined'){
+      LiveActions.logMessage('noVNC core loaded.');
       cb( { success: true } );
     }else{
-      cb( { success: false, errorMessage: 'Failed to set noVNC utils.' } );
+      LiveActions.logMessage('noVNC core load failed.');
+      cb( { success: false, errorMessage: 'Failed to set noVNC core.' } );
     }
   })
   .fail(function() {
-    cb( { success: false, errorMessage: 'Failed to load noVNC utils.' } );
+    LiveActions.logMessage('noVNC core load failed.');
+    cb( { success: false, errorMessage: 'Failed to load noVNC core.' } );
   });
 };
 

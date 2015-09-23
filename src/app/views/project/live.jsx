@@ -12,7 +12,9 @@ var { Tabs, Tab, Paper, FlatButton, CircularProgress } = mui;
 var { AppUtils,
       LiveScreen,
       LiveSensors,
-      AreaStatus } = require('goby/components');
+      AreaStatus,
+      LogBox,
+      LogBoxRow } = require('goby/components');
 var { LiveStore } = require('goby/stores');
 var { LiveActions } = require('goby/actions');
 
@@ -46,6 +48,11 @@ var ProjectLive = class extends React.Component{
           display: 'none',
         },
       },
+      infoArea: {
+        width: 547,
+        margin: '0 auto',
+        paddingBottom: Spacing.desktopGutter + 'px',
+      },
     };
 
     // FIXME: put url parser
@@ -54,9 +61,18 @@ var ProjectLive = class extends React.Component{
       audioURL = 'http://' + this.state.live.audio.ip + ':' + this.state.live.audio.port;
     }
 
+    var logBoxRows = (this.state && this.state.live) ? this.state.live.logBox.map( function(v,i){ return <LogBoxRow key={i} time={v.time}>{v.message}</LogBoxRow> }  ) : null;
+
     return  <div>
 
-              <AreaStatus typeName='live' />
+              <div style={style.infoArea}>
+                <AreaStatus typeName='live' /><br />
+                <div style={{width:547}}>
+                  <LogBox>
+                  {logBoxRows}
+                  </LogBox>
+                </div>
+              </div>
 
               {/* Debugging */}
               {this.context.appConfig.debug ? (

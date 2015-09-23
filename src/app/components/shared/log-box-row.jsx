@@ -29,11 +29,12 @@ var LogBoxRow = class extends React.Component{
         backgroundColor: this.props.style.backgroundColor || '#fff',
         color: this.props.style.color || GobyPalette.primary1Color,
         // fontFamily: this.context.muiTheme.contentFontFamily,
-        fontSize: '14px',
+        fontSize: 12,
         padding: Spacing.desktopGutterMini/2,
       },
       time: {
-        color: this.props.style.time ? this.props.style.time.color : GobyPalette.secondary1Color ,
+        color: this.props.style.time ? this.props.style.time.color : GobyPalette.accent1Color ,
+        marginRight: 4,
       }
     };
 

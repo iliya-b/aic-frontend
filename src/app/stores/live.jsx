@@ -58,6 +58,7 @@ var LiveStore =  Reflux.createStore({
 
   // Live check
   onLiveCheck: function(){
+    this.addLogMessage('Searching session.');
     this.state.live.status = 'LIVE_STATUS_CHECKING';
     this.updateState();
   },
@@ -169,6 +170,7 @@ var LiveStore =  Reflux.createStore({
     var messageParsed = JSON.parse(message.data);
     console.log('onSocketMessage', messageParsed);
     if (messageParsed.hasOwnProperty('message')) {
+      this.addLogMessage(messageParsed.message);
       switch( messageParsed.message ){
         case 'Stack retrieval or creation finished':
           LiveActions.liveCheck.completed(false);
@@ -193,6 +195,10 @@ var LiveStore =  Reflux.createStore({
     }
   },
 
+  onLogMessage: function (message) {
+    this.addLogMessage(message);
+  },
+
   // Methods //
 
 
@@ -208,6 +214,7 @@ var LiveStore =  Reflux.createStore({
 
   resetLive: function () {
     this.state.live = {};
+    this.state.live.logBox = [];
     this.state.live.screen = {}
     this.resetMachine();
     this.state.live.recording = false;
@@ -239,6 +246,10 @@ var LiveStore =  Reflux.createStore({
         return item.typeName === typeName ? AppUtils.extend(item, replacement) : item ;
       }
     );
+  },
+
+  addLogMessage: function(message){
+    this.state.live.logBox.unshift({ time: AppUtils.getDate() , message: message });
   },
 
   statusUpdating: {
