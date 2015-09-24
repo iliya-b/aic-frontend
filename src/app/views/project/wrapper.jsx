@@ -5,7 +5,8 @@ var React = require('react');
 
 // Material design
 var mui = require('material-ui');
-var { AppBar } = mui;
+var { AppBar,
+      IconButton } = mui;
 
 // Router
 var Router = require('react-router');
@@ -41,10 +42,9 @@ var ProjectWrapper = class extends React.Component {
       <div>
         <AppBar
             onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap}
-            onRightIconButtonTouchTap={this._onRightIconButtonTouchTap}
             title={this.state.title}
             zDepth={0}
-            iconClassNameRight="mdi mdi-logout" />
+            iconElementRight={<IconButton title="Logout" onClick={this._onRightIconButtonTouchTap} iconClassName="mdi mdi-logout"></IconButton>} />
         <RouteHandler />
       </div>
     );

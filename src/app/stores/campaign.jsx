@@ -110,6 +110,9 @@ var CampaignStore =  Reflux.createStore({
         case 'CAMPAIGN_STATUS_RESULTING':
           CampaignActions.result.failure(messageParsed.error);
           break;
+        default:
+          console.error('campaign error not treated', messageParsed.error);
+          break;
       }
 
     }
