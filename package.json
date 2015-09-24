@@ -28,7 +28,7 @@
     "react": "^0.13.3",
     "react-dropzone": "^1.2.4",
     "react-router": "^0.13.3",
-    "react-tap-event-plugin": "^0.1.7",
+    "react-tap-event-plugin": "0.1.7",
     "reflux": "^0.2.12"
   },
   "devDependencies": {
