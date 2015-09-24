@@ -9,11 +9,12 @@ var { StylePropable } = mui.Mixins;
 var { Dialog, FlatButton, Toolbar, ToolbarGroup, IconButton } = mui;
 
 // Vendors
-var Dropzone = require('react-dropzone');
+// var Dropzone = require('react-dropzone');
 
 // APP
 var ObjectList = require('goby/components/shared/object-list/object-list.jsx');
 var AppUtils = require('goby/components/shared/app-utils.jsx');
+var Dropzone = require('goby/components/shared/goby-dropzone.jsx');
 var { APKTestUploadStore } = require('goby/stores');
 var { APKTestUploadActions } = require('goby/actions');
 
@@ -78,7 +79,7 @@ var APKTestUploadDialog = class extends React.Component{
             <ObjectList style={styles.objectlist} objectListItems={this.state.files} />
             </div>
           ) : '' }
-          <Dropzone onDrop={this._onDrop} style={styles.dropzone} >
+          <Dropzone onDrop={this._onDrop} style={styles.dropzone}  id="fieldAPKTestUpload" name="fieldAPKTestUpload" title="fieldAPKTestUpload">
             <div>Try dropping some files here, or click to select files to upload.</div>
           </Dropzone>
         </div>

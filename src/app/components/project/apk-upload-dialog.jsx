@@ -8,10 +8,11 @@ var mui = require('material-ui');
 var { Dialog, FlatButton, Toolbar, ToolbarGroup, IconButton } = mui;
 
 // Vendors
-var Dropzone = require('react-dropzone');
+// var Dropzone = require('react-dropzone');
 
 // APP
 var ObjectList = require('goby/components/shared/object-list/object-list.jsx');
+var Dropzone = require('goby/components/shared/goby-dropzone.jsx');
 var AppUtils = require('goby/components/shared/app-utils.jsx');
 var { APKUploadStore } = require('goby/stores');
 var { APKUploadActions } = require('goby/actions');
@@ -76,7 +77,7 @@ var APKUploadDialog = class extends React.Component{
             <ObjectList style={styles.objectlist} objectListItems={this.state.files} />
             </div>
           ) : '' }
-          <Dropzone onDrop={this._onDrop} style={styles.dropzone} >
+          <Dropzone onDrop={this._onDrop} style={styles.dropzone} id="fieldAPKUpload" name="fieldAPKUpload" title="fieldAPKUpload">
             <div>Try dropping some files here, or click to select files to upload.</div>
           </Dropzone>
         </div>

@@ -32,6 +32,7 @@
     "reflux": "^0.2.12"
   },
   "devDependencies": {
+    "attr-accept": "^1.0.1",
     "babel": "^5.8.21",
     "babel-eslint": "^4.0.10",
     "babelify": "^6.1.3",
