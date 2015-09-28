@@ -40,7 +40,20 @@ var APKTestUploadDialog = class extends React.Component{
 
     var styles = {
       dropzone: {
-        width: '100%'
+        style: {
+          width: '100%',
+          lineHeight: '100px',
+          borderWidth: 2,
+          borderColor: '#666',
+          borderStyle: 'dashed',
+          borderRadius: 5,
+          textAlign: 'center',
+          boxSizing: 'border-box',
+        },
+        activeStyle: {
+          borderStyle: 'solid',
+          backgroundColor: '#eee',
+        },
       },
       toolbargroup: {
         paddingTop: '3px',
@@ -79,7 +92,7 @@ var APKTestUploadDialog = class extends React.Component{
             <ObjectList style={styles.objectlist} objectListItems={this.state.files} />
             </div>
           ) : '' }
-          <Dropzone onDrop={this._onDrop} style={styles.dropzone}  id="fieldAPKTestUpload" name="fieldAPKTestUpload" title="fieldAPKTestUpload">
+          <Dropzone onDrop={this._onDrop} style={styles.dropzone.style} activeStyle={styles.dropzone.activeStyle} id="fieldAPKTestUpload" name="fieldAPKTestUpload" title="fieldAPKTestUpload">
             <div>Try dropping some files here, or click to select files to upload.</div>
           </Dropzone>
         </div>
