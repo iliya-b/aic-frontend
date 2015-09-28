@@ -6,7 +6,7 @@ var Dropzone = React.createClass({
   getDefaultProps: function() {
     return {
       disableClick: false,
-      multiple: true
+      multiple: false
     };
   },
 
@@ -79,6 +79,8 @@ var Dropzone = React.createClass({
   onDrop: function(e) {
     e.preventDefault();
 
+    this.logAction(e);
+
     this.setState({
       isDragActive: false,
       isDragReject: false
@@ -90,11 +92,15 @@ var Dropzone = React.createClass({
 
     for (var i = 0; i < max; i++) {
       var file = droppedFiles[i];
-      file.preview = URL.createObjectURL(file);
+      if (typeof URL !== 'undefined'){
+        file.preview = URL.createObjectURL(file);
+      }
       files.push(file);
     }
 
     if (this.props.onDrop) {
+      var logger = React.findDOMNode(this.refs.logger);
+      logger.innerHTML += 'calling on drop: '+ files.length +' ) ';
       this.props.onDrop(files, e);
     }
 
@@ -119,6 +125,20 @@ var Dropzone = React.createClass({
     var fileInput = React.findDOMNode(this.refs.fileInput);
     fileInput.value = null;
     fileInput.click();
+  },
+
+  logAction: function(e) {
+    var droppedFiles = e.dataTransfer ? 'e.dataTransfer.files' : 'e.target.files';
+    var logger = React.findDOMNode(this.refs.logger);
+    var fileInput = React.findDOMNode(this.refs.fileInput);
+    var filesNames = '';
+    var a = fileInput.files;
+    for (var i = a.length - 1; i >= 0; i--) {
+      filesNames = filesNames + a[i].name;
+    };
+    //JSON.stringify(e.target)
+    logger.innerHTML += 'changed! (file: '+filesNames+' , val: '+ fileInput.value +', e: '+ droppedFiles +' ) ';
+
   },
 
   render: function() {
@@ -169,6 +189,9 @@ var Dropzone = React.createClass({
       };
     };
 
+    // style={{width: 200, height: 100, background: 'gray'}}
+    // style={{position: 'absolute',overflow: 'hidden', clip: 'rect(0 0 0 0)', height: 1, width: 1, margin: -1, padding: 0, border: 0}}
+    // <div id='logger' style={{border:'1px solid green'}} ref='logger'></div>
     return (
       <div
         className={className}
@@ -179,14 +202,15 @@ var Dropzone = React.createClass({
         onDragLeave={this.onDragLeave}
         onDrop={this.onDrop}
       >
+      <div id='logger' style={{border:'1px solid green'}} ref='logger'></div>
         {this.props.children}
         <input
           id={this.props.id}
           title={this.props.title}
           name={this.props.name}
+          style={{position: 'absolute',overflow: 'hidden', clip: 'rect(0 0 0 0)', height: 1, width: 1, margin: -1, padding: 0, border: 0}}
           type='file'
           ref='fileInput'
-          style={{ display: 'none' }}
           multiple={this.props.multiple}
           accept={this.props.accept}
           onChange={this.onDrop}

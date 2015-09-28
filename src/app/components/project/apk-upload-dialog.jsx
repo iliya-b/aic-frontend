@@ -28,6 +28,8 @@ var APKUploadDialog = class extends React.Component{
     this._onDrop = this._onDrop.bind(this);
     this._onCleanClick = this._onCleanClick.bind(this);
     this._onStateChange = this._onStateChange.bind(this);
+    this.testing = this.testing.bind(this);
+    this.testingdrop = this.testingdrop.bind(this);
   }
 
   render() {
@@ -67,6 +69,7 @@ var APKUploadDialog = class extends React.Component{
     return (
       <Dialog title="APK Upload" actions={loginActions} {...other} ref="dialogIn" >
         <div>
+        <form>
           {this.state && this.state.files && this.state.files.length > 0 ? (
             <div>
             <Toolbar style={styles.toolbar}>
@@ -80,6 +83,13 @@ var APKUploadDialog = class extends React.Component{
           <Dropzone onDrop={this._onDrop} style={styles.dropzone} id="fieldAPKUpload" name="fieldAPKUpload" title="fieldAPKUpload">
             <div>Try dropping some files here, or click to select files to upload.</div>
           </Dropzone>
+          <input name='testing' onChange={this.testing} />
+          <input title='xtesting' type='file' name='xtesting' onChange={this.testing} />
+          <button title='bttest'  name='bttest' type='button' onClick={this.testingdrop} >bttest</button>
+          <div style={{border:'1px solid red'}}>
+          {this.state ? this.state.log : null}
+          </div>
+        </form>
         </div>
       </Dialog>
       );
@@ -90,7 +100,21 @@ var APKUploadDialog = class extends React.Component{
   }
 
   _onDrop(files){
+    this.setState({ log: (this.state && this.state.log ? this.state.log : '') + 'droping ' });
     APKUploadActions.drop(this.state.projectId, files);
+  }
+
+  testing(){
+    this.setState({ log: (this.state && this.state.log ? this.state.log : '') + 'testonChange ' });
+  }
+
+  testingdrop(){
+    var filesNames = '';
+    var a = document.querySelector('input[name="xtesting"]').files;
+    for (var i = a.length - 1; i >= 0; i--) {
+      filesNames = filesNames + a[i].name;
+    };
+    this.setState({ log: (this.state && this.state.log ? this.state.log : '') + 'button(files: ' + filesNames + ', val' + document.querySelector('input[name="xtesting"]').value + ') ' });
   }
 
   _onCleanClick() {
