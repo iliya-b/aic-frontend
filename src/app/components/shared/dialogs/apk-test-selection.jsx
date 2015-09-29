@@ -83,7 +83,7 @@ var APKTestSelectionDialog = class extends React.Component{
       <Dialog title="APK Test Selection" actions={actions} {...other} ref="dialogIn" >
         <Paper>
           <Table
-            height="100%"
+            height="50vh"
             showRowHover={true}
             selectable={true}
             multiSelectable={true}
