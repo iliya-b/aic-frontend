@@ -8,11 +8,14 @@ var url = require('url');
 
 // APP
 var BackendAPI = require('goby/stores/backend-api.jsx');
+var AppConfigActions = require('goby/actions/app-config.js');
+
 
 // Actions
 var AuthActions = Reflux.createActions({
   'login': { children: ["completed","failure"] },
   'logout': { children: ["completed","failure"] },
+  'check': { children: ["completed","failure"] },
 });
 
 // Listeners for asynchronous Backend API calls
@@ -33,6 +36,19 @@ AuthActions.login.listen(function (login, pass) {
       this.completed();
     }else{
       this.failure('It was not possible to login.');
+    }
+  });
+});
+
+AuthActions.check.listen(function () {
+  console.log('AuthActions.check.listen');
+  BackendAPI.isUserLogged( (result) => {
+    if (result.hasOwnProperty('status') && result.status === 401 ){
+      this.completed( false );
+    }else if ( result.status === 200 ){
+      this.completed( true );
+    }else{
+      this.failure('It was not possible to verify login status.');
     }
   });
 });
@@ -86,10 +102,57 @@ AuthActions.redirectTo = function (routerOrTransition, page, query) {
   }
 };
 
+AuthActions.isLogged = function (loginContext) {
+  return loginContext.status === 'LOGIN_STATUS_CONNECTED';
+};
 
-AuthActions.logout.listen(function () {
+AuthActions.loadContextIfEmpty = function(loginContext){
+
+  console.log('loadContextIfEmpty', loginContext);
+
+  // If the context have login information
+  if (loginContext) {
+    console.log('loginContext valid');
+    return new Promise(function(resolve, reject) {
+        resolve( AuthActions.isLogged(loginContext) );
+      });
+
+  // Otherwise we load the login information
+  } else {
+
+    var configLoaded = AppConfigActions.loadConfigFactory();
+
+    return Promise.all([ configLoaded ])
+            .then( function (configIsLoaded) {
+              return new Promise(function(resolve, reject) {
+                console.log('AuthActions.loadContextIfEmpty 2');
+                BackendAPI.isUserLogged( (result) => {
+                  setTimeout(function(){
+                    console.log('loadContextIfEmpty result', result)
+                    if (result.hasOwnProperty('status') && result.status === 401 ){
+                      // AuthActions.check.completed( false );
+                      resolve( false );
+                    }else if ( result.hasOwnProperty('tenants') ){
+                      // AuthActions.check.completed( true );
+                      resolve( true );
+                    }else{
+                      reject('It was not possible to verify login status.');
+                    }
+                    }, 10000);
+                });
+              });
+            } );
+
+
+  }
+};
+
+AuthActions.logout.listen(function (showMessage) {
   BackendAPI.userLogout( (result) => {
+    // TODO:  Fix the logout result,
+    //        for now we have 500 (Internal Server Error)
     console.log('logout', result);
+    this.completed(showMessage);
     // if (result.hasOwnProperty('status') &&
     //    (result.status === 400 || result.status === 401 )){
     //   this.failure('It was not possible to login. Error: ' + result.statusText);

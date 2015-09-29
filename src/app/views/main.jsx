@@ -41,15 +41,11 @@ var Main = class extends React.Component{
     this.context.router.transitionTo('home');
   }
 
-  componentWillMount() {
-    // ThemeManager.setPalette(GobyPalette);
-    ThemeManager.setTheme(GobyTheme);
-  }
-
   getChildContext() {
     return {
       muiTheme: ThemeManager.getCurrentTheme(),
       appConfig: this.state.config ? this.state.config : {} ,
+      loginStatus: this.state.login ? this.state.login : {} ,
     };
   }
 
@@ -89,8 +85,9 @@ var Main = class extends React.Component{
           <FullWidthSection useContent={true} style={styles.footer}>
             <p style={styles.p}>COPYRIGHT © AiC</p>
 
-            {this.state.config.debug ? (
-            <RaisedButton label="Test Theme" title="Test Theme" primary={true}  onClick={this._onThemeClick} />
+            {this.state.config.debug ? ([
+            <RaisedButton key={1} label="Test Theme" title="Test Theme" primary={true}  onClick={this._onThemeClick} />,
+            <RaisedButton key={2} linkButton  primary={true} href="#/home" >home</RaisedButton>]
             ) : null }
           </FullWidthSection>
           <SessionEndedDialog ref="sessionEndedDialog" />
@@ -111,34 +108,62 @@ var Main = class extends React.Component{
   }
 
   _onStateChange(newState){
-    // console.log('main new state');
+    console.log('main new state');
     if ( newState.login ) {
       var currentPathName = AuthActions.getPathName(this.context.router);
-      if (newState.login.status === 'LOGIN_STATUS_DISCONNECTED' && currentPathName !== '/' && currentPathName !== '/home' ){
-        this.refs.sessionEndedDialog.show();
+      if (newState.login.status === 'LOGIN_STATUS_DISCONNECTED'
+        && currentPathName !== '/' && currentPathName !== '/home' ){
+        if ( newState.login.showMessage ){
+          this.refs.sessionEndedDialog.show();
+        } else {
+          AuthActions.redirectDisconnected(this.context.router);
+        }
       }
+      // One baby panda dies each time we use window.GobyAppGlobals
+      // TODO: Therefore we MUST change this
+      // We need this because WillTransitionTo have no this.* this.context, etc
+      // and we need login information on WillTransitionTo of AuthRequired component
+      window.GobyAppGlobals.login = newState.login;
       this.setState(newState);
       // console.log('changed main state' , newState ,  currentPathName);
     }
     if ( newState.config ) {
+      console.log('Config loaded');
       window.GobyAppGlobals.config = newState.config;
       // console.log('main new state config', newState, window.GobyAppGlobals);
       this.setState(newState); // Set state MUST be the last call
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    console.log('Main componentWillMount');
+    // ThemeManager.setPalette(GobyPalette);
+    ThemeManager.setTheme(GobyTheme);
     this.unsubscribe.push(AuthStore.listen( this._onStateChange ));
     AuthStore.init();
     this.unsubscribe.push(AppConfigStore.listen( this._onStateChange ));
     AppConfigActions.load();
   }
 
+  // componentDidMount() {
+  //   this.unsubscribe.push(AuthStore.listen( this._onStateChange ));
+  //   AuthStore.init();
+  //   this.unsubscribe.push(AppConfigStore.listen( this._onStateChange ));
+  //   AppConfigActions.load();
+  // }
+
   componentWillUnmount() {
     // Subscribe and unsubscribe because we don't want to use the mixins
     this.unsubscribe.map( function(func){ func(); } );
   }
 
+};
+
+Main.willTransitionTo = function (transition, params, query, callback) {
+  console.log('Main willTransitionTo');
+  // this.unsubscribe.push(AppConfigStore.listen( this._onStateChange ));
+  // AppConfigActions.load();
+  callback();
 };
 
 Main.contextTypes = {
@@ -150,6 +175,7 @@ Main.contextTypes = {
 Main.childContextTypes = {
   muiTheme: React.PropTypes.object,
   appConfig: React.PropTypes.object,
+  loginStatus: React.PropTypes.object,
 };
 
 module.exports = Main;

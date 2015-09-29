@@ -25,12 +25,13 @@ var { APKSelectionDialog,
       AppUtils,
       TestResultsBox,
       LogBox,
-      LogBoxRow } = require('goby/components');
+      LogBoxRow,
+      AuthRequired } = require('goby/components');
 
 var { CampaignStore } = require('goby/stores');
 var { CampaignActions } = require('goby/actions');
 
-var ProjectCampaign = class extends React.Component{
+var ProjectCampaign = class extends AuthRequired{
 
   constructor (props) {
     super(props);

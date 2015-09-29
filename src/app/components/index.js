@@ -32,5 +32,7 @@ module.exports = {
   AvatarProgress: require('./shared/avatar-progress.jsx'),
   LogBox: require('./shared/log-box.jsx'),
   LogBoxRow: require('./shared/log-box-row.jsx'),
+  AuthRequired: require('./shared/auth-required.jsx'),
+  AuthPage: require('./shared/auth-page.jsx'),
 
 };

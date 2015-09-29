@@ -65,6 +65,11 @@ var BackendAPI = {
     this.apiCall(url, undefined, cb, undefined, undefined, false);
   },
 
+  isUserLogged: function(cb) {
+    var url = this.backendRoot() + "/back/project";
+    this.apiCall(url, undefined, cb, undefined, 'GET', false);
+  },
+
   userProjects: function (token, cb) {
     var url = this.backendRoot() + "/back/project";
     this.apiCallAuth(url, null, cb, token, 'GET');

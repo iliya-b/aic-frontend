@@ -11,9 +11,10 @@ var { RaisedButton } = mui;
 // APP
 var { FullWidthSection,
       LoginDialog,
-      SignUpDialog } = require('goby/components');
+      SignUpDialog,
+      AuthPage } = require('goby/components');
 
-var Home = class extends React.Component {
+var Home = class extends AuthPage {
 
   constructor (props) {
     super(props);
@@ -111,21 +112,18 @@ var Home = class extends React.Component {
     this.refs.signUpDialog.show();
   }
 
-  // // Example with componentWillMount
-  // componentWillMount(){
-  //   Auth.redirectIfLogged(this.context.router);
-  // }
+  // Example with componentWillMount
+  componentWillMount(){
+    console.log(this.context.loginStatus);
+    // Auth.redirectIfLogged(this.context.router);
+  }
 
 };
 
 Home.contextTypes = {
   router: React.PropTypes.func,
-  muiTheme: React.PropTypes.object
+  muiTheme: React.PropTypes.object,
+  loginStatus: React.PropTypes.object
 }
-
-Home.willTransitionTo = function(transition) {
-  // TODO: check if user is logged and redirect
-  // Auth.redirectIfLogged(transition);
-};
 
 module.exports = Home;

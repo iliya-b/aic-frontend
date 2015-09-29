@@ -38,12 +38,14 @@ var AuthStore =  Reflux.createStore({
   },
 
   // Logout
-  onLogout: function () {
+  onLogout: function (showMessage) {
     this.state.login.status = 'LOGIN_STATUS_DISCONNECTING';
     this.updateState();
   },
 
-  onLogoutCompleted: function () {
+  onLogoutCompleted: function (showMessage) {
+    console.log('onLogoutCompleted', showMessage);
+    this.state.login.showMessage = typeof showMessage !== 'undefined' ? showMessage : true;
     this.state.login.status = 'LOGIN_STATUS_DISCONNECTED';
     this.updateState();
   },
@@ -51,6 +53,23 @@ var AuthStore =  Reflux.createStore({
   onLogoutFailure: function (errorMessage) {
     this.state.login.message = errorMessage;
     this.state.login.status = 'LOGIN_STATUS_DISCONNECT_FAILED';
+    this.updateState();
+  },
+
+  // Check
+  onCheck: function () {
+    this.state.login.status = 'LOGIN_STATUS_CHECKING';
+    this.updateState();
+  },
+
+  onCheckCompleted: function ( isLogged ) {
+    this.state.login.status = isLogged ? 'LOGIN_STATUS_CONNECTED' : 'LOGIN_STATUS_DISCONNECTED';
+    this.updateState();
+  },
+
+  onCheckFailure: function (errorMessage) {
+    this.state.login.message = errorMessage;
+    this.state.login.status = 'LOGIN_STATUS_CHECK_FAILED';
     this.updateState();
   },
 

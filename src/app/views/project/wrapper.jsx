@@ -33,8 +33,8 @@ var ProjectWrapper = class extends React.Component {
   }
 
   _onRightIconButtonTouchTap() {
-    AuthActions.logout();
-    AuthActions.redirectDisconnected(this.context.router);
+    AuthActions.logout(false);
+    // AuthActions.redirectDisconnected(this.context.router);
   }
 
   render() {
