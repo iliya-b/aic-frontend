@@ -3,6 +3,9 @@
 // Reflux
 var Reflux = require('reflux');
 
+// APP
+var BackendAPI = require('goby/stores/backend-api.jsx');
+
 // Actions
 var AppConfigActions = Reflux.createActions({
   'load': { children: ["completed","failure"] },
@@ -50,17 +53,20 @@ AppConfigActions.loadConfigFactory = function(){
   console.log('loadConfigFactory creating');
 
   AppConfigActions.loadConfigPromise = new Promise( function(resolve, reject) {
-    $.ajax({
-      url:  'config.json',
-    })
-    .then(function(data){
-      console.log('data', data);
-      window.GobyAppGlobals.config = data;
-      resolve(true);
-    }, function(data){
-      console.log('data', data);
-      reject('Error!');
+    BackendAPI.loadConfig( (result) => {
+      if (result.hasOwnProperty('status') && result.status !== 200 ){
+        console.log('loadConfigFactory backend', arguments);
+        reject('Error!');
+      }else if ( result.hasOwnProperty('backend') ){
+        console.log('result', result);
+        window.GobyAppGlobals.config = result;
+        resolve(true);
+      }else{
+        console.log('loadConfigFactory backend', arguments);
+        reject('It was not possible to verify login status.');
+      }
     });
+
   });
 
   return AppConfigActions.loadConfigPromise ;

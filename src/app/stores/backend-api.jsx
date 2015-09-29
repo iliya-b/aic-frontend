@@ -268,6 +268,11 @@ var BackendAPI = {
     this.apiCallAuth(url, data, cb, token);
   },
 
+  loadConfig: function (cb) {
+    var url = 'config.json';
+    this.apiCall(url, undefined, cb, undefined, 'GET', false);
+  },
+
 };
 
 module.exports = BackendAPI;
