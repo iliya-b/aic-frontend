@@ -106,6 +106,8 @@ LiveActions.liveStop.listen(function (screenPort) {
     this.completed( res );
   });
   // TODO: Call disconnect from noNVC if connected before
+
+  LiveActions.stopAudioConnection();
 });
 
 LiveActions.setSensorBattery.listen(function (projectId, value) {
@@ -274,12 +276,62 @@ LiveActions.tryLoadNoVNC = function( cb ) {
 
 LiveActions.tryAudioConnection =  function( audiohost, audioport, cb ) {
   var gobyVMAudio = document.getElementById('gobyVMAudio');
+  gobyVMAudio.tries = 0;
+  gobyVMAudio.maxTries = 4;
+  gobyVMAudio.addEventListener('error', function(e) {
+    console.log('audio error:', arguments);
+    // audio playback failed - show a message saying why
+    // to get the source of the audio element use $(this).src
+    switch (e.target.error.code) {
+      case e.target.error.MEDIA_ERR_ABORTED:
+        console.log('You aborted the video playback.');
+        break;
+     case e.target.error.MEDIA_ERR_NETWORK:
+        console.log('A network error caused the audio download to fail.');
+        break;
+     case e.target.error.MEDIA_ERR_DECODE:
+        console.log('The audio playback was aborted due to a corruption problem or because the video used features your browser did not support.');
+        break;
+     case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+        console.log('The video audio not be loaded, either because the server or network failed or because the format is not supported.');
+        gobyVMAudio.tries += 1;
+        if(gobyVMAudio.tries < gobyVMAudio.maxTries){
+          console.log('audio trying again in',2000*gobyVMAudio.tries);
+          setTimeout(function(){
+            console.log('audio setting src', gobyVMAudio.src + gobyVMAudio.tries);
+            gobyVMAudio.src = gobyVMAudio.src + gobyVMAudio.tries;
+            gobyVMAudio.play();
+          },2000*gobyVMAudio.tries);
+        }else{
+          console.log('audio max tries reached.');
+        }
+        break;
+     default:
+        console.log('An unknown error occurred.');
+        break;
+    }
+  }, false);
+  // gobyVMAudio.addEventListener('canplay', function(ev) {
+  //   console.log('audio canplay:', arguments);
+  //   if( gobyVMAudio.duration == 0 || gobyVMAudio.paused ){
+  //     console.log('audio canplay not pause');
+  //     gobyVMAudio.play();
+  //   }
+  // }, false);
   // FIXME: put url parser
-  var audioURL = 'http://' + audiohost+ ':' + audioport + '/test.webm';
-  console.log('setting audio url');
+  var audioURL = 'http://' + audiohost+ ':' + audioport + '/test.webm?0';
+  console.log('setting audio url', audioURL);
   gobyVMAudio.src = audioURL;
   gobyVMAudio.play();
   cb({success: true, errorMessage: ''});
+};
+
+LiveActions.stopAudioConnection = function(){
+  var gobyVMAudio = document.getElementById('gobyVMAudio');
+  console.log(gobyVMAudio);
+  if(gobyVMAudio){
+    gobyVMAudio.pause();
+  }
 };
 
 module.exports = LiveActions;
