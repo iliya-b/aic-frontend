@@ -75,9 +75,20 @@ LiveActions.liveCheck.listen(function () {
 // });
 
 LiveActions.liveConnect.listen(function (vmhost, vmport) {
+  // TODO: audio vmport must be informed
+
   LiveActions.tryConnection( vmhost, vmport, (res) => {
     if (res.success) {
       this.completed();
+      // LiveActions.tryAudioConnection( vmhost, vmport+1000, (res) => {
+      //   // TODO: Promise all
+      //   if (res.success) {
+      //     this.completed();
+      //   }else{
+      //     this.failure(res.errorMessage);
+      //   }
+      //   return false;
+      // } );
     }else{
       this.failure(res.errorMessage);
     }
@@ -259,6 +270,16 @@ LiveActions.tryLoadNoVNC = function( cb ) {
     LiveActions.logMessage('noVNC core load failed.');
     cb( { success: false, errorMessage: 'Failed to load noVNC core.' } );
   });
+};
+
+LiveActions.tryAudioConnection =  function( audiohost, audioport, cb ) {
+  var gobyVMAudio = document.getElementById('gobyVMAudio');
+  // FIXME: put url parser
+  var audioURL = 'http://' + audiohost+ ':' + audioport + '/test.webm';
+  console.log('setting audio url');
+  gobyVMAudio.src = audioURL;
+  gobyVMAudio.play();
+  cb({success: true, errorMessage: ''});
 };
 
 module.exports = LiveActions;

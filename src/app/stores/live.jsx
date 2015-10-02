@@ -99,9 +99,10 @@ var LiveStore =  Reflux.createStore({
   },
 
   // Live connect
-  onLiveConnect: function(){
+  onLiveConnect: function(vmhost, vmport){
     this.state.live.status = 'LIVE_STATUS_CONNECTING';
     this.updateState();
+    LiveActions.tryAudioConnection( vmhost, vmport+1000, (res) => {});
   },
 
   onLiveConnectCompleted: function(){

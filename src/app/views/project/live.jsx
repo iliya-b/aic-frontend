@@ -55,12 +55,6 @@ var ProjectLive = class extends React.Component{
       },
     };
 
-    // FIXME: put url parser
-    var audioURL = '';
-    if (this && this.state && this.state.hasOwnProperty('live') && this.state.live.hasOwnProperty('audio')){
-      audioURL = 'http://' + this.state.live.audio.ip + ':' + this.state.live.audio.port;
-    }
-
     var logBoxRows = (this.state && this.state.live) ? this.state.live.logBox.map( function(v,i){ return <LogBoxRow key={i} time={v.time}>{v.message}</LogBoxRow> }  ) : null;
 
     return  <div>
@@ -177,9 +171,6 @@ var ProjectLive = class extends React.Component{
                         disabled={this.state.live.status === 'LIVE_STATUS_STOPPING'}
                         onTouchTap={this._onLiveAction.bind(this, 'close')} />
                     </Paper>
-                    <audio src={audioURL} autoplay>
-                      Your browser does not support the <code>audio</code> element.
-                    </audio>
                     </div>
                     ) : null }
 

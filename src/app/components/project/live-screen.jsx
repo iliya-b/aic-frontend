@@ -32,6 +32,10 @@ var LiveScreen = class extends React.Component{
         height: '0px',
         width: '0px',
       },
+      audio: {
+        paddingTop: 20,
+        textAlign: 'center',
+      },
     };
 
     // var vncUrl = '';
@@ -44,18 +48,24 @@ var LiveScreen = class extends React.Component{
       // style.iframeRotation.display = this.state.live.status === 'LIVE_STATUS_CONNECTED' ? 'initial' : 'none';
     }
 
-    return  <div style={style.iframeRotation}>
-              {/*
-              <iframe id="novnciframe" style={style.iframeRotation}
-                src={vncUrl}
-                frameBorder="0" scrolling="no">
-                Browser not compatible.
-              </iframe>
-              */}
-              <canvas id="noVNC_canvas">
-                  Canvas not supported.
-              </canvas>
-
+    return  <div>
+              <div style={style.iframeRotation}>
+                {/*
+                <iframe id="novnciframe" style={style.iframeRotation}
+                  src={vncUrl}
+                  frameBorder="0" scrolling="no">
+                  Browser not compatible.
+                </iframe>
+                */}
+                <canvas id="noVNC_canvas">
+                    Canvas not supported.
+                </canvas>
+              </div>
+              <div style={style.audio}>
+                <audio id="gobyVMAudio" controls>
+                  Your browser does not support the <code>audio</code> element.
+                </audio>
+              </div>
             </div>
   }
 
