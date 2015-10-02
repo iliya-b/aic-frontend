@@ -331,6 +331,7 @@ LiveActions.stopAudioConnection = function(){
   console.log(gobyVMAudio);
   if(gobyVMAudio){
     gobyVMAudio.pause();
+    gobyVMAudio.src = '';
   }
 };
 
