@@ -86,6 +86,8 @@ var LiveSensors = class extends React.Component{
                 primary={true}
                 onClick={this._onLocationSubmit} />
               <br />
+              {false ? (
+              <div>
               <TogglableIcon style={style.sensorIcon} isOn={true} iconName="file-video"  />
               <FlatButton
                 label="Start recording"
@@ -110,6 +112,7 @@ var LiveSensors = class extends React.Component{
                 primary={true}
                 disabled={this.state.live.recording}
                 onClick={this._onScreenshot} />
+              </div> ) : null }
 
             </Paper>
             ) : null ;
