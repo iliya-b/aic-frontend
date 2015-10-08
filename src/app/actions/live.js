@@ -319,7 +319,7 @@ LiveActions.tryAudioConnection =  function( audiohost, audioport, cb ) {
   //   }
   // }, false);
   // FIXME: put url parser
-  var audioURL = 'http://' + audiohost+ ':' + audioport + '/test.webm?0';
+  var audioURL = 'http://' + audiohost+ ':' + audioport + '/test.webm?uid=' + Date.now();
   console.log('setting audio url', audioURL);
   gobyVMAudio.src = audioURL;
   gobyVMAudio.play();
