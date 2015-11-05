@@ -24,21 +24,13 @@ var ProjectList = class extends React.Component {
     this._onStateChange = this._onStateChange.bind(this);
   }
 
-  // _onItemTap(e, index, menuItem) { // version with ObjectList
   _onItemTap(index, e) {
-    // console.log(index);
-    // console.log(menuItem);
-    // console.log(arguments);
     e.preventDefault();
-    this.context.router.transitionTo('project-page', {projectId: this.getProjects()[index].id} );
+    this.context.router.transitionTo('project-page', {projectId: this.state.projects[index].id} );
   }
 
-  getProjects(){
-    return this.state.projects; //.map(function(v){return AppUtils.extend( v, {title: v.text, href: '#'} ) });
-  }
 
   render() {
-    // <Menu menuItems={this.getProjects()} onItemTap={this._onItemTap} />
     var menusItems = this.state.projects.map(function (item, index) {
       return <MenuItem key={index} primaryText={item.name}
         path={item.path} onClick={this._onItemTap.bind(this, index)}
@@ -49,24 +41,7 @@ var ProjectList = class extends React.Component {
                 {menusItems}
               </Menu>
             </div>;
-      /*<div>
-        <ObjectList objectListItems={this.getProjects()} zDepth={0} onItemTap={this._onItemTap} />
-      </div>*/
   }
-
-  // componentDidMount() {
-  //   // var projects = [
-  //   //      { projectId: 'project1', text: 'Project1' },
-  //   //      { projectId: 'project2', text: 'Project2' },
-  //   //      { projectId: 'project3', text: 'Project3' }
-  //   //   ];
-  //   // this.setState({projects: projects});
-  //   Project.getAll( (res) => {
-  //     this.setState({projects: res});
-  //   });
-  //   // this.forceUpdate();
-  //   // console.log('passing did mount');
-  // }
 
   _onStateChange( state ){
     this.setState( state );

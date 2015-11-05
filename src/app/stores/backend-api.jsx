@@ -23,23 +23,12 @@ function sanitize(dirtyContent, sanitizeType){
   }
 };
 
-function redact(dataObj){
-  var sensitiveFields = ['password'];
-  for (var key in dataObj) {
-    if (dataObj.hasOwnProperty(key) && key.indexOf(sensitiveFields) !== -1) {
-      dataObj[key] = '<redacted>';
-    }else if (dataObj.hasOwnProperty(key) && typeof dataObj[key] === 'Object') {
-      dataObj[key] = redact(dataObj[key]);
-    }
-  }
-  return dataObj;
-};
-
 var BackendAPI = {
 
   ERROR: 0,
   URLPATH_LOGIN: '/user/login',
   URLPATH_PROJECT: '/back/project',
+  URLPATH_APK_LIST: '/back/application/%s',
 
   backendURL: function(pathname){
     // TODO: Not the best to have globals
@@ -151,6 +140,17 @@ var BackendAPI = {
     return this.apiCallAuth(options);
   },
 
+
+  // NOT IMPLEMENTED ON MICROSERVICES //
+
+  apkList: function (projectId) {
+    var options = {
+      pathname: sprintf(this.URLPATH_APK_LIST, projectId),
+      method: 'GET',
+    };
+    return this.apiCallAuth(options);
+  },
+
   // OLD CODE //
 
   apkUpload: function (token, projectId, file, cbProgress, cb) {
@@ -175,20 +175,7 @@ var BackendAPI = {
 
 
 
-  apkList: function (token, projectId, cb) {
-    // on success
-    //    {"results":[["ab3e1736-ef99-44e0-b466-c015bc449b10","example.apk copy"],["ba435ea0-394a-447d-ba11-06ea6595fb96","example.apk"]]}
-    var url = this.backendRoot() + "/back/application/" + projectId;
-    this.apiCallAuth(url, null, (res) => {
-      var apks = [];
-      if (res !== undefined && res.results !== undefined && res.results.length > 0){
-        apks = res.results.map(function (apk) {
-          return { id: apk[0], name: apk[1] };
-        });
-      }
-      cb(apks);
-    }, token, 'GET');
-  },
+
 
   apkRemove: function (token, ids, cb) {
     var url = this.backendRoot() + "/back/application/selection";

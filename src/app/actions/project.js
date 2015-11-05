@@ -30,7 +30,7 @@ ProjectActions.list.listen(function () {
 
 });
 
-
+// TODO: change to state ?
 ProjectActions.getNameById = function (projectId) {
 
   return BackendAPI.userProjects()
