@@ -14,7 +14,7 @@ var { RouteHandler } = Router;
 
 // APP
 var { AuthActions } = require('goby/actions');
-var { Project } = require('goby/stores');
+var { ProjectActions } = require('goby/actions');
 
 var ProjectWrapper = class extends React.Component {
 
@@ -55,7 +55,8 @@ var ProjectWrapper = class extends React.Component {
     if(this.state.lastPage !== thisPage){
       var routerParams = this.context.router.getCurrentParams();
       if (routerParams.hasOwnProperty('projectId')) {
-        Project.getNameById(routerParams.projectId, (res) => {
+        ProjectActions.getNameById(routerParams.projectId)
+        .then( (res) => {
           this.setState( {title: res} );
         });
       }else if( this.context.router.isActive('project-list') ){

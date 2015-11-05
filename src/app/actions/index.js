@@ -7,4 +7,5 @@ module.exports = {
   CampaignActions: require('./campaign.js'),
   AuthActions: require('./auth.js'),
   AppConfigActions: require('./app-config.js'),
+  ProjectActions: require('./project.js'),
 };

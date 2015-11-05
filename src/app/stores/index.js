@@ -1,6 +1,6 @@
 module.exports = {
   AuthStore: require('./auths.jsx'),
-  Project: require('./project.jsx'),
+  ProjectStore: require('./project.jsx'),
   APKStore: require('./apk.jsx'),
   APKUploadStore: require('./apk-upload.jsx'),
   APKTestStore: require('./apk-test.jsx'),
