@@ -4,6 +4,9 @@
   window.GobyAppGlobals = window.GobyAppGlobals || {};
   var { AppRoutes } = require('goby/configs');
 
+  // Needed to enable debugging on console
+  window.GobyAppGlobals.Debugger = require('debug');
+
   // React
   var React = require('react');
 
