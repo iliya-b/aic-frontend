@@ -9,23 +9,14 @@ var BackendAPI = require('goby/stores/backend-api.jsx');
 // Actions
 var APKActions = Reflux.createActions({
   'load': {asyncResult: true},                // called upon list change and init
-  'deleteSelected': {asyncResult: true},      // called by button in APKList
   'toggleDelete': {},                         // called by listItem in APLList
 });
 
 // Listeners for asynchronous Backend API calls
 APKActions.load.listen(function (projectId) {
-  var token = '';
-  BackendAPI.apkList(token, projectId, (res) => {
-    this.completed( res );
-  });
-});
-
-
-APKActions.deleteSelected.listen(function (apkIds) {
-  var token = '';
-  BackendAPI.apkRemove(token, apkIds, (res) => {
-    this.completed(res);
+  BackendAPI.apkList(projectId)
+  .then( (res) => {
+    this.completed( res.results );
   });
 });
 

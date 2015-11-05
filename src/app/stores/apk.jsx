@@ -38,7 +38,7 @@ var APKStore = Reflux.createStore({
 
   onLoadCompleted: function (data) {
     this.state.apks = this.convertToListItems(data.map(function (apk) {
-          return { id: apk.id, name: apk.name, toDelete: this.isMarkedToDelete(apk.id), checked: this.isMarkedToDelete(apk.id) };
+          return { id: apk[0], name: apk[1], toDelete: this.isMarkedToDelete(apk[0]), checked: this.isMarkedToDelete(apk[0]) };
         }, this));
     this.updateItemsToDelete();
     switch(this.state.status){

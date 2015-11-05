@@ -18,13 +18,13 @@ APKTestUploadActions.drop.listen(function (projectId, files) {
   var ERROR_DUPLICATED = 409;
 
   if (projectId !== null && files !== undefined && files.length > 0){
-    var token = '';
     files.map(function (file) {
-      BackendAPI.apkTestUpload(token, projectId, file, (res) => { // callback progress
+      BackendAPI.apkTestUpload(projectId, file, (res) => { // callback progress
         if(res.lengthComputable){
           this.progressed( file.preview, parseInt(res.loaded/res.total*100) );
         }
-      }, (res) => { // callback end upload
+      })
+      .then( (res) => { // callback end upload
         if(res.hasOwnProperty('testId')) {
           this.completed( file.preview );
         } else if((res.hasOwnProperty('code') && res.code === ERROR_DUPLICATED) ||
@@ -34,7 +34,7 @@ APKTestUploadActions.drop.listen(function (projectId, files) {
           this.failed( file.preview, 'Unknown' );
         }
       });
-    }, this);
+    });
   }
 
 });

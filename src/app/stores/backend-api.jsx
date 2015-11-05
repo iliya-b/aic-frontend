@@ -28,7 +28,9 @@ var BackendAPI = {
   ERROR: 0,
   URLPATH_LOGIN: '/user/login',
   URLPATH_PROJECT: '/back/project',
-  URLPATH_APK_LIST: '/back/application/%s',
+  URLPATH_APK: '/back/application/%s',
+  URLPATH_APKTEST: '/back/test/%s',
+
 
   backendURL: function(pathname){
     // TODO: Not the best to have globals
@@ -124,6 +126,10 @@ var BackendAPI = {
     return this.apiCall(options);
   },
 
+
+  // User //
+
+
   userLogin: function (email, pass) {
     var options = {
       pathname: this.URLPATH_LOGIN,
@@ -141,78 +147,54 @@ var BackendAPI = {
   },
 
 
-  // NOT IMPLEMENTED ON MICROSERVICES //
+  // APKs //
+
 
   apkList: function (projectId) {
     var options = {
-      pathname: sprintf(this.URLPATH_APK_LIST, projectId),
+      pathname: sprintf(this.URLPATH_APK, projectId),
       method: 'GET',
+    };
+    return this.apiCallAuth(options);
+  },
+
+  apkUpload: function (projectId, file, cbProgress) {
+    var options = {
+      pathname: sprintf(this.URLPATH_APK, projectId),
+      method: 'POST',
+      file: file,
+      cbProgress: cbProgress,
+    };
+    return this.apiCallAuth(options);
+  },
+
+
+
+
+  // NOT IMPLEMENTED ON MICROSERVICES //
+
+  // APKs Test //
+
+  apkTestList: function (projectId) {
+    var options = {
+      pathname: sprintf(this.URLPATH_APKTEST, projectId),
+      method: 'GET',
+    };
+    return this.apiCallAuth(options);
+  },
+
+  apkTestUpload: function (projectId, file, cbProgress) {
+    var options = {
+      pathname: sprintf(this.URLPATH_APKTEST, projectId),
+      method: 'POST',
+      file: file,
+      cbProgress: cbProgress,
     };
     return this.apiCallAuth(options);
   },
 
   // OLD CODE //
 
-  apkUpload: function (token, projectId, file, cbProgress, cb) {
-    // on error:
-    //    {"code":409,"message":"Error 1062 - #23000 - Duplicate entry 'example.apk' for key 'unique_name'"}
-    // on success:
-    //    {"appId":"ab3e1736-ef99-44e0-b466-c015bc449b10"}
-    var url = this.backendRoot() + "/back/application/" + projectId;
-    this.apiCallAuth(url, null, cb, token, 'POST', file, cbProgress);
-  },
-
-  apkTestUpload: function (token, projectId, file, cbProgress, cb) {
-    // on error:
-    //    {"code":409,"message":"Error 1062 - #23000 - Duplicate entry 'example.apk' for key 'unique_name'"}
-    // on success:
-    //    {"appId":"ab3e1736-ef99-44e0-b466-c015bc449b10"}
-    var url = this.backendRoot() + "/back/test/" + projectId;
-    this.apiCallAuth(url, null, cb, token, 'POST', file, cbProgress);
-  },
-
-
-
-
-
-
-
-  apkRemove: function (token, ids, cb) {
-    var url = this.backendRoot() + "/back/application/selection";
-    var data = '{"ids": ["' + ids.join('","') + '"]}';
-    // var data = {ids: ids};
-    this.apiCallAuth(url, data, () => {
-      url = this.backendRoot() + "/back/application/selection";
-      this.apiCallAuth(url, null, cb, token, 'DELETE');
-    }, token);
-  },
-
-
-
-  apkTestList: function (token, projectId, cb) {
-    // on success
-    //    {"results":[["ab3e1736-ef99-44e0-b466-c015bc449b10","example.apk copy"],["ba435ea0-394a-447d-ba11-06ea6595fb96","example.apk"]]}
-    var url = this.backendRoot() + "/back/test/" + projectId;
-    this.apiCallAuth(url, null, (res) => {
-      var apks = [];
-      if (res !== undefined && res.results !== undefined && res.results.length > 0){
-        apks = res.results.map(function (apk) {
-          return { id: apk[0], name: apk[1] };
-        });
-      }
-      cb(apks);
-    }, token, 'GET');
-  },
-
-  apkTestRemove: function (token, ids, cb) {
-    var url = this.backendRoot() + "/back/test/selection";
-    var data = '{"ids": ["' + ids.join('","') + '"]}';
-    // var data = {ids: ids};
-    this.apiCallAuth(url, data, () => {
-      url = this.backendRoot() + "/back/test/selection";
-      this.apiCallAuth(url, null, cb, token, 'DELETE');
-    }, token);
-  },
 
   instanceList: function (token, cb) {
     // on success
