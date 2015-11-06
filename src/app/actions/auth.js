@@ -8,7 +8,7 @@ var url = require('url');
 
 // APP
 var BackendAPI = require('goby/stores/backend-api.jsx');
-var Debugger = require('goby/actions/debugger.js');
+var Debugger = require('debug')('AiC:Auth:Actions');
 
 // Actions
 var AuthActions = Reflux.createActions({
@@ -22,13 +22,13 @@ AuthActions.login.listen(function (login, pass) {
   .then( (result) => {
     if (result.hasOwnProperty('status') &&
        (result.status === 400 || result.status === 401 )){
-      Debugger.error('arguments', arguments);
+      Debugger('arguments', arguments);
       this.failure('It was not possible to login. Authentication server response was an error. Error: ' + result.statusText);
     }else if (result.hasOwnProperty('token')){
       localStorage.token = result['token'];
       this.completed();
     }else{
-      Debugger.error('arguments', arguments);
+      Debugger('arguments', arguments);
       this.failure('It was not possible to login. Unknown authentication server response.');
     }
   });

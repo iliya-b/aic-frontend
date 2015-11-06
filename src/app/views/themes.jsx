@@ -24,7 +24,9 @@ var {
   TextField,
   Toggle,
   Paper,
-  FontIcon} = mui;
+  FontIcon,
+  CardActions,
+  CardText} = mui;
 
 var Menu = require('material-ui/lib/menus/menu.js');
 var MenuItem = require('material-ui/lib/menus/menu-item.js');
@@ -42,7 +44,10 @@ var { BoxStatus,
       AvatarProgress,
       LogBox,
       LogBoxRow,
-      AppUtils } = require('goby/components');
+      AppUtils,
+      CodeBox,
+      MachineCard,
+      MachineCardLive, } = require('goby/components');
 
 // var logBoxRef = Array.apply(0, Array(8)).map(function (v, i) { return { message: 'Message ' + i , time: i }; });
 var logBoxRef = [
@@ -206,6 +211,41 @@ var ThemesPage = React.createClass({
     var logBoxRows = this.state.logbox ? this.state.logbox.map( function(v,i){ return <LogBoxRow key={i} time={v.time}>{v.message}</LogBoxRow> }  ) : null;
 
     var results = [{"properties":[],"testCases":[{"className":"com.zenika.aic.core.libs.ParserTest","name":"testAndroidTestCaseSetupProperly"},{"className":"com.zenika.aic.core.libs.ParserTest","name":"testApplicationTestCaseSetUpProperly"},{"className":"com.zenika.aic.demo.sensor.BatteryTestCase","name":"testUS1","failure":{"message":"Battery level not found","type":"junit.framework.AssertionFailedError","content":"junit.framework.AssertionFailedError: Battery level not found\r\r\n\tat junit.framework.Assert.fail(Assert.java:50)\r\r\n\tat junit.framework.Assert.assertTrue(Assert.java:20)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.setLevel(BatteryTestCase.java:73)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.testUS1(BatteryTestCase.java:36)\r\r\n\tat java.lang.reflect.Method.invokeNative(Native Method)\r\r\n\tat java.lang.reflect.Method.invoke(Method.java:515)\r\r\n\tat android.test.InstrumentationTestCase.runMethod(InstrumentationTestCase.java:214)\r\r\n\tat android.test.InstrumentationTestCase.runTest(InstrumentationTestCase.java:199)\r\r\n\tat junit.framework.TestCase.runBare(TestCase.java:134)\r\r\n\tat junit.framework.TestResult$1.protect(TestResult.java:115)\r\r\n\tat junit.framework.TestResult.runProtected(TestResult.java:133)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestResult.runProtected(DelegatingTestResult.java:90)\r\r\n\tat junit.framework.TestResult.run(TestResult.java:118)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestResult.run(AndroidTestResult.java:49)\r\r\n\tat junit.framework.TestCase.run(TestCase.java:124)\r\r\n\tat android.support.test.internal.runner.junit3.NonLeakyTestSuite$NonLeakyTest.run(NonLeakyTestSuite.java:63)\r\r\n\tat junit.framework.TestSuite.runTest(TestSuite.java:243)\r\r\n\tat junit.framework.TestSuite.run(TestSuite.java:238)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestSuite.run(DelegatingTestSuite.java:103)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestSuite.run(AndroidTestSuite.java:63)\r\r\n\tat android.support.test.internal.runner.junit3.JUnit38ClassRunner.run(JUnit38ClassRunner.java:90)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:24)\r\r\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)\r\r\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)\r\r\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)\r\r\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)\r\r\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)\r\r\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:300)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:157)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:136)\r\r\n\tat android.support.test.runner.AndroidJUnitRunner.onStart(AndroidJUnitRunner.java:270)\r\r\n\tat android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1701)\r\r\n\r"}},{"className":"com.zenika.aic.demo.sensor.BatteryTestCase","name":"testUS2","failure":{"message":"Battery level not found","type":"junit.framework.AssertionFailedError","content":"junit.framework.AssertionFailedError: Battery level not found\r\r\n\tat junit.framework.Assert.fail(Assert.java:50)\r\r\n\tat junit.framework.Assert.assertTrue(Assert.java:20)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.setLevel(BatteryTestCase.java:82)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.testUS2(BatteryTestCase.java:40)\r\r\n\tat java.lang.reflect.Method.invokeNative(Native Method)\r\r\n\tat java.lang.reflect.Method.invoke(Method.java:515)\r\r\n\tat android.test.InstrumentationTestCase.runMethod(InstrumentationTestCase.java:214)\r\r\n\tat android.test.InstrumentationTestCase.runTest(InstrumentationTestCase.java:199)\r\r\n\tat junit.framework.TestCase.runBare(TestCase.java:134)\r\r\n\tat junit.framework.TestResult$1.protect(TestResult.java:115)\r\r\n\tat junit.framework.TestResult.runProtected(TestResult.java:133)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestResult.runProtected(DelegatingTestResult.java:90)\r\r\n\tat junit.framework.TestResult.run(TestResult.java:118)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestResult.run(AndroidTestResult.java:49)\r\r\n\tat junit.framework.TestCase.run(TestCase.java:124)\r\r\n\tat android.support.test.internal.runner.junit3.NonLeakyTestSuite$NonLeakyTest.run(NonLeakyTestSuite.java:63)\r\r\n\tat junit.framework.TestSuite.runTest(TestSuite.java:243)\r\r\n\tat junit.framework.TestSuite.run(TestSuite.java:238)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestSuite.run(DelegatingTestSuite.java:103)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestSuite.run(AndroidTestSuite.java:63)\r\r\n\tat android.support.test.internal.runner.junit3.JUnit38ClassRunner.run(JUnit38ClassRunner.java:90)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:24)\r\r\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)\r\r\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)\r\r\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)\r\r\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)\r\r\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)\r\r\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:300)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:157)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:136)\r\r\n\tat android.support.test.runner.AndroidJUnitRunner.onStart(AndroidJUnitRunner.java:270)\r\r\n\tat android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1701)\r\r\n\r"}}],"time":"0.0","name":"APK test"}];
+
+    var avms = [
+        {
+            "avm_novnc_host": "127.0.0.1",
+            "avm_owner": "marco",
+            "avm_id": "jHLGWPeRSVyVzyCpWRsEjg",
+            "avm_status": "READY",
+            "avm_novnc_port": "5909"
+        },
+        {
+            "avm_novnc_host": "127.0.0.1",
+            "avm_owner": "marco",
+            "avm_id": "sijEK9O9T962JYWOuUzHHg",
+            "avm_status": "READY",
+            "avm_novnc_port": "5946"
+        },
+        {
+            "avm_novnc_host": "127.0.0.1",
+            "avm_owner": "marco",
+            "avm_id": "sijEK9O9T962JYWOuUzHHg",
+            "avm_status": "CREATING",
+            "avm_novnc_port": "5946"
+        },
+        {
+            "avm_novnc_host": "127.0.0.1",
+            "avm_owner": "marco",
+            "avm_id": "sijEK9O9T962JYWOuUzHHg",
+            "avm_status": "CREATE_FAILED",
+            "avm_novnc_port": "5946",
+            "avm_status_reason": "Resource CREATE failed: OverLimit: VolumeLimitExceeded: \nMaximum number of volumes allowed (50) exceeded (HTTP 413) \n(Request-ID: req-2896fb29-7db3-4b0c-8a96-1554e6dc5f39)",
+        }
+    ];
+
+    var avmsRendered = avms.map(function(currentValue, index) { return <MachineCardLive {...currentValue} key={index} />; } );
+
         return (
             <div>
             <ClearFix>
@@ -459,6 +499,14 @@ var ThemesPage = React.createClass({
 
             </ClearFix>
 
+            <ClearFix>
+
+              <h2>Live Sessions</h2>
+
+              {avmsRendered}
+
+            </ClearFix>
+
             </div>
         );
     },
@@ -500,5 +548,11 @@ var ThemesPage = React.createClass({
     this.refs.dialog.show();
   }
 });
+
+
+ThemesPage.contextTypes = {
+  router: React.PropTypes.func,
+  muiTheme: React.PropTypes.object
+}
 
 module.exports = ThemesPage;

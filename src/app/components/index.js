@@ -15,6 +15,8 @@ module.exports = {
     /* Live */
     LiveSensors: require('./project/live-sensors.jsx'),
     LiveScreen: require('./project/live-screen.jsx'),
+    MachineCard: require('./project/machine-card.jsx'),
+    MachineCardLive: require('./project/machine-card-live.jsx'),
 
     /* Campaign */
     TestResultsBox: require('./project/test-results-box.jsx'),
@@ -32,5 +34,6 @@ module.exports = {
   AvatarProgress: require('./shared/avatar-progress.jsx'),
   LogBox: require('./shared/log-box.jsx'),
   LogBoxRow: require('./shared/log-box-row.jsx'),
+  CodeBox: require('./shared/code-box.jsx'),
 
 };

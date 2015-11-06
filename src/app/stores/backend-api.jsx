@@ -26,10 +26,14 @@ function sanitize(dirtyContent, sanitizeType){
 var BackendAPI = {
 
   ERROR: 0,
-  URLPATH_LOGIN: '/user/login',
-  URLPATH_PROJECT: '/back/project',
-  URLPATH_APK: '/back/application/%s',
-  URLPATH_APKTEST: '/back/test/%s',
+
+  URLPATH_LOGIN:        '/user/login',
+  URLPATH_PROJECT:      '/back/project',
+  URLPATH_APK:          '/back/application/%s',
+  URLPATH_APKTEST:      '/back/test/%s',
+  URLPATH_LIVE:         '/android',
+  URLPATH_LIVE_MACHINE: '/android/%s',
+  URLPATH_LIVE_SENSOR:  '/android/%s/sensor/%s',
 
 
   backendURL: function(pathname){
@@ -122,7 +126,7 @@ var BackendAPI = {
   apiCallAuth: function(options){
     var { AuthActions } = require('goby/actions');
     options.headers = options.headers ? options.headers : {};
-    options.headers.Authorization = sprintf(" Bearer %s", AuthActions.getToken());
+    options.headers.Authorization = sprintf(' Bearer %s', AuthActions.getToken());
     return this.apiCall(options);
   },
 
@@ -133,7 +137,7 @@ var BackendAPI = {
   userLogin: function (email, pass) {
     var options = {
       pathname: this.URLPATH_LOGIN,
-      data: { "username": email, "password": pass },
+      data: { username: email, password: pass },
     };
     return this.apiCall(options);
   },
@@ -169,6 +173,77 @@ var BackendAPI = {
   },
 
 
+  // LIVE //
+
+
+  liveStart: function () {
+    var options = {
+      pathname: this.URLPATH_LIVE,
+      method: 'POST',
+    };
+    return this.apiCallAuth(options);
+  },
+
+  liveStop: function (liveId) {
+    var options = {
+      pathname: sprintf(this.URLPATH_LIVE_MACHINE, liveId),
+      method: 'DELETE',
+    };
+    return this.apiCallAuth(options);
+  },
+
+  liveCheck: function (liveId) {
+    var options = {
+      pathname: sprintf(this.URLPATH_LIVE_MACHINE, liveId),
+      method: 'GET',
+    };
+    return this.apiCallAuth(options);
+  },
+
+
+  // LIVE SENSORS //
+
+
+  sensor: function (data, sensor, liveId) {
+    var options = {
+      pathname: sprintf(this.URLPATH_LIVE_SENSOR, liveId, sensor),
+      method: 'POST',
+      data: data,
+    };
+    return this.apiCallAuth(options);
+  },
+
+  sensorBattery: function (value, liveId) {
+    var data = { level: value };
+    return this.sensor(data, 'battery', liveId);
+  },
+
+  sensorAccelerometer: function (x, y, z, liveId) {
+    var data = { x: x, y: y, z: z};
+    return this.sensor(data, 'accelerometer', liveId);
+  },
+
+  sensorLocation: function (lat, lon, liveId) {
+    var data = { latitude: lat, longitude: lon };
+    return this.sensor(data, 'location', liveId);
+  },
+
+  recording: function (filename, start, liveId) {
+    var data = { filename: filename, start: start };
+    return this.sensor(data, 'recording', liveId);
+  },
+
+  recordingStart: function (filename, liveId) {
+    this.recording(filename, 'true', liveId);
+  },
+
+  recordingStop: function (filename, liveId) {
+    this.recording(filename, 'false', liveId);
+  },
+
+  screenshot: function (filename, liveId) {
+    this.recording(filename, 'true', liveId);
+  },
 
 
   // NOT IMPLEMENTED ON MICROSERVICES //
@@ -215,67 +290,9 @@ var BackendAPI = {
     this.apiCallAuth(url, data, cb, token);
   },
 
-  sensor: function (token, sensor, data, cb) {
-    var url = this.backendRoot() + "/back/sensor/" + sensor;
-    this.apiCallAuth(url, data, cb, token);
-  },
 
-  sensorBattery: function (token, projectId, value, cb) {
-    var data = '{"tenantId":"'+projectId+'","level":'+value+'}';
-    this.sensor(token, 'battery', data, cb);
-  },
 
-  sensorAccelerometer: function (token, projectId, x, y, z, cb) {
-    var data = '{"tenantId":"'+projectId+'","x":'+x+',"y":'+y+',"z":'+z+'}';
-    this.sensor(token, 'accelerometer', data, cb);
-  },
 
-  sensorLocation: function (token, projectId, lat, lon, cb) {
-    var data = '{"tenantId":"'+projectId+'","latitude":'+lat+',"longitude":'+lon+'}';
-    this.sensor(token, 'location', data, cb);
-  },
-
-  recording: function (token, projectId, filename, start, cb) {
-    var data = '{"tenantId":"'+projectId+'","filename":"'+filename+'","start":'+start+'}';
-    var url = this.backendRoot() + "/back/rabbit/recording";
-    this.apiCallAuth(url, data, cb, token);
-  },
-
-  recordingStart: function (token, projectId, filename, cb) {
-    this.recording(token, projectId, filename, 'true', cb);
-  },
-
-  recordingStop: function (token, projectId, filename, cb) {
-    this.recording(token, projectId, filename, 'false', cb);
-  },
-
-  screenshot: function (token, projectId, filename, cb) {
-    this.recording(token, projectId, filename, 'true', cb);
-  },
-
-  liveStart: function (token, cb) {
-    var url = this.backendRoot() + "/back/live/start";
-    var data = '{}';
-    this.apiCallAuth(url, data, cb, token);
-  },
-
-  liveStop: function (token, screenPort, cb) {
-    var url = this.backendRoot() + "/back/live/stop";
-    var data = '{"vncport":'+screenPort+'}';
-    this.apiCallAuth(url, data, cb, token, 'DELETE');
-  },
-
-  liveCheck: function (token, cb) {
-    // var url = this.backendRoot() + "/back/live/check";
-    // var data = '{}';
-    // this.apiCallAuth(url, data, cb, token, 'GET');
-    // setTimeout(function () {
-    //   cb({error: 'not-found'});
-    // },5000);
-    var url = this.backendRoot() + "/back/live/start";
-    var data = '{}';
-    this.apiCallAuth(url, data, cb, token);
-  },
 
 };
 
