@@ -18,7 +18,8 @@ var ProjectList = require('goby/views/project/list.jsx');
 var ProjectPage = require('goby/views/project/page.jsx');
 var ProjectApkList = require('goby/views/project/apk-list.jsx');
 var ProjectApkTestList = require('goby/views/project/apk-test-list.jsx');
-var ProjectLive = require('goby/views/project/live.jsx');
+var LiveWrapper = require('goby/views/project/live/wrapper.jsx');
+var LiveSession = require('goby/views/project/live/session.jsx');
 var ProjectCampaign = require('goby/views/project/campaign.jsx');
 
 // Routes //
@@ -32,7 +33,9 @@ var AppRoutes = (
       <Route name="project-page" path=":projectId" handler={ProjectPage}>
         <Route name="apks" handler={ProjectApkList} />
         <Route name="apks-test" handler={ProjectApkTestList} />
-        <Route name="live" handler={ProjectLive} />
+        <Route name="live" handler={LiveWrapper} >
+          <Route name="live-session" path=":androId" handler={LiveSession} />
+        </Route>
         <Route name="campaign" handler={ProjectCampaign} />
         <Redirect from="/projects/:projectId" to="apks" />
       </Route>
