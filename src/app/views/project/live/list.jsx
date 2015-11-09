@@ -1,21 +1,27 @@
 'use strict';
 
 // React
-var React = require('react');
+const React = require('react');
 
 // Material design
-var mui = require('material-ui');
-var { Spacing } = mui.Styles;
-var { CardActions,
-      RaisedButton, } = mui;
+const mui = require('material-ui');
+const {
+  CardActions,
+  RaisedButton,
+} = mui;
+
+// Vendor
+const debuggerGoby = require('debug')('AiC:View:Live:List');
 
 // APP
-var { AppUtils,
-      MachineCardLive } = require('goby/components');
-var { LiveStore } = require('goby/stores');
-var { LiveActions } = require('goby/actions');
+const {
+  AppUtils,
+  MachineCardLive,
+} = require('goby/components');
+const {LiveStore} = require('goby/stores');
+const {LiveActions} = require('goby/actions');
 
-var LiveList = class extends React.Component{
+const LiveList = class extends React.Component {
 
   constructor(props) {
     super(props);
@@ -29,13 +35,20 @@ var LiveList = class extends React.Component{
   //                                                      androId: 'test'} );
   // }
 
-
-
   render() {
+    let avmsRendered = '';
+    if (this.state.live) {
+      if (this.state.live.status === 'LIVE_STATUS_LISTING' || this.state.live.status === 'LIVE_STATUS_INITIALIZED') {
+        avmsRendered = <div>Loading VMS</div>;
+      }
+      if (this.state.live.status === 'LIVE_STATUS_LISTED' && this.state.live.avms && this.state.live.avms.length) {
+        avmsRendered = this.state.live.avms.map((currentValue, index) => {
+          return <MachineCardLive {...currentValue} key={index} />;
+        });
+      }
+    }
 
-    var avmsRendered = this.state.live && this.state.live.avms && this.state.live.avms.length ? this.state.live.avms.map(function(currentValue, index) { return <MachineCardLive {...currentValue} key={index} />; } ) : '';
-
-    return  <div>
+    return <div>
 
               <h2>Live Sessions</h2>
 
@@ -48,18 +61,17 @@ var LiveList = class extends React.Component{
               {avmsRendered}
 
             </div>;
-
   }
 
-  _onStateChange( state ){
-    this.setState( state );
+  _onStateChange(state) {
+    debuggerGoby('changing state', this.state.live ? this.state.live.status : '', state);
+    this.setState(state);
   }
 
   componentDidMount() {
-    // console.log('componentDidMount');
-    var projectId = AppUtils.getProjectIdFromRouter(this.context.router);
-    this.unsubscribe = LiveStore.listen( this._onStateChange );
-    LiveActions.liveReset();
+    const projectId = AppUtils.getProjectIdFromRouter(this.context.router);
+    this.unsubscribe = LiveStore.listen(this._onStateChange);
+    LiveActions.list();
     LiveActions.setProjectId(projectId);
   }
 
@@ -73,7 +85,7 @@ var LiveList = class extends React.Component{
 LiveList.contextTypes = {
   router: React.PropTypes.func,
   muiTheme: React.PropTypes.object,
-  appConfig: React.PropTypes.object
+  appConfig: React.PropTypes.object,
 };
 
 module.exports = LiveList;

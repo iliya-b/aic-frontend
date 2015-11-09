@@ -10,5 +10,5 @@ module.exports = {
     Live: require('./project/live.jsx'),
     Page: require('./project/page.jsx'),
     Wrapper: require('./project/wrapper.jsx'),
-  }
+  },
 };

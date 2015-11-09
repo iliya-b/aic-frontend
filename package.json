@@ -60,6 +60,7 @@
     "request": "^2.65.0",
     "require-dir": "^0.3.0",
     "sanitize-html": "^1.11.1",
+    "schema-inspector": "^1.5.7",
     "sprintf": "^0.1.5",
     "underscore": "^1.8.3",
     "vinyl-source-stream": "^1.1.0",

@@ -11,5 +11,12 @@
     "transform": [
       ["babelify", { "stage": 0 } ]
     ]
+  },
+  "xo": {
+    "esnext": true,
+    "space": true,
+    "rules": {
+      "comma-dangle":[2, "always-multiline"]
+    }
   }
 }

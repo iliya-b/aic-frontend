@@ -1,30 +1,34 @@
 'use strict';
 
 // Reflux
-var Reflux = require('reflux');
+const Reflux = require('reflux');
 
 // APP
-var BackendAPI = require('goby/stores/backend-api.jsx');
+const BackendAPI = require('goby/stores/backend-api.jsx');
+
+// Vendor
+const debuggerGoby = require('debug')('AiC:Live:Actions');
 
 // Actions
-var LiveActions = Reflux.createActions({
-  'setProjectId': { children: ["completed","failure"] },
-  'loadState': {},
-  'setState': {},
-  'liveReset': {},
-  'setDelayedRotation': {},
-  'socketMessage': {},
-  'logMessage': {},
-  'liveCheck': { children: ["completed","failure"] },
-  'liveStart': { children: ["completed","failure"] },
-  'liveConnect': { children: ["completed","failure"] },
-  'liveStop': {asyncResult: true},
-  'setSensorBattery': {asyncResult: true},
-  'setSensorAccelerometer': {asyncResult: true},
-  'setSensorLocation': {asyncResult: true},
-  'recordStart': {asyncResult: true},
-  'recordStop': {asyncResult: true},
-  'screenshot': {asyncResult: true},
+const LiveActions = Reflux.createActions({
+  setProjectId: {children: ['completed', 'failure']},
+  loadState: {},
+  setState: {},
+  liveReset: {},
+  setDelayedRotation: {},
+  socketMessage: {},
+  logMessage: {},
+  list: {children: ['completed', 'failure']},
+  liveCheck: {children: ['completed', 'failure']},
+  liveStart: {children: ['completed', 'failure']},
+  liveConnect: {children: ['completed', 'failure']},
+  liveStop: {asyncResult: true},
+  setSensorBattery: {asyncResult: true},
+  setSensorAccelerometer: {asyncResult: true},
+  setSensorLocation: {asyncResult: true},
+  recordStart: {asyncResult: true},
+  recordStop: {asyncResult: true},
+  screenshot: {asyncResult: true},
 });
 
 // Listeners for asynchronous Backend API calls
@@ -35,6 +39,19 @@ LiveActions.setProjectId.listen(function () {
       this.completed();
     }else{
       this.failure(res.errorMessage);
+    }
+  });
+});
+
+LiveActions.list.listen(function () {
+  debuggerGoby('list called');
+  BackendAPI.liveList()
+  .then( (res) => {
+    debuggerGoby('back');
+    if ( res.hasOwnProperty('avms') ) {
+      this.completed(res.avms);
+    }else{
+      this.failure('It was not possible to list live sessions.');
     }
   });
 });
@@ -192,9 +209,9 @@ LiveActions.tryWebsocket = function () {
 
   try {
     LiveActions.logMessage('Connecting to VNC session.');
-    window.AiClive.socket = new WebSocket("ws://" + window.AiClive.host + ":" + window.AiClive.port, 'base64');
+    window.AiClive.socket = new WebSocket('ws://' + window.AiClive.host + ':' + window.AiClive.port, 'base64');
     window.AiClive.socket.onerror=function(){
-      console.log("socket test on error");
+      console.log('socket test on error');
       console.log(arguments);
       console.log(LiveActions);
       if (window.AiClive.errorCount >= window.AiClive.maxTries){
@@ -209,13 +226,13 @@ LiveActions.tryWebsocket = function () {
       }
     };
     window.AiClive.socket.onopen = function (event) {
-        console.log("socket test on open");
+        console.log('socket test on open');
         console.log(LiveActions);
         window.AiClive.socket.close();
         window.rfb.connect(window.AiClive.host , window.AiClive.port, window.AiClive.password, window.AiClive.path);
     };
     window.AiClive.socket.onclose = function (event) {
-        console.log("socket test on close");
+        console.log('socket test on close');
     };
 
   } catch (exc) {
@@ -226,7 +243,7 @@ LiveActions.tryWebsocket = function () {
 
 LiveActions.tryConnection = function ( vmhost, vmport, cb ) {
 
-  window.INCLUDE_URI = "/noVNC/"; // This is noVNC dependent
+  window.INCLUDE_URI = '/noVNC/'; // This is noVNC dependent
   // FIXME: probably not the best way to set global var.
   window.AiClive = {
     host: vmhost,
@@ -243,9 +260,9 @@ LiveActions.tryConnection = function ( vmhost, vmport, cb ) {
 
   LiveActions.logMessage('Loading noVNC utils.');
   // Load supporting scripts
-  Util.load_scripts(["webutil.js", "base64.js", "websock.js", "des.js",
-                     "keysymdef.js", "keyboard.js", "input.js", "display.js",
-                     "jsunzip.js", "rfb.js", "keysym.js"]);
+  Util.load_scripts(['webutil.js', 'base64.js', 'websock.js', 'des.js',
+                     'keysymdef.js', 'keyboard.js', 'input.js', 'display.js',
+                     'jsunzip.js', 'rfb.js', 'keysym.js']);
   // When finished will call onscriptsload
   setTimeout(function () {
     if ( !window.AiClive.completed ){

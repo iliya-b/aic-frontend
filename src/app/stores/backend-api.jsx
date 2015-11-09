@@ -1,39 +1,66 @@
 'use strict';
 
 // Vendors
-var url = require('url') ;
-var sprintf = require('sprintf');
+const url = require('url');
+const sprintf = require('sprintf');
 // var request = require('request');
-var sanitizeHtml = require('sanitize-html');
-var Debugger = require('debug')('AiC:backendAPI');
+const SanitizeObject = require('goby/components/libs/sanitize-object.js');
+// var debuggerGoby = require('debug')('AiC:backendAPI');
 
 // APP
-function sanitize(dirtyContent, sanitizeType){
-  switch(sanitizeType){
-    case 'html':
-      return sanitizeHtml(dirtyContent);
-    case 'int':
-      return parseInt(dirtyContent);
-    case 'text':
-    default:
-      return sanitizeHtml(dirtyContent, {
-        allowedTags: [],
-        allowedAttributes: [],
-      });
-  }
+
+const BackendObjects = {
+
+  // Backend URLs
+
+  URLPATH_LOGIN: '/user/login',
+  URLPATH_PROJECT: '/back/project',
+  URLPATH_APK: '/back/application/%s',
+  URLPATH_APKTEST: '/back/test/%s',
+  URLPATH_LIVE: '/android',
+  URLPATH_LIVE_MACHINE: '/android/%s',
+  URLPATH_LIVE_SENSOR: '/android/%s/sensor/%s',
+
+  // Validation/Sanitization Objects
+
+  OBJSCHEMA_USER_LOGIN: { type: "object", strict: true,
+    properties: {
+      username: { type: "string", rules: ["trim"] },
+      password: { type: "string" },
+    }
+  },
+  OBJSCHEMA_SENSOR_BATTERY: { type: "object", strict: true,
+    properties: {
+      level: { type: "integer", min: 0, max: 100 },
+    }
+  },
+  OBJSCHEMA_SENSOR_ACCELEROMETER: { type: "object", strict: true,
+    properties: {
+      x: { type: "integer", min: 0, max: 100 },
+      y: { type: "integer", min: 0, max: 100 },
+      z: { type: "integer", min: 0, max: 100 },
+    }
+  },
+  OBJSCHEMA_SENSOR_LOCATION: { type: "object", strict: true,
+    properties: {
+      latitude: { type: "number" },
+      longitude: { type: "number" },
+    }
+  },
+  OBJSCHEMA_SENSOR_RECORDING: { type: "object", strict: true,
+    properties: {
+      filename: { type: "string", rules: ["trim"] },
+      start: { type: "boolean" },
+    }
+  },
+
 };
+
 
 var BackendAPI = {
 
-  ERROR: 0,
 
-  URLPATH_LOGIN:        '/user/login',
-  URLPATH_PROJECT:      '/back/project',
-  URLPATH_APK:          '/back/application/%s',
-  URLPATH_APKTEST:      '/back/test/%s',
-  URLPATH_LIVE:         '/android',
-  URLPATH_LIVE_MACHINE: '/android/%s',
-  URLPATH_LIVE_SENSOR:  '/android/%s/sensor/%s',
+  // Core functions
 
 
   backendURL: function(pathname){
@@ -51,27 +78,12 @@ var BackendAPI = {
     return url.format(options);
   },
 
-  sanitizeData: function(dataObj){
-    for (var key in dataObj) {
-      if (dataObj.hasOwnProperty(key) && typeof dataObj[key] === 'Object') {
-        if (dataObj[key].hasOwnProperty('value') && dataObj[key].hasOwnProperty('sanitizeType') ) {
-          dataObj[key] = sanitize(dataObj[key]['value'], dataObj[key]['sanitizeType']);
-        }else{
-          dataObj[key] = this.sanitizeData(dataObj[key]);
-        }
-      }else{
-        dataObj[key] = sanitize(dataObj[key]);
-      }
-    }
-    return dataObj;
-  },
-
   apiCall: function(options){
     // url, data, cb, headers, method, authRequired, file, cbProgress
     options.method = (typeof options.method === 'undefined') ? 'POST' : options.method;
     options.headers = (typeof options.headers === 'undefined') ? {} : options.headers;
     options.authRequired = (typeof options.authRequired === 'undefined') ? true : options.authRequired;
-    options.data = (typeof options.data === 'undefined') ? '' : JSON.stringify(this.sanitizeData(options.data));
+    options.data = (typeof options.data === 'undefined') ? '' : JSON.stringify(SanitizeObject.sanitizeData(options.data));
 
     if (options.pathname){
       options.url = this.backendURL(options.pathname);
@@ -112,6 +124,7 @@ var BackendAPI = {
     }
 
     // Make request using jQuery ajax for now, TODO: change to a lightweight library
+    // debuggerGoby('ajaxOptions', ajaxOptions);
     return $.ajax(ajaxOptions)
     .always(function(data, textStatus, errorThrown) {
       // User is not logged in
@@ -136,15 +149,18 @@ var BackendAPI = {
 
   userLogin: function (email, pass) {
     var options = {
-      pathname: this.URLPATH_LOGIN,
-      data: { username: email, password: pass },
+      pathname: BackendObjects.URLPATH_LOGIN,
+      data: {
+        data: { username: email, password: pass },
+        schema: BackendObjects.OBJSCHEMA_USER_LOGIN
+      },
     };
     return this.apiCall(options);
   },
 
   userProjects: function () {
     var options = {
-      pathname: this.URLPATH_PROJECT,
+      pathname: BackendObjects.URLPATH_PROJECT,
       method: 'GET',
     };
     return this.apiCallAuth(options);
@@ -156,7 +172,7 @@ var BackendAPI = {
 
   apkList: function (projectId) {
     var options = {
-      pathname: sprintf(this.URLPATH_APK, projectId),
+      pathname: sprintf(BackendObjects.URLPATH_APK, projectId),
       method: 'GET',
     };
     return this.apiCallAuth(options);
@@ -164,7 +180,7 @@ var BackendAPI = {
 
   apkUpload: function (projectId, file, cbProgress) {
     var options = {
-      pathname: sprintf(this.URLPATH_APK, projectId),
+      pathname: sprintf(BackendObjects.URLPATH_APK, projectId),
       method: 'POST',
       file: file,
       cbProgress: cbProgress,
@@ -176,9 +192,17 @@ var BackendAPI = {
   // LIVE //
 
 
+  liveList: function () {
+    var options = {
+      pathname: BackendObjects.URLPATH_LIVE,
+      method: 'GET',
+    };
+    return this.apiCallAuth(options);
+  },
+
   liveStart: function () {
     var options = {
-      pathname: this.URLPATH_LIVE,
+      pathname: BackendObjects.URLPATH_LIVE,
       method: 'POST',
     };
     return this.apiCallAuth(options);
@@ -186,7 +210,7 @@ var BackendAPI = {
 
   liveStop: function (liveId) {
     var options = {
-      pathname: sprintf(this.URLPATH_LIVE_MACHINE, liveId),
+      pathname: sprintf(BackendObjects.URLPATH_LIVE_MACHINE, liveId),
       method: 'DELETE',
     };
     return this.apiCallAuth(options);
@@ -194,7 +218,7 @@ var BackendAPI = {
 
   liveCheck: function (liveId) {
     var options = {
-      pathname: sprintf(this.URLPATH_LIVE_MACHINE, liveId),
+      pathname: sprintf(BackendObjects.URLPATH_LIVE_MACHINE, liveId),
       method: 'GET',
     };
     return this.apiCallAuth(options);
@@ -206,7 +230,7 @@ var BackendAPI = {
 
   sensor: function (data, sensor, liveId) {
     var options = {
-      pathname: sprintf(this.URLPATH_LIVE_SENSOR, liveId, sensor),
+      pathname: sprintf(BackendObjects.URLPATH_LIVE_SENSOR, liveId, sensor),
       method: 'POST',
       data: data,
     };
@@ -214,22 +238,34 @@ var BackendAPI = {
   },
 
   sensorBattery: function (value, liveId) {
-    var data = { level: value };
+    var data = {
+      data: { level: value },
+      schema: BackendObjects.OBJSCHEMA_SENSOR_BATTERY
+    };
     return this.sensor(data, 'battery', liveId);
   },
 
   sensorAccelerometer: function (x, y, z, liveId) {
-    var data = { x: x, y: y, z: z};
+    var data = {
+      data: {x: x, y: y, z: z},
+      schema: BackendObjects.OBJSCHEMA_SENSOR_ACCELEROMETER
+    };
     return this.sensor(data, 'accelerometer', liveId);
   },
 
   sensorLocation: function (lat, lon, liveId) {
-    var data = { latitude: lat, longitude: lon };
+    var data = {
+      data: {latitude: lat, longitude: lon},
+      schema: BackendObjects.OBJSCHEMA_SENSOR_LOCATION
+    };
     return this.sensor(data, 'location', liveId);
   },
 
   recording: function (filename, start, liveId) {
-    var data = { filename: filename, start: start };
+    var data = {
+      data: {filename: filename, start: start},
+      schema: BackendObjects.OBJSCHEMA_SENSOR_RECORDING
+    };
     return this.sensor(data, 'recording', liveId);
   },
 
@@ -252,7 +288,7 @@ var BackendAPI = {
 
   apkTestList: function (projectId) {
     var options = {
-      pathname: sprintf(this.URLPATH_APKTEST, projectId),
+      pathname: sprintf(BackendObjects.URLPATH_APKTEST, projectId),
       method: 'GET',
     };
     return this.apiCallAuth(options);
@@ -260,7 +296,7 @@ var BackendAPI = {
 
   apkTestUpload: function (projectId, file, cbProgress) {
     var options = {
-      pathname: sprintf(this.URLPATH_APKTEST, projectId),
+      pathname: sprintf(BackendObjects.URLPATH_APKTEST, projectId),
       method: 'POST',
       file: file,
       cbProgress: cbProgress,
