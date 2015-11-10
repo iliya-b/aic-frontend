@@ -1,20 +1,28 @@
 'use strict';
 
 // React
-var React = require('react');
+const React = require('react');
 
 // Material design
-var mui = require('material-ui');
-var { Spacing } = mui.Styles;
-var { Tabs, Tab, Paper, FlatButton, CircularProgress } = mui;
+const mui = require('material-ui');
+const {Spacing} = mui.Styles;
+const {
+  Tabs,
+  Tab,
+  Paper,
+  FlatButton,
+  CircularProgress
+} = mui;
 
 // APP
-var { AppUtils,
-      LiveScreen,
-      LiveSensors,
-      AreaStatus,
-      LogBox,
-      LogBoxRow } = require('goby/components');
+const {
+  AppUtils,
+  LiveScreen,
+  LiveSensors,
+  AreaStatus,
+  LogBox,
+  LogBoxRow,
+} = require('goby/components');
 var { LiveStore } = require('goby/stores');
 var { LiveActions } = require('goby/actions');
 

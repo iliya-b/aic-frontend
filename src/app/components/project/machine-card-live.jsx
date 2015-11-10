@@ -44,7 +44,7 @@ var MachineCardLive = class extends React.Component{
 
     var enabledButtons = {
       READY: ['enter', 'stop'],
-      CREATING: [],
+      CREATING: ['enter'],
       CREATE_FAILED: ['stop'],
     };
 

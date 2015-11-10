@@ -40,7 +40,7 @@ const LiveList = class extends React.Component {
     let avmsRendered = '';
     if (this.state.live) {
       if (this.state.live.status === 'LIVE_STATUS_LISTING' || this.state.live.status === 'LIVE_STATUS_INITIALIZED') {
-        avmsRendered = <InfoBox showIcon={true} boxType={InfoBox.LOADING}>Loading sessions...</InfoBox>;
+        avmsRendered = <InfoBox styleType={InfoBox.STYLE_BIG} showIcon={true} boxType={InfoBox.LOADING}>Loading sessions...</InfoBox>;
       }
       if (this.state.live.status === 'LIVE_STATUS_LISTED') {
         if (this.state.live.avms && this.state.live.avms.length) {
@@ -48,7 +48,7 @@ const LiveList = class extends React.Component {
             return <MachineCardLive {...currentValue} key={index} />;
           });
         } else {
-          avmsRendered = <InfoBox showIcon={true} boxType={InfoBox.WARNING}>No sessions found.</InfoBox>;
+          avmsRendered = <InfoBox styleType={InfoBox.STYLE_BIG} showIcon={true} boxType={InfoBox.INFO}>No sessions found. You can start a new session.</InfoBox>;
         }
       }
     }
