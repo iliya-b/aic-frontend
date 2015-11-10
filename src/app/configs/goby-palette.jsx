@@ -1,8 +1,11 @@
-var mui = require('material-ui');
-var Colors = mui.Styles.Colors;
-var ColorManipulator = mui.Utils.ColorManipulator;
+'use strict';
 
-var GobyPalette = {
+// Material design
+const mui = require('material-ui');
+const Colors = mui.Styles.Colors;
+const ColorManipulator = mui.Utils.ColorManipulator;
+
+const GobyPalette = {
   primary1Color: Colors.lightBlue500,
   primary2Color: Colors.lightBlue700,
   primary3Color: Colors.lightBlue300,
@@ -17,8 +20,9 @@ var GobyPalette = {
   logo2Color: '#A2C846',
   textLightColor: Colors.grey200,
   errorColor: Colors.red500,
-  successColor: Colors.green500,
+  successColor: '#A2C846',
   hoverColor: Colors.lightBlue100,
+  warnColor: Colors.amber800,
 };
 
 module.exports = GobyPalette;

@@ -1,38 +1,67 @@
 'use strict';
 
 // React
-var React = require('react');
+const React = require('react');
 
 // Material design
-var mui = require('material-ui');
-var { FontIcon } = mui;
+const mui = require('material-ui');
+const {FontIcon} = mui;
 
-var MachineIcon = class extends React.Component{
+// Vendors
+const deepExtend = require('deep-extend');
+
+const MachineIcon = class extends React.Component {
 
   render() {
+    const {
+      status,
+      style,
+      bigIcon,
+    } = this.props;
 
-    var status = this.props.status;
+    let colorIcon;
+    let colorAndro;
+    let statusClassName;
 
-    var colorIcon = (status === 'disable' ? this.context.muiTheme.palette.disabledColor :
-                     status === 'doing' ? this.context.muiTheme.palette.primary1Color :
-                     status === 'fail' ? this.context.muiTheme.palette.errorColor :
-                     this.context.muiTheme.palette.accent1Color );
-    var colorMessage = (status === 'disable' ? this.context.muiTheme.palette.disabledColor :
-                        status === 'fail' ? this.context.muiTheme.palette.errorColor :
-                        status === 'success' ? this.context.muiTheme.palette.accent1Color :
-                        this.context.muiTheme.palette.primary1Color );
-    var colorAndro = (status === 'disable' ? this.context.muiTheme.palette.disabledColor :
-                      status === 'fail' ? this.context.muiTheme.palette.errorColor :
-                      status === 'doing' ? this.context.muiTheme.palette.primary1Color :
-                      status === 'success' ? this.context.muiTheme.palette.accent1Color :
-                      this.context.muiTheme.palette.primary1Color );
+    switch (status) {
+      case MachineIcon.DISABLED:
+        colorIcon = this.context.muiTheme.palette.disabledColor;
+        colorAndro = this.context.muiTheme.palette.disabledColor;
+        statusClassName = 'mdi mdi-block-helper';
+        break;
+      case MachineIcon.ERROR:
+        colorIcon = this.context.muiTheme.palette.errorColor;
+        colorAndro = this.context.muiTheme.palette.errorColor;
+        statusClassName = 'mdi mdi-close';
+        break;
+      case MachineIcon.LOADING:
+        colorIcon = this.context.muiTheme.palette.primary1Color;
+        colorAndro = this.context.muiTheme.palette.primary1Color;
+        statusClassName = 'mdi mdi-reload';
+        break;
+      case MachineIcon.SUCCESS:
+        colorIcon = this.context.muiTheme.palette.accent1Color;
+        colorAndro = this.context.muiTheme.palette.accent1Color;
+        statusClassName = 'mdi mdi-check';
+        break;
+      case MachineIcon.WARNING:
+        colorIcon = this.context.muiTheme.palette.warnColor;
+        colorAndro = this.context.muiTheme.palette.warnColor;
+        statusClassName = 'mdi mdi-alert';
+        break;
+      case MachineIcon.INFO:
+        colorIcon = this.context.muiTheme.palette.primary1Color;
+        colorAndro = this.context.muiTheme.palette.primary1Color;
+        statusClassName = 'mdi mdi-information';
+        break;
+      default:
+        colorIcon = this.context.muiTheme.palette.accent1Color;
+        colorAndro = this.context.muiTheme.palette.primary1Color;
+        statusClassName = '';
+        break;
+    }
 
-    // var colorAndro = (status === 'disable' ? this.context.muiTheme.palette.disabledColor :
-    //                   this.context.muiTheme.palette.primary1Color );
-
-    var statusClassName = ( status === 'success' ? 'mdi mdi-check' : status === 'fail' ? 'mdi mdi-close' : 'mdi mdi-reload' );
-
-    var styles = {
+    let styles = {
       root: {
         width: 40,
         backgroundColor: 'transparent',
@@ -50,30 +79,63 @@ var MachineIcon = class extends React.Component{
       cloud: {
         color: 'transparent',
       },
-      status:{
+      status: {
         color: colorIcon,
         position: 'absolute',
         top: 15,
-        left: 15, //( status === 'doing' ? '27px' : '27px' ),
+        left: 15,
         textShadow: '-1px -1px #FFFFFF,1px -1px #FFFFFF,-1px 1px #FFFFFF,1px 1px #FFFFFF',
-        animation: ( status === 'doing' ? 'liveIconRotate 3s linear infinite' : 'initial'),
+        animation: (status === MachineIcon.LOADING ? 'liveIconRotate 3s linear infinite' : 'initial'),
         fontSize: '20px',
       },
     };
 
+    if (bigIcon) {
+      const bigStyles = {
+        root: {
+          width: 53,
+          height: 53,
+          lineHeight: '59px',
+        },
+        andro: {
+          fontSize: '46px',
+          top: 4,
+        },
+        status: {
+          fontSize: '25px',
+          top: 23,
+          left: 23,
+        },
+      };
+      styles = deepExtend(styles, bigStyles);
+    }
+
+    if (status === MachineIcon.DISABLED) {
+      styles.status.fontSize = bigIcon ? '19px' : '15px';
+      styles.status.top = bigIcon ? 23 : 17;
+      styles.status.left = bigIcon ? 26 : 17;
+    }
+
+    styles.root = deepExtend(styles.root, style);
+
     return <div style={styles.root}>
-      <FontIcon className="mdi mdi-cloud" style={styles.cloud} />
       <FontIcon className="mdi mdi-android" style={styles.andro} />
       <FontIcon className={statusClassName} style={styles.status} />
     </div>;
-
   }
 
 };
 
 MachineIcon.contextTypes = {
   muiTheme: React.PropTypes.object,
-  router: React.PropTypes.func
-}
+  router: React.PropTypes.func,
+};
+
+MachineIcon.DISABLED = 'disabled';
+MachineIcon.ERROR = 'error';
+MachineIcon.LOADING = 'loading';
+MachineIcon.SUCCESS = 'success';
+MachineIcon.WARNING = 'warning';
+MachineIcon.INFO = 'info';
 
 module.exports = MachineIcon;

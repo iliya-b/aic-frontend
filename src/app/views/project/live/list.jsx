@@ -17,6 +17,7 @@ const debuggerGoby = require('debug')('AiC:View:Live:List');
 const {
   AppUtils,
   MachineCardLive,
+  InfoBox,
 } = require('goby/components');
 const {LiveStore} = require('goby/stores');
 const {LiveActions} = require('goby/actions');
@@ -39,12 +40,16 @@ const LiveList = class extends React.Component {
     let avmsRendered = '';
     if (this.state.live) {
       if (this.state.live.status === 'LIVE_STATUS_LISTING' || this.state.live.status === 'LIVE_STATUS_INITIALIZED') {
-        avmsRendered = <div>Loading VMS</div>;
+        avmsRendered = <InfoBox showIcon={true} boxType={InfoBox.LOADING}>Loading sessions...</InfoBox>;
       }
-      if (this.state.live.status === 'LIVE_STATUS_LISTED' && this.state.live.avms && this.state.live.avms.length) {
-        avmsRendered = this.state.live.avms.map((currentValue, index) => {
-          return <MachineCardLive {...currentValue} key={index} />;
-        });
+      if (this.state.live.status === 'LIVE_STATUS_LISTED') {
+        if (this.state.live.avms && this.state.live.avms.length) {
+          avmsRendered = this.state.live.avms.map((currentValue, index) => {
+            return <MachineCardLive {...currentValue} key={index} />;
+          });
+        } else {
+          avmsRendered = <InfoBox showIcon={true} boxType={InfoBox.WARNING}>No sessions found.</InfoBox>;
+        }
       }
     }
 

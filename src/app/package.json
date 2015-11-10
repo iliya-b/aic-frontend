@@ -15,6 +15,7 @@
   "xo": {
     "esnext": true,
     "space": true,
+    "plugins": ["react"],
     "rules": {
       "comma-dangle":[2, "always-multiline"]
     }

@@ -1,13 +1,13 @@
 'use strict';
 
 // React
-var React = require('react');
+const React = require('react');
 
 // Material UI
-var mui = require('material-ui');
-var { Spacing } = mui.Styles;
+const mui = require('material-ui');
+const {Spacing} = mui.Styles;
 
-var {
+const {
   Checkbox,
   ClearFix,
   DatePicker,
@@ -25,72 +25,67 @@ var {
   Toggle,
   Paper,
   FontIcon,
-  CardActions,
-  CardText} = mui;
+} = mui;
 
-var Menu = require('material-ui/lib/menus/menu.js');
-var MenuItem = require('material-ui/lib/menus/menu-item.js');
+const Menu = require('material-ui/lib/menus/menu.js');
+const MenuItem = require('material-ui/lib/menus/menu-item.js');
 
-var {StylePropable, StyleResizable} = mui.Mixins;
+const {StylePropable} = mui.Mixins;
 
-var Typography = mui.Styles.Typography;
-var ThemeManager = new mui.Styles.ThemeManager();
+const Typography = mui.Styles.Typography;
+const ThemeManager = new mui.Styles.ThemeManager();
 
 // APP
 
-var { BoxStatus,
-      SessionEndedDialog,
-      TestResultsBox,
-      AvatarProgress,
-      LogBox,
-      LogBoxRow,
-      AppUtils,
-      CodeBox,
-      MachineCard,
-      MachineCardLive, } = require('goby/components');
+const {
+  BoxStatus,
+  SessionEndedDialog,
+  TestResultsBox,
+  AvatarProgress,
+  LogBox,
+  LogBoxRow,
+  AppUtils,
+  MachineCardLive,
+  InfoBox,
+} = require('goby/components');
 
 // var logBoxRef = Array.apply(0, Array(8)).map(function (v, i) { return { message: 'Message ' + i , time: i }; });
-var logBoxRef = [
-{time: AppUtils.getDate(), message:"Stack creation scheduled"},
-{time: AppUtils.getDate(), message:"Stack retrieval or creation finished"},
-{time: AppUtils.getDate(), message:"Docker creation scheduled."},
-{time: AppUtils.getDate(), message:"Docker created and ready."},
+const logBoxRef = [
+  {time: AppUtils.getDate(), message: 'Stack creation scheduled'},
+  {time: AppUtils.getDate(), message: 'Stack retrieval or creation finished'},
+  {time: AppUtils.getDate(), message: 'Docker creation scheduled.'},
+  {time: AppUtils.getDate(), message: 'Docker created and ready.'},
 ];
 
-var ThemesPage = React.createClass({
+const ThemesPage = class extends React.Component {
 
-  mixins: [StylePropable, StyleResizable],
+  state: {
+    isThemeDark: false,
+    // logbox: [],
+    logbox: logBoxRef,
+  }
 
-  getInitialState: function() {
-    return {
-      isThemeDark: false,
-      // logbox: [],
-      logbox: logBoxRef,
-    };
-  },
-
-
-  getStyles: function() {
-    var canvasColor = ThemeManager.getCurrentTheme().palette.canvasColor;
-    var styles = {
+  getStyles() {
+    const canvasColor = ThemeManager.getCurrentTheme().palette.canvasColor;
+    const styles = {
       group: {
         float: 'left',
-        width: '100%',
+        width: '33%',
         marginTop: '16px',
         padding: '0 50px',
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
       },
       groupSlider: {
         marginTop: '0px',
-        width: '100%'
+        width: '100%',
       },
       container: {
         marginBottom: '16px',
         minHeight: '24px',
-        textAlign: 'left'
+        textAlign: 'left',
       },
       containerCentered: {
-        textAlign: 'center'
+        textAlign: 'center',
       },
       paper: {
         height: '100px',
@@ -109,11 +104,11 @@ var ThemesPage = React.createClass({
       },
       slider: {
         marginTop: '0px',
-        marginBottom: '0px'
+        marginBottom: '0px',
       },
       codeExample: {
         backgroundColor: canvasColor,
-        marginBottom: '32px'
+        marginBottom: '32px',
       },
       title: {
         fontSize: '20px',
@@ -122,11 +117,11 @@ var ThemesPage = React.createClass({
         marginBottom: '13px',
         letterSpacing: '0',
         fontWeight: Typography.fontWeightMedium,
-        color: Typography.textDarkBlack
+        color: Typography.textDarkBlack,
       },
       menu: {
         position: 'relative',
-        float: 'left'
+        float: 'left',
       },
       avatarProgressAndro: {
         color: '#7ABF27',
@@ -135,424 +130,447 @@ var ThemesPage = React.createClass({
       },
     };
 
-    if (this.isDeviceSize(StyleResizable.statics.Sizes.MEDIUM)) {
-      styles.group.width = '33%';
-    }
-
-    styles.containerCentered = this.mergeStyles(styles.container, styles.containerCentered);
-    styles.groupSlider = this.mergeStyles(styles.group, styles.groupSlider);
+    styles.containerCentered = StylePropable.mergeStyles(styles.container, styles.containerCentered);
+    styles.groupSlider = StylePropable.mergeStyles(styles.group, styles.groupSlider);
 
     return styles;
-  },
+  }
 
-    render: function() {
-
-    var styles = this.getStyles();
-    var menuItems = [
-       { payload: '1', text: 'Never' },
-       { payload: '2', text: 'Every Night' },
-       { payload: '3', text: 'Weeknights' },
-       { payload: '4', text: 'Weekends' },
-       { payload: '5', text: 'Weekly' },
+  render() {
+    const styles = this.getStyles();
+    const menuItems = [
+       {payload: '1', text: 'Never'},
+       {payload: '2', text: 'Every Night'},
+       {payload: '3', text: 'Weeknights'},
+       {payload: '4', text: 'Weekends'},
+       {payload: '5', text: 'Weekly'},
     ];
-    var standardActions = [
-      { text: 'Cancel' },
-      { text: 'Submit', onClick: this._onDialogSubmit }
+    const standardActions = [
+      {text: 'Cancel'},
+      {text: 'Submit', onClick: this._onDialogSubmit},
     ];
-    var menuItemsNav = [
-      { route: 'get-started', text: 'Get Started' },
-      { route: 'customization', text: 'Customization' },
-      { route: 'component', text: 'Component' },
+    const menuItemsNav = [
+      {route: 'get-started', text: 'Get Started'},
+      {route: 'customization', text: 'Customization'},
+      {route: 'component', text: 'Component'},
+      {text: 'Resources'},
       {
-        // type: MenuItem.Types.SUBHEADER,
-        text: 'Resources'
+        payload: 'https://github.com/callemall/material-ui',
+        text: 'GitHub',
       },
       {
-         // type: MenuItem.Types.LINK,
-         payload: 'https://github.com/callemall/material-ui',
-         text: 'GitHub'
+        text: 'Disabled',
+        disabled: true,
       },
       {
-         text: 'Disabled',
-         disabled: true
-      },
-      {
-         // type: MenuItem.Types.LINK,
-         payload: 'https://www.google.com',
-         text: 'Disabled Link',
-         disabled: true
+        // type: MenuItem.Types.LINK,
+        payload: 'https://www.google.com',
+        text: 'Disabled Link',
+        disabled: true,
       },
     ];
 
-    var allStatus = [ 'doing', 'success', 'fail', 'disable' ];
-    var allCampaignTypes = [ 'prepare', 'create', 'run', 'result' ];
-    var allLiveTypes = [ 'search', 'create', 'load', 'connect', 'close' ];
+    const allStatus = ['doing', 'success', 'fail', 'disable'];
+    const allCampaignTypes = ['prepare', 'create', 'run', 'result'];
+    const allLiveTypes = ['search', 'create', 'load', 'connect', 'close'];
 
-    var boxesLive = allStatus.map(function(itemStatus, indexStatus){
-      var boxes = this.map(function(itemBox, indexBox, arrayBox){
-        return <BoxStatus key={indexBox} objectName='session' typeName={itemBox} status={itemStatus} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox+1)} />
+    const boxesLive = allStatus.map(function (itemStatus, indexStatus) {
+      const boxes = this.map(function (itemBox, indexBox, arrayBox) {
+        return <BoxStatus key={indexBox} objectName={'session'} typeName={itemBox} status={itemStatus} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox + 1)} />;
       });
       return <div key={indexStatus}>{boxes}</div>;
     }, allLiveTypes);
 
-    var boxesCampaign = allStatus.map(function(itemStatus, indexStatus){
-      var boxes = this.map(function(itemBox, indexBox, arrayBox){
-        return <BoxStatus key={indexBox} objectName='campaign' typeName={itemBox} status={itemStatus} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox+1)} />
+    const boxesCampaign = allStatus.map(function (itemStatus, indexStatus) {
+      const boxes = this.map(function (itemBox, indexBox, arrayBox) {
+        return <BoxStatus key={indexBox} objectName={'campaign'} typeName={itemBox} status={itemStatus} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox + 1)} />;
       });
       return <div key={indexStatus}>{boxes}</div>;
     }, allCampaignTypes);
 
-    var boxesLogBox = <div>
-      {allCampaignTypes.map(function(itemBox, indexBox, arrayBox){
-        return <BoxStatus key={indexBox} objectName='campaign' typeName={itemBox} status={'success'} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox+1)} />
+    const boxesLogBox = <div>
+      {allCampaignTypes.map(function (itemBox, indexBox, arrayBox) {
+        return <BoxStatus key={indexBox} objectName={'campaign'} typeName={itemBox} status={'success'} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox + 1)} />;
       })}
     </div>;
 
-    var logBoxRows = this.state.logbox ? this.state.logbox.map( function(v,i){ return <LogBoxRow key={i} time={v.time}>{v.message}</LogBoxRow> }  ) : null;
+    const logBoxRows = this.state && this.state.logbox ? this.state.logbox.map(function(v,i){ return <LogBoxRow key={i} time={v.time}>{v.message}</LogBoxRow> }  ) : null;
 
-    var results = [{"properties":[],"testCases":[{"className":"com.zenika.aic.core.libs.ParserTest","name":"testAndroidTestCaseSetupProperly"},{"className":"com.zenika.aic.core.libs.ParserTest","name":"testApplicationTestCaseSetUpProperly"},{"className":"com.zenika.aic.demo.sensor.BatteryTestCase","name":"testUS1","failure":{"message":"Battery level not found","type":"junit.framework.AssertionFailedError","content":"junit.framework.AssertionFailedError: Battery level not found\r\r\n\tat junit.framework.Assert.fail(Assert.java:50)\r\r\n\tat junit.framework.Assert.assertTrue(Assert.java:20)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.setLevel(BatteryTestCase.java:73)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.testUS1(BatteryTestCase.java:36)\r\r\n\tat java.lang.reflect.Method.invokeNative(Native Method)\r\r\n\tat java.lang.reflect.Method.invoke(Method.java:515)\r\r\n\tat android.test.InstrumentationTestCase.runMethod(InstrumentationTestCase.java:214)\r\r\n\tat android.test.InstrumentationTestCase.runTest(InstrumentationTestCase.java:199)\r\r\n\tat junit.framework.TestCase.runBare(TestCase.java:134)\r\r\n\tat junit.framework.TestResult$1.protect(TestResult.java:115)\r\r\n\tat junit.framework.TestResult.runProtected(TestResult.java:133)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestResult.runProtected(DelegatingTestResult.java:90)\r\r\n\tat junit.framework.TestResult.run(TestResult.java:118)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestResult.run(AndroidTestResult.java:49)\r\r\n\tat junit.framework.TestCase.run(TestCase.java:124)\r\r\n\tat android.support.test.internal.runner.junit3.NonLeakyTestSuite$NonLeakyTest.run(NonLeakyTestSuite.java:63)\r\r\n\tat junit.framework.TestSuite.runTest(TestSuite.java:243)\r\r\n\tat junit.framework.TestSuite.run(TestSuite.java:238)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestSuite.run(DelegatingTestSuite.java:103)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestSuite.run(AndroidTestSuite.java:63)\r\r\n\tat android.support.test.internal.runner.junit3.JUnit38ClassRunner.run(JUnit38ClassRunner.java:90)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:24)\r\r\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)\r\r\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)\r\r\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)\r\r\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)\r\r\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)\r\r\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:300)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:157)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:136)\r\r\n\tat android.support.test.runner.AndroidJUnitRunner.onStart(AndroidJUnitRunner.java:270)\r\r\n\tat android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1701)\r\r\n\r"}},{"className":"com.zenika.aic.demo.sensor.BatteryTestCase","name":"testUS2","failure":{"message":"Battery level not found","type":"junit.framework.AssertionFailedError","content":"junit.framework.AssertionFailedError: Battery level not found\r\r\n\tat junit.framework.Assert.fail(Assert.java:50)\r\r\n\tat junit.framework.Assert.assertTrue(Assert.java:20)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.setLevel(BatteryTestCase.java:82)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.testUS2(BatteryTestCase.java:40)\r\r\n\tat java.lang.reflect.Method.invokeNative(Native Method)\r\r\n\tat java.lang.reflect.Method.invoke(Method.java:515)\r\r\n\tat android.test.InstrumentationTestCase.runMethod(InstrumentationTestCase.java:214)\r\r\n\tat android.test.InstrumentationTestCase.runTest(InstrumentationTestCase.java:199)\r\r\n\tat junit.framework.TestCase.runBare(TestCase.java:134)\r\r\n\tat junit.framework.TestResult$1.protect(TestResult.java:115)\r\r\n\tat junit.framework.TestResult.runProtected(TestResult.java:133)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestResult.runProtected(DelegatingTestResult.java:90)\r\r\n\tat junit.framework.TestResult.run(TestResult.java:118)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestResult.run(AndroidTestResult.java:49)\r\r\n\tat junit.framework.TestCase.run(TestCase.java:124)\r\r\n\tat android.support.test.internal.runner.junit3.NonLeakyTestSuite$NonLeakyTest.run(NonLeakyTestSuite.java:63)\r\r\n\tat junit.framework.TestSuite.runTest(TestSuite.java:243)\r\r\n\tat junit.framework.TestSuite.run(TestSuite.java:238)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestSuite.run(DelegatingTestSuite.java:103)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestSuite.run(AndroidTestSuite.java:63)\r\r\n\tat android.support.test.internal.runner.junit3.JUnit38ClassRunner.run(JUnit38ClassRunner.java:90)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:24)\r\r\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)\r\r\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)\r\r\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)\r\r\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)\r\r\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)\r\r\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:300)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:157)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:136)\r\r\n\tat android.support.test.runner.AndroidJUnitRunner.onStart(AndroidJUnitRunner.java:270)\r\r\n\tat android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1701)\r\r\n\r"}}],"time":"0.0","name":"APK test"}];
+    const results = [{'properties':[],'testCases':[{'className':'com.zenika.aic.core.libs.ParserTest','name':'testAndroidTestCaseSetupProperly'},{'className':'com.zenika.aic.core.libs.ParserTest','name':'testApplicationTestCaseSetUpProperly'},{'className':'com.zenika.aic.demo.sensor.BatteryTestCase','name':'testUS1','failure':{'message':'Battery level not found','type':'junit.framework.AssertionFailedError','content':'junit.framework.AssertionFailedError: Battery level not found\r\r\n\tat junit.framework.Assert.fail(Assert.java:50)\r\r\n\tat junit.framework.Assert.assertTrue(Assert.java:20)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.setLevel(BatteryTestCase.java:73)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.testUS1(BatteryTestCase.java:36)\r\r\n\tat java.lang.reflect.Method.invokeNative(Native Method)\r\r\n\tat java.lang.reflect.Method.invoke(Method.java:515)\r\r\n\tat android.test.InstrumentationTestCase.runMethod(InstrumentationTestCase.java:214)\r\r\n\tat android.test.InstrumentationTestCase.runTest(InstrumentationTestCase.java:199)\r\r\n\tat junit.framework.TestCase.runBare(TestCase.java:134)\r\r\n\tat junit.framework.TestResult$1.protect(TestResult.java:115)\r\r\n\tat junit.framework.TestResult.runProtected(TestResult.java:133)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestResult.runProtected(DelegatingTestResult.java:90)\r\r\n\tat junit.framework.TestResult.run(TestResult.java:118)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestResult.run(AndroidTestResult.java:49)\r\r\n\tat junit.framework.TestCase.run(TestCase.java:124)\r\r\n\tat android.support.test.internal.runner.junit3.NonLeakyTestSuite$NonLeakyTest.run(NonLeakyTestSuite.java:63)\r\r\n\tat junit.framework.TestSuite.runTest(TestSuite.java:243)\r\r\n\tat junit.framework.TestSuite.run(TestSuite.java:238)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestSuite.run(DelegatingTestSuite.java:103)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestSuite.run(AndroidTestSuite.java:63)\r\r\n\tat android.support.test.internal.runner.junit3.JUnit38ClassRunner.run(JUnit38ClassRunner.java:90)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:24)\r\r\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)\r\r\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)\r\r\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)\r\r\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)\r\r\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)\r\r\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:300)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:157)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:136)\r\r\n\tat android.support.test.runner.AndroidJUnitRunner.onStart(AndroidJUnitRunner.java:270)\r\r\n\tat android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1701)\r\r\n\r'}},{'className':'com.zenika.aic.demo.sensor.BatteryTestCase','name':'testUS2','failure':{'message':'Battery level not found','type':'junit.framework.AssertionFailedError','content':'junit.framework.AssertionFailedError: Battery level not found\r\r\n\tat junit.framework.Assert.fail(Assert.java:50)\r\r\n\tat junit.framework.Assert.assertTrue(Assert.java:20)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.setLevel(BatteryTestCase.java:82)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.testUS2(BatteryTestCase.java:40)\r\r\n\tat java.lang.reflect.Method.invokeNative(Native Method)\r\r\n\tat java.lang.reflect.Method.invoke(Method.java:515)\r\r\n\tat android.test.InstrumentationTestCase.runMethod(InstrumentationTestCase.java:214)\r\r\n\tat android.test.InstrumentationTestCase.runTest(InstrumentationTestCase.java:199)\r\r\n\tat junit.framework.TestCase.runBare(TestCase.java:134)\r\r\n\tat junit.framework.TestResult$1.protect(TestResult.java:115)\r\r\n\tat junit.framework.TestResult.runProtected(TestResult.java:133)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestResult.runProtected(DelegatingTestResult.java:90)\r\r\n\tat junit.framework.TestResult.run(TestResult.java:118)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestResult.run(AndroidTestResult.java:49)\r\r\n\tat junit.framework.TestCase.run(TestCase.java:124)\r\r\n\tat android.support.test.internal.runner.junit3.NonLeakyTestSuite$NonLeakyTest.run(NonLeakyTestSuite.java:63)\r\r\n\tat junit.framework.TestSuite.runTest(TestSuite.java:243)\r\r\n\tat junit.framework.TestSuite.run(TestSuite.java:238)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestSuite.run(DelegatingTestSuite.java:103)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestSuite.run(AndroidTestSuite.java:63)\r\r\n\tat android.support.test.internal.runner.junit3.JUnit38ClassRunner.run(JUnit38ClassRunner.java:90)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:24)\r\r\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)\r\r\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)\r\r\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)\r\r\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)\r\r\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)\r\r\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:300)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:157)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:136)\r\r\n\tat android.support.test.runner.AndroidJUnitRunner.onStart(AndroidJUnitRunner.java:270)\r\r\n\tat android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1701)\r\r\n\r'}}],'time':'0.0','name':'APK test'}];
 
-    var avms = [
-        {
-            "avm_novnc_host": "127.0.0.1",
-            "avm_owner": "marco",
-            "avm_id": "jHLGWPeRSVyVzyCpWRsEjg",
-            "avm_status": "READY",
-            "avm_novnc_port": "5909"
-        },
-        {
-            "avm_novnc_host": "127.0.0.1",
-            "avm_owner": "marco",
-            "avm_id": "sijEK9O9T962JYWOuUzHHg",
-            "avm_status": "READY",
-            "avm_novnc_port": "5946"
-        },
-        {
-            "avm_novnc_host": "127.0.0.1",
-            "avm_owner": "marco",
-            "avm_id": "sijEK9O9T962JYWOuUzHHg",
-            "avm_status": "CREATING",
-            "avm_novnc_port": "5946"
-        },
-        {
-            "avm_novnc_host": "127.0.0.1",
-            "avm_owner": "marco",
-            "avm_id": "sijEK9O9T962JYWOuUzHHg",
-            "avm_status": "CREATE_FAILED",
-            "avm_novnc_port": "5946",
-            "avm_status_reason": "Resource CREATE failed: OverLimit: VolumeLimitExceeded: \nMaximum number of volumes allowed (50) exceeded (HTTP 413) \n(Request-ID: req-2896fb29-7db3-4b0c-8a96-1554e6dc5f39)",
-        }
+    const avms = [
+      {
+        'avm_novnc_host': '127.0.0.1',
+        'avm_owner': 'marco',
+        'avm_id': 'jHLGWPeRSVyVzyCpWRsEjg',
+        'avm_status': 'READY',
+        'avm_novnc_port': '5909',
+      },
+      {
+        'avm_novnc_host': '127.0.0.1',
+        'avm_owner': 'marco',
+        'avm_id': 'sijEK9O9T962JYWOuUzHHg',
+        'avm_status': 'READY',
+        'avm_novnc_port': '5946',
+      },
+      {
+        'avm_novnc_host': '127.0.0.1',
+        'avm_owner': 'marco',
+        'avm_id': 'sijEK9O9T962JYWOuUzHHg',
+        'avm_status': 'CREATING',
+        'avm_novnc_port': '5946',
+      },
+      {
+        'avm_novnc_host': '127.0.0.1',
+        'avm_owner': 'marco',
+        'avm_id': 'sijEK9O9T962JYWOuUzHHg',
+        'avm_status': 'CREATE_FAILED',
+        'avm_novnc_port': '5946',
+        'avm_status_reason': 'Resource CREATE failed: OverLimit: VolumeLimitExceeded: \nMaximum number of volumes allowed (50) exceeded (HTTP 413) \n(Request-ID: req-2896fb29-7db3-4b0c-8a96-1554e6dc5f39)',
+      },
     ];
 
-    var avmsRendered = avms.map(function(currentValue, index) { return <MachineCardLive {...currentValue} key={index} />; } );
+    const avmsRendered = avms.map((currentValue, index) => {
+      return <MachineCardLive {...currentValue} key={index} />;
+    });
 
-        return (
-            <div>
-            <ClearFix>
-              <RaisedButton linkButton={true} href="/" secondary={true} label="Back to Home" />
-            </ClearFix>
+    const infoStylesTypes = [InfoBox.STYLE_BIG, ''];
+    const infoBoxesTypes = [InfoBox.ERROR, InfoBox.SUCCESS, InfoBox.LOADING, InfoBox.WARNING, InfoBox.INFO, InfoBox.DISABLED, ''];
+    const infoShowIcon = [true, false];
 
-            <ClearFix>
+    let infoValues = infoShowIcon.map(showIcon => {
+      return [].concat.apply([], infoStylesTypes.map(styleType => {
+        return infoBoxesTypes.map(boxType => {
+          return {
+            children: `${boxType} message.`,
+            boxType,
+            styleType,
+            showIcon,
+          };
+        });
+      }));
+    });
 
+    infoValues = [].concat.apply([], infoValues);
 
-              <div style={styles.group}>
-                <div style={styles.containerCentered}>
-                  <FloatingActionButton iconClassName="mdi mdi-star" disabled={true}/>
-                </div>
-                <div style={styles.containerCentered}>
-                  <FloatingActionButton iconClassName="mdi mdi-star" disabled={false}/>
-                </div>
-                 <div style={styles.containerCentered}>
-                  <FloatingActionButton iconClassName="mdi mdi-star" disabled={false}  secondary={true} />
-                </div>
-                <div style={styles.containerCentered}>
-                  <RaisedButton label="Secondary" secondary={true} />
-                </div>
-                <div style={styles.containerCentered}>
-                  <RaisedButton label="Primary"  primary={true}/>
-                </div>
-                <div style={styles.containerCentered}>
-                  <RaisedButton label="Default"/>
-                </div>
-                <div style={styles.containerCentered}>
-                  <FlatButton label="Secondary" secondary={true} />
-                </div>
-                <div style={styles.containerCentered}>
-                  <FlatButton label="Primary"  primary={true}/>
-                </div>
-                <div style={styles.containerCentered}>
-                  <FlatButton label="Default"/>
-                </div>
-              </div>
+    const infoBoxes = infoValues.map((infoProps, infoIndex) => {
+      return <InfoBox style={{margin: '10px'}} key={infoIndex} {...infoProps} />;
+    });
 
-              <div style={styles.group}>
-                <div style={styles.container}>
-                  <Checkbox
-                    name="checkboxName1"
-                    value="checkboxValue1"
-                    label="checkbox" />
-                  <Checkbox
-                    name="checkboxName2"
-                    value="checkboxValue2"
-                    label="disabled checkbox"
-                    disabled={true} />
-                </div>
-                <div style={styles.container}>
-                  <RadioButtonGroup
-                    name="shipSpeed"
-                    defaultSelected="usd">
-                      <RadioButton
-                        value="usd"
-                        label="USD" />
-                      <RadioButton
-                        value="euro"
-                        label="Euro"
-                        defaultChecked={true} />
-                     <RadioButton
-                        value="mxn"
-                        label="MXN"
-                        disabled={true}/>
-                  </RadioButtonGroup>
-                </div>
-                <div style={styles.container}>
-                  <Toggle
-                    name="toggleName1"
-                    value="toggleValue1"
-                    label="toggle" />
-                  <Toggle
-                    name="toggleName2"
-                    value="toggleValue2"
-                    label="disabled toggle"
-                    defaultToggled={true}
-                    disabled={true} />
-                </div>
-                <div style={styles.container}>
+    return (
+        <div>
+        <ClearFix>
+          <RaisedButton linkButton={true} href={'/'} secondary={true} label={'Back to Home'} />
+        </ClearFix>
 
-                  <Menu style={styles.menu}>
-                    <MenuItem primaryText="Maps" />
-                    <MenuItem primaryText="Books" />
-                    <MenuItem primaryText="Flights" />
-                    <MenuItem primaryText="Apps" />
-                  </Menu>
-                </div>
-              </div>
+        <ClearFix>
 
-              <div style={this.mergeStyles(styles.group, {marginTop: 0})}>
-                <div style={styles.container}>
-                  <TextField
-                    style={styles.textfield}
-                    hintText="TextField"/>
-                </div>
-                <div style={styles.container}>
-                  <DatePicker
-                    hintText="Landscape Dialog"
-                    mode="landscape"
-                    style={{width: '100%'}}/>
-                </div>
-                <div style={styles.container}>
-                  <DropDownMenu menuItems={menuItems} style={{width: '100%'}}/>
-               </div>
-              </div>
-
-              <div style={styles.groupSlider}>
-                <Slider style={styles.slider} name="slider2" defaultValue={0.5} />
-              </div>
-
-              <div style={styles.group}>
-                <div style={styles.containerCentered}>
-                  <FlatButton label="View Dialog" onTouchTap={this.handleTouchTapDialog} />
-                  <Dialog ref="dialog" title="Dialog With Standard Actions" actions={standardActions}>
-                    The actions in this window are created from the json that&#39;s passed in.
-                  </Dialog>
-                </div>
-              </div>
-
-              <div style={styles.group}>
-                <div style={styles.containerCentered}>
-                  <FlatButton
-                      onTouchTap={this.handleClickNav}
-                      label="View LeftNav" />
-                  <LeftNav ref="leftNav" docked={false} menuItems={menuItemsNav} />
-                </div>
-              </div>
-
-              <div style={styles.group}>
-                <div style={styles.containerCentered}>
-                  <FlatButton
-                    onTouchTap={this.handleClickSnackbar}
-                    label="View Snackbar" />
-                  <Snackbar
-                    ref="snackbar"
-                    message="This is a snackbar"
-                    action="Got It!"
-                    onActionTouchTap={this.handleAction}/>
-                </div>
-              </div>
-          </ClearFix>
-
-            <ClearFix>
-              <h2>Status for live</h2>
-              {boxesLive}
-            </ClearFix>
-
-            <ClearFix>
-              <h2>Status for campaign</h2>
-              {boxesCampaign}
-            </ClearFix>
-
-            <ClearFix>
-
-              <RaisedButton label="Session Ended Dialog" ref="btSessionEnded" primary={true} onClick={this.handleClickSessionEnded} />
-              <SessionEndedDialog ref="sessionEndedDialog" />
-
-            </ClearFix>
-
-            <ClearFix>
-            <AvatarProgress
-              progress={0}
-              icon={<FontIcon className="mdi mdi-android" />}
-              color={styles.avatarProgressAndro.color}
-              backgroundColor={styles.avatarProgressAndro.backgroundColor}
-              foregroundColor={styles.avatarProgressAndro.foregroundColor} />
-
-            <AvatarProgress
-              style={{marginLeft:'10px'}}
-              progress={12}
-              icon={<FontIcon className="mdi mdi-android" />}
-              color={styles.avatarProgressAndro.color}
-              backgroundColor={styles.avatarProgressAndro.backgroundColor}
-              foregroundColor={styles.avatarProgressAndro.foregroundColor} />
-
-            <AvatarProgress
-              style={{marginLeft:'10px'}}
-              progress={25}
-              icon={<FontIcon className="mdi mdi-android" />}
-              color={styles.avatarProgressAndro.color}
-              backgroundColor={styles.avatarProgressAndro.backgroundColor}
-              foregroundColor={styles.avatarProgressAndro.foregroundColor} />
-
-            <AvatarProgress
-              style={{marginLeft:'10px'}}
-              progress={50}
-              icon={<FontIcon className="mdi mdi-android" />}
-              color={styles.avatarProgressAndro.color}
-              backgroundColor={styles.avatarProgressAndro.backgroundColor}
-              foregroundColor={styles.avatarProgressAndro.foregroundColor} />
-
-            <AvatarProgress
-              style={{marginLeft:'10px'}}
-              progress={75}
-              icon={<FontIcon className="mdi mdi-android" />}
-              color={styles.avatarProgressAndro.color}
-              backgroundColor={styles.avatarProgressAndro.backgroundColor}
-              foregroundColor={styles.avatarProgressAndro.foregroundColor} />
-
-            <AvatarProgress
-              style={{marginLeft:'10px'}}
-              progress={100}
-              icon={<FontIcon className="mdi mdi-android" />}
-              color={styles.avatarProgressAndro.color}
-              backgroundColor={styles.avatarProgressAndro.backgroundColor}
-              foregroundColor={styles.avatarProgressAndro.foregroundColor} />
-
-            </ClearFix>
-
-            <ClearFix>
-
-            <Paper style={styles.spacing}>
-
-              <h2>Results</h2>
-
-              <TestResultsBox results={results} />
-
-              <br />
-
-              <div style={styles.center} >
-              <FlatButton
-                label="Start new campaign"
-                primary={true} />
-              </div>
-
-            </Paper>
-
-            </ClearFix>
-
-            <ClearFix>
-
-            <Paper style={styles.spacing} zDepth={0} >
-
-              <FlatButton
-                label="Add log line"
-                primary={true}
-                onClick={this.addLogBox} />
-
-              <h2>LogBox</h2>
-
-              {boxesLogBox} <br />
-              <div style={{width:'547px'}}>
-              <LogBox>
-              {logBoxRows}
-              </LogBox>
-              </div>
-
-            </Paper>
-
-            </ClearFix>
-
-            <ClearFix>
-
-              <h2>Live Sessions</h2>
-
-              {avmsRendered}
-
-            </ClearFix>
-
+          <div style={styles.group}>
+            <div style={styles.containerCentered}>
+              <FloatingActionButton iconClassName='mdi mdi-star' disabled={true}/>
             </div>
-        );
-    },
+            <div style={styles.containerCentered}>
+              <FloatingActionButton iconClassName='mdi mdi-star' disabled={false}/>
+            </div>
+             <div style={styles.containerCentered}>
+              <FloatingActionButton iconClassName='mdi mdi-star' disabled={false}  secondary={true} />
+            </div>
+            <div style={styles.containerCentered}>
+              <RaisedButton label='Secondary' secondary={true} />
+            </div>
+            <div style={styles.containerCentered}>
+              <RaisedButton label='Primary'  primary={true}/>
+            </div>
+            <div style={styles.containerCentered}>
+              <RaisedButton label='Default'/>
+            </div>
+            <div style={styles.containerCentered}>
+              <FlatButton label='Secondary' secondary={true} />
+            </div>
+            <div style={styles.containerCentered}>
+              <FlatButton label='Primary'  primary={true}/>
+            </div>
+            <div style={styles.containerCentered}>
+              <FlatButton label='Default'/>
+            </div>
+          </div>
 
-  addLogBox: function(e) {
+          <div style={styles.group}>
+            <div style={styles.container}>
+              <Checkbox
+                name='checkboxName1'
+                value='checkboxValue1'
+                label='checkbox' />
+              <Checkbox
+                name='checkboxName2'
+                value='checkboxValue2'
+                label='disabled checkbox'
+                disabled={true} />
+            </div>
+            <div style={styles.container}>
+              <RadioButtonGroup
+                name='shipSpeed'
+                defaultSelected='usd'>
+                  <RadioButton
+                    value='usd'
+                    label='USD' />
+                  <RadioButton
+                    value='euro'
+                    label='Euro'
+                    defaultChecked={true} />
+                 <RadioButton
+                    value='mxn'
+                    label='MXN'
+                    disabled={true}/>
+              </RadioButtonGroup>
+            </div>
+            <div style={styles.container}>
+              <Toggle
+                name='toggleName1'
+                value='toggleValue1'
+                label='toggle' />
+              <Toggle
+                name='toggleName2'
+                value='toggleValue2'
+                label='disabled toggle'
+                defaultToggled={true}
+                disabled={true} />
+            </div>
+            <div style={styles.container}>
+
+              <Menu style={styles.menu}>
+                <MenuItem primaryText='Maps' />
+                <MenuItem primaryText='Books' />
+                <MenuItem primaryText='Flights' />
+                <MenuItem primaryText='Apps' />
+              </Menu>
+            </div>
+          </div>
+
+          <div style={StylePropable.mergeStyles(styles.group, {marginTop: 0})}>
+            <div style={styles.container}>
+              <TextField
+                style={styles.textfield}
+                hintText='TextField'/>
+            </div>
+            <div style={styles.container}>
+              <DatePicker
+                hintText='Landscape Dialog'
+                mode='landscape'
+                style={{width: '100%'}}/>
+            </div>
+            <div style={styles.container}>
+              <DropDownMenu menuItems={menuItems} style={{width: '100%'}}/>
+           </div>
+          </div>
+
+          <div style={styles.groupSlider}>
+            <Slider style={styles.slider} name='slider2' defaultValue={0.5} />
+          </div>
+
+          <div style={styles.group}>
+            <div style={styles.containerCentered}>
+              <FlatButton label='View Dialog' onTouchTap={this.handleTouchTapDialog} />
+              <Dialog ref='dialog' title='Dialog With Standard Actions' actions={standardActions}>
+                The actions in this window are created from the json that&#39;s passed in.
+              </Dialog>
+            </div>
+          </div>
+
+          <div style={styles.group}>
+            <div style={styles.containerCentered}>
+              <FlatButton
+                  onTouchTap={this.handleClickNav}
+                  label='View LeftNav' />
+              <LeftNav ref='leftNav' docked={false} menuItems={menuItemsNav} />
+            </div>
+          </div>
+
+          <div style={styles.group}>
+            <div style={styles.containerCentered}>
+              <FlatButton
+                onTouchTap={this.handleClickSnackbar}
+                label='View Snackbar' />
+              <Snackbar
+                ref='snackbar'
+                message='This is a snackbar'
+                action='Got It!'
+                onActionTouchTap={this.handleAction}/>
+            </div>
+          </div>
+      </ClearFix>
+
+        <ClearFix>
+          <h2>Status for live</h2>
+          {boxesLive}
+        </ClearFix>
+
+        <ClearFix>
+          <h2>Status for campaign</h2>
+          {boxesCampaign}
+        </ClearFix>
+
+        <ClearFix>
+
+          <RaisedButton label='Session Ended Dialog' ref='btSessionEnded' primary={true} onClick={this.handleClickSessionEnded} />
+          <SessionEndedDialog ref='sessionEndedDialog' />
+
+        </ClearFix>
+
+        <ClearFix>
+        <AvatarProgress
+          progress={0}
+          icon={<FontIcon className='mdi mdi-android' />}
+          color={styles.avatarProgressAndro.color}
+          backgroundColor={styles.avatarProgressAndro.backgroundColor}
+          foregroundColor={styles.avatarProgressAndro.foregroundColor} />
+
+        <AvatarProgress
+          style={{marginLeft:'10px'}}
+          progress={12}
+          icon={<FontIcon className='mdi mdi-android' />}
+          color={styles.avatarProgressAndro.color}
+          backgroundColor={styles.avatarProgressAndro.backgroundColor}
+          foregroundColor={styles.avatarProgressAndro.foregroundColor} />
+
+        <AvatarProgress
+          style={{marginLeft:'10px'}}
+          progress={25}
+          icon={<FontIcon className='mdi mdi-android' />}
+          color={styles.avatarProgressAndro.color}
+          backgroundColor={styles.avatarProgressAndro.backgroundColor}
+          foregroundColor={styles.avatarProgressAndro.foregroundColor} />
+
+        <AvatarProgress
+          style={{marginLeft:'10px'}}
+          progress={50}
+          icon={<FontIcon className='mdi mdi-android' />}
+          color={styles.avatarProgressAndro.color}
+          backgroundColor={styles.avatarProgressAndro.backgroundColor}
+          foregroundColor={styles.avatarProgressAndro.foregroundColor} />
+
+        <AvatarProgress
+          style={{marginLeft:'10px'}}
+          progress={75}
+          icon={<FontIcon className='mdi mdi-android' />}
+          color={styles.avatarProgressAndro.color}
+          backgroundColor={styles.avatarProgressAndro.backgroundColor}
+          foregroundColor={styles.avatarProgressAndro.foregroundColor} />
+
+        <AvatarProgress
+          style={{marginLeft:'10px'}}
+          progress={100}
+          icon={<FontIcon className='mdi mdi-android' />}
+          color={styles.avatarProgressAndro.color}
+          backgroundColor={styles.avatarProgressAndro.backgroundColor}
+          foregroundColor={styles.avatarProgressAndro.foregroundColor} />
+
+        </ClearFix>
+
+        <ClearFix>
+
+        <Paper style={styles.spacing}>
+
+          <h2>Results</h2>
+
+          <TestResultsBox results={results} />
+
+          <br />
+
+          <div style={styles.center} >
+          <FlatButton
+            label='Start new campaign'
+            primary={true} />
+          </div>
+
+        </Paper>
+
+        </ClearFix>
+
+        <ClearFix>
+
+        <Paper style={styles.spacing} zDepth={0} >
+
+          <FlatButton
+            label='Add log line'
+            primary={true}
+            onClick={this.addLogBox} />
+
+          <h2>LogBox</h2>
+
+          {boxesLogBox} <br />
+          <div style={{width: '547px'}}>
+          <LogBox>
+          {logBoxRows}
+          </LogBox>
+          </div>
+
+        </Paper>
+
+        </ClearFix>
+
+        <ClearFix>
+
+          <h2>Live Sessions</h2>
+
+          {avmsRendered}
+
+        </ClearFix>
+
+        <ClearFix>
+
+          <h2>Info Boxes</h2>
+
+          {infoBoxes}
+
+        </ClearFix>
+
+        </div>
+        );
+  }
+
+  addLogBox(e) {
     console.log(arguments);
     e.preventDefault();
-    var n = (this.state.logbox.length % logBoxRef.length ) +1;
-    this.setState( {logbox: logBoxRef.slice(0, n) } );
-  },
+    const n = (this.state.logbox.length % logBoxRef.length) + 1;
+    this.setState({logbox: logBoxRef.slice(0, n)});
+  }
 
   // Toggles between light and dark themes
-  onTabChange: function() {
+  onTabChange() {
     if (this.state.isThemeDark) {
       ThemeManager.setTheme(ThemeManager.types.LIGHT);
     } else {
       ThemeManager.setTheme(ThemeManager.types.DARK);
     }
     this.setState({isThemeDark: !this.state.isThemeDark});
-  },
+  }
 
-  handleClickSessionEnded: function() {
+  handleClickSessionEnded() {
     this.refs.sessionEndedDialog.show();
-  },
+  }
 
-  handleAction: function() {
+  handleAction() {
     this.refs.snackbar.dismiss();
-  },
+  }
 
-  handleClickNav: function() {
+  handleClickNav() {
     this.refs.leftNav.toggle();
-  },
+  }
 
-  handleClickSnackbar: function() {
+  handleClickSnackbar() {
     this.refs.snackbar.show();
-  },
+  }
 
-  handleTouchTapDialog: function() {
+  handleTouchTapDialog() {
     this.refs.dialog.show();
   }
-});
 
+};
 
 ThemesPage.contextTypes = {
   router: React.PropTypes.func,
-  muiTheme: React.PropTypes.object
-}
+  muiTheme: React.PropTypes.object,
+};
 
 module.exports = ThemesPage;
