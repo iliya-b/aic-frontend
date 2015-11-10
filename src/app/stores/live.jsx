@@ -78,6 +78,24 @@ const LiveStore = Reflux.createStore({
     this.updateState();
   },
 
+  // Live list
+  onStart() {
+    this.state.live.status = 'LIVE_STATUS_VMSTARTING';
+    this.updateState();
+  },
+
+  onStartCompleted(avm) {
+    this.state.live.avm = avm;
+    this.state.live.status = 'LIVE_STATUS_VMSTARTED';
+    this.updateState();
+  },
+
+  onStartFailure(errorMessage) {
+    this.state.live.status = 'LIVE_STATUS_VMSTART_FAILED';
+    this.state.live.message = errorMessage;
+    this.updateState();
+  },
+
   // Live check
   onLiveCheck() {
     this.addLogMessage('Searching session.');
@@ -282,6 +300,10 @@ const LiveStore = Reflux.createStore({
     LIVE_STATUS_LISTING: {typeName: 'list', newStatus: 'doing'},
     LIVE_STATUS_LISTED: {typeName: 'list', newStatus: 'success'},
     LIVE_STATUS_LIST_FAILED: {typeName: 'list', newStatus: 'fail'},
+
+    LIVE_STATUS_VMSTARTING: {typeName: 'vmstart', newStatus: 'doing'},
+    LIVE_STATUS_VMSTARTED: {typeName: 'vmstart', newStatus: 'success'},
+    LIVE_STATUS_VMSTART_FAILED: {typeName: 'vmstart', newStatus: 'fail'},
 
     LIVE_STATUS_CHECKING: {typeName: 'search', newStatus: 'doing'},
     LIVE_STATUS_CHECK_FOUND: {typeName: 'search', newStatus: 'success'},

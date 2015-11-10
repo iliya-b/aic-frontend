@@ -125,15 +125,30 @@ var BackendAPI = {
 
     // Make request using jQuery ajax for now, TODO: change to a lightweight library
     // debuggerGoby('ajaxOptions', ajaxOptions);
-    return $.ajax(ajaxOptions)
-    .always(function(data, textStatus, errorThrown) {
-      // User is not logged in
-      if (options.authRequired && textStatus === 'error' && errorThrown === 'Unauthorized') {
-        // TODO: Must be changed to state etc...
-        var { AuthActions } = require('goby/actions');
-        AuthActions.logout.completed();
-      }
+    // return $.ajax(ajaxOptions)
+    // .always(function(data, textStatus, errorThrown) {
+    //   // User is not logged in
+    //   if (options.authRequired && textStatus === 'error' && errorThrown === 'Unauthorized') {
+    //     // TODO: Must be changed to state etc...
+    //     var { AuthActions } = require('goby/actions');
+    //     AuthActions.logout.completed();
+    //   }
+    // });
+
+    return new Promise(function(resolve) {
+      $.ajax(ajaxOptions)
+      .always(function(data, textStatus, errorThrown) {
+        // User is not logged in
+        if (options.authRequired && textStatus === 'error' && errorThrown === 'Unauthorized') {
+          // TODO: Must be changed to state etc...
+          var { AuthActions } = require('goby/actions');
+          AuthActions.logout.completed();
+        }
+        console.log('arguments ajax', arguments);
+        resolve(data, textStatus, errorThrown);
+      });
     });
+
   },
 
   apiCallAuth: function(options){

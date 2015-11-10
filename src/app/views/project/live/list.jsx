@@ -16,17 +16,24 @@ const debuggerGoby = require('debug')('AiC:View:Live:List');
 // APP
 const {
   AppUtils,
-  MachineCardLive,
-  InfoBox,
+  LiveMachineList,
 } = require('goby/components');
 const {LiveStore} = require('goby/stores');
-const {LiveActions} = require('goby/actions');
+const {
+  LiveActions,
+  LiveListActions,
+} = require('goby/actions');
+
+let projectId;
 
 const LiveList = class extends React.Component {
 
   constructor(props) {
     super(props);
     this._onStateChange = this._onStateChange.bind(this);
+    this._onStartSession = this._onStartSession.bind(this);
+    this._onEnterSession = this._onEnterSession.bind(this);
+    this._onStopSession = this._onStopSession.bind(this);
     this.state = {};
   }
 
@@ -36,47 +43,53 @@ const LiveList = class extends React.Component {
   //                                                      androId: 'test'} );
   // }
 
-  render() {
-    let avmsRendered = '';
-    if (this.state.live) {
-      if (this.state.live.status === 'LIVE_STATUS_LISTING' || this.state.live.status === 'LIVE_STATUS_INITIALIZED') {
-        avmsRendered = <InfoBox styleType={InfoBox.STYLE_BIG} showIcon={true} boxType={InfoBox.LOADING}>Loading sessions...</InfoBox>;
-      }
-      if (this.state.live.status === 'LIVE_STATUS_LISTED') {
-        if (this.state.live.avms && this.state.live.avms.length) {
-          avmsRendered = this.state.live.avms.map((currentValue, index) => {
-            return <MachineCardLive {...currentValue} key={index} />;
-          });
-        } else {
-          avmsRendered = <InfoBox styleType={InfoBox.STYLE_BIG} showIcon={true} boxType={InfoBox.INFO}>No sessions found. You can start a new session.</InfoBox>;
-        }
-      }
-    }
+  _onStartSession() {
+    LiveActions.start();
+  }
 
+  _onEnterSession(avmId) {
+    console.log('enter session', arguments);
+    this.context.router.transitionTo('live-session', {
+      projectId,
+      androId: avmId,
+    });
+  }
+
+  _onStopSession(avmId) {
+    LiveActions.stop(avmId);
+  }
+
+  render() {
     return <div>
 
               <h2>Live Sessions</h2>
 
               <CardActions>
 
-              <RaisedButton linkButton={true} href="/" primary={true} label="Start new session" />
+              <RaisedButton linkButton={true} primary={true} label="Start new session" onClick={this._onStartSession} />
 
               </CardActions>
 
-              {avmsRendered}
+              <LiveMachineList actionEnter={this._onEnterSession} actionStop={this._onStopSession} />
 
             </div>;
   }
 
   _onStateChange(state) {
     debuggerGoby('changing state', this.state.live ? this.state.live.status : '', state);
+    if (state.live.status === 'LIVE_STATUS_VMSTARTED' && state.live.avm.avm_id) {
+      // this._onEnterSession(state.live.avm.avm_id);
+      LiveListActions.list();
+    }
+    if (state.live.status === 'LIVE_STATUS_INITIALIZED') {
+      LiveListActions.list();
+    }
     this.setState(state);
   }
 
   componentDidMount() {
-    const projectId = AppUtils.getProjectIdFromRouter(this.context.router);
+    projectId = AppUtils.getProjectIdFromRouter(this.context.router);
     this.unsubscribe = LiveStore.listen(this._onStateChange);
-    LiveActions.list();
     LiveActions.setProjectId(projectId);
   }
 

@@ -18,7 +18,8 @@ const LiveActions = Reflux.createActions({
   setDelayedRotation: {},
   socketMessage: {},
   logMessage: {},
-  list: {children: ['completed', 'failure']},
+  start: {children: ['completed', 'failure']},
+  stop: {children: ['completed', 'failure']},
   liveCheck: {children: ['completed', 'failure']},
   liveStart: {children: ['completed', 'failure']},
   liveConnect: {children: ['completed', 'failure']},
@@ -34,26 +35,47 @@ const LiveActions = Reflux.createActions({
 // Listeners for asynchronous Backend API calls
 
 LiveActions.setProjectId.listen(function () {
-  LiveActions.tryLoadNoVNC((res) => {
+  LiveActions.tryLoadNoVNC(res => {
     if (res.success) {
       this.completed();
-    }else{
+    } else {
       this.failure(res.errorMessage);
     }
   });
 });
 
-LiveActions.list.listen(function () {
-  debuggerGoby('list called');
-  BackendAPI.liveList()
-  .then( (res) => {
-    debuggerGoby('back');
-    if ( res.hasOwnProperty('avms') ) {
-      this.completed(res.avms);
-    }else{
-      this.failure('It was not possible to list live sessions.');
+LiveActions.start.listen(function () {
+  debuggerGoby('start called');
+  BackendAPI.liveStart()
+  .then(res => {
+    debuggerGoby('start back');
+    debuggerGoby(arguments);
+    if (res.hasOwnProperty('avm_id')) {
+      this.completed(res);
+    } else {
+      this.failure('It was not possible to start live session.');
     }
   });
+});
+
+LiveActions.stop.listen(function (avmId) {
+  debuggerGoby('stop called');
+  BackendAPI.liveStop(avmId)
+  .then((data, textStatus, errorThrown) => {
+    debuggerGoby('stop back');
+    debuggerGoby(arguments);
+  });
+  // [undefined, "nocontent", Object]0: undefined1: "nocontent"2: Objectabort: (a)always: ()complete: ()done: ()error: ()fail: ()getAllResponseHeaders: ()getResponseHeader: (a)overrideMimeType: (a)pipe: ()progress: ()promise: (a)readyState: 4responseText: ""setRequestHeader: (a,b)state: ()status: 204statusCode: (a)statusText: "No Content"success: ()then: ()__proto__: Objectcallee: (...)get callee: ThrowTypeError()set callee: ThrowTypeError()caller: (...)get caller: ThrowTypeError()set caller: ThrowTypeError()length: 3Symbol(Symbol.iterator): values()__proto__: Object
+  // [Object, "error", "Not Found"] +1ms
+  // .then(res => {
+  //   debuggerGoby('stop back');
+  //   debuggerGoby(res);
+  //   if (res.hasOwnProperty('avm_id')) {
+  //     this.completed(res);
+  //   } else {
+  //     this.failure('It was not possible to stop live session.');
+  //   }
+  // });
 });
 
 LiveActions.liveCheck.listen(function () {

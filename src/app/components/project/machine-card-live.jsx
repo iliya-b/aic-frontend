@@ -1,60 +1,54 @@
 'use strict';
 
 // React
-var React = require('react');
+const React = require('react');
 
 // Material design
-var mui = require('material-ui');
-var { Spacing } = mui.Styles;
-var { Paper,
-      Card,
-      CardHeader,
-      CardText,
-      CardActions,
-      Avatar,
-      FontIcon,
-      Table,
-      TableHeader,
-      TableHeaderColumn,
-      TableBody,
-      TableRow,
-      TableRowColumn,
-      RaisedButton, } = mui;
+const mui = require('material-ui');
+const {
+  CardText,
+  CardActions,
+  RaisedButton,
+} = mui;
 
 // APP
-var MachineCard = require('goby/components/project/machine-card.jsx');
-var CodeBox = require('goby/components/shared/code-box.jsx');
+const MachineCard = require('goby/components/project/machine-card.jsx');
+const CodeBox = require('goby/components/shared/code-box.jsx');
 
-var MachineCardLive = class extends React.Component{
+const MachineCardLive = class extends React.Component {
 
   render() {
+    const state = this.props;
 
-    var state = this.props;
-
-    var availableButtons = [
+    console.log('card', state.avm_id);
+    const availableButtons = [
       {
         action: 'enter',
-        button: <RaisedButton linkButton={true} href="#" primary={true} label="Enter Session" key={'enter'} />
+        button: <RaisedButton linkButton={true} primary={true} label="Enter Session" key={'enter'} onClick={state.actionEnter ? state.actionEnter.bind(null, state.avm_id) : null} />,
       },
       {
         action: 'stop',
-        button: <RaisedButton linkButton={true} href="#" primary={true} label="Stop Session" key={'stop'} />
-      }
+        button: <RaisedButton linkButton={true} primary={true} label="Stop Session" key={'stop'} onClick={state.actionStop ? state.actionStop.bind(null, state.avm_id) : null} />,
+      },
     ];
 
-    var enabledButtons = {
+    const enabledButtons = {
       READY: ['enter', 'stop'],
       CREATING: ['enter'],
       CREATE_FAILED: ['stop'],
     };
 
-    var buttons = availableButtons.filter(function(bt){ return enabledButtons[state.avm_status].indexOf(bt.action) !== -1; });
-    var buttonBox = buttons ? <CardActions>{buttons.map(function(bt){ return bt.button; })}</CardActions> : '';
+    const buttons = availableButtons.filter(bt => {
+      return enabledButtons[state.avm_status].indexOf(bt.action) !== -1;
+    });
 
-    var failedBox = state.avm_status === 'CREATE_FAILED' ? <CardText>
-      <CodeBox style={{color:this.context.muiTheme.palette.errorColor, overflowX: 'initial'}}>{state.avm_status_reason}</CodeBox>
-    </CardText>
-    : '';
+    const buttonBox = buttons ? <CardActions>{buttons.map(bt => {
+      return bt.button;
+    })}</CardActions> : '';
+
+    const failedBox = state.avm_status === 'CREATE_FAILED' ? <CardText>
+      <CodeBox style={{color: this.context.muiTheme.palette.errorColor, overflowX: 'initial'}}>{state.avm_status_reason}</CodeBox>
+    </CardText> : '';
 
     // var failedBox = '';//<CodeBox style={{color:this.context.muiTheme.palette.errorColor}}>{state.avm_status_reason}</CodeBox>
 
@@ -65,14 +59,13 @@ var MachineCardLive = class extends React.Component{
     {failedBox}
 
     </MachineCard>;
-
   }
 
 };
 
 MachineCardLive.contextTypes = {
   muiTheme: React.PropTypes.object,
-  router: React.PropTypes.func
-}
+  router: React.PropTypes.func,
+};
 
 module.exports = MachineCardLive;
