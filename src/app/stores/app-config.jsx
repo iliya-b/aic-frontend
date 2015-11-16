@@ -1,37 +1,42 @@
 'use strict';
 
 // Reflux
-var Reflux = require('reflux');
+const Reflux = require('reflux');
+
+// Vendor
+const debuggerGoby = require('debug')('AiC:Store:AppConfig');
 
 // APP
-var { AppConfigActions } = require('goby/actions');
+const {AppConfigActions} = require('goby/actions');
 
 // Store
-var AppConfigStore =  Reflux.createStore({
+const AppConfigStore = Reflux.createStore({
 
    // Base Store //
 
   listenables: AppConfigActions,
 
-  init: function() {
+  init() {
     this.state = {};
     this.state.config = {};
   },
 
   // Actions //
 
-  onLoad: function(){
+  onLoad() {
     //
   },
 
-  onLoadCompleted: function(data){
+  onLoadCompleted(data) {
+    debuggerGoby('onLoadCompleted', data);
     this.state.config = data;
     this.state.config.isLoaded = true;
     this.state.config.hasErrors = false;
     this.updateState();
   },
 
-  onLoadFailure: function(error){
+  onLoadFailure(error) {
+    debuggerGoby('onLoadFailure', error);
     this.state.config.isLoaded = true;
     this.state.config.hasErrors = true;
     this.state.config.error = error;
@@ -40,12 +45,10 @@ var AppConfigStore =  Reflux.createStore({
 
   // Methods //
 
-  updateState: function(){
-    this.trigger( this.state );
+  updateState() {
+    this.trigger(this.state);
   },
 
 });
 
-
 module.exports = AppConfigStore;
-
