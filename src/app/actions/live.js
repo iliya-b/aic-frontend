@@ -3,16 +3,17 @@
 // Reflux
 const Reflux = require('reflux');
 
-// APP
-const BackendAPI = require('goby/stores/backend-api.jsx');
-
 // Vendor
 const debuggerGoby = require('debug')('AiC:Live:Actions');
+
+// APP
+const BackendAPI = require('goby/stores/backend-api.jsx');
 
 // Actions
 const LiveActions = Reflux.createActions({
   setProjectId: {children: ['completed', 'failure']},
   loadState: {},
+  loadInfo: {children: ['completed', 'failure']},
   setState: {},
   liveReset: {},
   setDelayedRotation: {},
@@ -61,8 +62,12 @@ LiveActions.start.listen(function () {
 LiveActions.stop.listen(function (avmId) {
   debuggerGoby('stop called');
   BackendAPI.liveStop(avmId)
-  .then((data, textStatus, errorThrown) => {
+  .then(() => {
     debuggerGoby('stop back');
+    debuggerGoby(arguments);
+  })
+  .catch(() => {
+    debuggerGoby('stop back catch');
     debuggerGoby(arguments);
   });
   // [undefined, "nocontent", Object]0: undefined1: "nocontent"2: Objectabort: (a)always: ()complete: ()done: ()error: ()fail: ()getAllResponseHeaders: ()getResponseHeader: (a)overrideMimeType: (a)pipe: ()progress: ()promise: (a)readyState: 4responseText: ""setRequestHeader: (a,b)state: ()status: 204statusCode: (a)statusText: "No Content"success: ()then: ()__proto__: Objectcallee: (...)get callee: ThrowTypeError()set callee: ThrowTypeError()caller: (...)get caller: ThrowTypeError()set caller: ThrowTypeError()length: 3Symbol(Symbol.iterator): values()__proto__: Object
@@ -76,6 +81,26 @@ LiveActions.stop.listen(function (avmId) {
   //     this.failure('It was not possible to stop live session.');
   //   }
   // });
+});
+
+LiveActions.loadInfo.listen(function (avmId) {
+  debuggerGoby('load info called');
+  BackendAPI.liveList()
+  .then(res => {
+    debuggerGoby('back');
+    if (res.hasOwnProperty('avms')) {
+      const avmInfo = res.avms.filter(currentValue => {
+        return currentValue.avm_id === avmId;
+      });
+      if (avmInfo.length) {
+        this.completed(avmInfo[0]);
+      } else {
+        this.failure('It was not possible to find live session.');
+      }
+    } else {
+      this.failure('It was not possible to list live sessions.');
+    }
+  });
 });
 
 LiveActions.liveCheck.listen(function () {

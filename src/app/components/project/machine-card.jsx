@@ -30,11 +30,11 @@ const MachineCard = class extends React.Component {
       CREATE_FAILED: MachineIcon.ERROR,
     };
 
-    const statusMessage = {
-      READY: 'success',
-      CREATING: 'creating',
-      CREATE_FAILED: 'error',
-    };
+    const statusMessage = {};
+    statusMessage[MachineCard.VMSTATE.READY] = 'success';
+    statusMessage[MachineCard.VMSTATE.CREATING] = 'creating';
+    statusMessage[MachineCard.VMSTATE.FAILED] = 'error';
+    statusMessage[MachineCard.VMSTATE.DELETING] = 'deleting';
 
     const machineState = <MachineIcon status={statusIcon[this.props.avm_status]} />;
 
@@ -57,6 +57,16 @@ const MachineCard = class extends React.Component {
   }
 
 };
+
+MachineCard.VMSTATE = {};
+MachineCard.VMSTATE.READY = 'READY';
+MachineCard.VMSTATE.CREATING = 'CREATING';
+MachineCard.VMSTATE.FAILED = 'CREATE_FAILED';
+MachineCard.VMSTATE.DELETING = 'DELETING';
+
+MachineCard.ACTIONS = {};
+MachineCard.ACTIONS.ENTER = 'enter';
+MachineCard.ACTIONS.STOP = 'stop';
 
 MachineCard.contextTypes = {
   muiTheme: React.PropTypes.object,

@@ -10,4 +10,5 @@ module.exports = {
   CampaignStore: require('./campaign.jsx'),
   BackendAPI: require('./backend-api.jsx'),
   AppConfigStore: require('./app-config.jsx'),
+  PollingStore: require('./polling.jsx'),
 };

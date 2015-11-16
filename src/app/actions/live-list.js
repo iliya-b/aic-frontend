@@ -3,11 +3,11 @@
 // Reflux
 const Reflux = require('reflux');
 
-// Vendors
-const debuggerGoby = require('debug')('AiC:LiveList:Actions');
+// // Vendors
+// const debuggerGoby = require('debug')('AiC:LiveList:Actions');
 
-// APP
-const BackendAPI = require('goby/stores/backend-api.jsx');
+// // APP
+// const BackendAPI = require('goby/stores/backend-api.jsx');
 
 // Actions
 const LiveListActions = Reflux.createActions({
@@ -16,17 +16,17 @@ const LiveListActions = Reflux.createActions({
 
 // Listeners for asynchronous Backend API calls
 
-LiveListActions.list.listen(function () {
-  debuggerGoby('list called');
-  BackendAPI.liveList()
-  .then(res => {
-    debuggerGoby('back');
-    if (res.hasOwnProperty('avms')) {
-      this.completed(res.avms);
-    } else {
-      this.failure('It was not possible to list live sessions.');
-    }
-  });
-});
+// LiveListActions.list.listen(function () {
+//   debuggerGoby('list called');
+//   BackendAPI.liveList()
+//   .then(res => {
+//     debuggerGoby('back');
+//     if (res.hasOwnProperty('avms')) {
+//       this.completed(res.avms);
+//     } else {
+//       this.failure('It was not possible to list live sessions.');
+//     }
+//   });
+// });
 
 module.exports = LiveListActions;

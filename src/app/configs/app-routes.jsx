@@ -1,5 +1,9 @@
 'use strict';
 
+// React
+// Must be define because Route depends on it
+const React = require('react');
+
 // Router
 const Router = require('react-router');
 const Route = Router.Route;

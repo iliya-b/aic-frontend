@@ -1,24 +1,24 @@
-
-var AppUtils = {
+/* global $ */
+const AppUtils = {
 
   text: {
     fieldIsRequired: 'This field is required',
   },
 
-  fieldIsRequired: function (field) {
-    var isInvalid = AppUtils.isEmpty(field.getValue());
-    return isInvalid ? AppUtils.text.fieldIsRequired : '' ;
+  fieldIsRequired(field) {
+    const isInvalid = AppUtils.isEmpty(field.getValue());
+    return isInvalid ? AppUtils.text.fieldIsRequired : '';
   },
 
-  isEmpty: function (textField) {
-    return ( $.trim(textField) === '' );
+  isEmpty(textField) {
+    return ($.trim(textField) === '');
   },
 
-  extend: function () {
-    var newObj = {};
-    for (var i = 0; i < arguments.length; i++) {
-      var obj = arguments[i];
-      for (var key in obj) {
+  extend() {
+    const newObj = {};
+    for (let i = 0; i < arguments.length; i++) {
+      const obj = arguments[i];
+      for (const key in obj) {
         if (obj.hasOwnProperty(key)) {
           newObj[key] = obj[key];
         }
@@ -27,33 +27,32 @@ var AppUtils = {
     return newObj;
   },
 
-  getProjectIdFromRouter: function(router) {
-    var routerParams = router.getCurrentParams();
-    if (routerParams.hasOwnProperty('projectId')) {
-      return routerParams.projectId;
-    } else {
-      return null; // TODO: error handling
-    }
+  getProjectIdFromRouter(router) {
+    const routerParams = router.getCurrentParams();
+    return routerParams.hasOwnProperty('projectId') ? routerParams.projectId : null;
+    // TODO: error handling
   },
 
-  capitalize: function(word) {
+  getAVMIdFromRouter(router) {
+    const routerParams = router.getCurrentParams();
+    return routerParams.hasOwnProperty('androId') ? routerParams.androId : null;
+    // TODO: error handling
+  },
+
+  capitalize(word) {
     return word.charAt(0).toUpperCase() + word.slice(1);
   },
 
-  pluralize: function (count, word) {
-    return count === 1 ? word : word + 's';
+  pluralize(count, word) {
+    return count === 1 ? word : `${word}s`;
   },
 
-  getDate: function (){
+  getDate() {
     return new Date().toISOString()
       .replace(/T/, ' ')
-      .replace(/Z/, '')
+      .replace(/Z/, '');
   },
 
-
 };
-
-
-
 
 module.exports = AppUtils;

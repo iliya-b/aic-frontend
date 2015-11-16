@@ -21,7 +21,7 @@ const {
 const {LiveStore} = require('goby/stores');
 const {
   LiveActions,
-  LiveListActions,
+  PollingActions,
 } = require('goby/actions');
 
 let projectId;
@@ -45,6 +45,7 @@ const LiveList = class extends React.Component {
 
   _onStartSession() {
     LiveActions.start();
+    PollingActions.liveList();
   }
 
   _onEnterSession(avmId) {
@@ -57,6 +58,7 @@ const LiveList = class extends React.Component {
 
   _onStopSession(avmId) {
     LiveActions.stop(avmId);
+    PollingActions.liveList();
   }
 
   render() {
@@ -77,12 +79,12 @@ const LiveList = class extends React.Component {
 
   _onStateChange(state) {
     debuggerGoby('changing state', this.state.live ? this.state.live.status : '', state);
-    if (state.live.status === 'LIVE_STATUS_VMSTARTED' && state.live.avm.avm_id) {
-      // this._onEnterSession(state.live.avm.avm_id);
-      LiveListActions.list();
-    }
+    // if (state.live.status === 'LIVE_STATUS_VMSTARTED' && state.live.avm.avm_id) {
+    //   // this._onEnterSession(state.live.avm.avm_id);
+    //   LiveListActions.list();
+    // }
     if (state.live.status === 'LIVE_STATUS_INITIALIZED') {
-      LiveListActions.list();
+      PollingActions.liveList();
     }
     this.setState(state);
   }

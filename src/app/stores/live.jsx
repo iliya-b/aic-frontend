@@ -44,6 +44,23 @@ const LiveStore = Reflux.createStore({
     this.updateState();
   },
 
+  // Load info
+  onLoadInfo() {
+    // this.updateState();
+  },
+
+  onLoadInfoCompleted(avmInfo) {
+    // avmInfo.avm_novnc_host
+    LiveActions.liveConnect(window.GobyAppGlobals.config.backend.host, avmInfo.avm_novnc_port);
+  },
+
+  onLoadInfoFailure(errorMessage) {
+    this.state.live.message = errorMessage;
+    this.state.live.status = 'LIVE_STATUS_INITIAL_FAILED';
+    this.updateState();
+  },
+
+  // Load State
   onLoadState() {
     this.updateState();
   },

@@ -23,20 +23,20 @@ const MachineCardLive = class extends React.Component {
     console.log('card', state.avm_id);
     const availableButtons = [
       {
-        action: 'enter',
-        button: <RaisedButton linkButton={true} primary={true} label="Enter Session" key={'enter'} onClick={state.actionEnter ? state.actionEnter.bind(null, state.avm_id) : null} />,
+        action: MachineCard.ACTIONS.ENTER,
+        button: <RaisedButton linkButton={true} primary={true} label="Enter Session" key={MachineCard.ACTIONS.ENTER} onClick={state.actionEnter ? state.actionEnter.bind(null, state.avm_id) : null} />,
       },
       {
-        action: 'stop',
-        button: <RaisedButton linkButton={true} primary={true} label="Stop Session" key={'stop'} onClick={state.actionStop ? state.actionStop.bind(null, state.avm_id) : null} />,
+        action: MachineCard.ACTIONS.STOP,
+        button: <RaisedButton linkButton={true} primary={true} label="Stop Session" key={MachineCard.ACTIONS.STOP} onClick={state.actionStop ? state.actionStop.bind(null, state.avm_id) : null} />,
       },
     ];
 
-    const enabledButtons = {
-      READY: ['enter', 'stop'],
-      CREATING: ['enter'],
-      CREATE_FAILED: ['stop'],
-    };
+    const enabledButtons = {};
+    enabledButtons[MachineCard.VMSTATE.READY] = [MachineCard.ACTIONS.ENTER, MachineCard.ACTIONS.STOP];
+    enabledButtons[MachineCard.VMSTATE.CREATING] = [MachineCard.ACTIONS.ENTER];
+    enabledButtons[MachineCard.VMSTATE.FAILED] = [MachineCard.ACTIONS.STOP];
+    enabledButtons[MachineCard.VMSTATE.DELETING] = [];
 
     const buttons = availableButtons.filter(bt => {
       return enabledButtons[state.avm_status].indexOf(bt.action) !== -1;
@@ -46,7 +46,7 @@ const MachineCardLive = class extends React.Component {
       return bt.button;
     })}</CardActions> : '';
 
-    const failedBox = state.avm_status === 'CREATE_FAILED' ? <CardText>
+    const failedBox = state.avm_status === MachineCard.VMSTATE.FAILED ? <CardText>
       <CodeBox style={{color: this.context.muiTheme.palette.errorColor, overflowX: 'initial'}}>{state.avm_status_reason}</CodeBox>
     </CardText> : '';
 
