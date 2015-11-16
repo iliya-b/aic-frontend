@@ -61,20 +61,25 @@ const LiveSession = class extends React.Component {
       },
     };
 
-    const logBoxRows = (this.state && this.state.live) ? this.state.live.logBox.map( function(v,i){ return <LogBoxRow key={i} time={v.time}>{v.message}</LogBoxRow> }  ) : null;
+    const logBoxRows = null;
 
-    return  <div>
+    if (this.state && this.state.live) {
+      this.state.live.logBox.map((v, i) => {
+        return <LogBoxRow key={i} time={v.time}>{v.message}</LogBoxRow>;
+      });
+    }
+
+    return <div>
 
               <div style={style.infoArea}>
-                <AreaStatus typeName='live' /><br />
-                <div style={{width:547}}>
+                <AreaStatus typeName="live" /><br />
+                <div style={{width: 547}}>
                   <LogBox>
                   {logBoxRows}
                   </LogBox>
                 </div>
               </div>
 
-              {/* Debugging */}
               {this.context.appConfig.debug ? (
               <div>
                 <Paper style={style.paperCenter}>
@@ -131,7 +136,6 @@ const LiveSession = class extends React.Component {
               </div>
               ) : null}
 
-              {/* Live begin */}
               {this.state && this.state.live.status === 'LIVE_STATUS_INITIALIZED' ? (
                 <Paper style={style.paperCenter}>
                   <FlatButton
@@ -142,7 +146,6 @@ const LiveSession = class extends React.Component {
                 </Paper>
               ) : null}
 
-              {/* Live failed */}
               {this.state && this.state.live.status.substr(-6) === 'FAILED' ? (
               <Paper style={style.paperCenter}>
 
@@ -153,8 +156,7 @@ const LiveSession = class extends React.Component {
               </Paper>
               ) : null}
 
-              {/* Live started */}
-              {this.state && (this.state.live.status === 'LIVE_STATUS_CONNECTING' || this.state.live.status === 'LIVE_STATUS_CONNECTED') ? (
+              {this.state && (this.state.live.status === 'LIVE_STATUS_CONNECTING' || this.state.live.status === 'LIVE_STATUS_CONNECTED') ? (
               <Paper style={style.paperLive}>
 
                     {this.state.live.status === 'LIVE_STATUS_CONNECTING' ? (
@@ -183,7 +185,6 @@ const LiveSession = class extends React.Component {
               </Paper>
               ) : null}
 
-              {/* Live stopped */}
               {this.state && (this.state.live.status === 'LIVE_STATUS_STOPPED') ? (
               <Paper style={style.paperCenter}>
 

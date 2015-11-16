@@ -1,27 +1,21 @@
 'use strict';
 
 // React
-var React = require('react');
-
-// Material design
-var mui = require('material-ui');
-var { AppBar,
-      IconButton } = mui;
+const React = require('react');
 
 // Router
-var Router = require('react-router');
-var { RouteHandler } = Router;
+const Router = require('react-router');
+const {RouteHandler} = Router;
 
 // APP
-var LiveList = require('./list.jsx');
+const LiveList = require('./list.jsx');
 
-var LiveWrapper = class extends React.Component {
+const LiveWrapper = class extends React.Component {
 
   render() {
+    const params = this.context.router.getCurrentParams();
 
-    var params = this.context.router.getCurrentParams();
-
-    var list = !params.hasOwnProperty('androId') ?  <LiveList /> : null;
+    const list = params.hasOwnProperty('androId') ? null : <LiveList />;
 
     return <div>
       {list}
@@ -32,7 +26,7 @@ var LiveWrapper = class extends React.Component {
 };
 
 LiveWrapper.contextTypes = {
-  router: React.PropTypes.func.isRequired
+  router: React.PropTypes.func.isRequired,
 };
 
 module.exports = LiveWrapper;
