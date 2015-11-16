@@ -4,8 +4,8 @@
 // Vendors
 const url = require('url');
 const sprintf = require('sprintf');
-// var request = require('request');
-// var debuggerGoby = require('debug')('AiC:backendAPI');
+// const request = require('request');
+const debuggerGoby = require('debug')('AiC:Store:BackendAPI');
 
 // APP
 const SanitizeObject = require('goby/components/libs/sanitize-object.js');
@@ -145,7 +145,7 @@ const BackendAPI = {
           const {AuthActions} = require('goby/actions');
           AuthActions.logout.completed();
         }
-        console.log('arguments ajax', arguments);
+        debuggerGoby('arguments ajax', arguments);
         resolve(data, textStatus, errorThrown);
       });
     });

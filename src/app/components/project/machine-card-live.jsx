@@ -20,7 +20,6 @@ const MachineCardLive = class extends React.Component {
   render() {
     const state = this.props;
 
-    console.log('card', state.avm_id);
     const availableButtons = [
       {
         action: MachineCard.ACTIONS.ENTER,

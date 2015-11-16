@@ -1,4 +1,5 @@
-/* global $ */
+'use strict';
+
 const AppUtils = {
 
   text: {
@@ -11,7 +12,7 @@ const AppUtils = {
   },
 
   isEmpty(textField) {
-    return ($.trim(textField) === '');
+    return (textField.trim() === '');
   },
 
   extend() {

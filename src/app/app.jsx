@@ -1,5 +1,5 @@
 /* global window, document */
-// 'use strict';
+'use strict';
 
 (function () {
   // Needed for configuration
