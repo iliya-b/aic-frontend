@@ -1,17 +1,16 @@
 'use strict';
 
 // React
-var React = require('react');
+const React = require('react');
 
 // Material design
-var mui = require('material-ui');
-var { StylePropable } = mui.Mixins;
+const mui = require('material-ui');
+const {StylePropable} = mui.Mixins;
 
-var AvatarProgress = class extends React.Component{
+const AvatarProgress = class extends React.Component {
 
   render() {
-
-    var {
+    const {
       backgroundColor,
       foregroundColor,
       color,
@@ -23,8 +22,7 @@ var AvatarProgress = class extends React.Component{
       ...other,
     } = this.props;
 
-
-    var styles = {
+    const styles = {
       root: {
         height: size,
         width: size,
@@ -55,14 +53,13 @@ var AvatarProgress = class extends React.Component{
         height: '30px',
         border: '5px solid transparent',
         borderRadius: '30px',
-        // lineHeight: '50px',
       },
       svg: {
         position: 'absolute',
         top: 0,
         left: 0,
       },
-      chart: {
+      chart: {
         position: 'relative',
         display: 'inline-block',
         /* So it can be override by props styles */
@@ -74,11 +71,11 @@ var AvatarProgress = class extends React.Component{
     };
 
     styles.root = StylePropable.mergeStyles(styles.root, {
-      backgroundColor: backgroundColor,
+      backgroundColor,
       textAlign: 'center',
-      lineHeight: size + 'px',
+      lineHeight: `${size}px`,
       fontSize: size / 2 + 4,
-      color: color,
+      color,
     }, style);
 
     const styleIcon = {
@@ -86,16 +83,11 @@ var AvatarProgress = class extends React.Component{
     };
 
     const iconElement = icon ? React.cloneElement(icon, {
-      color: color,
+      color,
       style: StylePropable.mergeStyles(styleIcon, icon.props.style),
     }) : null;
 
-    // <div {...other} style={styles.root} >
-    // </div>
-
-    // <circle style={styles.outer} className="outer" cx="95" cy="95" r="85" transform="rotate(-90, 95, 95)"/>
-
-    return  <figure className="chart" data-percent={progress} style={StylePropable.mergeStyles(styles.chart, style)}>
+    return <figure className="chart" data-percent={progress} style={StylePropable.mergeStyles(styles.chart, style)}>
               <svg width="40" height="40" style={styles.svg}>
                 <circle style={styles.outerBG} cx="170" cy="20" r="17" transform="rotate(-90, 95, 95)"/>
                 <circle style={styles.outer} className="outer" cx="170" cy="20" r="17" transform="rotate(-90, 95, 95)"/>
@@ -104,14 +96,14 @@ var AvatarProgress = class extends React.Component{
                 {iconElement}
                 {this.props.children}
               </figcaption>
-            </figure>
+            </figure>;
   }
 
 };
 
 AvatarProgress.contextTypes = {
   muiTheme: React.PropTypes.object,
-  router: React.PropTypes.func
-}
+  router: React.PropTypes.func,
+};
 
 module.exports = AvatarProgress;

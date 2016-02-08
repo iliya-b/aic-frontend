@@ -175,26 +175,28 @@ const ThemesPage = class extends React.Component {
     const allLiveTypes = ['search', 'create', 'load', 'connect', 'close'];
 
     const boxesLive = allStatus.map(function (itemStatus, indexStatus) {
-      const boxes = this.map(function (itemBox, indexBox, arrayBox) {
+      const boxes = this.map((itemBox, indexBox, arrayBox) => {
         return <BoxStatus key={indexBox} objectName={'session'} typeName={itemBox} status={itemStatus} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox + 1)} />;
       });
       return <div key={indexStatus}>{boxes}</div>;
     }, allLiveTypes);
 
     const boxesCampaign = allStatus.map(function (itemStatus, indexStatus) {
-      const boxes = this.map(function (itemBox, indexBox, arrayBox) {
+      const boxes = this.map((itemBox, indexBox, arrayBox) => {
         return <BoxStatus key={indexBox} objectName={'campaign'} typeName={itemBox} status={itemStatus} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox + 1)} />;
       });
       return <div key={indexStatus}>{boxes}</div>;
     }, allCampaignTypes);
 
     const boxesLogBox = <div>
-      {allCampaignTypes.map(function (itemBox, indexBox, arrayBox) {
+      {allCampaignTypes.map((itemBox, indexBox, arrayBox) => {
         return <BoxStatus key={indexBox} objectName={'campaign'} typeName={itemBox} status={'success'} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox + 1)} />;
       })}
     </div>;
 
-    const logBoxRows = this.state && this.state.logbox ? this.state.logbox.map(function(v,i){ return <LogBoxRow key={i} time={v.time}>{v.message}</LogBoxRow> }  ) : null;
+    const logBoxRows = this.state && this.state.logbox ? this.state.logbox.map((v, i) => {
+      return <LogBoxRow key={i} time={v.time}>{v.message}</LogBoxRow>;
+    }) : null;
 
     const results = [{'properties':[],'testCases':[{'className':'com.zenika.aic.core.libs.ParserTest','name':'testAndroidTestCaseSetupProperly'},{'className':'com.zenika.aic.core.libs.ParserTest','name':'testApplicationTestCaseSetUpProperly'},{'className':'com.zenika.aic.demo.sensor.BatteryTestCase','name':'testUS1','failure':{'message':'Battery level not found','type':'junit.framework.AssertionFailedError','content':'junit.framework.AssertionFailedError: Battery level not found\r\r\n\tat junit.framework.Assert.fail(Assert.java:50)\r\r\n\tat junit.framework.Assert.assertTrue(Assert.java:20)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.setLevel(BatteryTestCase.java:73)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.testUS1(BatteryTestCase.java:36)\r\r\n\tat java.lang.reflect.Method.invokeNative(Native Method)\r\r\n\tat java.lang.reflect.Method.invoke(Method.java:515)\r\r\n\tat android.test.InstrumentationTestCase.runMethod(InstrumentationTestCase.java:214)\r\r\n\tat android.test.InstrumentationTestCase.runTest(InstrumentationTestCase.java:199)\r\r\n\tat junit.framework.TestCase.runBare(TestCase.java:134)\r\r\n\tat junit.framework.TestResult$1.protect(TestResult.java:115)\r\r\n\tat junit.framework.TestResult.runProtected(TestResult.java:133)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestResult.runProtected(DelegatingTestResult.java:90)\r\r\n\tat junit.framework.TestResult.run(TestResult.java:118)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestResult.run(AndroidTestResult.java:49)\r\r\n\tat junit.framework.TestCase.run(TestCase.java:124)\r\r\n\tat android.support.test.internal.runner.junit3.NonLeakyTestSuite$NonLeakyTest.run(NonLeakyTestSuite.java:63)\r\r\n\tat junit.framework.TestSuite.runTest(TestSuite.java:243)\r\r\n\tat junit.framework.TestSuite.run(TestSuite.java:238)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestSuite.run(DelegatingTestSuite.java:103)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestSuite.run(AndroidTestSuite.java:63)\r\r\n\tat android.support.test.internal.runner.junit3.JUnit38ClassRunner.run(JUnit38ClassRunner.java:90)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:24)\r\r\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)\r\r\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)\r\r\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)\r\r\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)\r\r\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)\r\r\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:300)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:157)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:136)\r\r\n\tat android.support.test.runner.AndroidJUnitRunner.onStart(AndroidJUnitRunner.java:270)\r\r\n\tat android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1701)\r\r\n\r'}},{'className':'com.zenika.aic.demo.sensor.BatteryTestCase','name':'testUS2','failure':{'message':'Battery level not found','type':'junit.framework.AssertionFailedError','content':'junit.framework.AssertionFailedError: Battery level not found\r\r\n\tat junit.framework.Assert.fail(Assert.java:50)\r\r\n\tat junit.framework.Assert.assertTrue(Assert.java:20)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.setLevel(BatteryTestCase.java:82)\r\r\n\tat com.zenika.aic.demo.sensor.BatteryTestCase.testUS2(BatteryTestCase.java:40)\r\r\n\tat java.lang.reflect.Method.invokeNative(Native Method)\r\r\n\tat java.lang.reflect.Method.invoke(Method.java:515)\r\r\n\tat android.test.InstrumentationTestCase.runMethod(InstrumentationTestCase.java:214)\r\r\n\tat android.test.InstrumentationTestCase.runTest(InstrumentationTestCase.java:199)\r\r\n\tat junit.framework.TestCase.runBare(TestCase.java:134)\r\r\n\tat junit.framework.TestResult$1.protect(TestResult.java:115)\r\r\n\tat junit.framework.TestResult.runProtected(TestResult.java:133)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestResult.runProtected(DelegatingTestResult.java:90)\r\r\n\tat junit.framework.TestResult.run(TestResult.java:118)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestResult.run(AndroidTestResult.java:49)\r\r\n\tat junit.framework.TestCase.run(TestCase.java:124)\r\r\n\tat android.support.test.internal.runner.junit3.NonLeakyTestSuite$NonLeakyTest.run(NonLeakyTestSuite.java:63)\r\r\n\tat junit.framework.TestSuite.runTest(TestSuite.java:243)\r\r\n\tat junit.framework.TestSuite.run(TestSuite.java:238)\r\r\n\tat android.support.test.internal.runner.junit3.DelegatingTestSuite.run(DelegatingTestSuite.java:103)\r\r\n\tat android.support.test.internal.runner.junit3.AndroidTestSuite.run(AndroidTestSuite.java:63)\r\r\n\tat android.support.test.internal.runner.junit3.JUnit38ClassRunner.run(JUnit38ClassRunner.java:90)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\r\r\n\tat org.junit.runners.Suite.runChild(Suite.java:24)\r\r\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)\r\r\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)\r\r\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)\r\r\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)\r\r\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)\r\r\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:300)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:157)\r\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:136)\r\r\n\tat android.support.test.runner.AndroidJUnitRunner.onStart(AndroidJUnitRunner.java:270)\r\r\n\tat android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1701)\r\r\n\r'}}],'time':'0.0','name':'APK test'}];
 
@@ -279,7 +281,7 @@ const ThemesPage = class extends React.Component {
               <RaisedButton label='Secondary' secondary={true} />
             </div>
             <div style={styles.containerCentered}>
-              <RaisedButton label='Primary'  primary={true}/>
+              <RaisedButton label='Primary' primary={true}/>
             </div>
             <div style={styles.containerCentered}>
               <RaisedButton label='Default'/>
@@ -288,7 +290,7 @@ const ThemesPage = class extends React.Component {
               <FlatButton label='Secondary' secondary={true} />
             </div>
             <div style={styles.containerCentered}>
-              <FlatButton label='Primary'  primary={true}/>
+              <FlatButton label='Primary' primary={true}/>
             </div>
             <div style={styles.containerCentered}>
               <FlatButton label='Default'/>
@@ -420,47 +422,47 @@ const ThemesPage = class extends React.Component {
         <ClearFix>
         <AvatarProgress
           progress={0}
-          icon={<FontIcon className='mdi mdi-android' />}
+          icon={<FontIcon className="mdi mdi-android" />}
           color={styles.avatarProgressAndro.color}
           backgroundColor={styles.avatarProgressAndro.backgroundColor}
           foregroundColor={styles.avatarProgressAndro.foregroundColor} />
 
         <AvatarProgress
-          style={{marginLeft:'10px'}}
+          style={{marginLeft: '10px'}}
           progress={12}
-          icon={<FontIcon className='mdi mdi-android' />}
+          icon={<FontIcon className="mdi mdi-android" />}
           color={styles.avatarProgressAndro.color}
           backgroundColor={styles.avatarProgressAndro.backgroundColor}
           foregroundColor={styles.avatarProgressAndro.foregroundColor} />
 
         <AvatarProgress
-          style={{marginLeft:'10px'}}
+          style={{marginLeft: '10px'}}
           progress={25}
-          icon={<FontIcon className='mdi mdi-android' />}
+          icon={<FontIcon className="mdi mdi-android" />}
           color={styles.avatarProgressAndro.color}
           backgroundColor={styles.avatarProgressAndro.backgroundColor}
           foregroundColor={styles.avatarProgressAndro.foregroundColor} />
 
         <AvatarProgress
-          style={{marginLeft:'10px'}}
+          style={{marginLeft: '10px'}}
           progress={50}
-          icon={<FontIcon className='mdi mdi-android' />}
+          icon={<FontIcon className="mdi mdi-android" />}
           color={styles.avatarProgressAndro.color}
           backgroundColor={styles.avatarProgressAndro.backgroundColor}
           foregroundColor={styles.avatarProgressAndro.foregroundColor} />
 
         <AvatarProgress
-          style={{marginLeft:'10px'}}
+          style={{marginLeft: '10px'}}
           progress={75}
-          icon={<FontIcon className='mdi mdi-android' />}
+          icon={<FontIcon className="mdi mdi-android" />}
           color={styles.avatarProgressAndro.color}
           backgroundColor={styles.avatarProgressAndro.backgroundColor}
           foregroundColor={styles.avatarProgressAndro.foregroundColor} />
 
         <AvatarProgress
-          style={{marginLeft:'10px'}}
+          style={{marginLeft: '10px'}}
           progress={100}
-          icon={<FontIcon className='mdi mdi-android' />}
+          icon={<FontIcon className="mdi mdi-android" />}
           color={styles.avatarProgressAndro.color}
           backgroundColor={styles.avatarProgressAndro.backgroundColor}
           foregroundColor={styles.avatarProgressAndro.foregroundColor} />
