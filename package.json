@@ -29,7 +29,8 @@
     "react-dropzone": "^1.2.4",
     "react-router": "^0.13.3",
     "react-tap-event-plugin": "0.1.7",
-    "reflux": "^0.2.12"
+    "reflux": "^0.2.12",
+    "whatwg-fetch": "^0.10.1"
   },
   "devDependencies": {
     "attr-accept": "^1.0.1",
