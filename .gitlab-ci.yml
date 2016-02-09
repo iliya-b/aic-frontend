@@ -1,0 +1,12 @@
+before_script:
+  - npm install
+  - npm run build
+  - npm install -g http-server
+  - npm install -g phantomjs
+
+test_integration:
+  script:
+    - http-server ./build -p 9080 &
+    - phantomjs -w &
+    - sleep 1
+    - npm run test-integration-phantom
