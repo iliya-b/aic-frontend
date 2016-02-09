@@ -3,6 +3,7 @@ Feature: Can login on the web-platform
   As a registered user
   I shall be able to login
 
+
   Background:
     Given I browse "http://localhost:9080/"
 
