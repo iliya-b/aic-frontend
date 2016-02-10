@@ -2,6 +2,7 @@ before_script:
   - npm install --unsafe-perm
   - npm run create-conf-from-env
   - npm run build
+  - mv config.json ./build/
   - npm install -g http-server
   - npm install -g phantomjs
 
