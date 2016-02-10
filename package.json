@@ -11,7 +11,8 @@
     "test-integration-phantom": "cucumber.js --require test/local-phantom.js ./test/features/",
     "start": "gulp",
     "postinstall": "gulp lib",
-    "build": "gulp build"
+    "build": "gulp build",
+    "create-conf-from-env": "gulp create-conf-from-env"
   },
   "browserify": {
     "transform": [
