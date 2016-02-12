@@ -11,5 +11,9 @@
     "transform": [
       ["babelify", { "stage": 0 } ]
     ]
+  },
+  "xo": {
+    "esnext": true,
+    "plugins": ["react"]
   }
 }

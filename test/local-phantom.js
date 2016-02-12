@@ -14,5 +14,7 @@ const parameters = {
 };
 
 module.exports = function () {
+	console.log('here');
+	console.log(process ? process.env : 'no process');
 	Mink.init(this, parameters);
 };
