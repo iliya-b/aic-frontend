@@ -55,7 +55,13 @@ AIC_FRONTEND_BACKEND_TIMEOUT   | 5000          | Value in miliseconds for timeou
 Tests
 =====
 
+Run `npm test` to run the unit tests on the project.
 
+Run `npm run coverage` to run the unit tests and create test coverage
+output. The coverage files are created in a folder named `./coverage`.
+
+To run integration tests use the command
+`npm run test-integration-phantom`. Notice that
 
 TODO List
 =========
@@ -66,3 +72,10 @@ TODO List
 * Update readme (config.json, how to run tests, etc...)
 * When new version is available put back to npm the nyc package ([instead of the fork with --extension](https://github.com/bcoe/nyc/pull/163))
 * Apply [this](https://gist.github.com/tomazzaman/790bc607eb7ca3fd347f) integration testing (just a check if the app is working)
+
+* Write all the unit tests for all the components (the POC is for a single component and does nothing).
+* Write/adapt features
+* Try other browsers for behavior testing
+* Configure backend so the tests can pass
+* Update node packages (a lot of work since everything will be broken by that)
+* Use ReactTestUtils on unit tests
