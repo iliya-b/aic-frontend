@@ -31,6 +31,11 @@ const BackendObjects = {
       password: {type: 'string'},
     },
   },
+  OBJSCHEMA_LIVE: {type: 'object', strict: true,
+    properties: {
+      variant: {type: 'string', optional: true},
+    },
+  },
   OBJSCHEMA_SENSOR_BATTERY: {type: 'object', strict: true,
     properties: {
       level: {type: 'integer', min: 0, max: 100},
@@ -96,7 +101,11 @@ const BackendAPI = {
     options.method = (typeof options.method === 'undefined') ? 'POST' : options.method;
     options.headers = (typeof options.headers === 'undefined') ? {} : options.headers;
     options.authRequired = (typeof options.authRequired === 'undefined') ? false : options.authRequired;
-    options.data = (typeof options.data === 'undefined') ? '' : JSON.stringify(SanitizeObject.sanitizeData(options.data));
+    if (typeof options.data === 'undefined') {
+      options.data = options.rawData || false;
+    } else {
+      options.data = JSON.stringify(SanitizeObject.sanitizeData(options.data));
+    }
 
     if (options.pathname) {
       options.url = this.backendURL(options.pathname);
@@ -141,8 +150,20 @@ const BackendAPI = {
 
     // Make request
     debuggerGoby('doing ajax', arguments);
+
+    const myInit = {
+      method: options.method,
+      headers: options.headers,
+      mode: 'cors',
+      cache: 'default'
+    };
+
+    if (options.data) {
+      myInit.body = options.data;
+    }
+
     return new Promise((resolve, reject) => {
-      fetch(options.url)
+      fetch(options.url, myInit)
       // .then((response) => {
       //   debuggerGoby('return ajax', arguments, response);
       // })
@@ -284,9 +305,17 @@ const BackendAPI = {
   },
 
   liveStart() {
+    // TODO: should not be raw data
+    const data = new FormData();
+    data.append('variant', 'opengl');
     const options = {
       pathname: BackendObjects.URLPATH_LIVE,
       method: 'POST',
+      rawData: data
+      // data: {
+      //   data: {variant: 'opengl'},
+      //   schema: BackendObjects.OBJSCHEMA_LIVE,
+      // }
     };
     return this.apiCallAuth(options);
   },
