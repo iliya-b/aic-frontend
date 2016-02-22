@@ -9,7 +9,7 @@
   "main": "index.js",
   "browserify": {
     "transform": [
-      ["babelify", { "stage": 0 } ]
+      ["babelify", { "presets": ["stage-0", "es2015", "react"] } ]
     ]
   },
   "xo": {

@@ -9,7 +9,8 @@ const parameters = {
 		desiredCapabilities: {
 			browserName: 'phantom'
 		},
-		port: 8910
+		port: 8910,
+		screenshotPath: './screenshots/'
 	}
 };
 
