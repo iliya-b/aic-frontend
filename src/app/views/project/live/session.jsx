@@ -169,7 +169,7 @@ const LiveSession = class extends React.Component {
 
                     {this.state.live.status === 'LIVE_STATUS_CONNECTED' ? (
                     <div>
-                    <LiveSensors onInputFocus={this._onInputFocus} onInputBlur={this._onInputBlur} />
+                    <LiveSensors onInputFocus={this._onInputFocus} onInputBlur={this._onInputBlur} avmId={this.state.liveInfo.avm_id} />
                     <br />
                     <Paper style={style.paperCenter}>
                       <FlatButton

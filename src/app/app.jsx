@@ -23,6 +23,7 @@
   // https://github.com/zilverline/react-tap-event-plugin
   injectTapEventPlugin();
 
+  // TODO: remove polyfill ?
   // Promise polyfill
   // Phantomjs does not implement (yet) Promise
   // https://github.com/ariya/phantomjs/issues/12401

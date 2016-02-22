@@ -53,6 +53,9 @@ const LiveStore = Reflux.createStore({
   onLoadInfoCompleted(avmInfo) {
     // avmInfo.avm_novnc_host
     // window.GobyAppGlobals.config.backend.host
+    debuggerGoby('avmInfo');
+    debuggerGoby(avmInfo);
+    this.state.liveInfo = avmInfo;
     LiveActions.liveConnect(avmInfo.avm_novnc_host, avmInfo.avm_novnc_port);
   },
 

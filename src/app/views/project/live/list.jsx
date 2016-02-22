@@ -43,8 +43,8 @@ const LiveList = class extends React.Component {
   //                                                      androId: 'test'} );
   // }
 
-  _onStartSession() {
-    LiveActions.start();
+  _onStartSession(variant) {
+    LiveActions.start(variant);
     PollingActions.liveList();
   }
 
@@ -68,7 +68,9 @@ const LiveList = class extends React.Component {
 
               <CardActions>
 
-              <RaisedButton linkButton={true} primary={true} label="Start new session" onClick={this._onStartSession} />
+              <RaisedButton linkButton={true} primary={true} label="Start new session Kitkat" onClick={this._onStartSession.bind(this, 'opengl')} />
+              <RaisedButton linkButton={true} primary={true} label="Start new session Lollipop" onClick={this._onStartSession.bind(this, 'lollipop')} />
+              <RaisedButton linkButton={true} primary={true} label="Start new session Kitkat (karine)" onClick={this._onStartSession.bind(this, 'karine')} />
 
               </CardActions>
 

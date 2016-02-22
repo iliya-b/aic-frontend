@@ -45,9 +45,9 @@ LiveActions.setProjectId.listen(function () {
   });
 });
 
-LiveActions.start.listen(function () {
+LiveActions.start.listen(function (variant) {
   debuggerGoby('start called');
-  BackendAPI.liveStart()
+  BackendAPI.liveStart(variant)
   .then(res => {
     debuggerGoby('start back');
     debuggerGoby(arguments);

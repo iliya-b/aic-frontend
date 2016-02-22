@@ -21,7 +21,7 @@ const BackendObjects = {
   URLPATH_APKTEST: '/back/test/%s',
   URLPATH_LIVE: '/android',
   URLPATH_LIVE_MACHINE: '/android/%s',
-  URLPATH_LIVE_SENSOR: '/android/%s/sensor/%s',
+  URLPATH_LIVE_SENSOR: '/android/sensors/%s/%s',
 
   // Validation/Sanitization Objects
 
@@ -38,7 +38,8 @@ const BackendObjects = {
   },
   OBJSCHEMA_SENSOR_BATTERY: {type: 'object', strict: true,
     properties: {
-      level: {type: 'integer', min: 0, max: 100},
+      level_percent: {type: 'integer', min: 0, max: 50000000},
+      ac_online: {type: 'integer', min: 0, max: 1}
     },
   },
   OBJSCHEMA_SENSOR_ACCELEROMETER: {type: 'object', strict: true,
@@ -312,10 +313,11 @@ const BackendAPI = {
     return this.apiCallAuth(options);
   },
 
-  liveStart() {
+  liveStart(variant) {
     // TODO: should not be raw data
     const data = new FormData();
-    data.append('variant', 'karine');
+    // data.append('variant', 'opengl');
+    data.append('variant', variant);
     const options = {
       pathname: BackendObjects.URLPATH_LIVE,
       method: 'POST',
@@ -348,16 +350,22 @@ const BackendAPI = {
 
   sensor(data, sensor, liveId) {
     const options = {
-      pathname: sprintf(BackendObjects.URLPATH_LIVE_SENSOR, liveId, sensor),
+      pathname: sprintf(BackendObjects.URLPATH_LIVE_SENSOR, sensor, liveId),
       method: 'POST',
       data,
     };
     return this.apiCallAuth(options);
   },
 
-  sensorBattery(value, liveId) {
+  sensorBattery(_, liveId, value) {
+    // TODO: fix arguments
+    console.warn(arguments);
     const data = {
-      data: {level: value},
+      // data: {level: parseInt(value, 10) * 500000},
+      data: {
+        level_percent: parseInt(value, 10),
+        ac_online: 1
+      },
       schema: BackendObjects.OBJSCHEMA_SENSOR_BATTERY,
     };
     return this.sensor(data, 'battery', liveId);
