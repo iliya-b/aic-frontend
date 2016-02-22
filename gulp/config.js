@@ -52,7 +52,7 @@ module.exports = {
     },
   },
   novnc: {
-    src: ['./noVNC/include/base.css', './noVNC/include/*.js' ],
+    src: ['./node_modules/noVNC/include/base.css', './node_modules/noVNC/include/*.js' ],
     dest: dest + '/noVNC/'
   },
   config: {
