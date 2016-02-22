@@ -159,14 +159,13 @@ LiveActions.liveConnect.listen(function (vmhost, vmport) {
   } );
 });
 
-LiveActions.liveStop.listen(function (screenPort) {
+LiveActions.liveStop.listen(function (avmId) {
   var WebsocketActions = require('goby/actions/websocket.js');
   WebsocketActions.close();
   if (window.rfb) {
     window.rfb.disconnect();
   }
-  var token = '';
-  BackendAPI.liveStop(token, screenPort, (res) => {
+  BackendAPI.liveStop(avmId, (res) => {
     this.completed( res );
   });
   // TODO: Call disconnect from noNVC if connected before
@@ -307,9 +306,13 @@ LiveActions.tryConnection = function ( vmhost, vmport, cb ) {
 
   LiveActions.logMessage('Loading noVNC utils.');
   // Load supporting scripts
-  Util.load_scripts(['webutil.js', 'base64.js', 'websock.js', 'des.js',
-                     'keysymdef.js', 'keyboard.js', 'input.js', 'display.js',
-                     'jsunzip.js', 'rfb.js', 'keysym.js']);
+  // Util.load_scripts(['webutil.js', 'base64.js', 'websock.js', 'des.js',
+  //                    'keysymdef.js', 'keyboard.js', 'input.js', 'display.js',
+  //                    'rfb.js', 'keysym.js']);
+
+  Util.load_scripts(["webutil.js", "base64.js", "websock.js", "des.js",
+                           "keysymdef.js", "keyboard.js", "input.js", "display.js",
+                           "inflator.js", "rfb.js", "keysym.js"]);
   // When finished will call onscriptsload
   setTimeout(function () {
     if ( !window.AiClive.completed ){

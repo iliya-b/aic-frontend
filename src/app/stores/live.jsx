@@ -52,7 +52,8 @@ const LiveStore = Reflux.createStore({
 
   onLoadInfoCompleted(avmInfo) {
     // avmInfo.avm_novnc_host
-    LiveActions.liveConnect(window.GobyAppGlobals.config.backend.host, avmInfo.avm_novnc_port);
+    // window.GobyAppGlobals.config.backend.host
+    LiveActions.liveConnect(avmInfo.avm_novnc_host, avmInfo.avm_novnc_port);
   },
 
   onLoadInfoFailure(errorMessage) {
@@ -266,7 +267,7 @@ const LiveStore = Reflux.createStore({
     this.state.live.screen.ip = null;
     this.state.live.screen.port = null;
     this.state.live.screen.rotation = null;
-    this.state.live.delayedRotation = null;
+    this.state.live.delayedRotation = 'horizontal';
     this.state.live.battery = 100;
   },
 

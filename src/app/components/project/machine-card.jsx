@@ -61,7 +61,7 @@ const MachineCard = class extends React.Component {
 MachineCard.VMSTATE = {};
 MachineCard.VMSTATE.READY = 'READY';
 MachineCard.VMSTATE.CREATING = 'CREATING';
-MachineCard.VMSTATE.FAILED = 'CREATE_FAILED';
+MachineCard.VMSTATE.FAILED = 'FAILED';
 MachineCard.VMSTATE.DELETING = 'DELETING';
 
 MachineCard.ACTIONS = {};

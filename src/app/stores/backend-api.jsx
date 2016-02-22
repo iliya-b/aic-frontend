@@ -271,7 +271,15 @@ const BackendAPI = {
       pathname: BackendObjects.URLPATH_PROJECT,
       method: 'GET',
     };
-    return this.apiCallAuth(options);
+    return Promise.resolve({
+    tenants: [{
+      description: 'test\'s project',
+      enabled: true,
+      id: 'a532574a46954bf3a85dd6284ed8f5e8',
+      name: 'test'}],
+    tenants_links: [] // eslint-disable-line camelcase
+  });
+    // return this.apiCallAuth(options);
   },
 
   // APKs //
@@ -307,7 +315,7 @@ const BackendAPI = {
   liveStart() {
     // TODO: should not be raw data
     const data = new FormData();
-    data.append('variant', 'opengl');
+    data.append('variant', 'karine');
     const options = {
       pathname: BackendObjects.URLPATH_LIVE,
       method: 'POST',

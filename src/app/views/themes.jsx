@@ -59,10 +59,13 @@ const logBoxRef = [
 
 const ThemesPage = class extends React.Component {
 
-  state: {
-    isThemeDark: false,
-    // logbox: [],
-    logbox: logBoxRef,
+  constructor(props) {
+    super(props);
+    this.state = {
+      isThemeDark: false,
+      // logbox: [],
+      logbox: logBoxRef,
+    };
   }
 
   getStyles() {
