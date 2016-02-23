@@ -14,13 +14,13 @@ var Colors = mui.Styles.Colors;
 var { RaisedButton } = mui;
 
 // APP
-var GobyTheme = require('goby/configs/goby-theme.jsx');
+var GobyTheme = require('app/configs/goby-theme.jsx');
 var { FullWidthSection,
-      SessionEndedDialog } = require('goby/components');
+      SessionEndedDialog } = require('app/components');
 var { AuthStore,
-      AppConfigStore } = require('goby/stores');
+      AppConfigStore } = require('app/stores');
 var { AuthActions,
-      AppConfigActions } = require('goby/actions');
+      AppConfigActions } = require('app/actions');
 
 var Main = class extends React.Component{
 

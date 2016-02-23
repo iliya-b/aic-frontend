@@ -8,8 +8,8 @@ const Reflux = require('reflux');
 const debuggerGoby = require('debug')('AiC:Live:Store');
 
 // APP
-const AppUtils = require('goby/components/shared/app-utils.jsx');
-const {LiveActions} = require('goby/actions');
+const AppUtils = require('app/components/shared/app-utils.jsx');
+const {LiveActions} = require('app/actions');
 
 // Store
 const LiveStore = Reflux.createStore({

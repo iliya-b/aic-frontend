@@ -21,9 +21,9 @@ var { Paper,
       TableRowColumn } = mui;
 
 // APP
-var AvatarProgress = require('goby/components/shared/avatar-progress.jsx');
-var AppUtils = require('goby/components/shared/app-utils.jsx');
-var CodeBox = require('goby/components/shared/code-box.jsx');
+var AvatarProgress = require('app/components/shared/avatar-progress.jsx');
+var AppUtils = require('app/components/shared/app-utils.jsx');
+var CodeBox = require('app/components/shared/code-box.jsx');
 
 var TestResultsBox = class extends React.Component{
 

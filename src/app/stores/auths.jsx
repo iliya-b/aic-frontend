@@ -4,7 +4,7 @@
 var Reflux = require('reflux');
 
 // APP
-var { AuthActions } = require('goby/actions');
+var { AuthActions } = require('app/actions');
 
 // Store
 var AuthStore =  Reflux.createStore({

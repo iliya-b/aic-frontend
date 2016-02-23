@@ -7,7 +7,7 @@ const Reflux = require('reflux');
 const debuggerGoby = require('debug')('AiC:Live:Actions');
 
 // APP
-const BackendAPI = require('goby/stores/backend-api.jsx');
+const BackendAPI = require('app/stores/backend-api.jsx');
 
 // Actions
 const LiveActions = Reflux.createActions({
@@ -107,7 +107,7 @@ LiveActions.liveCheck.listen(function () {
   var token = '';
   BackendAPI.liveCheck(token, (res) => {
     if ( res.hasOwnProperty('token') ) {
-      var WebsocketActions = require('goby/actions/websocket.js');
+      var WebsocketActions = require('app/actions/websocket.js');
       WebsocketActions.connect(res.token, 'live');
     }else{
       this.failure('It was not possible to check for a live session.');
@@ -160,7 +160,7 @@ LiveActions.liveConnect.listen(function (vmhost, vmport) {
 });
 
 LiveActions.liveStop.listen(function (avmId) {
-  var WebsocketActions = require('goby/actions/websocket.js');
+  var WebsocketActions = require('app/actions/websocket.js');
   WebsocketActions.close();
   if (window.rfb) {
     window.rfb.disconnect();

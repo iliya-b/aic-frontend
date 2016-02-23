@@ -4,8 +4,8 @@
 var Reflux = require('reflux');
 
 // APP
-var AppUtils = require('goby/components/shared/app-utils.jsx');
-var { APKActions } = require('goby/actions');
+var AppUtils = require('app/components/shared/app-utils.jsx');
+var { APKActions } = require('app/actions');
 
 // Store
 var APKStore = Reflux.createStore({

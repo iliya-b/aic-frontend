@@ -47,7 +47,7 @@ const {
   AppUtils,
   MachineCardLive,
   InfoBox,
-} = require('goby/components');
+} = require('app/components');
 
 // var logBoxRef = Array.apply(0, Array(8)).map(function (v, i) { return { message: 'Message ' + i , time: i }; });
 const logBoxRef = [

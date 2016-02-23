@@ -19,7 +19,7 @@ var { Spacing,
 //   TableRowColumn } = mui;
 
 // APP
-var GobyPalette = require('goby/configs/goby-palette.jsx');
+var GobyPalette = require('app/configs/goby-palette.jsx');
 
 var LogBoxRow = class extends React.Component{
 

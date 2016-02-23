@@ -4,8 +4,8 @@
 var React = require('react');
 
 // APP
-var { LiveStore } = require('goby/stores');
-var { LiveActions } = require('goby/actions');
+var { LiveStore } = require('app/stores');
+var { LiveActions } = require('app/actions');
 
 var LiveScreen = class extends React.Component{
 

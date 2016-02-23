@@ -4,7 +4,7 @@
 var React = require('react');
 
 // APP
-var { AuthActions } = require('goby/actions');
+var { AuthActions } = require('app/actions');
 
 // Redirects user if he is not logged in
 // Opposite to AuthPage

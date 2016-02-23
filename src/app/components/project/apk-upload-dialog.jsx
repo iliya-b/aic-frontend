@@ -11,11 +11,11 @@ var { Dialog, FlatButton, Toolbar, ToolbarGroup, IconButton } = mui;
 // var Dropzone = require('react-dropzone');
 
 // APP
-var ObjectList = require('goby/components/shared/object-list/object-list.jsx');
-var Dropzone = require('goby/components/shared/goby-dropzone.jsx');
-var AppUtils = require('goby/components/shared/app-utils.jsx');
-var { APKUploadStore } = require('goby/stores');
-var { APKUploadActions } = require('goby/actions');
+var ObjectList = require('app/components/shared/object-list/object-list.jsx');
+var Dropzone = require('app/components/shared/goby-dropzone.jsx');
+var AppUtils = require('app/components/shared/app-utils.jsx');
+var { APKUploadStore } = require('app/stores');
+var { APKUploadActions } = require('app/actions');
 
 var APKUploadDialog = class extends React.Component{
 

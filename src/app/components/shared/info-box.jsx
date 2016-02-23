@@ -9,7 +9,7 @@ const {StylePropable} = mui.Mixins;
 const {Paper} = mui;
 
 // APP
-const MachineIcon = require('goby/components/project/machine-icon.jsx');
+const MachineIcon = require('app/components/project/machine-icon.jsx');
 
 const InfoBox = class extends React.Component {
 

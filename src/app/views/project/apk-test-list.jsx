@@ -15,9 +15,9 @@ var { Toolbar,
 // APP
 var { List,
       APKTestUploadDialog,
-      AppUtils } = require('goby/components');
-var { APKTestStore } = require('goby/stores');
-var { APKTestActions } = require('goby/actions');
+      AppUtils } = require('app/components');
+var { APKTestStore } = require('app/stores');
+var { APKTestActions } = require('app/actions');
 
 var ProjectApkTestList = class extends React.Component {
 

@@ -17,12 +17,12 @@ const debuggerGoby = require('debug')('AiC:View:Live:List');
 const {
   AppUtils,
   LiveMachineList,
-} = require('goby/components');
-const {LiveStore} = require('goby/stores');
+} = require('app/components');
+const {LiveStore} = require('app/stores');
 const {
   LiveActions,
   PollingActions,
-} = require('goby/actions');
+} = require('app/actions');
 
 let projectId;
 

@@ -13,9 +13,9 @@ var Router = require('react-router');
 var { RouteHandler } = Router;
 
 // APP
-var { AuthActions } = require('goby/actions');
-var { ProjectActions } = require('goby/actions');
-var {PollingStore} = require('goby/stores');
+var { AuthActions } = require('app/actions');
+var { ProjectActions } = require('app/actions');
+var {PollingStore} = require('app/stores');
 
 
 var ProjectWrapper = class extends React.Component {

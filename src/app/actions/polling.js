@@ -7,8 +7,8 @@ const Reflux = require('reflux');
 const debuggerGoby = require('debug')('AiC:Polling:Actions');
 
 // APP
-const BackendAPI = require('goby/stores/backend-api.jsx');
-// const AppUtils = require('goby/components/shared/app-utils.jsx');
+const BackendAPI = require('app/stores/backend-api.jsx');
+// const AppUtils = require('app/components/shared/app-utils.jsx');
 const LiveListActions = require('./live-list');
 
 // Actions

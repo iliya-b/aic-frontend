@@ -7,7 +7,7 @@ var Reflux = require('reflux');
 var sprintf = require('sprintf');
 
 // APP
-var BackendAPI = require('goby/stores/backend-api.jsx');
+var BackendAPI = require('app/stores/backend-api.jsx');
 
 // Actions
 var ProjectActions = Reflux.createActions({

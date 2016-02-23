@@ -7,7 +7,7 @@ const Reflux = require('reflux');
 const debuggerGoby = require('debug')('AiC:LiveList:Store');
 
 // APP
-const {LiveListActions} = require('goby/actions');
+const {LiveListActions} = require('app/actions');
 
 // Store
 const LiveListStore = Reflux.createStore({

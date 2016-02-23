@@ -21,9 +21,9 @@ const {
   AreaStatus,
   LogBox,
   LogBoxRow,
-} = require('goby/components');
-const {LiveStore} = require('goby/stores');
-const {LiveActions} = require('goby/actions');
+} = require('app/components');
+const {LiveStore} = require('app/stores');
+const {LiveActions} = require('app/actions');
 
 const LiveSession = class extends React.Component {
 

@@ -12,7 +12,7 @@ var { RaisedButton } = mui;
 var { FullWidthSection,
       LoginDialog,
       SignUpDialog,
-      AuthPage } = require('goby/components');
+      AuthPage } = require('app/components');
 
 // var Home = class extends AuthPage {
 var Home = class extends React.Component {

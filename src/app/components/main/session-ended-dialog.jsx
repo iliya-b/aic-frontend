@@ -9,8 +9,8 @@ var { Dialog,
       FlatButton } = mui;
 
 // APP
-var InfoBox = require('goby/components/shared/info-box.jsx');
-var { AuthActions } = require('goby/actions');
+var InfoBox = require('app/components/shared/info-box.jsx');
+var { AuthActions } = require('app/actions');
 
 var SessionEndedDialog = class extends React.Component {
 

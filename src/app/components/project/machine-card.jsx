@@ -12,7 +12,7 @@ const {
 } = mui;
 
 // APP
-const MachineIcon = require('goby/components/project/machine-icon.jsx');
+const MachineIcon = require('app/components/project/machine-icon.jsx');
 
 const MachineCard = class extends React.Component {
 

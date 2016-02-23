@@ -10,9 +10,9 @@ var { Dialog,
       FlatButton } = mui;
 
 // APP
-var { AuthStore } = require('goby/stores');
-var { AuthActions } = require('goby/actions');
-var AppUtils = require('goby/components/shared/app-utils.jsx');
+var { AuthStore } = require('app/stores');
+var { AuthActions } = require('app/actions');
+var AppUtils = require('app/components/shared/app-utils.jsx');
 
 var LoginDialog = class extends React.Component{
 

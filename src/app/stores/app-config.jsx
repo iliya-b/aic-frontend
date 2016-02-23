@@ -7,7 +7,7 @@ const Reflux = require('reflux');
 const debuggerGoby = require('debug')('AiC:Store:AppConfig');
 
 // APP
-const {AppConfigActions} = require('goby/actions');
+const {AppConfigActions} = require('app/actions');
 
 // Store
 const AppConfigStore = Reflux.createStore({

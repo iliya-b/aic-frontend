@@ -26,10 +26,10 @@ var { APKSelectionDialog,
       TestResultsBox,
       LogBox,
       LogBoxRow,
-      AuthRequired } = require('goby/components');
+      AuthRequired } = require('app/components');
 
-var { CampaignStore } = require('goby/stores');
-var { CampaignActions } = require('goby/actions');
+var { CampaignStore } = require('app/stores');
+var { CampaignActions } = require('app/actions');
 
 var ProjectCampaign = class extends AuthRequired{
 

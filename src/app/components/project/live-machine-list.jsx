@@ -13,9 +13,9 @@ const {
 const debuggerGoby = require('debug')('AiC:Component:LiveList');
 
 // APP
-const MachineCardLive = require('goby/components/project/machine-card-live.jsx');
-const InfoBox = require('goby/components/shared/info-box.jsx');
-const {LiveListStore} = require('goby/stores');
+const MachineCardLive = require('app/components/project/machine-card-live.jsx');
+const InfoBox = require('app/components/shared/info-box.jsx');
+const {LiveListStore} = require('app/stores');
 
 const LiveMachineList = class extends React.Component {
 

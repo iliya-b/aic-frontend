@@ -9,10 +9,10 @@ var { Spacing } = mui.Styles;
 var { FontIcon, Paper } = mui;
 
 // APP
-var GobyStores = require('goby/stores');
-var GobyActions = require('goby/actions');
-var BoxStatus = require('goby/components/project/box-status.jsx');
-var AppUtils = require('goby/components/shared/app-utils.jsx');
+var GobyStores = require('app/stores');
+var GobyActions = require('app/actions');
+var BoxStatus = require('app/components/project/box-status.jsx');
+var AppUtils = require('app/components/shared/app-utils.jsx');
 
 var loadedStore;
 var loadedActions;

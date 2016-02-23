@@ -4,7 +4,7 @@
 (function () {
   // Needed for configuration
   window.GobyAppGlobals = window.GobyAppGlobals || {};
-  const {AppRoutes} = require('goby/configs');
+  const {AppRoutes} = require('app/configs');
 
   // Needed to enable debugging on console
   window.GobyAppGlobals.Debugger = require('debug');

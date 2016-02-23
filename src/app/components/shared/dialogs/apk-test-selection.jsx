@@ -16,10 +16,10 @@ var { Dialog,
       Paper } = mui;
 
 // APP
-var ObjectList = require('goby/components/shared/object-list/object-list.jsx');
-var AppUtils = require('goby/components/shared/app-utils.jsx');
-var { APKTestStore } = require('goby/stores');
-var { APKTestActions } = require('goby/actions');
+var ObjectList = require('app/components/shared/object-list/object-list.jsx');
+var AppUtils = require('app/components/shared/app-utils.jsx');
+var { APKTestStore } = require('app/stores');
+var { APKTestActions } = require('app/actions');
 
 var projectId = null;
 

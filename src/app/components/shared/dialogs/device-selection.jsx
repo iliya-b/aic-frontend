@@ -9,9 +9,9 @@ var { Dialog,
       FlatButton } = mui;
 
 // APP
-var ObjectList = require('goby/components/shared/object-list/object-list.jsx');
-var { CampaignStore } = require('goby/stores');
-var { CampaignActions } = require('goby/actions');
+var ObjectList = require('app/components/shared/object-list/object-list.jsx');
+var { CampaignStore } = require('app/stores');
+var { CampaignActions } = require('app/actions');
 
 var DeviceSelectionDialog = class extends React.Component{
 

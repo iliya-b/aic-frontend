@@ -8,8 +8,8 @@ var mui = require('material-ui');
 var Menu = require('material-ui/lib/menus/menu.js');
 var MenuItem = require('material-ui/lib/menus/menu-item.js');
 var { Spacing, Colors } = mui.Styles;
-var ObjectListItem = require('goby/components/shared/object-list/object-list-item.jsx');
-var ObjectList = require('goby/components/shared/object-list/object-list.jsx');
+var ObjectListItem = require('app/components/shared/object-list/object-list-item.jsx');
+var ObjectList = require('app/components/shared/object-list/object-list.jsx');
 
 var menuItems = [
      { path: 'apks', text: 'APK List' },

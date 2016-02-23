@@ -9,9 +9,9 @@ var MenuItem = require('material-ui/lib/menus/menu-item.js');
 
 // APP
 var { ObjectList,
-      AppUtils } = require('goby/components');
-var { ProjectStore } = require('goby/stores');
-var { ProjectActions } = require('goby/actions');
+      AppUtils } = require('app/components');
+var { ProjectStore } = require('app/stores');
+var { ProjectActions } = require('app/actions');
 
 var ProjectList = class extends React.Component {
 

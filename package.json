@@ -14,7 +14,6 @@
     "test-unit-full": "ava",
     "coverage": "nyc --extension .jsx npm run test-unit && nyc report --reporter=lcov",
     "start": "gulp",
-    "postinstall": "gulp lib",
     "build": "gulp build",
     "create-conf-from-env": "gulp create-conf-from-env"
   },

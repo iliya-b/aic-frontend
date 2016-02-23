@@ -4,7 +4,7 @@
 var Reflux = require('reflux');
 
 // APP
-var BackendAPI = require('goby/stores/backend-api.jsx');
+var BackendAPI = require('app/stores/backend-api.jsx');
 
 // Actions
 var APKUploadActions = Reflux.createActions({

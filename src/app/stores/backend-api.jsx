@@ -9,7 +9,7 @@ const debuggerGoby = require('debug')('AiC:Store:BackendAPI');
 debuggerGoby('fetch', window.fetch);
 
 // APP
-const SanitizeObject = require('goby/components/libs/sanitize-object.js');
+const SanitizeObject = require('app/components/libs/sanitize-object.js');
 
 const BackendObjects = {
 
@@ -237,7 +237,7 @@ const BackendAPI = {
   //       // User is not logged in
   //       if (options.authRequired && textStatus === 'error' && errorThrown === 'Unauthorized') {
   //         // TODO: Must be changed to state etc...
-  //         const {AuthActions} = require('goby/actions');
+  //         const {AuthActions} = require('app/actions');
   //         AuthActions.logout.completed();
   //       }
   //       debuggerGoby('return ajax', arguments);
@@ -247,7 +247,7 @@ const BackendAPI = {
   // },
 
   apiCallAuth(options) {
-    const {AuthActions} = require('goby/actions');
+    const {AuthActions} = require('app/actions');
     options.headers = options.headers ? options.headers : {};
     options.headers.Authorization = sprintf(' Bearer %s', AuthActions.getToken());
     options.authRequired = true;

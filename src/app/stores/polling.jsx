@@ -9,11 +9,11 @@ const Reflux = require('reflux');
 const debuggerGoby = require('debug')('AiC:Polling:Store');
 
 // APP
-const MachineCard = require('goby/components/project/machine-card.jsx');
+const MachineCard = require('app/components/project/machine-card.jsx');
 const {
   PollingActions,
   NotificationActions,
-} = require('goby/actions');
+} = require('app/actions');
 
 function areDifferentObjects(obj1, obj2) {
   return JSON.stringify(obj1) !== JSON.stringify(obj2);

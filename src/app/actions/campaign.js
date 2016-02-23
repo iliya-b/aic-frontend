@@ -4,7 +4,7 @@
 var Reflux = require('reflux');
 
 // APP
-var BackendAPI = require('goby/stores/backend-api.jsx');
+var BackendAPI = require('app/stores/backend-api.jsx');
 
 // Actions
 var CampaignActions = Reflux.createActions({
@@ -28,7 +28,7 @@ CampaignActions.create.listen(function (projectId, instanceId, instanceName, APK
   var token = '';
   BackendAPI.testCreate(token, projectId, instanceId, instanceName, APKIds, APKTestIds, (res) => {
     if ( res.hasOwnProperty('token') ) {
-      var WebsocketActions = require('goby/actions/websocket.js');
+      var WebsocketActions = require('app/actions/websocket.js');
       WebsocketActions.connect(res.token, 'campaign');
     }else{
       this.failure('It was not possible to create a campaign.');

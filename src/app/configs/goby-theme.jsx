@@ -3,7 +3,7 @@ var mui = require('material-ui');
 var Colors = mui.Styles.Colors;
 var Spacing = mui.Styles.Spacing;
 var ColorManipulator = mui.Utils.ColorManipulator;
-var GobyPalette = require('goby/configs/goby-palette.jsx');
+var GobyPalette = require('app/configs/goby-palette.jsx');
 
 
 /**

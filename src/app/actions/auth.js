@@ -8,8 +8,8 @@ var Debugger = require('debug')('AiC:Auth:Actions');
 var url = require('url');
 
 // APP
-var BackendAPI = require('goby/stores/backend-api.jsx');
-var AppConfigActions = require('goby/actions/app-config.js');
+var BackendAPI = require('app/stores/backend-api.jsx');
+var AppConfigActions = require('app/actions/app-config.js');
 
 // Actions
 var AuthActions = Reflux.createActions({

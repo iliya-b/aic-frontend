@@ -4,9 +4,9 @@
 var Reflux = require('reflux');
 
 // APP
-var BackendAPI = require('goby/stores/backend-api.jsx');
-var AppUtils = require('goby/components/shared/app-utils.jsx');
-var GobyActions = require('goby/actions');
+var BackendAPI = require('app/stores/backend-api.jsx');
+var AppUtils = require('app/components/shared/app-utils.jsx');
+var GobyActions = require('app/actions');
 
 // Websocket
 var GobyWebsocket;

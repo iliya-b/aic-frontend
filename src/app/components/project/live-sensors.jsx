@@ -13,9 +13,9 @@ var {
   Slider} = mui;
 
 // APP
-var TogglableIcon = require('goby/components/shared/togglable-icon.jsx');
-var { LiveStore } = require('goby/stores');
-var { LiveActions } = require('goby/actions');
+var TogglableIcon = require('app/components/shared/togglable-icon.jsx');
+var { LiveStore } = require('app/stores');
+var { LiveActions } = require('app/actions');
 
 var LiveSensors = class extends React.Component{
 

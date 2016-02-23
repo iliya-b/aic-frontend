@@ -15,9 +15,9 @@ var { Toolbar,
 // APP
 var { List,
       APKUploadDialog,
-      AppUtils } = require('goby/components');
-var { APKStore } = require('goby/stores');
-var { APKActions } = require('goby/actions');
+      AppUtils } = require('app/components');
+var { APKStore } = require('app/stores');
+var { APKActions } = require('app/actions');
 
 var projectId = null;
 

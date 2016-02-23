@@ -4,7 +4,7 @@
 var Reflux = require('reflux');
 
 // APP
-var { ProjectActions } = require('goby/actions');
+var { ProjectActions } = require('app/actions');
 
 // Store
 var ProjectStore = Reflux.createStore({

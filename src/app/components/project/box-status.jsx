@@ -8,7 +8,7 @@ var mui = require('material-ui');
 var { FontIcon, Paper } = mui;
 
 // APP
-var AppUtils = require('goby/components/shared/app-utils.jsx');
+var AppUtils = require('app/components/shared/app-utils.jsx');
 
 var BoxStatus = class extends React.Component{
 

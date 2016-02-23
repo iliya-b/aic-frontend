@@ -12,8 +12,8 @@ const {
 } = mui;
 
 // APP
-const MachineCard = require('goby/components/project/machine-card.jsx');
-const CodeBox = require('goby/components/shared/code-box.jsx');
+const MachineCard = require('app/components/project/machine-card.jsx');
+const CodeBox = require('app/components/shared/code-box.jsx');
 
 const MachineCardLive = class extends React.Component {
 
