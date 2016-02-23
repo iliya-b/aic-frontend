@@ -1,5 +1,5 @@
-var gulp = require('gulp');
-var fs = require('fs');
+const gulp = require('gulp');
+const fs = require('fs');
 
 const configSampleFile = 'config-sample.json';
 const configFile = 'config.json';
@@ -9,7 +9,7 @@ const environmentPrefixRegex = /^AIC_FRONTEND_(.+)/;
 const haveSub = /([^_.]+)_(.+)/;
 
 function recChange(obj, key, value) {
-	var keyHasSub = key.match(haveSub);
+	const keyHasSub = key.match(haveSub);
 	if (keyHasSub) {
 		obj[keyHasSub[1]] = recChange(obj[keyHasSub[1]], keyHasSub[2], value);
 		return obj;
@@ -24,11 +24,12 @@ function recChange(obj, key, value) {
 	return obj;
 }
 
-gulp.task('create-conf-from-env', function () {
-	var config = JSON.parse(fs.readFileSync(configSampleFile, 'utf-8'));
+gulp.task('create-conf-from-env', () => {
+	let config = JSON.parse(fs.readFileSync(configSampleFile, 'utf-8'));
 	// var envKeys = Object.keys(process.env);
-	for (var key in process.env) {
-		var matched = key.match(environmentPrefixRegex);
+	// TODO: revise this for in
+	for (const key in process.env) { // eslint-disable-line guard-for-in
+		const matched = key.match(environmentPrefixRegex);
 		if (matched) {
 			console.log('changing ', key);
 			config = recChange(config, matched[1].toLowerCase(), process.env[key]);

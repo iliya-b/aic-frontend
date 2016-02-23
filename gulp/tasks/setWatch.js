@@ -1,5 +1,5 @@
-var gulp = require('gulp');
+const gulp = require('gulp');
 
-gulp.task('setWatch', function() {
-  global.isWatching = true;
+gulp.task('setWatch', () => {
+	global.isWatching = true;
 });
