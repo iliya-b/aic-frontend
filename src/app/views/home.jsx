@@ -14,7 +14,8 @@ var { FullWidthSection,
       SignUpDialog,
       AuthPage } = require('goby/components');
 
-var Home = class extends AuthPage {
+// var Home = class extends AuthPage {
+var Home = class extends React.Component {
 
   constructor (props) {
     super(props);

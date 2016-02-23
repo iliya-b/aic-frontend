@@ -1,47 +1,109 @@
-var React = require('react');
+'use strict';
 
-var mui = require('material-ui');
-var { StylePropable } = mui.Mixins;
+// React
+const React = require('react');
 
-var InfoBox = React.createClass({
+// Material design
+const mui = require('material-ui');
+const {StylePropable} = mui.Mixins;
+const {Paper} = mui;
 
-  mixins: [StylePropable],
+// APP
+const MachineIcon = require('goby/components/project/machine-icon.jsx');
 
-  render: function() {
+const InfoBox = class extends React.Component {
 
-    var {
+  render() {
+    const {
       style,
       boxType,
-      ...other
+      showIcon,
+      styleType,
+      children,
+      ...other,
     } = this.props;
 
-    var styles = {
-      div: {
-        color:  boxType == InfoBox.ERROR ? this.context.muiTheme.palette.errorColor :
-                boxType == InfoBox.SUCCESS ? this.context.muiTheme.palette.successColor :
-                this.context.muiTheme.palette.textColor
-      }
+    let boxColor;
+    let content;
+    let status;
+    let iconProps;
+
+    switch (boxType) {
+      case InfoBox.ERROR:
+        boxColor = this.context.muiTheme.palette.errorColor;
+        status = MachineIcon.ERROR;
+        break;
+      case InfoBox.SUCCESS:
+        boxColor = this.context.muiTheme.palette.successColor;
+        status = MachineIcon.SUCCESS;
+        break;
+      case InfoBox.LOADING:
+        boxColor = this.context.muiTheme.palette.primary1Color;
+        status = MachineIcon.LOADING;
+        break;
+      case InfoBox.INFO:
+        boxColor = this.context.muiTheme.palette.primary1Color;
+        status = MachineIcon.INFO;
+        break;
+      case InfoBox.WARNING:
+        boxColor = this.context.muiTheme.palette.warnColor;
+        status = MachineIcon.WARNING;
+        break;
+      case InfoBox.DISABLED:
+        boxColor = this.context.muiTheme.palette.disabledColor;
+        status = MachineIcon.DISABLED;
+        break;
+      default:
+        boxColor = this.context.muiTheme.palette.textColor;
     }
 
-    var content = this.props.children;
+    const styles = {
+      div: {
+        padding: 20,
+        color: boxColor,
+      },
+    };
+
+    if (styleType === InfoBox.STYLE_BIG) {
+      styles.div.fontSize = '20px';
+      styles.div.textAlign = 'center';
+      iconProps = {bigIcon: true, style: {marginRight: '10px'}};
+    }
+
+    if (showIcon) {
+      const styleChildren = {
+        display: 'inline-block',
+        verticalAlign: 'top',
+        paddingTop: '15px',
+      };
+      content = [
+        <MachineIcon status={status} {...iconProps} key={1} />,
+        <div style={styleChildren} key={2}>{children}</div>,
+      ];
+    } else {
+      content = children;
+    }
 
     return (
-      <div
-        style={this.mergeAndPrefix(
-          styles.div,
-          style)}
+      <Paper style={StylePropable.mergeStyles(styles.div, style)}
         {...other}>
         {content}
-      </div>
+      </Paper>
       );
   }
-});
+};
 
 InfoBox.contextTypes = {
-  muiTheme: React.PropTypes.object
-}
+  muiTheme: React.PropTypes.object,
+};
 
 InfoBox.ERROR = 'error';
 InfoBox.SUCCESS = 'success';
+InfoBox.LOADING = 'loading';
+InfoBox.WARNING = 'warning';
+InfoBox.INFO = 'info';
+InfoBox.DISABLED = 'disabled';
+
+InfoBox.STYLE_BIG = 'big';
 
 module.exports = InfoBox;

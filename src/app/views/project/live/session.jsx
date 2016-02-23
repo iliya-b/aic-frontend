@@ -1,24 +1,31 @@
+/* global window */
 'use strict';
 
 // React
-var React = require('react');
+const React = require('react');
 
 // Material design
-var mui = require('material-ui');
-var { Spacing } = mui.Styles;
-var { Tabs, Tab, Paper, FlatButton, CircularProgress } = mui;
+const mui = require('material-ui');
+const {Spacing} = mui.Styles;
+const {
+  Paper,
+  FlatButton,
+  CircularProgress,
+} = mui;
 
 // APP
-var { AppUtils,
-      LiveScreen,
-      LiveSensors,
-      AreaStatus,
-      LogBox,
-      LogBoxRow } = require('goby/components');
-var { LiveStore } = require('goby/stores');
-var { LiveActions } = require('goby/actions');
+const {
+  AppUtils,
+  LiveScreen,
+  LiveSensors,
+  AreaStatus,
+  LogBox,
+  LogBoxRow,
+} = require('goby/components');
+const {LiveStore} = require('goby/stores');
+const {LiveActions} = require('goby/actions');
 
-var ProjectLive = class extends React.Component{
+const LiveSession = class extends React.Component {
 
   constructor(props) {
     super(props);
@@ -26,11 +33,10 @@ var ProjectLive = class extends React.Component{
   }
 
   render() {
-
-    var style = {
+    const style = {
       paperCenter: {
         textAlign: 'center',
-        padding: Spacing.desktopGutter
+        padding: Spacing.desktopGutter,
       },
       paperLive: {
         padding: Spacing.desktopGutter,
@@ -51,24 +57,29 @@ var ProjectLive = class extends React.Component{
       infoArea: {
         width: 547,
         margin: '0 auto',
-        paddingBottom: Spacing.desktopGutter + 'px',
+        paddingBottom: `${Spacing.desktopGutter}px`,
       },
     };
 
-    var logBoxRows = (this.state && this.state.live) ? this.state.live.logBox.map( function(v,i){ return <LogBoxRow key={i} time={v.time}>{v.message}</LogBoxRow> }  ) : null;
+    const logBoxRows = null;
 
-    return  <div>
+    if (this.state && this.state.live) {
+      this.state.live.logBox.map((v, i) => {
+        return <LogBoxRow key={i} time={v.time}>{v.message}</LogBoxRow>;
+      });
+    }
+
+    return <div>
 
               <div style={style.infoArea}>
-                <AreaStatus typeName='live' /><br />
-                <div style={{width:547}}>
+                <AreaStatus typeName="live" /><br />
+                <div style={{width: 547}}>
                   <LogBox>
                   {logBoxRows}
                   </LogBox>
                 </div>
               </div>
 
-              {/* Debugging */}
               {this.context.appConfig.debug ? (
               <div>
                 <Paper style={style.paperCenter}>
@@ -125,7 +136,6 @@ var ProjectLive = class extends React.Component{
               </div>
               ) : null}
 
-              {/* Live begin */}
               {this.state && this.state.live.status === 'LIVE_STATUS_INITIALIZED' ? (
                 <Paper style={style.paperCenter}>
                   <FlatButton
@@ -136,7 +146,6 @@ var ProjectLive = class extends React.Component{
                 </Paper>
               ) : null}
 
-              {/* Live failed */}
               {this.state && this.state.live.status.substr(-6) === 'FAILED' ? (
               <Paper style={style.paperCenter}>
 
@@ -147,8 +156,7 @@ var ProjectLive = class extends React.Component{
               </Paper>
               ) : null}
 
-              {/* Live started */}
-              {this.state && (this.state.live.status === 'LIVE_STATUS_CONNECTING' || this.state.live.status === 'LIVE_STATUS_CONNECTED') ? (
+              {this.state && (this.state.live.status === 'LIVE_STATUS_CONNECTING' || this.state.live.status === 'LIVE_STATUS_CONNECTED') ? (
               <Paper style={style.paperLive}>
 
                     {this.state.live.status === 'LIVE_STATUS_CONNECTING' ? (
@@ -161,7 +169,7 @@ var ProjectLive = class extends React.Component{
 
                     {this.state.live.status === 'LIVE_STATUS_CONNECTED' ? (
                     <div>
-                    <LiveSensors onInputFocus={this._onInputFocus} onInputBlur={this._onInputBlur} />
+                    <LiveSensors onInputFocus={this._onInputFocus} onInputBlur={this._onInputBlur} avmId={this.state.liveInfo.avm_id} />
                     <br />
                     <Paper style={style.paperCenter}>
                       <FlatButton
@@ -177,7 +185,6 @@ var ProjectLive = class extends React.Component{
               </Paper>
               ) : null}
 
-              {/* Live stopped */}
               {this.state && (this.state.live.status === 'LIVE_STATUS_STOPPED') ? (
               <Paper style={style.paperCenter}>
 
@@ -193,19 +200,18 @@ var ProjectLive = class extends React.Component{
               ) : null}
 
             </div>;
-
   }
 
-  _onStateChange( state ){
-    this.setState( state );
+  _onStateChange(state) {
+    this.setState(state);
     // if(state.live.status === 'LIVE_STATUS_INITIALIZED'){
       // LiveActions.liveCheck();
     // }
   }
 
-  _onLiveAction(actionName, e){
+  _onLiveAction(actionName) {
     // console.log(arguments);
-    switch(actionName){
+    switch (actionName) {
       case 'test':
         console.log(arguments);
 
@@ -224,11 +230,13 @@ var ProjectLive = class extends React.Component{
         LiveActions.liveConnect(this.state.live.screen.ip, this.state.live.screen.port);
         break;
       case 'close':
-        LiveActions.liveStop( this.state.live.screen.port );
+        LiveActions.liveStop(this.state.live.screen.port);
         break;
       case 'setState':
-        if (!this.context.appConfig.debug) { return; }
-        var newState = this.state;
+        if (!this.context.appConfig.debug) {
+          return;
+        }
+        const newState = this.state;
         newState.live.status = 'LIVE_STATUS_CONNECTING';
         newState.live.screen.ip = '10.2.0.156';
         newState.live.screen.port = '5909';
@@ -239,30 +247,37 @@ var ProjectLive = class extends React.Component{
         newState.live.delayedRotation = 'horizontal';
         LiveActions.setState(newState);
         break;
+      default:
+        break;
     }
   }
 
   _onInputFocus() {
     console.log('focus');
-    if (!window.rfb) return;
+    if (!window.rfb) {
+      return;
+    }
     console.log('rfb exists?');
     window.rfb.get_keyboard().set_focused(false);
     window.rfb.get_mouse().set_focused(false);
   }
 
   _onInputBlur() {
-      if (!window.rfb) return;
-
-      window.rfb.get_keyboard().set_focused(true);
-      window.rfb.get_mouse().set_focused(true);
+    if (!window.rfb) {
+      return;
+    }
+    window.rfb.get_keyboard().set_focused(true);
+    window.rfb.get_mouse().set_focused(true);
   }
 
   componentDidMount() {
     // console.log('componentDidMount');
-    var projectId = AppUtils.getProjectIdFromRouter(this.context.router);
-    this.unsubscribe = LiveStore.listen( this._onStateChange );
+    const projectId = AppUtils.getProjectIdFromRouter(this.context.router);
+    const avmId = AppUtils.getAVMIdFromRouter(this.context.router);
+    this.unsubscribe = LiveStore.listen(this._onStateChange);
     LiveActions.liveReset();
     LiveActions.setProjectId(projectId);
+    LiveActions.loadInfo(avmId);
   }
 
   componentWillUnmount() {
@@ -272,10 +287,10 @@ var ProjectLive = class extends React.Component{
 
 };
 
-ProjectLive.contextTypes = {
+LiveSession.contextTypes = {
   router: React.PropTypes.func,
   muiTheme: React.PropTypes.object,
-  appConfig: React.PropTypes.object
+  appConfig: React.PropTypes.object,
 };
 
-module.exports = ProjectLive;
+module.exports = LiveSession;

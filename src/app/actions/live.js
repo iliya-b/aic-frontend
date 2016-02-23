@@ -1,40 +1,104 @@
 'use strict';
 
 // Reflux
-var Reflux = require('reflux');
+const Reflux = require('reflux');
+
+// Vendor
+const debuggerGoby = require('debug')('AiC:Live:Actions');
 
 // APP
-var BackendAPI = require('goby/stores/backend-api.jsx');
+const BackendAPI = require('goby/stores/backend-api.jsx');
 
 // Actions
-var LiveActions = Reflux.createActions({
-  'setProjectId': { children: ["completed","failure"] },
-  'loadState': {},
-  'setState': {},
-  'liveReset': {},
-  'setDelayedRotation': {},
-  'socketMessage': {},
-  'logMessage': {},
-  'liveCheck': { children: ["completed","failure"] },
-  'liveStart': { children: ["completed","failure"] },
-  'liveConnect': { children: ["completed","failure"] },
-  'liveStop': {asyncResult: true},
-  'setSensorBattery': {asyncResult: true},
-  'setSensorAccelerometer': {asyncResult: true},
-  'setSensorLocation': {asyncResult: true},
-  'recordStart': {asyncResult: true},
-  'recordStop': {asyncResult: true},
-  'screenshot': {asyncResult: true},
+const LiveActions = Reflux.createActions({
+  setProjectId: {children: ['completed', 'failure']},
+  loadState: {},
+  loadInfo: {children: ['completed', 'failure']},
+  setState: {},
+  liveReset: {},
+  setDelayedRotation: {},
+  socketMessage: {},
+  logMessage: {},
+  start: {children: ['completed', 'failure']},
+  stop: {children: ['completed', 'failure']},
+  liveCheck: {children: ['completed', 'failure']},
+  liveStart: {children: ['completed', 'failure']},
+  liveConnect: {children: ['completed', 'failure']},
+  liveStop: {asyncResult: true},
+  setSensorBattery: {asyncResult: true},
+  setSensorAccelerometer: {asyncResult: true},
+  setSensorLocation: {asyncResult: true},
+  recordStart: {asyncResult: true},
+  recordStop: {asyncResult: true},
+  screenshot: {asyncResult: true},
 });
 
 // Listeners for asynchronous Backend API calls
 
 LiveActions.setProjectId.listen(function () {
-  LiveActions.tryLoadNoVNC((res) => {
+  LiveActions.tryLoadNoVNC(res => {
     if (res.success) {
       this.completed();
-    }else{
+    } else {
       this.failure(res.errorMessage);
+    }
+  });
+});
+
+LiveActions.start.listen(function (variant) {
+  debuggerGoby('start called');
+  BackendAPI.liveStart(variant)
+  .then(res => {
+    debuggerGoby('start back');
+    debuggerGoby(arguments);
+    if (res.hasOwnProperty('avm_id')) {
+      this.completed(res);
+    } else {
+      this.failure('It was not possible to start live session.');
+    }
+  });
+});
+
+LiveActions.stop.listen(function (avmId) {
+  debuggerGoby('stop called');
+  BackendAPI.liveStop(avmId)
+  .then(() => {
+    debuggerGoby('stop back');
+    debuggerGoby(arguments);
+  })
+  .catch(() => {
+    debuggerGoby('stop back catch');
+    debuggerGoby(arguments);
+  });
+  // [undefined, "nocontent", Object]0: undefined1: "nocontent"2: Objectabort: (a)always: ()complete: ()done: ()error: ()fail: ()getAllResponseHeaders: ()getResponseHeader: (a)overrideMimeType: (a)pipe: ()progress: ()promise: (a)readyState: 4responseText: ""setRequestHeader: (a,b)state: ()status: 204statusCode: (a)statusText: "No Content"success: ()then: ()__proto__: Objectcallee: (...)get callee: ThrowTypeError()set callee: ThrowTypeError()caller: (...)get caller: ThrowTypeError()set caller: ThrowTypeError()length: 3Symbol(Symbol.iterator): values()__proto__: Object
+  // [Object, "error", "Not Found"] +1ms
+  // .then(res => {
+  //   debuggerGoby('stop back');
+  //   debuggerGoby(res);
+  //   if (res.hasOwnProperty('avm_id')) {
+  //     this.completed(res);
+  //   } else {
+  //     this.failure('It was not possible to stop live session.');
+  //   }
+  // });
+});
+
+LiveActions.loadInfo.listen(function (avmId) {
+  debuggerGoby('load info called');
+  BackendAPI.liveList()
+  .then(res => {
+    debuggerGoby('back');
+    if (res.hasOwnProperty('avms')) {
+      const avmInfo = res.avms.filter(currentValue => {
+        return currentValue.avm_id === avmId;
+      });
+      if (avmInfo.length) {
+        this.completed(avmInfo[0]);
+      } else {
+        this.failure('It was not possible to find live session.');
+      }
+    } else {
+      this.failure('It was not possible to list live sessions.');
     }
   });
 });
@@ -95,14 +159,13 @@ LiveActions.liveConnect.listen(function (vmhost, vmport) {
   } );
 });
 
-LiveActions.liveStop.listen(function (screenPort) {
+LiveActions.liveStop.listen(function (avmId) {
   var WebsocketActions = require('goby/actions/websocket.js');
   WebsocketActions.close();
   if (window.rfb) {
     window.rfb.disconnect();
   }
-  var token = '';
-  BackendAPI.liveStop(token, screenPort, (res) => {
+  BackendAPI.liveStop(avmId, (res) => {
     this.completed( res );
   });
   // TODO: Call disconnect from noNVC if connected before
@@ -192,9 +255,9 @@ LiveActions.tryWebsocket = function () {
 
   try {
     LiveActions.logMessage('Connecting to VNC session.');
-    window.AiClive.socket = new WebSocket("ws://" + window.AiClive.host + ":" + window.AiClive.port, 'base64');
+    window.AiClive.socket = new WebSocket('ws://' + window.AiClive.host + ':' + window.AiClive.port, 'base64');
     window.AiClive.socket.onerror=function(){
-      console.log("socket test on error");
+      console.log('socket test on error');
       console.log(arguments);
       console.log(LiveActions);
       if (window.AiClive.errorCount >= window.AiClive.maxTries){
@@ -209,13 +272,13 @@ LiveActions.tryWebsocket = function () {
       }
     };
     window.AiClive.socket.onopen = function (event) {
-        console.log("socket test on open");
+        console.log('socket test on open');
         console.log(LiveActions);
         window.AiClive.socket.close();
         window.rfb.connect(window.AiClive.host , window.AiClive.port, window.AiClive.password, window.AiClive.path);
     };
     window.AiClive.socket.onclose = function (event) {
-        console.log("socket test on close");
+        console.log('socket test on close');
     };
 
   } catch (exc) {
@@ -226,7 +289,7 @@ LiveActions.tryWebsocket = function () {
 
 LiveActions.tryConnection = function ( vmhost, vmport, cb ) {
 
-  window.INCLUDE_URI = "/noVNC/"; // This is noVNC dependent
+  window.INCLUDE_URI = '/noVNC/'; // This is noVNC dependent
   // FIXME: probably not the best way to set global var.
   window.AiClive = {
     host: vmhost,
@@ -243,9 +306,13 @@ LiveActions.tryConnection = function ( vmhost, vmport, cb ) {
 
   LiveActions.logMessage('Loading noVNC utils.');
   // Load supporting scripts
+  // Util.load_scripts(['webutil.js', 'base64.js', 'websock.js', 'des.js',
+  //                    'keysymdef.js', 'keyboard.js', 'input.js', 'display.js',
+  //                    'rfb.js', 'keysym.js']);
+
   Util.load_scripts(["webutil.js", "base64.js", "websock.js", "des.js",
-                     "keysymdef.js", "keyboard.js", "input.js", "display.js",
-                     "jsunzip.js", "rfb.js", "keysym.js"]);
+                           "keysymdef.js", "keyboard.js", "input.js", "display.js",
+                           "inflator.js", "rfb.js", "keysym.js"]);
   // When finished will call onscriptsload
   setTimeout(function () {
     if ( !window.AiClive.completed ){

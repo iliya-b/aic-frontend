@@ -25,9 +25,10 @@ module.exports = {
       path: "/browser-sync/socket.io",
       clientPath: '/browser-sync',
       namespace: "/browser-sync",
-      domain: 'localhost:3000',
-      port: 3000,
+      domain: 'localhost:9080',
+      port: 9080,
     },
+    port: 9080
   },
   less: {
     src: src + '/less/main.less',
@@ -52,7 +53,7 @@ module.exports = {
     },
   },
   novnc: {
-    src: ['./noVNC/include/base.css', './noVNC/include/*.js' ],
+    src: ['./node_modules/noVNC/include/base.css', './node_modules/noVNC/include/*.js' ],
     dest: dest + '/noVNC/'
   },
   config: {

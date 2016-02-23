@@ -1,20 +1,24 @@
+/* global window */
 'use strict';
 
 // Reflux
-var Reflux = require('reflux');
+const Reflux = require('reflux');
+
+// Vendor
+const debuggerGoby = require('debug')('AiC:Live:Store');
 
 // APP
-var AppUtils = require('goby/components/shared/app-utils.jsx');
-var { LiveActions } = require('goby/actions');
+const AppUtils = require('goby/components/shared/app-utils.jsx');
+const {LiveActions} = require('goby/actions');
 
 // Store
-var LiveStore =  Reflux.createStore({
+const LiveStore = Reflux.createStore({
 
   // Base Store //
 
   listenables: LiveActions,
 
-  init: function() {
+  init() {
     this.state = {};
     this.state.projectId = false;
     this.resetLive();
@@ -25,45 +29,103 @@ var LiveStore =  Reflux.createStore({
   // Actions //
 
   // Set project
-  onSetProjectId: function (projectId) {
+  onSetProjectId(projectId) {
     this.state.projectId = projectId;
     this.updateState();
   },
 
-  onSetProjectIdCompleted: function () {
+  onSetProjectIdCompleted() {
     this.state.live.status = 'LIVE_STATUS_INITIALIZED';
     this.updateState();
   },
 
-  onSetProjectIdFailure: function (errorMessage) {
+  onSetProjectIdFailure(errorMessage) {
     this.state.live.message = errorMessage;
     this.state.live.status = 'LIVE_STATUS_INITIAL_FAILED';
     this.updateState();
   },
 
-  onLoadState: function () {
+  // Load info
+  onLoadInfo() {
+    // this.updateState();
+  },
+
+  onLoadInfoCompleted(avmInfo) {
+    // avmInfo.avm_novnc_host
+    // window.GobyAppGlobals.config.backend.host
+    debuggerGoby('avmInfo');
+    debuggerGoby(avmInfo);
+    this.state.liveInfo = avmInfo;
+    LiveActions.liveConnect(avmInfo.avm_novnc_host, avmInfo.avm_novnc_port);
+  },
+
+  onLoadInfoFailure(errorMessage) {
+    this.state.live.message = errorMessage;
+    this.state.live.status = 'LIVE_STATUS_INITIAL_FAILED';
     this.updateState();
   },
 
-  onSetState: function (newState) {
+  // Load State
+  onLoadState() {
+    this.updateState();
+  },
+
+  onSetState(newState) {
     this.state = newState;
     this.updateState();
   },
 
-  onLiveReset: function () {
+  onLiveReset() {
     this.resetLive();
     this.state.live.status = 'LIVE_STATUS_RESET';
     this.updateState();
   },
 
+  // Live list
+  onList() {
+    debuggerGoby('onlist');
+    this.state.live.status = 'LIVE_STATUS_LISTING';
+    this.updateState();
+  },
+
+  onListCompleted(avms) {
+    this.state.live.avms = avms;
+    this.state.live.status = 'LIVE_STATUS_LISTED';
+    this.updateState();
+  },
+
+  onListFailure(errorMessage) {
+    this.state.live.status = 'LIVE_STATUS_LIST_FAILED';
+    this.state.live.message = errorMessage;
+    this.updateState();
+  },
+
+  // Live list
+  onStart() {
+    this.state.live.status = 'LIVE_STATUS_VMSTARTING';
+    this.updateState();
+  },
+
+  onStartCompleted(avm) {
+    this.state.live.avm = avm;
+    this.state.live.status = 'LIVE_STATUS_VMSTARTED';
+    this.updateState();
+  },
+
+  onStartFailure(errorMessage) {
+    this.state.live.status = 'LIVE_STATUS_VMSTART_FAILED';
+    this.state.live.message = errorMessage;
+    this.updateState();
+  },
+
   // Live check
-  onLiveCheck: function(){
+  onLiveCheck() {
     this.addLogMessage('Searching session.');
     this.state.live.status = 'LIVE_STATUS_CHECKING';
     this.updateState();
   },
 
-  onLiveCheckCompleted: function(sessionFound){
+  onLiveCheckCompleted(sessionFound) {
     this.state.live.sessionFound = sessionFound;
     this.state.live.status = sessionFound ? 'LIVE_STATUS_CHECK_FOUND' : 'LIVE_STATUS_CHECK_NOTFOUND';
     this.changeBoxes('load', 'enabled', sessionFound);
@@ -71,19 +133,19 @@ var LiveStore =  Reflux.createStore({
     this.updateState();
   },
 
-  onLiveCheckFailure: function(errorMessage){
+  onLiveCheckFailure(errorMessage) {
     this.state.live.status = 'LIVE_STATUS_CHECK_FAILED';
     this.state.live.message = errorMessage;
     this.updateState();
   },
 
   // Live start
-  onLiveStart: function(){
+  onLiveStart() {
     this.state.live.status = 'LIVE_STATUS_STARTING';
     this.updateState();
   },
 
-  onLiveStartCompleted: function(screenIP, screenPort){
+  onLiveStartCompleted(screenIP, screenPort) {
     this.state.live.screen.ip = screenIP;
     this.state.live.screen.port = screenPort;
     this.state.live.screen.rotation = 'horizontal';
@@ -92,43 +154,43 @@ var LiveStore =  Reflux.createStore({
     this.updateState();
   },
 
-  onLiveStartFailure: function(errorMessage){
+  onLiveStartFailure(errorMessage) {
     this.state.live.status = 'LIVE_STATUS_START_FAILED';
     this.state.live.message = errorMessage;
     this.updateState();
   },
 
   // Live connect
-  onLiveConnect: function(vmhost, vmport){
+  onLiveConnect(vmhost, vmport) {
     this.state.live.status = 'LIVE_STATUS_CONNECTING';
     this.updateState();
     LiveActions.tryAudioConnection( vmhost, vmport+1000, (res) => {});
   },
 
-  onLiveConnectCompleted: function(){
+  onLiveConnectCompleted() {
     this.state.live.status = 'LIVE_STATUS_CONNECTED';
     this.updateState();
   },
 
-  onLiveConnectFailure: function(errorMessage){
+  onLiveConnectFailure(errorMessage) {
     this.state.live.status = 'LIVE_STATUS_CONNECT_FAILED';
     this.state.live.message = errorMessage;
     this.updateState();
   },
 
   // Live stop
-  onLiveStop: function(){
+  onLiveStop() {
     this.state.live.status = 'LIVE_STATUS_STOPPING';
     this.updateState();
   },
 
-  onLiveStopCompleted: function(){
+  onLiveStopCompleted() {
     this.resetMachine();
     this.state.live.status = 'LIVE_STATUS_STOPPED';
     this.updateState();
   },
 
-  onLiveStopFailed: function(errorMessage){
+  onLiveStopFailed(errorMessage) {
     this.state.live.status = 'LIVE_STATUS_STOP_FAILED';
     this.state.live.message = errorMessage;
     this.updateState();
@@ -136,38 +198,38 @@ var LiveStore =  Reflux.createStore({
 
   // Live sensors
 
-  onSetSensorBattery: function (projectId, value) {
+  onSetSensorBattery(projectId, value) {
     this.state.live.battery = value;
   },
 
-  onSetSensorAccelerometer: function (projectId, x, y, z, newRotationName) {
+  onSetSensorAccelerometer(projectId, x, y, z, newRotationName) {
     this.state.live.screen.rotation = newRotationName;
     this.updateState();
   },
 
-  onSetDelayedRotation: function(){
+  onSetDelayedRotation() {
     this.state.live.delayedRotation = this.state.live.screen.rotation;
     this.updateState();
   },
 
-  onRecordStart: function(){
+  onRecordStart() {
     this.state.live.recording = true;
     this.updateState();
   },
 
-  onRecordStartCompleted: function(filename){
+  onRecordStartCompleted(filename) {
     this.state.live.recording = true;
     this.state.live.recordingFileName = filename;
     this.updateState();
   },
 
-  onRecordStop: function(){
+  onRecordStop() {
     this.state.live.recording = false;
     this.updateState();
   },
 
   // Socket Message
-  onSocketMessage: function (message) {
+  onSocketMessage(message) {
     var messageParsed = JSON.parse(message.data);
     console.log('onSocketMessage', messageParsed);
     if (messageParsed.hasOwnProperty('message')) {
@@ -196,48 +258,47 @@ var LiveStore =  Reflux.createStore({
     }
   },
 
-  onLogMessage: function (message) {
+  onLogMessage(message) {
     this.addLogMessage(message);
   },
 
   // Methods //
 
-
   // Status Box
 
-  resetMachine: function () {
+  resetMachine() {
     this.state.live.screen.ip = null;
     this.state.live.screen.port = null;
     this.state.live.screen.rotation = null;
-    this.state.live.delayedRotation = null;
+    this.state.live.delayedRotation = 'horizontal';
     this.state.live.battery = 100;
   },
 
-  resetLive: function () {
+  resetLive() {
     this.state.live = {};
     this.state.live.logBox = [];
-    this.state.live.screen = {}
+    this.state.live.screen = {};
     this.resetMachine();
     this.state.live.recording = false;
     this.state.live.rotationSets = {
-      horizontal: { x: 0, y: 5.9, z: 0, next: 'vertical'},
-      vertical:   { x: 5.9, y: 0, z: 0, next: 'horizontal'},
+      horizontal: {x: 0, y: 5.9, z: 0, next: 'vertical'},
+      vertical: {x: 5.9, y: 0, z: 0, next: 'horizontal'},
     };
     this.state.live.recordingFileName = '';
     this.resetBoxes();
   },
 
-  resetBoxes: function() {
+  resetBoxes() {
     this.state.live.boxes = [
-      { typeName: 'search', status: 'disable', enabled: true, isFirst: true },
-      { typeName: 'create', status: 'disable', enabled: false },
-      { typeName: 'load', status: 'disable', enabled: true },
-      { typeName: 'connect', status: 'disable', enabled: true },
-      { typeName: 'close', status: 'disable', enabled: true, isLast: true },
+      {typeName: 'search', status: 'disable', enabled: true, isFirst: true},
+      {typeName: 'create', status: 'disable', enabled: false},
+      {typeName: 'load', status: 'disable', enabled: true},
+      {typeName: 'connect', status: 'disable', enabled: true},
+      {typeName: 'close', status: 'disable', enabled: true, isLast: true},
     ];
   },
 
-  changeBoxes: function (typeName, field, newValue) {
+  changeBoxes(typeName, field, newValue) {
     // console.log(this.state);
     // console.log(arguments);
     var replacement = {};
@@ -249,51 +310,55 @@ var LiveStore =  Reflux.createStore({
     );
   },
 
-  addLogMessage: function(message){
-    this.state.live.logBox.unshift({ time: AppUtils.getDate() , message: message });
+  addLogMessage(message) {
+    this.state.live.logBox.unshift({time: AppUtils.getDate(), message});
   },
 
   statusUpdating: {
-    'LIVE_STATUS_INITIATING':   { typeName: '', newStatus: '' },
-    'LIVE_STATUS_INITIALIZED':  { typeName: '', newStatus: ''},
-    'LIVE_STATUS_INITIAL_FAILED':  { typeName: '', newStatus: ''},
+    LIVE_STATUS_INITIATING: {typeName: '', newStatus: ''},
+    LIVE_STATUS_INITIALIZED: {typeName: '', newStatus: ''},
+    LIVE_STATUS_INITIAL_FAILED: {typeName: '', newStatus: ''},
 
-    'LIVE_STATUS_CHECKING':     { typeName: 'search', newStatus: 'doing'},
-    'LIVE_STATUS_CHECK_FOUND':  { typeName: 'search', newStatus: 'success'},
-    'LIVE_STATUS_CHECK_NOTFOUND':{ typeName: 'search', newStatus: 'not-found'},
-    'LIVE_STATUS_CHECK_FAILED': { typeName: 'search', newStatus: 'fail'},
+    LIVE_STATUS_LISTING: {typeName: 'list', newStatus: 'doing'},
+    LIVE_STATUS_LISTED: {typeName: 'list', newStatus: 'success'},
+    LIVE_STATUS_LIST_FAILED: {typeName: 'list', newStatus: 'fail'},
 
-    'LIVE_STATUS_LOADING':      { typeName: 'load',   newStatus: 'doing'},
-    'LIVE_STATUS_LOADED':       { typeName: 'load',   newStatus: 'success'},
-    'LIVE_STATUS_LOAD_FAILED':  { typeName: 'load',   newStatus: 'fail'},
+    LIVE_STATUS_VMSTARTING: {typeName: 'vmstart', newStatus: 'doing'},
+    LIVE_STATUS_VMSTARTED: {typeName: 'vmstart', newStatus: 'success'},
+    LIVE_STATUS_VMSTART_FAILED: {typeName: 'vmstart', newStatus: 'fail'},
 
-    'LIVE_STATUS_STARTING':     { typeName: 'create',   newStatus: 'doing'},
-    'LIVE_STATUS_STARTED':      { typeName: 'create',   newStatus: 'success'},
-    'LIVE_STATUS_START_FAILED': { typeName: 'create',   newStatus: 'fail'},
+    LIVE_STATUS_CHECKING: {typeName: 'search', newStatus: 'doing'},
+    LIVE_STATUS_CHECK_FOUND: {typeName: 'search', newStatus: 'success'},
+    LIVE_STATUS_CHECK_NOTFOUND: {typeName: 'search', newStatus: 'not-found'},
+    LIVE_STATUS_CHECK_FAILED: {typeName: 'search', newStatus: 'fail'},
 
-    'LIVE_STATUS_CONNECTING':     { typeName: 'connect',   newStatus: 'doing'},
-    'LIVE_STATUS_CONNECTED':      { typeName: 'connect',   newStatus: 'success'},
-    'LIVE_STATUS_CONNECT_FAILED': { typeName: 'connect',   newStatus: 'fail'},
+    LIVE_STATUS_LOADING: {typeName: 'load', newStatus: 'doing'},
+    LIVE_STATUS_LOADED: {typeName: 'load', newStatus: 'success'},
+    LIVE_STATUS_LOAD_FAILED: {typeName: 'load', newStatus: 'fail'},
 
-    'LIVE_STATUS_STOPPING':     { typeName: 'close',  newStatus: 'doing'},
-    'LIVE_STATUS_STOPPED':      { typeName: 'close',  newStatus: 'success'},
-    'LIVE_STATUS_STOP_FAILED':  { typeName: 'close',  newStatus: 'fail'},
+    LIVE_STATUS_STARTING: {typeName: 'create', newStatus: 'doing'},
+    LIVE_STATUS_STARTED: {typeName: 'create', newStatus: 'success'},
+    LIVE_STATUS_START_FAILED: {typeName: 'create', newStatus: 'fail'},
 
-    'LIVE_STATUS_RESET':          { typeName: '', newStatus: '' },
+    LIVE_STATUS_CONNECTING: {typeName: 'connect', newStatus: 'doing'},
+    LIVE_STATUS_CONNECTED: {typeName: 'connect', newStatus: 'success'},
+    LIVE_STATUS_CONNECT_FAILED: {typeName: 'connect', newStatus: 'fail'},
+
+    LIVE_STATUS_STOPPING: {typeName: 'close', newStatus: 'doing'},
+    LIVE_STATUS_STOPPED: {typeName: 'close', newStatus: 'success'},
+    LIVE_STATUS_STOP_FAILED: {typeName: 'close', newStatus: 'fail'},
+
+    LIVE_STATUS_RESET: {typeName: '', newStatus: ''},
   },
 
   // State update
 
-  updateState: function(){
+  updateState() {
     var actualStatus = this.statusUpdating[this.state.live.status];
     this.changeBoxes(actualStatus.typeName, 'status', actualStatus.newStatus);
     this.trigger( this.state );
   },
 
-
-
 });
 
-
 module.exports = LiveStore;
-

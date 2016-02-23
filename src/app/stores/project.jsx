@@ -1,58 +1,46 @@
 'use strict';
 
-var BackendAPI = require('./backend-api.jsx');
+// Reflux
+var Reflux = require('reflux');
 
-var Project = {
+// APP
+var { ProjectActions } = require('goby/actions');
 
-  getAll: function (cb) {
-    var token = '';
-    BackendAPI.userProjects(token, (res) => {
-      // console.log(res);
-      // res =
-      // { tenants: [ {description: "test's project", enabled: true, id: "a532574a46954bf3a85dd6284ed8f5e8", name: "test"} ], tenants_links: [] }
-      // project =
-      // { projectId: 'project1', text: 'Project1' },
-      var projects = [];
-      if (res !== undefined && res.tenants !== undefined && res.tenants.length > 0){
-        projects = res.tenants.map(function (project) {
-          return {
-            id: project.id,
-            name: project.name,
-            text: project.name,
-            description: project.description,
-          }
-        });
-      }
-      cb(projects);
-    });
+// Store
+var ProjectStore = Reflux.createStore({
+
+  // Base Store //
+
+  listenables: ProjectActions,
+
+  init: function() {
+    this.state = {};
+    this.state.projects = [];
   },
 
-  getOneById: function (projectId, cb) {
-    var project;
-    this.getAll( (projectList) => {
-        // console.log(projectId);
-        // console.log(projectList);
-        for (var i = projectList.length - 1; i >= 0; i--) {
-          if(projectList[i].id.toString() === projectId.toString()) {
-            project = projectList[i];
-            break;
-          }
-        }
-        cb(project);
-      }
-    );
+  // Actions //
+
+  onList: function() {
+    // TODO:
+    // this.updateState();
   },
 
-  getNameById: function (projectId, cb) {
-    this.getOneById( projectId, (project) => {
-        cb(project.name);
-      }
-    );
-  }
+  onListCompleted: function (projects) {
+    this.state.projects = projects;
+    this.updateState();
+  },
 
+  onListFailure: function (errorMessage) {
+    // TODO:
+    // this.updateState();
+  },
 
-};
+  // Methods //
 
+  updateState: function(){
+    this.trigger( this.state );
+  },
 
-module.exports = Project;
+});
 
+module.exports = ProjectStore;

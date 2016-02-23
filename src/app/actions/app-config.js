@@ -1,34 +1,34 @@
 'use strict';
 
 // Reflux
-var Reflux = require('reflux');
+const Reflux = require('reflux');
+
+// Vendors
+const debuggerGoby = require('debug')('AiC:Actions:AppConfig');
 
 // APP
-var BackendAPI = require('goby/stores/backend-api.jsx');
+const BackendAPI = require('goby/stores/backend-api.jsx');
 
 // Actions
-var AppConfigActions = Reflux.createActions({
-  'load': { children: ["completed","failure"] },
+const AppConfigActions = Reflux.createActions({
+  load: {children: ['completed', 'failure']},
 });
 
 // Listeners for asynchronous calls
-AppConfigActions.load.listen(function () {
-  // $.ajax({
-  //     url:  'config.json',
-  //   })
-  AppConfigActions.loadConfigFactory()
-    .then(function(isConfigLoaded){
-      AppConfigActions.load.completed(window.GobyAppGlobals.config);
-    },function(error){
-      AppConfigActions.load.failure(error);
-    });
-
-    // .done(function(data, textStatus, errorThrown) {
-    //   AppConfigActions.load.completed(data);
-    // })
-    // .fail(function(data, textStatus, errorThrown) {
-    //   AppConfigActions.load.failure(errorThrown);
-    // });
+AppConfigActions.load.listen(() => {
+  const options = {
+    url: 'config.json',
+    method: 'GET',
+  };
+  BackendAPI.apiCall(options)
+  .then(data => {
+    debuggerGoby('load.listen then', arguments);
+    AppConfigActions.load.completed(data);
+  })
+  .catch((data, textStatus, errorThrown) => {
+    debuggerGoby('load.listen catch', arguments);
+    AppConfigActions.load.failure(errorThrown);
+  });
 });
 
 AppConfigActions.loadConfigPromise = false;

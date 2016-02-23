@@ -1,277 +1,464 @@
+/* global window, FormData */
 'use strict';
 
-var url = require('url') ;
+// Vendors
+const url = require('url');
+const sprintf = require('sprintf');
+const debuggerGoby = require('debug')('AiC:Store:BackendAPI');
 
-var BackendAPI = {
+debuggerGoby('fetch', window.fetch);
 
-  ERROR: 0,
+// APP
+const SanitizeObject = require('goby/components/libs/sanitize-object.js');
 
-  backendRoot: function(){
-    // FIXME: Not the best to have globals
-    return url.format({
-      protocol: window.GobyAppGlobals.config.backend.protocol,
-      hostname: window.GobyAppGlobals.config.backend.host,
-      port: window.GobyAppGlobals.config.backend.port
-    });
+const BackendObjects = {
+
+  // Backend URLs
+
+  URLPATH_LOGIN: '/user/login',
+  URLPATH_PROJECT: '/back/project',
+  URLPATH_APK: '/back/application/%s',
+  URLPATH_APKTEST: '/back/test/%s',
+  URLPATH_LIVE: '/android',
+  URLPATH_LIVE_MACHINE: '/android/%s',
+  URLPATH_LIVE_SENSOR: '/android/sensors/%s/%s',
+
+  // Validation/Sanitization Objects
+
+  OBJSCHEMA_USER_LOGIN: {type: 'object', strict: true,
+    properties: {
+      username: {type: 'string', rules: ['trim']},
+      password: {type: 'string'},
+    },
+  },
+  OBJSCHEMA_LIVE: {type: 'object', strict: true,
+    properties: {
+      variant: {type: 'string', optional: true},
+    },
+  },
+  OBJSCHEMA_SENSOR_BATTERY: {type: 'object', strict: true,
+    properties: {
+      level_percent: {type: 'integer', min: 0, max: 50000000},
+      ac_online: {type: 'integer', min: 0, max: 1}
+    },
+  },
+  OBJSCHEMA_SENSOR_ACCELEROMETER: {type: 'object', strict: true,
+    properties: {
+      x: {type: 'integer', min: 0, max: 100},
+      y: {type: 'integer', min: 0, max: 100},
+      z: {type: 'integer', min: 0, max: 100},
+    },
+  },
+  OBJSCHEMA_SENSOR_LOCATION: {type: 'object', strict: true,
+    properties: {
+      latitude: {type: 'number'},
+      longitude: {type: 'number'},
+    },
+  },
+  OBJSCHEMA_SENSOR_RECORDING: {type: 'object', strict: true,
+    properties: {
+      filename: {type: 'string', rules: ['trim']},
+      start: {type: 'boolean'},
+    },
   },
 
-  apiCall: function(url, data, cb, headers, method, authRequired){
-    method = (typeof method === 'undefined') ? 'POST' : method;
-    headers = (typeof headers === 'undefined') ? {} : headers;
-    authRequired = (typeof authRequired === 'undefined') ? true : authRequired;
-    data = (typeof data === 'undefined') ? '' : data;
-    $.ajax({
-      url:  url,
-      data: data,
+};
+
+function checkStatus(response) {
+  if (response.status >= 200 && response.status < 300) {
+    return response;
+  } else {
+    const error = new Error(response.statusText);
+    error.response = response;
+    throw error;
+  }
+}
+
+function parseJSON(response) {
+  return response.json();
+}
+
+const BackendAPI = {
+
+  // Core functions
+
+  backendURL(pathname) {
+    // TODO: Not the best to have globals
+    const options = {
+      protocol: window.GobyAppGlobals.config.backend.protocol,
+      hostname: window.GobyAppGlobals.config.backend.host,
+      port: window.GobyAppGlobals.config.backend.port,
+    };
+
+    if (typeof pathname !== 'undefined') {
+      options.pathname = pathname;
+    }
+
+    return url.format(options);
+  },
+
+  apiCall(options) {
+    // url, data, cb, headers, method, authRequired, file, cbProgress
+    options.method = (typeof options.method === 'undefined') ? 'POST' : options.method;
+    options.headers = (typeof options.headers === 'undefined') ? {} : options.headers;
+    options.authRequired = (typeof options.authRequired === 'undefined') ? false : options.authRequired;
+    if (typeof options.data === 'undefined') {
+      options.data = options.rawData || false;
+    } else {
+      options.data = JSON.stringify(SanitizeObject.sanitizeData(options.data));
+    }
+
+    if (options.pathname) {
+      options.url = this.backendURL(options.pathname);
+    }
+
+    if (!options.url) {
+      throw new Error('You must inform a valid URL for request.');
+    }
+
+    // Request options
+    const ajaxOptions = {
+      url: options.url,
+      data: options.data,
       xhrFields: {withCredentials: true},
-      method: method,
+      method: options.method,
       contentType: 'application/json;charset=UTF-8',
       processData: false,
       dataType: 'json',
-      headers: headers,
-      // timeout: AppConfig.config.backend.timeout
-    })
-    .always(function(data, textStatus, errorThrown) {
-      // User is not logged in
-      if (authRequired && textStatus === 'error' && errorThrown === 'Unauthorized') {
-        // TODO: Must be changed to state etc...
-        var { AuthActions } = require('goby/actions');
-        AuthActions.logout.completed();
-      }else{
-        cb(data, textStatus, errorThrown);
-      }
+      headers: options.headers,
+      // timeout: AppConfig.config.backend.timeout // TODO: put back timeout
+    };
+
+    // Add options for file upload
+    // if (typeof options.file !== 'undefined') {
+    //   const formData = new FormData();
+    //   formData.append('file', options.file);
+    //   ajaxOptions.data = formData;
+    //   ajaxOptions.cache = false;
+    //   ajaxOptions.contentType = false;
+    //   ajaxOptions.type = 'POST';
+    //   ajaxOptions.xhr = function () {
+    //     // Custom XMLHttpRequest
+    //     const myXhr = $.ajaxSettings.xhr();
+    //     // Check if upload property exists
+    //     if (myXhr.upload) {
+    //       // For handling the progress of the upload
+    //       myXhr.upload.addEventListener('progress', options.cbProgress, false);
+    //     }
+    //     return myXhr;
+    //   };
+    // }
+
+    // Make request
+    debuggerGoby('doing ajax', arguments);
+
+    const myInit = {
+      method: options.method,
+      headers: options.headers,
+      mode: 'cors',
+      cache: 'default'
+    };
+
+    if (options.data) {
+      myInit.body = options.data;
+    }
+
+    return new Promise((resolve, reject) => {
+      fetch(options.url, myInit)
+      // .then((response) => {
+      //   debuggerGoby('return ajax', arguments, response);
+      // })
+      .then(checkStatus)
+      .then(parseJSON)
+      .then(data => {
+        debuggerGoby('return ajax', arguments, data);
+        console.log('request succeeded with JSON response', data);
+        resolve(data); })
+      .catch(error => {
+        console.log('request failed', error);
+        resolve(null, error, error);
+      });
     });
   },
 
-  apiCallAuth: function(url, data, cb, token, method){
-    this.apiCall(url, data, cb, { "X-Auth-Token": token }, method);
+  // // apiCall with jQuery
+  // apiCall(options) {
+  //   // url, data, cb, headers, method, authRequired, file, cbProgress
+  //   options.method = (typeof options.method === 'undefined') ? 'POST' : options.method;
+  //   options.headers = (typeof options.headers === 'undefined') ? {} : options.headers;
+  //   options.authRequired = (typeof options.authRequired === 'undefined') ? true : options.authRequired;
+  //   options.data = (typeof options.data === 'undefined') ? '' : JSON.stringify(SanitizeObject.sanitizeData(options.data));
+
+  //   if (options.pathname) {
+  //     options.url = this.backendURL(options.pathname);
+  //   }
+
+  //   if (!options.url) {
+  //     throw new Error('You must inform a valid URL for request.');
+  //   }
+
+  //   // Request options
+  //   const ajaxOptions = {
+  //     url: options.url,
+  //     data: options.data,
+  //     xhrFields: {withCredentials: true},
+  //     method: options.method,
+  //     contentType: 'application/json;charset=UTF-8',
+  //     processData: false,
+  //     dataType: 'json',
+  //     headers: options.headers,
+  //     // timeout: AppConfig.config.backend.timeout // TODO: put back timeout
+  //   };
+
+  //   // Add options for file upload
+  //   if (typeof options.file !== 'undefined') {
+  //     const formData = new FormData();
+  //     formData.append('file', options.file);
+  //     ajaxOptions.data = formData;
+  //     ajaxOptions.cache = false;
+  //     ajaxOptions.contentType = false;
+  //     ajaxOptions.type = 'POST';
+  //     ajaxOptions.xhr = function () {
+  //       // Custom XMLHttpRequest
+  //       const myXhr = $.ajaxSettings.xhr();
+  //       // Check if upload property exists
+  //       if (myXhr.upload) {
+  //         // For handling the progress of the upload
+  //         myXhr.upload.addEventListener('progress', options.cbProgress, false);
+  //       }
+  //       return myXhr;
+  //     };
+  //   }
+
+  //   // Make request
+  //   return new Promise(resolve => {
+  //     $.ajax(ajaxOptions)
+  //     .always(function (data, textStatus, errorThrown) {
+  //       // User is not logged in
+  //       if (options.authRequired && textStatus === 'error' && errorThrown === 'Unauthorized') {
+  //         // TODO: Must be changed to state etc...
+  //         const {AuthActions} = require('goby/actions');
+  //         AuthActions.logout.completed();
+  //       }
+  //       debuggerGoby('return ajax', arguments);
+  //       resolve(data, textStatus, errorThrown);
+  //     });
+  //   });
+  // },
+
+  apiCallAuth(options) {
+    const {AuthActions} = require('goby/actions');
+    options.headers = options.headers ? options.headers : {};
+    options.headers.Authorization = sprintf(' Bearer %s', AuthActions.getToken());
+    options.authRequired = true;
+    return this.apiCall(options);
   },
 
-  userLogin: function (email, pass, cb) {
-    var url = this.backendRoot() + "/back/user/login";
-    // var data = '{"auth":{"passwordCredentials":{"username":"'+email+'","password":"'+pass+'"}}}';
-    var data = '{"passwordCredentials":{"username":"'+email+'","password":"'+pass+'"}}';
-    this.apiCall(url, data, cb, undefined, undefined, false);
+  // User //
+
+  userLogin(email, pass) {
+    const options = {
+      pathname: BackendObjects.URLPATH_LOGIN,
+      data: {
+        data: {username: email, password: pass},
+        schema: BackendObjects.OBJSCHEMA_USER_LOGIN,
+      },
+    };
+    return this.apiCall(options);
   },
 
-  userRegister: function (email, pass, name, cb) {
-    var url = this.backendRoot() + "/back/user/register";
-    var data = '{"user":{"email":"'+email+'","password":"'+pass+'","name":"'+name+'"}}';
-    this.apiCall(url, data, cb);
+  userProjects() {
+    const options = {
+      pathname: BackendObjects.URLPATH_PROJECT,
+      method: 'GET',
+    };
+    return Promise.resolve({
+    tenants: [{
+      description: 'test\'s project',
+      enabled: true,
+      id: 'a532574a46954bf3a85dd6284ed8f5e8',
+      name: 'test'}],
+    tenants_links: [] // eslint-disable-line camelcase
+  });
+    // return this.apiCallAuth(options);
   },
 
-  userLogout: function(cb) {
-    var url = this.backendRoot() + "/back/user/logout";
-    this.apiCall(url, undefined, cb, undefined, undefined, false);
-  },
+  // APKs //
 
   isUserLogged: function(cb) {
     var url = this.backendRoot() + "/back/project";
     this.apiCall(url, undefined, cb, undefined, 'GET', false);
   },
 
-  userProjects: function (token, cb) {
-    var url = this.backendRoot() + "/back/project";
-    this.apiCallAuth(url, null, cb, token, 'GET');
+  apkList(projectId) {
+    const options = {
+      pathname: sprintf(BackendObjects.URLPATH_APK, projectId),
+      method: 'GET',
+    };
+    return this.apiCallAuth(options);
   },
 
-  apkUpload: function (token, projectId, file, cbProgress, cb) {
-    // on error:
-    //    {"code":409,"message":"Error 1062 - #23000 - Duplicate entry 'example.apk' for key 'unique_name'"}
-    // on success:
-    //    {"appId":"ab3e1736-ef99-44e0-b466-c015bc449b10"}
-    var formData = new FormData();
-    formData.append('file', file);
-
-    $.ajax({
-      url: this.backendRoot() + "/back/application/" + projectId,
-      data: formData,
-      cache: false,
-      contentType: false,
-      processData: false,
-      xhrFields: {withCredentials: true},
-      type: 'POST',
-      headers: { "X-Auth-Token": token },
-      xhr: function() {  // Custom XMLHttpRequest
-            var myXhr = $.ajaxSettings.xhr();
-            if(myXhr.upload){ // Check if upload property exists
-                myXhr.upload.addEventListener('progress',cbProgress, false); // For handling the progress of the upload
-            }
-            return myXhr;
-        },
-    })
-    .always(function(data, textStatus, errorThrown) {
-      cb(data, textStatus, errorThrown);
-    });
-
+  apkUpload(projectId, file, cbProgress) {
+    const options = {
+      pathname: sprintf(BackendObjects.URLPATH_APK, projectId),
+      method: 'POST',
+      file,
+      cbProgress,
+    };
+    return this.apiCallAuth(options);
   },
 
-  apkList: function (token, projectId, cb) {
-    // on success
-    //    {"results":[["ab3e1736-ef99-44e0-b466-c015bc449b10","example.apk copy"],["ba435ea0-394a-447d-ba11-06ea6595fb96","example.apk"]]}
-    var url = this.backendRoot() + "/back/application/" + projectId;
-    this.apiCallAuth(url, null, (res) => {
-      var apks = [];
-      if (res !== undefined && res.results !== undefined && res.results.length > 0){
-        apks = res.results.map(function (apk) {
-          return { id: apk[0], name: apk[1] };
-        });
-      }
-      cb(apks);
-    }, token, 'GET');
+  // LIVE //
+
+  liveList() {
+    const options = {
+      pathname: BackendObjects.URLPATH_LIVE,
+      method: 'GET',
+    };
+    return this.apiCallAuth(options);
   },
 
-  apkRemove: function (token, ids, cb) {
-    var url = this.backendRoot() + "/back/application/selection";
-    var data = '{"ids": ["' + ids.join('","') + '"]}';
-    // var data = {ids: ids};
-    this.apiCallAuth(url, data, () => {
-      url = this.backendRoot() + "/back/application/selection";
-      this.apiCallAuth(url, null, cb, token, 'DELETE');
-    }, token);
+  liveStart(variant) {
+    // TODO: should not be raw data
+    const data = new FormData();
+    // data.append('variant', 'opengl');
+    data.append('variant', variant);
+    const options = {
+      pathname: BackendObjects.URLPATH_LIVE,
+      method: 'POST',
+      rawData: data
+      // data: {
+      //   data: {variant: 'opengl'},
+      //   schema: BackendObjects.OBJSCHEMA_LIVE,
+      // }
+    };
+    return this.apiCallAuth(options);
   },
 
-  apkTestUpload: function (token, projectId, file, cbProgress, cb) {
-    // on error:
-    //    {"code":409,"message":"Error 1062 - #23000 - Duplicate entry 'example.apk' for key 'unique_name'"}
-    // on success:
-    //    {"appId":"ab3e1736-ef99-44e0-b466-c015bc449b10"}
-    var formData = new FormData();
-    formData.append('file', file);
-
-    $.ajax({
-      url: this.backendRoot() + "/back/test/" + projectId,
-      data: formData,
-      cache: false,
-      contentType: false,
-      processData: false,
-      xhrFields: {withCredentials: true},
-      type: 'POST',
-      headers: { "X-Auth-Token": token },
-      xhr: function() {  // Custom XMLHttpRequest
-            var myXhr = $.ajaxSettings.xhr();
-            if(myXhr.upload){ // Check if upload property exists
-                myXhr.upload.addEventListener('progress',cbProgress, false); // For handling the progress of the upload
-            }
-            return myXhr;
-        },
-    })
-    .always(function(data, textStatus, errorThrown) {
-      cb(data, textStatus, errorThrown);
-    });
-
+  liveStop(liveId) {
+    const options = {
+      pathname: sprintf(BackendObjects.URLPATH_LIVE_MACHINE, liveId),
+      method: 'DELETE',
+    };
+    return this.apiCallAuth(options);
   },
 
-  apkTestList: function (token, projectId, cb) {
-    // on success
-    //    {"results":[["ab3e1736-ef99-44e0-b466-c015bc449b10","example.apk copy"],["ba435ea0-394a-447d-ba11-06ea6595fb96","example.apk"]]}
-    var url = this.backendRoot() + "/back/test/" + projectId;
-    this.apiCallAuth(url, null, (res) => {
-      var apks = [];
-      if (res !== undefined && res.results !== undefined && res.results.length > 0){
-        apks = res.results.map(function (apk) {
-          return { id: apk[0], name: apk[1] };
-        });
-      }
-      cb(apks);
-    }, token, 'GET');
+  liveCheck(liveId) {
+    const options = {
+      pathname: sprintf(BackendObjects.URLPATH_LIVE_MACHINE, liveId),
+      method: 'GET',
+    };
+    return this.apiCallAuth(options);
   },
 
-  apkTestRemove: function (token, ids, cb) {
-    var url = this.backendRoot() + "/back/test/selection";
-    var data = '{"ids": ["' + ids.join('","') + '"]}';
-    // var data = {ids: ids};
-    this.apiCallAuth(url, data, () => {
-      url = this.backendRoot() + "/back/test/selection";
-      this.apiCallAuth(url, null, cb, token, 'DELETE');
-    }, token);
+  // LIVE SENSORS //
+
+  sensor(data, sensor, liveId) {
+    const options = {
+      pathname: sprintf(BackendObjects.URLPATH_LIVE_SENSOR, sensor, liveId),
+      method: 'POST',
+      data,
+    };
+    return this.apiCallAuth(options);
   },
 
-  instanceList: function (token, cb) {
-    // on success
-    //    {"results":[["330cd3fb-73f7-4e20-a9b4-9c2a05d91e9f","nexus"]]}
-    var url = this.backendRoot() + "/back/stack";
-    this.apiCallAuth(url, null, cb, token, 'GET');
+  sensorBattery(_, liveId, value) {
+    // TODO: fix arguments
+    console.warn(arguments);
+    const data = {
+      // data: {level: parseInt(value, 10) * 500000},
+      data: {
+        level_percent: parseInt(value, 10),
+        ac_online: 1
+      },
+      schema: BackendObjects.OBJSCHEMA_SENSOR_BATTERY,
+    };
+    return this.sensor(data, 'battery', liveId);
   },
 
-  testCreate: function (token, projectId, instanceId, instanceName, APKIds, APKTestIds, cb) {
-    // on success
-    //
-    // on error
-    //     {"error":{"code":409,"message":"Conflict","description":""}}
-    var url = this.backendRoot() + "/back/stack";
-    var APKIdsFlatten = APKIds.length ? '"' + APKIds.join('","') + '"' : '';
-    var APKTestIdsFlatten = APKTestIds.length ? '"' + APKTestIds.join('","') + '"' : '';
-    var data = '{"tenantId":"'+projectId+'","stackName":"'+instanceName+'","stackId":"'+instanceId+'","appIds":['+APKIdsFlatten+'],"testIds":['+APKTestIdsFlatten+']}';
-    this.apiCallAuth(url, data, cb, token);
+  sensorAccelerometer(x, y, z, liveId) {
+    const data = {
+      data: {x, y, z},
+      schema: BackendObjects.OBJSCHEMA_SENSOR_ACCELEROMETER,
+    };
+    return this.sensor(data, 'accelerometer', liveId);
   },
 
-  sensor: function (token, sensor, data, cb) {
-    var url = this.backendRoot() + "/back/sensor/" + sensor;
-    this.apiCallAuth(url, data, cb, token);
+  sensorLocation(lat, lon, liveId) {
+    const data = {
+      data: {latitude: lat, longitude: lon},
+      schema: BackendObjects.OBJSCHEMA_SENSOR_LOCATION,
+    };
+    return this.sensor(data, 'location', liveId);
   },
 
-  sensorBattery: function (token, projectId, value, cb) {
-    var data = '{"tenantId":"'+projectId+'","level":'+value+'}';
-    this.sensor(token, 'battery', data, cb);
+  recording(filename, start, liveId) {
+    const data = {
+      data: {filename, start},
+      schema: BackendObjects.OBJSCHEMA_SENSOR_RECORDING,
+    };
+    return this.sensor(data, 'recording', liveId);
   },
 
-  sensorAccelerometer: function (token, projectId, x, y, z, cb) {
-    var data = '{"tenantId":"'+projectId+'","x":'+x+',"y":'+y+',"z":'+z+'}';
-    this.sensor(token, 'accelerometer', data, cb);
+  recordingStart(filename, liveId) {
+    this.recording(filename, 'true', liveId);
   },
 
-  sensorLocation: function (token, projectId, lat, lon, cb) {
-    var data = '{"tenantId":"'+projectId+'","latitude":'+lat+',"longitude":'+lon+'}';
-    this.sensor(token, 'location', data, cb);
+  recordingStop(filename, liveId) {
+    this.recording(filename, 'false', liveId);
   },
 
-  recording: function (token, projectId, filename, start, cb) {
-    var data = '{"tenantId":"'+projectId+'","filename":"'+filename+'","start":'+start+'}';
-    var url = this.backendRoot() + "/back/rabbit/recording";
-    this.apiCallAuth(url, data, cb, token);
+  screenshot(filename, liveId) {
+    this.recording(filename, 'true', liveId);
   },
 
-  recordingStart: function (token, projectId, filename, cb) {
-    this.recording(token, projectId, filename, 'true', cb);
+  // NOT IMPLEMENTED ON MICROSERVICES //
+
+  // APKs Test //
+
+  apkTestList(projectId) {
+    const options = {
+      pathname: sprintf(BackendObjects.URLPATH_APKTEST, projectId),
+      method: 'GET',
+    };
+    return this.apiCallAuth(options);
   },
 
-  recordingStop: function (token, projectId, filename, cb) {
-    this.recording(token, projectId, filename, 'false', cb);
+  apkTestUpload(projectId, file, cbProgress) {
+    const options = {
+      pathname: sprintf(BackendObjects.URLPATH_APKTEST, projectId),
+      method: 'POST',
+      file,
+      cbProgress,
+    };
+    return this.apiCallAuth(options);
   },
 
-  screenshot: function (token, projectId, filename, cb) {
-    this.recording(token, projectId, filename, 'true', cb);
-  },
-
-  liveStart: function (token, cb) {
-    var url = this.backendRoot() + "/back/live/start";
-    var data = '{}';
-    this.apiCallAuth(url, data, cb, token);
-  },
-
-  liveStop: function (token, screenPort, cb) {
-    var url = this.backendRoot() + "/back/live/stop";
-    var data = '{"vncport":'+screenPort+'}';
-    this.apiCallAuth(url, data, cb, token, 'DELETE');
-  },
-
-  liveCheck: function (token, cb) {
-    // var url = this.backendRoot() + "/back/live/check";
-    // var data = '{}';
-    // this.apiCallAuth(url, data, cb, token, 'GET');
-    // setTimeout(function () {
-    //   cb({error: 'not-found'});
-    // },5000);
-    var url = this.backendRoot() + "/back/live/start";
-    var data = '{}';
-    this.apiCallAuth(url, data, cb, token);
-  },
-
+  // TODO: remove
   loadConfig: function (cb) {
     var url = 'config.json';
     this.apiCall(url, undefined, cb, undefined, 'GET', false);
   },
+  // OLD CODE //
+
+  // instanceList(token, cb) {
+  //   // on success
+  //   //    {'results':[['330cd3fb-73f7-4e20-a9b4-9c2a05d91e9f','nexus']]}
+  //   const url = this.backendRoot() + '/back/stack';
+  //   this.apiCallAuth(url, null, cb, token, 'GET');
+  // },
+
+  // testCreate(token, projectId, instanceId, instanceName, APKIds, APKTestIds, cb) {
+  //   // on success
+  //   //
+  //   // on error
+  //   //     {'error':{'code':409,'message':'Conflict','description':'}}
+  //   // var url = this.backendRoot() + '/back/stack';
+  //   // var APKIdsFlatten = APKIds.length ? ''' + APKIds.join('','') + ''' : '';
+  //   // var APKTestIdsFlatten = APKTestIds.length ? ''' + APKTestIds.join('','') + ''' : '';
+  //   // var data = '{'tenantId':''+projectId+'','stackName':''+instanceName+'','stackId':''+instanceId+'','appIds':['+APKIdsFlatten+'],'testIds':['+APKTestIdsFlatten+']}';
+  //   // this.apiCallAuth(url, data, cb, token);
+  // },
 
 };
 

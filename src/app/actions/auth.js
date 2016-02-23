@@ -3,13 +3,13 @@
 // Reflux
 var Reflux = require('reflux');
 
-// url
+// Vendor
+var Debugger = require('debug')('AiC:Auth:Actions');
 var url = require('url');
 
 // APP
 var BackendAPI = require('goby/stores/backend-api.jsx');
 var AppConfigActions = require('goby/actions/app-config.js');
-
 
 // Actions
 var AuthActions = Reflux.createActions({
@@ -20,38 +20,40 @@ var AuthActions = Reflux.createActions({
 
 // Listeners for asynchronous Backend API calls
 AuthActions.login.listen(function (login, pass) {
-  BackendAPI.userLogin(login, pass, (result) => {
-    // return { authenticated:false, errorMessage:'error' }
-    // on error
-    //    Object {readyState: 4, responseText: "{"error":{"code":400,"message":"Bad request","description":""}}", responseJSON: Object, status: 400, statusText: "Bad Request"}
-    //    Object {readyState: 4, responseText: "{"error":{"code":401,"message":"Unauthorized","description":""}}", responseJSON: Object, status: 401, statusText: "Unauthorized"}
-    // on success Object {X-Auth-Token: "e824cc2f6dd34c90b2e693dd8ceb8789"}
-    // console.log('result');
-    // console.log(result);
+  BackendAPI.userLogin(login, pass)
+  .then( (result) => {
     if (result.hasOwnProperty('status') &&
        (result.status === 400 || result.status === 401 )){
-      this.failure('It was not possible to login. Error: ' + result.statusText);
-    }else if (result.hasOwnProperty('X-Auth-Token')){
-      localStorage.token = result['X-Auth-Token'];
+      Debugger('arguments', arguments);
+      this.failure('It was not possible to login. Authentication server response was an error. Error: ' + result.statusText);
+    }else if (result.hasOwnProperty('token')){
+      localStorage.token = result['token'];
       this.completed();
     }else{
-      this.failure('It was not possible to login.');
+      Debugger('arguments', arguments);
+      this.failure('It was not possible to login. Unknown authentication server response.');
     }
   });
 });
 
-AuthActions.check.listen(function () {
-  console.log('AuthActions.check.listen');
-  BackendAPI.isUserLogged( (result) => {
-    if (result.hasOwnProperty('status') && result.status === 401 ){
-      this.completed( false );
-    }else if ( result.status === 200 ){
-      this.completed( true );
-    }else{
-      this.failure('It was not possible to verify login status.');
-    }
-  });
-});
+
+// AuthActions.check.listen(function () {
+//   console.log('AuthActions.check.listen');
+//   BackendAPI.isUserLogged( (result) => {
+//     if (result.hasOwnProperty('status') && result.status === 401 ){
+//       this.completed( false );
+//     }else if ( result.status === 200 ){
+//       this.completed( true );
+//     }else{
+//       this.failure('It was not possible to verify login status.');
+//     }
+//   });
+// });
+
+// TODO: change to access app state
+AuthActions.getToken = function(){
+  return localStorage.token;
+};
 
 AuthActions.redirectDisconnected = function (routerOrTransition) {
   this.redirectTo(routerOrTransition, 'home', {'nextPath' : this.getPath(routerOrTransition)});

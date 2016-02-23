@@ -12,12 +12,15 @@ module.exports = {
   AreaStatus: require('./project/area-status.jsx'),
   BoxStatus: require('./project/box-status.jsx'),
 
-    /* Live */
-    LiveSensors: require('./project/live-sensors.jsx'),
-    LiveScreen: require('./project/live-screen.jsx'),
+  /* Live */
+  LiveSensors: require('./project/live-sensors.jsx'),
+  LiveScreen: require('./project/live-screen.jsx'),
+  MachineCard: require('./project/machine-card.jsx'),
+  MachineCardLive: require('./project/machine-card-live.jsx'),
+  LiveMachineList: require('./project/live-machine-list.jsx'),
 
-    /* Campaign */
-    TestResultsBox: require('./project/test-results-box.jsx'),
+  /* Campaign */
+  TestResultsBox: require('./project/test-results-box.jsx'),
 
   /* Shared */
   ObjectList: require('./shared/object-list/object-list.jsx'),
@@ -34,5 +37,5 @@ module.exports = {
   LogBoxRow: require('./shared/log-box-row.jsx'),
   AuthRequired: require('./shared/auth-required.jsx'),
   AuthPage: require('./shared/auth-page.jsx'),
-
+  CodeBox: require('./shared/code-box.jsx'),
 };

@@ -121,7 +121,7 @@ var LiveSensors = class extends React.Component{
   _onBatteryChange(e, value) {
     e.preventDefault();
     var intValue = parseInt(value);
-    LiveActions.setSensorBattery(this.state.projectId, value);
+    LiveActions.setSensorBattery(this.props.avmId, value);
   }
 
   _onRotationChange(e) {

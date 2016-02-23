@@ -29,7 +29,7 @@ var TestResultsBox = class extends React.Component{
 
   render() {
 
-    console.log(this.props.results);
+    // console.log(this.props.results);
 
 
     var resultsRendered = this.props.results.map(function(item, index){

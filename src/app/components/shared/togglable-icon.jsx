@@ -1,43 +1,55 @@
-var React = require('react');
+const React = require('react');
 
-var mui = require('material-ui');
-var { FontIcon } = mui;
-var { StylePropable } = mui.Mixins;
+const mui = require('material-ui');
+const FontIcon = mui.FontIcon;
+const StylePropable = mui.Mixins.StylePropable;
 
-var TogglableIcon = React.createClass({
+const TogglableIcon = React.createClass({
 
-  mixins: [StylePropable],
+	propTypes: {
+		iconName: React.PropTypes.string,
+		style: React.PropTypes.object,
+		isOn: React.PropTypes.bool
+	},
 
-  render: function() {
+	mixins: [StylePropable],
 
-    var {
-      iconName,
-      style,
-      isOn,
-      ...other
-    } = this.props;
+	render() {
+		const {
+			iconName,
+			style,
+			isOn,
+			...other
+		} = this.props;
 
-    var styles = {
-      icon: {
-        color: (isOn ? this.context.muiTheme.palette.accent1Color : this.context.muiTheme.palette.disabledColor)
-      }
-    }
+		const styles = {
+			icon: {
+				color: (isOn ? this.context.muiTheme.palette.accent1Color : this.context.muiTheme.palette.disabledColor)
+			}
+		};
 
-    var iconClassName = "mdi mdi-" + iconName + (isOn ? '' : '-off');
+		const iconClassName = `mdi mdi-${iconName}${(isOn ? '' : '-off')}`;
 
-    return (
-      <FontIcon
-        style={this.mergeAndPrefix(
-          styles.icon,
-          style)}
-        {...other}
-        className={iconClassName}  />
-      );
-  }
+		return (
+			<FontIcon
+				style={this.mergeAndPrefix(
+					styles.icon,
+					style)}
+				{...other}
+				className={iconClassName}
+				/>
+			);
+	}
 });
 
 TogglableIcon.contextTypes = {
-  muiTheme: React.PropTypes.object
-}
+	muiTheme: React.PropTypes.object
+};
+
+// TogglableIcon.propTypes = {
+// 	iconName: React.PropTypes.string,
+// 	style: React.PropTypes.object,
+// 	isOn: React.PropTypes.bool
+// };
 
 module.exports = TogglableIcon;

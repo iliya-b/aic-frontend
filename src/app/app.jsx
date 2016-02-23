@@ -1,32 +1,44 @@
-(function() {
+/* global window, document */
+'use strict';
 
+(function () {
   // Needed for configuration
   window.GobyAppGlobals = window.GobyAppGlobals || {};
-  var { AppRoutes } = require('goby/configs');
+  const {AppRoutes} = require('goby/configs');
+
+  // Needed to enable debugging on console
+  window.GobyAppGlobals.Debugger = require('debug');
 
   // React
-  var React = require('react');
+  const React = require('react');
 
   // Needed for React Developer Tools
   // window.React = React;
 
   // Tap
-  var injectTapEventPlugin = require('react-tap-event-plugin');
+  const injectTapEventPlugin = require('react-tap-event-plugin');
   // Needed for onTouchTap
   // Can go away when react 1.0 release
   // Check this repo:
   // https://github.com/zilverline/react-tap-event-plugin
   injectTapEventPlugin();
 
+  // TODO: remove polyfill ?
+  // Promise polyfill
+  // Phantomjs does not implement (yet) Promise
+  // https://github.com/ariya/phantomjs/issues/12401
+  if (!window.Promise) {
+    window.Promise = require('promise-polyfill');
+  }
+
   // Router
-  var Router = require('react-router');
+  const Router = require('react-router');
   Router
     .create({
       routes: AppRoutes,
-      scrollBehavior: Router.ScrollToTopBehavior
+      scrollBehavior: Router.ScrollToTopBehavior,
     })
-    .run(function(Handler) {
+    .run(Handler => {
       React.render(<Handler/>, document.body);
     });
-
 })();
