@@ -38,41 +38,19 @@ module.exports = {
     ],
     dest:  dest + '/css'
   },
-  markup: {
-    src: src + "/www/**",
-    dest: dest
-  },
-  mdi: {
-    css: {
-      src: './node_modules/mdi/css/materialdesignicons.min.css',
-      dest: dest + '/css'
-    },
-    fonts: {
-      files: './node_modules/mdi/fonts/**',
-      dest: dest + '/fonts'
-    },
-  },
-  novnc: {
+  copy: [{
     src: ['./node_modules/noVNC/include/base.css', './node_modules/noVNC/include/*.js' ],
     dest: dest + '/noVNC/'
-  },
-  config: {
-    src: ['./config-sample.json' ],
-    watch: ['./config.json' ],
-    dest: dest + '/'
-  },
-  jshint: {
-    src: [ src + '/**/*.js', src + '/**/*.jsx'],
-    app: src + '/app/app.jsx'
-  },
-  lib: {
-    src: '../src/app',
-    // If any dest is changed, .gitignore should be updated
-    dest: 'lib',
-    // If name is changed all the requires inside the project
-    // should be updated
-    name: 'goby',
-  },
+  },{
+    src: './node_modules/mdi/css/materialdesignicons.min.css',
+    dest: dest + '/css'
+  },{
+    src: './node_modules/mdi/fonts/**',
+    dest: dest + '/fonts'
+  },{
+    src: src + "/www/**",
+    dest: dest
+  }],
   browserify: {
     // Enable source maps
     debug: true,

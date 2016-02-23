@@ -13,18 +13,13 @@
     "test-unit": "ava --tap | tap-nyan",
     "test-unit-full": "ava",
     "coverage": "nyc --extension .jsx npm run test-unit && nyc report --reporter=lcov",
-    "start": "gulp",
+    "start": "gulp watch",
     "build": "gulp build",
     "create-conf-from-env": "gulp create-conf-from-env"
   },
   "browserify": {
     "transform": [
-      [
-        "reactify",
-        {
-          "es6": true
-        }
-      ]
+      ["babelify", { "presets": ["stage-0", "es2015", "react"] } ]
     ]
   },
   "author": "Karine Pires",
@@ -51,17 +46,11 @@
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
     "gulp-babel": "^5.2.0",
-    "gulp-eslint": "^1.0.0",
-    "gulp-jscs": "^2.0.0",
-    "gulp-jshint": "^1.11.2",
-    "gulp-jsvalidate": "^2.0.0",
     "gulp-less": "^3.0.3",
     "gulp-notify": "^2.2.0",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-util": "^3.0.6",
     "highlight.js": "^8.7.0",
-    "jshint-stylish": "^2.0.1",
-    "jsxhint": "^0.15.1",
     "mdi": "^1.1.70",
     "noVNC": "git+https://github.com/kanaka/noVNC.git",
     "pretty-hrtime": "^1.0.0",

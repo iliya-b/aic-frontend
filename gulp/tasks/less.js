@@ -14,3 +14,7 @@ gulp.task('less', function() {
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(config.dest));
 });
+
+gulp.task('less:watch', function() {
+  return gulp.watch(config.src, ['less']);
+});
