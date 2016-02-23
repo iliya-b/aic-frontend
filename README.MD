@@ -5,6 +5,17 @@ Cloning the project
 noVNC is now added as a npm package and there is no need for special
 cloning (with --recursive option) on this project.
 
+Building the project
+====================
+
+The production environment is the build environment.
+The development is the environment for testing.
+To install only dependencies needed by the build (exclude packages
+for testing) use either `npm install --production`, either
+`NODE_ENV=production npm install`, either &lt;insert here another way
+to make node in production environment&gt;.
+Then run the `npm build`, which will create `./build/` folder.
+
 Development installation
 ========================
 
@@ -53,7 +64,7 @@ To run integration tests use the command
 TODO List
 =========
 
-* Change noVNC from git submodule to a npm module
+* ~~Change noVNC from git submodule to a npm module~~ :white_check_mark:
 * Update all code to xo default style
 * Clean up gulp tasks (simplified version can be found in other R&D projects)
 * Update readme (config.json, how to run tests, etc...)
