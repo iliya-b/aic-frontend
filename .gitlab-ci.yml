@@ -1,3 +1,5 @@
+image: node:onbuild
+
 before_script:
   - npm install --unsafe-perm
   - npm run create-conf-from-env
