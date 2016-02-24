@@ -51,6 +51,7 @@ module.exports = {
 		debug: true,
 		// A separate bundle will be generated for each
 		// bundle config in the list below
+		extensions: ['.jsx'],
 		bundleConfigs: [{
 			entries: `${src}/app/app.jsx`,
 			dest,

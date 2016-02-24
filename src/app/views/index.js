@@ -1,14 +1,14 @@
 module.exports = {
-  Home: require('./home.jsx'),
-  Main: require('./main.jsx'),
-  Themes: require('./themes.jsx'),
-  Project: {
-    ApkList: require('./project/apk-list.jsx'),
-    ApkTestList: require('./project/apk-test-list.jsx'),
-    Campaign: require('./project/campaign.jsx'),
-    List: require('./project/list.jsx'),
-    Live: require('./project/live.jsx'),
-    Page: require('./project/page.jsx'),
-    Wrapper: require('./project/wrapper.jsx'),
-  },
+	Home: require('./home'),
+	Main: require('./main'),
+	Themes: require('./themes'),
+	Project: {
+		ApkList: require('./project/apk-list'),
+		ApkTestList: require('./project/apk-test-list'),
+		Campaign: require('./project/campaign'),
+		List: require('./project/list'),
+		Live: require('./project/live'),
+		Page: require('./project/page'),
+		Wrapper: require('./project/wrapper')
+	}
 };

@@ -1,23 +1,28 @@
 'use strict';
 
 // React
-var React = require('react');
+const React = require('react');
 
-var Nl2Br = class extends React.Component{
+const Nl2Br = class extends React.Component {
 
-  render() {
-    return  <div>
-              {this.props.children.split("\n").map(function(item) {
-                return (
-                  <span>
-                    {item}
-                    <br/>
-                  </span>
-                )
-              })}
-            </div>
-  }
+	render() {
+		return (
+			<div>
+				{this.props.children.split('\n').map(item => {
+					return (
+						<span>
+							{item}
+							<br/>
+						</span>
+					);
+				})}
+			</div>
+		);
+	}
+};
 
+Nl2Br.propTypes = {
+	children: React.PropTypes.string
 };
 
 module.exports = Nl2Br;

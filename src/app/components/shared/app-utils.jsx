@@ -2,57 +2,57 @@
 
 const AppUtils = {
 
-  text: {
-    fieldIsRequired: 'This field is required',
-  },
+	text: {
+		fieldIsRequired: 'This field is required'
+	},
 
-  fieldIsRequired(field) {
-    const isInvalid = AppUtils.isEmpty(field.getValue());
-    return isInvalid ? AppUtils.text.fieldIsRequired : '';
-  },
+	fieldIsRequired(field) {
+		const isInvalid = AppUtils.isEmpty(field.getValue());
+		return isInvalid ? AppUtils.text.fieldIsRequired : '';
+	},
 
-  isEmpty(textField) {
-    return (textField.trim() === '');
-  },
+	isEmpty(textField) {
+		return (textField.trim() === '');
+	},
 
-  extend() {
-    const newObj = {};
-    for (let i = 0; i < arguments.length; i++) {
-      const obj = arguments[i];
-      for (const key in obj) {
-        if (obj.hasOwnProperty(key)) {
-          newObj[key] = obj[key];
-        }
-      }
-    }
-    return newObj;
-  },
+	extend() {
+		const newObj = {};
+		for (let i = 0; i < arguments.length; i++) {
+			const obj = arguments[i];
+			for (const key in obj) {
+				if (obj.hasOwnProperty(key)) {
+					newObj[key] = obj[key];
+				}
+			}
+		}
+		return newObj;
+	},
 
-  getProjectIdFromRouter(router) {
-    const routerParams = router.getCurrentParams();
-    return routerParams.hasOwnProperty('projectId') ? routerParams.projectId : null;
-    // TODO: error handling
-  },
+	getProjectIdFromRouter(router) {
+		const routerParams = router.getCurrentParams();
+		return routerParams.hasOwnProperty('projectId') ? routerParams.projectId : null;
+		// TODO: error handling
+	},
 
-  getAVMIdFromRouter(router) {
-    const routerParams = router.getCurrentParams();
-    return routerParams.hasOwnProperty('androId') ? routerParams.androId : null;
-    // TODO: error handling
-  },
+	getAVMIdFromRouter(router) {
+		const routerParams = router.getCurrentParams();
+		return routerParams.hasOwnProperty('androId') ? routerParams.androId : null;
+		// TODO: error handling
+	},
 
-  capitalize(word) {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-  },
+	capitalize(word) {
+		return word.charAt(0).toUpperCase() + word.slice(1);
+	},
 
-  pluralize(count, word) {
-    return count === 1 ? word : `${word}s`;
-  },
+	pluralize(count, word) {
+		return count === 1 ? word : `${word}s`;
+	},
 
-  getDate() {
-    return new Date().toISOString()
-      .replace(/T/, ' ')
-      .replace(/Z/, '');
-  },
+	getDate() {
+		return new Date().toISOString()
+			.replace(/T/, ' ')
+			.replace(/Z/, '');
+	}
 
 };
 

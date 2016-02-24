@@ -1,46 +1,46 @@
 'use strict';
 
 // Reflux
-var Reflux = require('reflux');
+const Reflux = require('reflux');
 
 // APP
-var { ProjectActions } = require('app/actions');
+const {ProjectActions} = require('app/actions');
 
 // Store
-var ProjectStore = Reflux.createStore({
+const ProjectStore = Reflux.createStore({
 
-  // Base Store //
+	// Base Store //
 
-  listenables: ProjectActions,
+	listenables: ProjectActions,
 
-  init: function() {
-    this.state = {};
-    this.state.projects = [];
-  },
+	init() {
+		this.state = {};
+		this.state.projects = [];
+	},
 
-  // Actions //
+	// Actions //
 
-  onList: function() {
-    // TODO:
-    // this.updateState();
-  },
+	onList() {
+		// TODO:
+		// this.updateState();
+	},
 
-  onListCompleted: function (projects) {
-    this.state.projects = projects;
-    this.updateState();
-  },
+	onListCompleted(projects) {
+		this.state.projects = projects;
+		this.updateState();
+	},
 
-  onListFailure: function (errorMessage) {
-    // TODO:
-    // this.updateState();
-  },
+	// onListFailure(errorMessage) {
+	onListFailure() {
+		// TODO:
+		// this.updateState();
+	},
 
-  // Methods //
+	// Methods //
 
-  updateState: function(){
-    this.trigger( this.state );
-  },
-
+	updateState() {
+		this.trigger(this.state);
+	}
 });
 
 module.exports = ProjectStore;

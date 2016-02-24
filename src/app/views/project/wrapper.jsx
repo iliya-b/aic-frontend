@@ -1,91 +1,93 @@
 'use strict';
 
 // React
-var React = require('react');
+const React = require('react');
 
 // Material design
-var mui = require('material-ui');
-var { AppBar,
-      IconButton } = mui;
+const mui = require('material-ui');
+const {
+	AppBar,
+	IconButton
+} = mui;
 
 // Router
-var Router = require('react-router');
-var { RouteHandler } = Router;
+const Router = require('react-router');
+const {RouteHandler} = Router;
 
 // APP
-var { AuthActions } = require('app/actions');
-var { ProjectActions } = require('app/actions');
-var {PollingStore} = require('app/stores');
+const {AuthActions} = require('app/actions');
+const {ProjectActions} = require('app/actions');
+const {PollingStore} = require('app/stores');
 
+const ProjectWrapper = class extends React.Component {
 
-var ProjectWrapper = class extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			lastPage: false,
+			title: ''
+		};
+		this._onLeftIconButtonTouchTap = this._onLeftIconButtonTouchTap.bind(this);
+		this._onRightIconButtonTouchTap = this._onRightIconButtonTouchTap.bind(this);
+	}
 
-  constructor (props) {
-    super(props);
-    this.state = {
-      lastPage: false,
-      title: ''
-    };
-    this._onLeftIconButtonTouchTap = this._onLeftIconButtonTouchTap.bind(this);
-    this._onRightIconButtonTouchTap = this._onRightIconButtonTouchTap.bind(this);
-  }
+	_onLeftIconButtonTouchTap() {
+		this.context.router.transitionTo('projects');
+	}
 
-  _onLeftIconButtonTouchTap() {
-    this.context.router.transitionTo('projects');
-  }
+	_onRightIconButtonTouchTap() {
+		AuthActions.logout(false);
+		// AuthActions.redirectDisconnected(this.context.router);
+	}
 
-  _onRightIconButtonTouchTap() {
-    AuthActions.logout(false);
-    // AuthActions.redirectDisconnected(this.context.router);
-  }
+	render() {
+		return (
+			<div>
+				<AppBar
+					onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap}
+					title={this.state.title}
+					zDepth={0}
+					iconElementRight={<IconButton title="Logout" onClick={this._onRightIconButtonTouchTap} iconClassName="mdi mdi-logout" />}
+					/>
+				<RouteHandler />
+			</div>
+		);
+	}
 
-  render() {
-    return (
-      <div>
-        <AppBar
-            onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap}
-            title={this.state.title}
-            zDepth={0}
-            iconElementRight={<IconButton title="Logout" onClick={this._onRightIconButtonTouchTap} iconClassName="mdi mdi-logout"></IconButton>} />
-        <RouteHandler />
-      </div>
-    );
-  }
+	updateTitle() {
+		const thisPage = this.context.router.getCurrentPath();
+		if (this.state.lastPage !== thisPage) {
+			const routerParams = this.context.router.getCurrentParams();
+			if (routerParams.hasOwnProperty('projectId')) {
+				ProjectActions.getNameById(routerParams.projectId)
+				.then(res => {
+					this.setState({title: res});
+				});
+			} else if (this.context.router.isActive('project-list')) {
+				this.setState({title: 'Projects'});
+			}
+			this.setState({lastPage: thisPage});
+		}
+	}
 
-  updateTitle(){
-    var thisPage = this.context.router.getCurrentPath();
-    if(this.state.lastPage !== thisPage){
-      var routerParams = this.context.router.getCurrentParams();
-      if (routerParams.hasOwnProperty('projectId')) {
-        ProjectActions.getNameById(routerParams.projectId)
-        .then( (res) => {
-          this.setState( {title: res} );
-        });
-      }else if( this.context.router.isActive('project-list') ){
-        this.setState( {title: 'Projects'} );
-      }
-      this.setState( {lastPage: thisPage} );
-    }
-  }
+	componentWillReceiveProps() {
+		this.updateTitle();
+	}
 
-  componentWillReceiveProps() {
-    this.updateTitle();
-  }
+	componentWillMount() {
+		this.updateTitle();
+		this.unsubscribe = PollingStore.listen(this._onStateChange);
+	}
 
-  componentWillMount() {
-    this.updateTitle();
-    this.unsubscribe = PollingStore.listen(this._onStateChange);
-  }
-
-  componentWillUnmount() {
-    // Subscribe and unsubscribe because we don't want to use the mixins
-    this.unsubscribe();
-  }
+	componentWillUnmount() {
+		// Subscribe and unsubscribe because we don't want to use the mixins
+		this.unsubscribe();
+	}
 
 };
 
 ProjectWrapper.contextTypes = {
-  router: React.PropTypes.func.isRequired
+	router: React.PropTypes.func.isRequired
 };
 
 module.exports = ProjectWrapper;

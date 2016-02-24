@@ -6,8 +6,8 @@ const React = require('react');
 // Material design
 const mui = require('material-ui');
 const {
-  CardActions,
-  RaisedButton,
+	CardActions,
+	RaisedButton
 } = mui;
 
 // Vendor
@@ -15,99 +15,99 @@ const debuggerGoby = require('debug')('AiC:View:Live:List');
 
 // APP
 const {
-  AppUtils,
-  LiveMachineList,
+	AppUtils,
+	LiveMachineList
 } = require('app/components');
 const {LiveStore} = require('app/stores');
 const {
-  LiveActions,
-  PollingActions,
+	LiveActions,
+	PollingActions
 } = require('app/actions');
 
 let projectId;
 
 const LiveList = class extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this._onStateChange = this._onStateChange.bind(this);
-    this._onStartSession = this._onStartSession.bind(this);
-    this._onEnterSession = this._onEnterSession.bind(this);
-    this._onStopSession = this._onStopSession.bind(this);
-    this.state = {};
-  }
+	constructor(props) {
+		super(props);
+		this._onStateChange = this._onStateChange.bind(this);
+		this._onStartSession = this._onStartSession.bind(this);
+		this._onEnterSession = this._onEnterSession.bind(this);
+		this._onStopSession = this._onStopSession.bind(this);
+		this.state = {};
+	}
 
-  // _onItemTap(index, e) {
-  //   // e.preventDefault();
-  //   this.context.router.transitionTo('live-session', { projectId: 'fooproject',
-  //                                                      androId: 'test'} );
-  // }
+	// _onItemTap(index, e) {
+	//   // e.preventDefault();
+	//   this.context.router.transitionTo('live-session', { projectId: 'fooproject',
+	//                                                      androId: 'test'} );
+	// }
 
-  _onStartSession(variant) {
-    LiveActions.start(variant);
-    PollingActions.liveList();
-  }
+	_onStartSession(variant) {
+		LiveActions.start(variant);
+		PollingActions.liveList();
+	}
 
-  _onEnterSession(avmId) {
-    console.log('enter session', arguments);
-    this.context.router.transitionTo('live-session', {
-      projectId,
-      androId: avmId,
-    });
-  }
+	_onEnterSession(avmId) {
+		console.log('enter session', arguments);
+		this.context.router.transitionTo('live-session', {
+			projectId,
+			androId: avmId
+		});
+	}
 
-  _onStopSession(avmId) {
-    LiveActions.stop(avmId);
-    PollingActions.liveList();
-  }
+	_onStopSession(avmId) {
+		LiveActions.stop(avmId);
+		PollingActions.liveList();
+	}
 
-  render() {
-    return <div>
+	render() {
+		return (
+			<div>
+				<h2>Live Sessions</h2>
 
-              <h2>Live Sessions</h2>
+				<CardActions>
 
-              <CardActions>
+				<RaisedButton linkButton primary label="Start new session Kitkat" onClick={this._onStartSession.bind(this, 'opengl')} />
+				<RaisedButton linkButton primary label="Start new session Lollipop" onClick={this._onStartSession.bind(this, 'lollipop')} />
 
-              <RaisedButton linkButton={true} primary={true} label="Start new session Kitkat" onClick={this._onStartSession.bind(this, 'opengl')} />
-              <RaisedButton linkButton={true} primary={true} label="Start new session Lollipop" onClick={this._onStartSession.bind(this, 'lollipop')} />
-              <RaisedButton linkButton={true} primary={true} label="Start new session Kitkat (karine)" onClick={this._onStartSession.bind(this, 'karine')} />
+				</CardActions>
 
-              </CardActions>
+				<LiveMachineList actionEnter={this._onEnterSession} actionStop={this._onStopSession} />
 
-              <LiveMachineList actionEnter={this._onEnterSession} actionStop={this._onStopSession} />
+			</div>
+		);
+	}
 
-            </div>;
-  }
+	_onStateChange(state) {
+		debuggerGoby('changing state', this.state.live ? this.state.live.status : '', state);
+		// if (state.live.status === 'LIVE_STATUS_VMSTARTED' && state.live.avm.avm_id) {
+		//   // this._onEnterSession(state.live.avm.avm_id);
+		//   LiveListActions.list();
+		// }
+		if (state.live.status === 'LIVE_STATUS_INITIALIZED') {
+			PollingActions.liveList();
+		}
+		this.setState(state);
+	}
 
-  _onStateChange(state) {
-    debuggerGoby('changing state', this.state.live ? this.state.live.status : '', state);
-    // if (state.live.status === 'LIVE_STATUS_VMSTARTED' && state.live.avm.avm_id) {
-    //   // this._onEnterSession(state.live.avm.avm_id);
-    //   LiveListActions.list();
-    // }
-    if (state.live.status === 'LIVE_STATUS_INITIALIZED') {
-      PollingActions.liveList();
-    }
-    this.setState(state);
-  }
+	componentDidMount() {
+		projectId = AppUtils.getProjectIdFromRouter(this.context.router);
+		this.unsubscribe = LiveStore.listen(this._onStateChange);
+		LiveActions.setProjectId(projectId);
+	}
 
-  componentDidMount() {
-    projectId = AppUtils.getProjectIdFromRouter(this.context.router);
-    this.unsubscribe = LiveStore.listen(this._onStateChange);
-    LiveActions.setProjectId(projectId);
-  }
-
-  componentWillUnmount() {
-    // Subscribe and unsubscribe because we don't want to use the mixins
-    this.unsubscribe();
-  }
+	componentWillUnmount() {
+		// Subscribe and unsubscribe because we don't want to use the mixins
+		this.unsubscribe();
+	}
 
 };
 
 LiveList.contextTypes = {
-  router: React.PropTypes.func,
-  muiTheme: React.PropTypes.object,
-  appConfig: React.PropTypes.object,
+	router: React.PropTypes.func,
+	muiTheme: React.PropTypes.object,
+	appConfig: React.PropTypes.object
 };
 
 module.exports = LiveList;

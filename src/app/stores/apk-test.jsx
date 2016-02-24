@@ -1,95 +1,94 @@
 'use strict';
 
 // Reflux
-var Reflux = require('reflux');
+const Reflux = require('reflux');
 
 // APP
-var AppUtils = require('app/components/shared/app-utils.jsx');
-var { APKTestActions } = require('app/actions');
+const AppUtils = require('app/components/shared/app-utils');
+const {APKTestActions} = require('app/actions');
 
 // Store
-var APKTestStore = Reflux.createStore({
+const APKTestStore = Reflux.createStore({
 
-  // Base Store //
+	// Base Store //
 
-  listenables: APKTestActions,
+	listenables: APKTestActions,
 
-  init: function() {
-    this.state = {};
-    this.state.projectId = null;
-    this.state.apks = false;
-    this.state.itemsToDelete = [];
-    this.state.status = 'initial';
-  },
+	init() {
+		this.state = {};
+		this.state.projectId = null;
+		this.state.apks = false;
+		this.state.itemsToDelete = [];
+		this.state.status = 'initial';
+	},
 
-  // Actions //
+	// Actions //
 
-  onSetProjectId: function (projectId) {
-    this.state.projectId = projectId;
-    this.state.status = 'reloadList';
-    this.updateState();
-  },
+	onSetProjectId(projectId) {
+		this.state.projectId = projectId;
+		this.state.status = 'reloadList';
+		this.updateState();
+	},
 
-  onToggleDelete: function(apkId) {
-    this.state.apks = this.state.apks.map( function (item) {
-      return (item.id == apkId) ? AppUtils.extend(item, { toDelete: !item.toDelete, checked: !item.toDelete }) : item;
-    });
-    this.updateItemsToDelete();
-    this.updateState();
-  },
+	onToggleDelete(apkId) {
+		this.state.apks = this.state.apks.map(item => {
+			return (item.id === apkId) ? AppUtils.extend(item, {toDelete: !item.toDelete, checked: !item.toDelete}) : item;
+		});
+		this.updateItemsToDelete();
+		this.updateState();
+	},
 
-  onDeleteSelectedCompleted: function() {
-    this.state.status = 'reloadList';
-    this.updateState();
-  },
+	onDeleteSelectedCompleted() {
+		this.state.status = 'reloadList';
+		this.updateState();
+	},
 
-  onLoadCompleted: function (data) {
-    this.state.apks = this.convertToListItems(data.map(function (apk) {
-          return { id: apk.id, name: apk.name, toDelete: this.isMarkedToDelete(apk.id), checked: this.isMarkedToDelete(apk.id) };
-        }, this));
-    this.updateItemsToDelete();
-    switch(this.state.status){
-      case 'reloadList' :
-        this.state.status = 'deleteFinished';
-        break;
-      default:
-        break;
-    }
-    this.updateState();
-  },
+	onLoadCompleted(data) {
+		this.state.apks = this.convertToListItems(data.map(function (apk) {
+			return {id: apk.id, name: apk.name, toDelete: this.isMarkedToDelete(apk.id), checked: this.isMarkedToDelete(apk.id)};
+		}, this));
+		this.updateItemsToDelete();
+		switch (this.state.status) {
+			case 'reloadList' :
+				this.state.status = 'deleteFinished';
+				break;
+			default:
+				break;
+		}
+		this.updateState();
+	},
 
-  // Methods //
+	// Methods //
 
-  updateState: function(){
-    this.trigger( this.state );
-  },
+	updateState() {
+		this.trigger(this.state);
+	},
 
-  convertToListItems: function(list){
-    return list.map(function (item) {
-      return {
-        id: item.id,
-        name: item.name,
-        apkId: item.id,
-        key: item.id,
-        text: item.name,
-        // checkbox: true,
-        toDelete: item.toDelete,
-        checked: item.toDelete,
-      }
-    });
-  },
+	convertToListItems(list) {
+		return list.map(item => {
+			return {
+				id: item.id,
+				name: item.name,
+				apkId: item.id,
+				key: item.id,
+				text: item.name,
+				// checkbox: true,
+				toDelete: item.toDelete,
+				checked: item.toDelete
+			};
+		});
+	},
 
-  isMarkedToDelete: function(id){
-    return (this.state.itemsToDelete.indexOf(id) > -1);
-  },
+	isMarkedToDelete(id) {
+		return (this.state.itemsToDelete.indexOf(id) > -1);
+	},
 
-  updateItemsToDelete: function (){
-    this.state.itemsToDelete = this.state.apks.reduce( function (previousValue, item) {
-        return item.toDelete ? previousValue.concat(item.id) : previousValue ;
-      } , []);
-  }
+	updateItemsToDelete() {
+		this.state.itemsToDelete = this.state.apks.reduce((previousValue, item) => {
+			return item.toDelete ? previousValue.concat(item.id) : previousValue;
+		}, []);
+	}
 
 });
 
 module.exports = APKTestStore;
-

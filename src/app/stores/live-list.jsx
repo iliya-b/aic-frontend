@@ -12,46 +12,46 @@ const {LiveListActions} = require('app/actions');
 // Store
 const LiveListStore = Reflux.createStore({
 
-  // Base Store //
+	// Base Store //
 
-  listenables: LiveListActions,
+	listenables: LiveListActions,
 
-  init() {
-    this.state = {
-      live: {},
-    };
-    this.state.live.status = 'LIVE_STATUS_INITIATING';
-    this.updateState();
-  },
+	init() {
+		this.state = {
+			live: {}
+		};
+		this.state.live.status = 'LIVE_STATUS_INITIATING';
+		this.updateState();
+	},
 
-  // Actions //
+	// Actions //
 
-  // Live list
-  onList() {
-    debuggerGoby('onlist');
-    this.state.live.status = 'LIVE_STATUS_LISTING';
-    this.updateState();
-  },
+	// Live list
+	onList() {
+		debuggerGoby('onlist');
+		this.state.live.status = 'LIVE_STATUS_LISTING';
+		this.updateState();
+	},
 
-  onListCompleted(avms) {
-    this.state.live.avms = avms;
-    this.state.live.status = 'LIVE_STATUS_LISTED';
-    this.updateState();
-  },
+	onListCompleted(avms) {
+		this.state.live.avms = avms;
+		this.state.live.status = 'LIVE_STATUS_LISTED';
+		this.updateState();
+	},
 
-  onListFailure(errorMessage) {
-    this.state.live.status = 'LIVE_STATUS_LIST_FAILED';
-    this.state.live.message = errorMessage;
-    this.updateState();
-  },
+	onListFailure(errorMessage) {
+		this.state.live.status = 'LIVE_STATUS_LIST_FAILED';
+		this.state.live.message = errorMessage;
+		this.updateState();
+	},
 
-  // Methods //
+	// Methods //
 
-  // State update
+	// State update
 
-  updateState() {
-    this.trigger(this.state);
-  },
+	updateState() {
+		this.trigger(this.state);
+	}
 
 });
 

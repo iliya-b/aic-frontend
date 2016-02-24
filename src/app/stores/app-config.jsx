@@ -12,42 +12,42 @@ const {AppConfigActions} = require('app/actions');
 // Store
 const AppConfigStore = Reflux.createStore({
 
-   // Base Store //
+	// Base Store //
 
-  listenables: AppConfigActions,
+	listenables: AppConfigActions,
 
-  init() {
-    this.state = {};
-    this.state.config = {};
-  },
+	init() {
+		this.state = {};
+		this.state.config = {};
+	},
 
-  // Actions //
+	// Actions //
 
-  onLoad() {
-    //
-  },
+	onLoad() {
+		//
+	},
 
-  onLoadCompleted(data) {
-    debuggerGoby('onLoadCompleted', data);
-    this.state.config = data;
-    this.state.config.isLoaded = true;
-    this.state.config.hasErrors = false;
-    this.updateState();
-  },
+	onLoadCompleted(data) {
+		debuggerGoby('onLoadCompleted', data);
+		this.state.config = data;
+		this.state.config.isLoaded = true;
+		this.state.config.hasErrors = false;
+		this.updateState();
+	},
 
-  onLoadFailure(error) {
-    debuggerGoby('onLoadFailure', error);
-    this.state.config.isLoaded = true;
-    this.state.config.hasErrors = true;
-    this.state.config.error = error;
-    this.updateState();
-  },
+	onLoadFailure(error) {
+		debuggerGoby('onLoadFailure', error);
+		this.state.config.isLoaded = true;
+		this.state.config.hasErrors = true;
+		this.state.config.error = error;
+		this.updateState();
+	},
 
-  // Methods //
+	// Methods //
 
-  updateState() {
-    this.trigger(this.state);
-  },
+	updateState() {
+		this.trigger(this.state);
+	}
 
 });
 

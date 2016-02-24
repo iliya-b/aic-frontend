@@ -1,15 +1,17 @@
 'use strict';
 
 // React
-var React = require('react');
+const React = require('react');
 
 // Material design
-var mui = require('material-ui');
-var { Spacing,
-      Colors } = mui.Styles;
+const mui = require('material-ui');
+const {
+	Spacing,
+	Colors
+} = mui.Styles;
 
-// var { Spacing } = mui.Styles;
-// var {
+// const { Spacing } = mui.Styles;
+// const {
 //   Paper,
 //   Table,
 //   TableHeader,
@@ -19,36 +21,43 @@ var { Spacing,
 //   TableRowColumn } = mui;
 
 // APP
-var GobyPalette = require('app/configs/goby-palette.jsx');
+const GobyPalette = require('app/configs/goby-palette');
 
-var LogBoxRow = class extends React.Component{
+const LogBoxRow = class extends React.Component {
+	render() {
+		const style = {
+			root: {
+				backgroundColor: this.props.style.backgroundColor || '#fff',
+				color: this.props.style.color || GobyPalette.primary1Color,
+				// fontFamily: this.context.muiTheme.contentFontFamily,
+				fontSize: 12,
+				padding: Spacing.desktopGutterMini / 2
+			},
+			time: {
+				color: this.props.style.time ? this.props.style.time.color : Colors.grey600,
+				marginRight: 4
+			}
+		};
 
-  render() {
-    var style = {
-      root: {
-        backgroundColor: this.props.style.backgroundColor || '#fff',
-        color: this.props.style.color || GobyPalette.primary1Color,
-        // fontFamily: this.context.muiTheme.contentFontFamily,
-        fontSize: 12,
-        padding: Spacing.desktopGutterMini/2,
-      },
-      time: {
-        color: this.props.style.time ? this.props.style.time.color : Colors.grey600 ,
-        marginRight: 4,
-      }
-    };
+		const time = <time style={style.time}>[{this.props.time}]</time>;
 
-    var time = <time style={style.time}>[{this.props.time}]</time>;
-
-    return  <div style={style.root}>
-              {time}{this.props.children}
-            </div>
-  }
+		return (
+			<div style={style.root}>
+				{time}{this.props.children}
+			</div>
+		);
+	}
 
 };
 
 LogBoxRow.contextTypes = {
-  muiTheme: React.PropTypes.object,
-}
+	muiTheme: React.PropTypes.object
+};
+
+LogBoxRow.propTypes = {
+	children: React.PropTypes.object,
+	style: React.PropTypes.object,
+	time: React.PropTypes.string
+};
 
 module.exports = LogBoxRow;

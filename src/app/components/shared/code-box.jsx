@@ -1,25 +1,31 @@
 'use strict';
 
 // React
-var React = require('react');
+const React = require('react');
 
 // Material design
-var mui = require('material-ui');
-var { StylePropable } = mui.Mixins;
+const mui = require('material-ui');
+const {StylePropable} = mui.Mixins;
 
-var CodeBox = class extends React.Component{
+const CodeBox = class extends React.Component {
 
-  render() {
+	render() {
+		let styles = {fontFamily: 'Roboto Mono', lineHeight: '12px', fontSize: '12px', overflowX: 'auto'};
 
-    var styles = { fontFamily: 'Roboto Mono', lineHeight: '12px', fontSize: '12px', overflowX: 'auto' };
+		styles = StylePropable.mergeStyles(styles, this.props.style);
 
-    styles = StylePropable.mergeStyles( styles, this.props.style );
+		return (
+			<pre style={styles}>
+				{this.props.children}
+			</pre>
+		);
+	}
 
-    return  <pre style={styles}>
-              {this.props.children}
-            </pre>
-  }
+};
 
+CodeBox.propTypes = {
+	children: React.PropTypes.object,
+	style: React.PropTypes.object
 };
 
 module.exports = CodeBox;

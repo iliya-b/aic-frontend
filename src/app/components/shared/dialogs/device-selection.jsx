@@ -1,118 +1,121 @@
 'use strict';
 
 // React
-var React = require('react');
+const React = require('react');
 
 // Material design
-var mui = require('material-ui');
-var { Dialog,
-      FlatButton } = mui;
+const mui = require('material-ui');
+const {Dialog,
+			FlatButton} = mui;
 
 // APP
-var ObjectList = require('app/components/shared/object-list/object-list.jsx');
-var { CampaignStore } = require('app/stores');
-var { CampaignActions } = require('app/actions');
+const ObjectList = require('app/components/shared/object-list/object-list');
+const {CampaignStore} = require('app/stores');
+const {CampaignActions} = require('app/actions');
 
-var DeviceSelectionDialog = class extends React.Component{
+const DeviceSelectionDialog = class extends React.Component {
 
-  constructor (props) {
-    super(props);
+	constructor(props) {
+		super(props);
 
-    this.state = {
-      devices: [],
-      selectedIndex: null,
-    };
+		this.state = {
+			devices: [],
+			selectedIndex: null
+		};
 
-    this._onCancel = this._onCancel.bind(this);
-    this._onItemClick = this._onItemClick.bind(this);
-    this._onSubmit = this._onSubmit.bind(this);
-    this._onStateChange = this._onStateChange.bind(this);
+		this._onCancel = this._onCancel.bind(this);
+		this._onItemClick = this._onItemClick.bind(this);
+		this._onSubmit = this._onSubmit.bind(this);
+		this._onStateChange = this._onStateChange.bind(this);
+	}
 
-  }
+	render() {
+		const {
+			// style,
+			...other
+		} = this.props;
 
-  render() {
+		const styles = {
+			objectlist: {
+				maxHeight: '200px',
+				overflowY: 'auto'
+			}
+		};
 
-    var {
-      // style,
-      ...other
-    } = this.props;
+		const actions = [
+			<FlatButton
+				key="cancel"
+				label="Cancel"
+				title="Cancel"
+				secondary
+				onClick={this._onCancel}
+				/>,
+			<FlatButton
+				key="submit"
+				label="Select"
+				title="Select"
+				primary
+				onClick={this._onSubmit}
+				/>
+		];
 
-    var styles = {
-      objectlist: {
-        maxHeight: '200px',
-        overflowY: 'auto',
-      },
-    };
+		return (
+			<Dialog title="Device Selection" actions={actions} {...other} ref="dialogIn" >
+				<div>
+					{this.state.devices.length > 0 ? (
+						<ObjectList selectedIndex={this.state.selectedIndex} style={styles.objectlist} objectListItems={this.state.devices} onItemTap={this._onItemClick} />
+					) : ''}
+				</div>
+			</Dialog>
+			);
+	}
 
-    var actions = [
-      <FlatButton
-        key="cancel"
-        label='Cancel'
-        title='Cancel'
-        secondary={true}
-        onClick={this._onCancel} />,
-      <FlatButton
-        key="submit"
-        label="Select"
-        title="Select"
-        primary={true}
-        onClick={this._onSubmit} />
-    ];
+	show() {
+		this.refs.dialogIn.show();
+	}
 
-    return (
-      <Dialog title="Device Selection" actions={actions} {...other} ref="dialogIn" >
-        <div>
-          {this.state.devices.length > 0 ? (
-            <ObjectList selectedIndex={this.state.selectedIndex} style={styles.objectlist} objectListItems={this.state.devices} onItemTap={this._onItemClick} />
-          ) : '' }
-        </div>
-      </Dialog>
-      );
-  }
+	_onItemClick(e, index) {
+		this.setState({selectedIndex: index});
+	}
 
-  show(){
-    this.refs.dialogIn.show();
-  }
+	_onCancel(e) {
+		e.preventDefault();
+		this.refs.dialogIn.dismiss();
+	}
 
-  _onItemClick(e, index) {
-    this.setState({selectedIndex: index});
-  }
+	_onSubmit(e) {
+		e.preventDefault();
+		this.props.onSelect(this.state.devices[this.state.selectedIndex]);
+		this.refs.dialogIn.dismiss();
+	}
 
-  _onCancel(e) {
-    e.preventDefault();
-    this.refs.dialogIn.dismiss();
-  }
+	_onStateChange(state) {
+		if (state.hasOwnProperty('availableDevices')) {
+			this.setState({devices: state.availableDevices.map(item => {
+				return {key: item.id, id: item.id, text: item.name, name: item.name};
+			})});
+		}
+	}
 
-  _onSubmit(e) {
-    e.preventDefault();
-    this.props.onSelect(this.state.devices[this.state.selectedIndex]);
-    this.refs.dialogIn.dismiss();
-  }
+	componentWillMount() {
+		this.unsubscribe = CampaignStore.listen(this._onStateChange);
+		CampaignActions.loadDevices();
+	}
 
-  _onStateChange( state ){
-    if ( state.hasOwnProperty('availableDevices') ) {
-      this.setState( { devices : state.availableDevices.map(function (item) {
-          return { key: item.id, id: item.id, text: item.name, name: item.name };
-        }) } );
-    }
-  }
-
-  componentWillMount() {
-    this.unsubscribe = CampaignStore.listen( this._onStateChange );
-    CampaignActions.loadDevices();
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe(); // Subscribe and unsubscribe because we don't want to use the mixins
-  }
+	componentWillUnmount() {
+		// Subscribe and unsubscribe because we don't want to use the mixins
+		this.unsubscribe();
+	}
 
 };
 
 DeviceSelectionDialog.contextTypes = {
-  muiTheme: React.PropTypes.object,
-  router: React.PropTypes.func
-}
+	muiTheme: React.PropTypes.object,
+	router: React.PropTypes.func
+};
+
+DeviceSelectionDialog.propTypes = {
+	onSelect: React.PropTypes.func
+};
 
 module.exports = DeviceSelectionDialog;
-
-
