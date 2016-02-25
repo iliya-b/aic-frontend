@@ -1,68 +1,67 @@
 'use strict';
 
 // React
-var React = require('react');
-
-// Material design
-var mui = require('material-ui');
-var { Spacing } = mui.Styles;
-var { FontIcon, Paper } = mui;
+const React = require('react');
 
 // APP
-var GobyStores = require('app/stores');
-var GobyActions = require('app/actions');
-var BoxStatus = require('app/components/project/box-status.jsx');
-var AppUtils = require('app/components/shared/app-utils.jsx');
+const GobyStores = require('app/stores');
+const GobyActions = require('app/actions');
+const BoxStatus = require('app/components/project/box-status');
+const AppUtils = require('app/components/shared/app-utils');
 
-var loadedStore;
-var loadedActions;
+let loadedStore;
+let loadedActions;
 
-var AreaStatus = class extends React.Component{
+const AreaStatus = class extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this._onStateChange = this._onStateChange.bind(this);
-    this.state = {};
-    if (this.props.typeName){
-      loadedStore = GobyStores[ AppUtils.capitalize(this.props.typeName) + 'Store'];
-      loadedActions = GobyActions[ AppUtils.capitalize(this.props.typeName) + 'Actions'];
-    }
-  }
+	constructor(props) {
+		super(props);
+		this._onStateChange = this._onStateChange.bind(this);
+		this.state = {};
+		if (this.props.typeName) {
+			loadedStore = GobyStores[`${AppUtils.capitalize(this.props.typeName)}Store`];
+			loadedActions = GobyActions[`${AppUtils.capitalize(this.props.typeName)}Actions`];
+		}
+	}
 
-  render() {
-    var boxes;
-    var boxesTags;
+	render() {
+		let boxesTags;
 
-    if (this.state.hasOwnProperty(this.props.typeName)) {
-      boxesTags = this.state[this.props.typeName].boxes.map(function (item, index) {
-        return item.enabled ? <BoxStatus key={index} typeName={item.typeName} status={item.status} isFirst={item.isFirst} isLast={item.isLast} objectName={item.objectName} /> : null;
-      });
-    }
+		if (this.state.hasOwnProperty(this.props.typeName)) {
+			boxesTags = this.state[this.props.typeName].boxes.map((item, index) => {
+				return item.enabled ? <BoxStatus key={index} typeName={item.typeName} status={item.status} isFirst={item.isFirst} isLast={item.isLast} objectName={item.objectName} /> : null;
+			});
+		}
 
-    return  <div style={this.props.style}>
-              {boxesTags}
-            </div>
-  }
+		return (<div style={this.props.style}>
+							{boxesTags}
+						</div>);
+	}
 
-  _onStateChange( state ){
-    this.setState( state );
-  }
+	_onStateChange(state) {
+		this.setState(state);
+	}
 
-  componentDidMount() {
-    this.unsubscribe = loadedStore.listen( this._onStateChange );
-    loadedActions.loadState();
-  }
+	componentDidMount() {
+		this.unsubscribe = loadedStore.listen(this._onStateChange);
+		loadedActions.loadState();
+	}
 
-  componentWillUnmount() {
-    // Subscribe and unsubscribe because we don't want to use the mixins
-    this.unsubscribe();
-  }
+	componentWillUnmount() {
+		// Subscribe and unsubscribe because we don't want to use the mixins
+		this.unsubscribe();
+	}
 
 };
 
 AreaStatus.contextTypes = {
-  muiTheme: React.PropTypes.object,
-  router: React.PropTypes.func
-}
+	muiTheme: React.PropTypes.object,
+	router: React.PropTypes.func
+};
+
+AreaStatus.propTypes = {
+	typeName: React.PropTypes.string,
+	style: React.PropTypes.object
+};
 
 module.exports = AreaStatus;

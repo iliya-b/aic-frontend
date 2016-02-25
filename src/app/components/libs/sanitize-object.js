@@ -8,21 +8,20 @@ const inspector = require('schema-inspector');
 
 const SanitizeObject = {
 
-  sanitizeData(dataObj) {
-    if (!dataObj.hasOwnProperty('data') || !dataObj.hasOwnProperty('schema')) {
-      throw new Error('Data object badly formatted.');
-    }
+	sanitizeData(dataObj) {
+		if (!dataObj.hasOwnProperty('data') || !dataObj.hasOwnProperty('schema')) {
+			throw new Error('Data object badly formatted.');
+		}
 
-    const result = inspector.validate(dataObj.schema, dataObj.data);
+		const result = inspector.validate(dataObj.schema, dataObj.data);
 
-    if (!result.valid) {
-      throw new Error(result.format());
-    } else {
-      const sanitizedData = inspector.sanitize(dataObj.schema, dataObj.data);
-      // debuggerGoby('data valid', sanitizedData);
-      return sanitizedData.data;
-    }
-  },
+		if (result.valid) {
+			const sanitizedData = inspector.sanitize(dataObj.schema, dataObj.data);
+			// debuggerGoby('data valid', sanitizedData);
+			return sanitizedData.data;
+		}
+		throw new Error(result.format());
+	}
 
 };
 

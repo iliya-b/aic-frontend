@@ -27,6 +27,11 @@ const ProjectPage = React.createClass({
 
 	mixins: [State],
 
+	propTypes: {
+		params: React.PropTypes.string,
+		query: React.PropTypes.string
+	},
+
 	// _onItemTap(index, e) { //, index, menuItem
 	// _onItemTap(e, index, menuItem) {
 	_onItemTap(e, index) {
@@ -129,5 +134,10 @@ ProjectPage.contextTypes = {
 	router: React.PropTypes.func,
 	muiTheme: React.PropTypes.object
 };
+
+// ProjectPage.propTypes = {
+// 	params: React.PropTypes.string,
+// 	query: React.PropTypes.string
+// };
 
 module.exports = ProjectPage;

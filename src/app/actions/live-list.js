@@ -11,7 +11,7 @@ const Reflux = require('reflux');
 
 // Actions
 const LiveListActions = Reflux.createActions({
-  list: {children: ['completed', 'failure']},
+	list: {children: ['completed', 'failure']}
 });
 
 // Listeners for asynchronous Backend API calls

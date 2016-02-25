@@ -29,7 +29,7 @@ const Dropzone = class extends React.Component {
 		const dataTransferItems = e.dataTransfer && e.dataTransfer.items ? e.dataTransfer.items : [];
 
 		// Now we need to convert the DataTransferList to Array
-		const itemsArray = Array.prototype.slice.call(dataTransferItems);
+		const itemsArray = Reflect.call(Array.prototype.slice, dataTransferItems);
 		const allFilesAccepted = this.allFilesAccepted(itemsArray);
 
 		this.setState({

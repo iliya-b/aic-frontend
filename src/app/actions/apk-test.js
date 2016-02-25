@@ -1,24 +1,24 @@
 'use strict';
 
 // Reflux
-var Reflux = require('reflux');
+const Reflux = require('reflux');
 
 // APP
-var BackendAPI = require('app/stores/backend-api.jsx');
+const BackendAPI = require('app/stores/backend-api');
 
 // Actions
-var APKTestActions = Reflux.createActions({
-  'load': {asyncResult: true},
-  'toggleDelete': {},
-  'setProjectId': {},
+const APKTestActions = Reflux.createActions({
+	load: {asyncResult: true},
+	toggleDelete: {},
+	setProjectId: {}
 });
 
 // Listeners for asynchronous Backend API calls
 APKTestActions.load.listen(function (projectId) {
-  BackendAPI.apkTestList(projectId)
-  .then( (res) => {
-    this.completed( res.results );
-  });
+	BackendAPI.apkTestList(projectId)
+	.then(res => {
+		this.completed(res.results);
+	});
 });
 
 module.exports = APKTestActions;

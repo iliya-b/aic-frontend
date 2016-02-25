@@ -17,13 +17,13 @@ const NotificationActions = Reflux.createActions({
 // Listeners for asynchronous Backend API calls
 
 NotificationActions.update = function (apiIndex, res) {
-  switch (apiIndex) {
-    case 'liveList':
-      LiveListActions.list.completed(res.avms);
-      break;
-    default:
-      debuggerGoby('unknow api index:', arguments);
-  }
+	switch (apiIndex) {
+		case 'liveList':
+			LiveListActions.list.completed(res.avms);
+			break;
+		default:
+			debuggerGoby('unknow api index:', arguments);
+	}
 };
 
 module.exports = NotificationActions;
