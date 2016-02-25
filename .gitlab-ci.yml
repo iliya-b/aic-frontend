@@ -6,18 +6,21 @@ before_script:
   - npm run build
   - mv config.json ./build/
   - npm install -g http-server
-  - npm install -g phantomjs
+  - http-server ./build -p 9080 &
 
 test_integration:
   script:
-    - http-server ./build -p 9080 &
+    - npm install -g phantomjs
     - phantomjs -w &
     - sleep 1
-    - npm run test-integration-phantom
+    - git clone git@git.rnd.alterway.fr:aic-documentation/aic_features.git
+    - cd aic_features
+    - echo ${AIC_SCREENSHOT_PATH}
+    - AIC_FRONTEND_HOST=http://localhost:9080/ ./run-tests.sh
+  artifacts:
+    paths:
+    - ${AIC_SCREENSHOT_PATH}
 
 test_coverage:
   script:
-    - http-server ./build -p 9080 &
-    - phantomjs -w &
-    - sleep 1
     - npm run coverage

@@ -2,6 +2,8 @@
 'use strict';
 
 (function () {
+	require('babel-polyfill');
+
 	// Needed for configuration
 	window.GobyAppGlobals = window.GobyAppGlobals || {};
 	const {AppRoutes} = require('app/configs');

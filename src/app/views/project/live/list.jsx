@@ -62,13 +62,16 @@ const LiveList = class extends React.Component {
 	}
 
 	render() {
+		const kitkat = 'R3_CRB01-00-20160222-141328';
+		// const kitkat = 'opengl';
+
 		return (
 			<div>
 				<h2>Live Sessions</h2>
 
 				<CardActions>
 
-				<RaisedButton linkButton primary label="Start new session Kitkat" onClick={this._onStartSession.bind(this, 'opengl')} />
+				<RaisedButton linkButton primary label="Start new session Kitkat" onClick={this._onStartSession.bind(this, kitkat)} />
 				<RaisedButton linkButton primary label="Start new session Lollipop" onClick={this._onStartSession.bind(this, 'lollipop')} />
 
 				</CardActions>
