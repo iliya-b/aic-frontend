@@ -66,15 +66,14 @@ TODO List
 =========
 
 * ~~Change noVNC from git submodule to a npm module~~ :white_check_mark:
-* Update all code to xo default style
+* ~~Update all code to xo default style~~ :white_check_mark:
 * Clean up gulp tasks (simplified version can be found in other R&D projects)
 * Update readme (config.json, how to run tests, etc...)
 * When new version is available put back to npm the nyc package ([instead of the fork with --extension](https://github.com/bcoe/nyc/pull/163))
 * Apply [this](https://gist.github.com/tomazzaman/790bc607eb7ca3fd347f) integration testing (just a check if the app is working)
-
 * Write all the unit tests for all the components (the POC is for a single component and does nothing).
 * Write/adapt features
 * Try other browsers for behavior testing
-* Configure backend so the tests can pass
+* ~~Configure backend so the tests can pass~~ :white_check_mark:
 * Update node packages (a lot of work since everything will be broken by that)
 * Use ReactTestUtils on unit tests
