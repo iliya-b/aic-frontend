@@ -4,9 +4,9 @@
 // Vendors
 const url = require('url');
 const sprintf = require('sprintf');
-const debuggerGoby = require('debug')('AiC:Store:BackendAPI');
+const debug = require('debug')('AiC:Store:BackendAPI');
 
-debuggerGoby('fetch', window.fetch);
+debug('fetch', window.fetch);
 
 // APP
 const SanitizeObject = require('app/components/libs/sanitize-object');
@@ -149,7 +149,7 @@ const BackendAPI = {
 		// }
 
 		// Make request
-		debuggerGoby('doing ajax', arguments);
+		debug('doing ajax', arguments);
 
 		const myInit = {
 			method: options.method,
@@ -165,12 +165,12 @@ const BackendAPI = {
 		return new Promise((resolve, reject) => {
 			fetch(options.url, myInit)
 			// .then((response) => {
-			//   debuggerGoby('return ajax', arguments, response);
+			//   debug('return ajax', arguments, response);
 			// })
 			.then(checkStatus)
 			.then(parseJSON)
 			.then(data => {
-				debuggerGoby('return ajax', arguments, data);
+				debug('return ajax', arguments, data);
 				console.log('request succeeded with JSON response', data);
 				resolve(data);
 			})
@@ -240,7 +240,7 @@ const BackendAPI = {
 	//         const {AuthActions} = require('app/actions');
 	//         AuthActions.logout.completed();
 	//       }
-	//       debuggerGoby('return ajax', arguments);
+	//       debug('return ajax', arguments);
 	//       resolve(data, textStatus, errorThrown);
 	//     });
 	//   });

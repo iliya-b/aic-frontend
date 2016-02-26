@@ -4,47 +4,76 @@
 // React
 const React = require('react');
 
+// Vendors
+const debug = require('debug')('AiC:Components:AuthRequired');
+
 // APP
 const {AuthActions} = require('app/actions');
+const {AuthStore} = require('app/stores');
 
 // Redirects user if he is not logged in
 // Opposite to AuthPage
 const AuthRequired = class extends React.Component {
 
-	// componentWillMount() {
+	componentWillMount() {
+		this.unsubscribe = AuthStore.listen(this._onStateChange);
 	//   const myContext = this.context;
-	//   console.log('AuthRequired componentWillMount');
+	//   debug('AuthRequired componentWillMount');
 	//   AuthActions.loadContextIfEmpty().then( function ( userIsLogged ) {
-	//     console.log('prom result', userIsLogged);
+	//     debug('prom result', userIsLogged);
 	//     if ( !userIsLogged ) {
-	//       console.log('myContext', myContext);
+	//       debug('myContext', myContext);
 	//       AuthActions.redirectDisconnected(myContext.router);
 	//     }
 	//   }, function (err) {
-	//     console.log('Something really bad happened on auth.', err);
+	//     debug('Something really bad happened on auth.', err);
 	//   } );
-	// }
+		// AuthActions
+		debug('AuthRequired.componentWillMount');
+		if (!AuthActions.isLogged()) {
+			debug('user not logged, redirect');
+			AuthActions.redirectDisconnected(this.context.router);
+		} else {
+			debug('user is logged');
+		}
+		// const stateObj = { foo: "bar" };
+		// history.pushState(stateObj, "page 2", "bar.html");
+	}
 
+	_onStateChange(state) {
+		debug('AuthRequired._onStateChange', state);
+	}
+
+	componentWillUnmount() {
+		// Subscribe and unsubscribe because we don't want to use the mixins
+		this.unsubscribe();
+	}
 };
 
 AuthRequired.willTransitionTo = function (transition, params, query, callback) {
 	// TODO: globals should not be used
-	const globalContext = window.GobyAppGlobals.login;
-	console.log('AuthRequired willTransitionTo', globalContext);
-	AuthActions.loadContextIfEmpty(globalContext).then(userIsLogged => {
-		console.log('prom result', userIsLogged);
-		if (userIsLogged) {
-			callback();
-		} else {
-			console.log('transition', transition);
-			// transition.redirect('/home');
-			AuthActions.redirectDisconnected(transition);
-			callback();
-			// AuthActions.redirectDisconnected(transition);
-		}
-	}, err => {
-		console.log('Something really bad happened on auth.', err);
-	});
+	// const globalContext = window.GobyAppGlobals.login;
+	// debug('AuthRequired willTransitionTo', globalContext);
+	// AuthActions.loadContextIfEmpty(globalContext).then(userIsLogged => {
+	// 	debug('prom result', userIsLogged);
+	// 	if (userIsLogged) {
+	// 		callback();
+	// 	} else {
+	// 		debug('transition', transition);
+	// 		// transition.redirect('/home');
+	// 		AuthActions.redirectDisconnected(transition);
+	// 		callback();
+	// 		// AuthActions.redirectDisconnected(transition);
+	// 	}
+	// }, err => {
+	// 	debug('Something really bad happened on auth.', err);
+	// });
+
+	// if (!AuthActions.isLogged()) {
+	// 	AuthActions.redirectDisconnected(transition);
+	// }
+	debug('AuthRequired.willTransitionTo');
+	callback();
 };
 
 AuthRequired.contextTypes = {

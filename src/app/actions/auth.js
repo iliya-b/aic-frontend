@@ -23,6 +23,8 @@ const AuthActions = Reflux.createActions({
 AuthActions.login.listen(function (login, pass) {
 	BackendAPI.userLogin(login, pass)
 	.then(result => {
+		debug('then auth login');
+		debug(arguments);
 		if (result.hasOwnProperty('status') &&
 			(result.status === 400 || result.status === 401)) {
 			debug('arguments', arguments);
@@ -34,11 +36,16 @@ AuthActions.login.listen(function (login, pass) {
 			debug('arguments', arguments);
 			this.failure('It was not possible to login. Unknown authentication server response.');
 		}
+	})
+	.catch(err => {
+		debug('catch auth login');
+		debug(arguments, err);
+		this.failure('It was not possible to login. Please verify that your credentials are correct.');
 	});
 });
 
 // AuthActions.check.listen(function () {
-//   console.log('AuthActions.check.listen');
+//   debug('AuthActions.check.listen');
 //   BackendAPI.isUserLogged( (result) => {
 //     if (result.hasOwnProperty('status') && result.status === 401 ){
 //       this.completed( false );
@@ -103,16 +110,18 @@ AuthActions.redirectTo = function (routerOrTransition, page, query) {
 	}
 };
 
-AuthActions.isLogged = function (loginContext) {
-	return loginContext.status === 'LOGIN_STATUS_CONNECTED';
+// AuthActions.isLogged = function (loginContext) {
+AuthActions.isLogged = function () {
+	// return loginContext.status === 'LOGIN_STATUS_CONNECTED';
+	return localStorage.token !== null && localStorage.token !== '';
 };
 
 AuthActions.loadContextIfEmpty = function (loginContext) {
-	console.log('loadContextIfEmpty', loginContext);
+	debug('loadContextIfEmpty', loginContext);
 
 	// If the context have login information
 	if (loginContext) {
-		console.log('loginContext valid');
+		debug('loginContext valid');
 		return new Promise(resolve => {
 			resolve(AuthActions.isLogged(loginContext));
 		});
@@ -124,10 +133,10 @@ AuthActions.loadContextIfEmpty = function (loginContext) {
 	return Promise.all([configLoaded])
 		.then(() => {
 			return new Promise((resolve, reject) => {
-				console.log('AuthActions.loadContextIfEmpty 2');
+				debug('AuthActions.loadContextIfEmpty 2');
 				BackendAPI.isUserLogged(result => {
 					setTimeout(() => {
-						console.log('loadContextIfEmpty result', result);
+						debug('loadContextIfEmpty result', result);
 						if (result.hasOwnProperty('status') && result.status === 401) {
 							// AuthActions.check.completed( false );
 							resolve(false);
@@ -144,10 +153,12 @@ AuthActions.loadContextIfEmpty = function (loginContext) {
 };
 
 AuthActions.logout.listen(function (showMessage) {
-	BackendAPI.userLogout(result => {
+	BackendAPI.userLogout()
+	.then(result => {
+		localStorage.token = '';
 		// TODO:  Fix the logout result,
 		//        for now we have 500 (Internal Server Error)
-		console.log('logout', result);
+		debug('logout', result);
 		this.completed(showMessage);
 		// if (result.hasOwnProperty('status') &&
 		//    (result.status === 400 || result.status === 401 )){

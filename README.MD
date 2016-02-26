@@ -59,8 +59,8 @@ Run `npm test` to run the unit tests on the project.
 Run `npm run coverage` to run the unit tests and create test coverage
 output. The coverage files are created in a folder named `./coverage`.
 
-To run integration tests use the command
-`npm run test-integration-phantom`. Notice that
+Integration tests are now in [another repository](https://git.rnd.alterway.fr/aic-documentation/aic_features). The gitlabci build
+will automatically clone it.
 
 TODO List
 =========
@@ -77,3 +77,7 @@ TODO List
 * ~~Configure backend so the tests can pass~~ :white_check_mark:
 * Update node packages (a lot of work since everything will be broken by that)
 * Use ReactTestUtils on unit tests
+* Auth Todos
+	* disconnect user when token is invalid in any backend request
+	* true logout (now is just application sided not server sided)
+	* replace localstorage by another storage?

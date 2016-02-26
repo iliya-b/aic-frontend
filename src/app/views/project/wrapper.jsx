@@ -18,8 +18,10 @@ const {RouteHandler} = Router;
 const {AuthActions} = require('app/actions');
 const {ProjectActions} = require('app/actions');
 const {PollingStore} = require('app/stores');
+const {AuthRequired} = require('app/components');
 
-const ProjectWrapper = class extends React.Component {
+// const ProjectWrapper = class extends React.Component {
+const ProjectWrapper = class extends AuthRequired {
 
 	constructor(props) {
 		super(props);
@@ -75,6 +77,7 @@ const ProjectWrapper = class extends React.Component {
 	}
 
 	componentWillMount() {
+		super.componentWillMount();
 		this.updateTitle();
 		this.unsubscribe = PollingStore.listen(this._onStateChange);
 	}
@@ -82,6 +85,7 @@ const ProjectWrapper = class extends React.Component {
 	componentWillUnmount() {
 		// Subscribe and unsubscribe because we don't want to use the mixins
 		this.unsubscribe();
+		super.componentWillUnmount();
 	}
 
 };
