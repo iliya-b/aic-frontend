@@ -78,7 +78,7 @@ MachineCard.propTypes = {
 	avm_status: React.PropTypes.string, // eslint-disable-line camelcase
 	avm_owner: React.PropTypes.string, // eslint-disable-line camelcase
 	avm_id: React.PropTypes.string, // eslint-disable-line camelcase
-	children: React.PropTypes.object
+	children: React.PropTypes.node
 };
 
 module.exports = MachineCard;

@@ -12,7 +12,7 @@ const FullWidthSection = React.createClass({
 		useContent: React.PropTypes.bool,
 		contentType: React.PropTypes.string,
 		contentStyle: React.PropTypes.object,
-		children: React.PropTypes.object,
+		children: React.PropTypes.node,
 		style: React.PropTypes.object
 	},
 

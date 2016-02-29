@@ -28,8 +28,8 @@ const ProjectPage = React.createClass({
 	mixins: [State],
 
 	propTypes: {
-		params: React.PropTypes.string,
-		query: React.PropTypes.string
+		params: React.PropTypes.object,
+		query: React.PropTypes.object
 	},
 
 	// _onItemTap(index, e) { //, index, menuItem

@@ -106,7 +106,7 @@ InfoBox.DISABLED = 'disabled';
 InfoBox.STYLE_BIG = 'big';
 
 InfoBox.propTypes = {
-	children: React.PropTypes.object,
+	children: React.PropTypes.node,
 	style: React.PropTypes.object,
 	boxType: React.PropTypes.string,
 	showIcon: React.PropTypes.bool,
