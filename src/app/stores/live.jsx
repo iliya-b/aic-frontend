@@ -273,7 +273,7 @@ const LiveStore = Reflux.createStore({
 	resetMachine() {
 		this.state.live.screen.ip = null;
 		this.state.live.screen.port = null;
-		this.state.live.screen.rotation = null;
+		this.state.live.screen.rotation = 'horizontal';
 		this.state.live.delayedRotation = 'horizontal';
 		this.state.live.battery = 100;
 	},

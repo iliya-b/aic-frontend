@@ -44,9 +44,9 @@ const BackendObjects = {
 	},
 	OBJSCHEMA_SENSOR_ACCELEROMETER: {type: 'object', strict: true,
 		properties: {
-			x: {type: 'integer', min: 0, max: 100},
-			y: {type: 'integer', min: 0, max: 100},
-			z: {type: 'integer', min: 0, max: 100}
+			x: {type: 'number'},
+			y: {type: 'number'},
+			z: {type: 'number'}
 		}
 	},
 	OBJSCHEMA_SENSOR_LOCATION: {type: 'object', strict: true,
@@ -65,6 +65,7 @@ const BackendObjects = {
 };
 
 function checkStatus(response) {
+	debug('response checkStatus', response);
 	if (response.status >= 200 && response.status < 300) {
 		return response;
 	}
@@ -74,6 +75,10 @@ function checkStatus(response) {
 }
 
 function parseJSON(response) {
+	debug('response parseJSON', response);
+	if (response.statusText === 'No Content') {
+		return {};
+	}
 	return response.json();
 }
 
@@ -386,7 +391,8 @@ const BackendAPI = {
 		return this.sensor(data, 'battery', liveId);
 	},
 
-	sensorAccelerometer(x, y, z, liveId) {
+	sensorAccelerometer(liveId, x, y, z) {
+		debug('sensorAccelerometer', arguments);
 		const data = {
 			data: {x, y, z},
 			schema: BackendObjects.OBJSCHEMA_SENSOR_ACCELEROMETER
@@ -394,12 +400,12 @@ const BackendAPI = {
 		return this.sensor(data, 'accelerometer', liveId);
 	},
 
-	sensorLocation(lat, lon, liveId) {
+	sensorLocation(_, liveId, lat, lon) {
 		const data = {
 			data: {latitude: lat, longitude: lon},
 			schema: BackendObjects.OBJSCHEMA_SENSOR_LOCATION
 		};
-		return this.sensor(data, 'location', liveId);
+		return this.sensor(data, 'gps', liveId);
 	},
 
 	recording(filename, start, liveId) {

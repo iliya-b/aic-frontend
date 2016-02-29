@@ -181,9 +181,8 @@ LiveActions.setSensorBattery.listen(function (projectId, value) {
 	});
 });
 
-LiveActions.setSensorAccelerometer.listen(function (projectId, x, y, z) {
-	const token = '';
-	BackendAPI.sensorAccelerometer(token, projectId, x, y, z, res => {
+LiveActions.setSensorAccelerometer.listen(function (liveId, x, y, z) {
+	BackendAPI.sensorAccelerometer(liveId, x, y, z, res => {
 		this.completed(res);
 	});
 });

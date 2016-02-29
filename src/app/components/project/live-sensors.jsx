@@ -140,7 +140,7 @@ const LiveSensors = class extends React.Component {
 		e.preventDefault();
 		const newRotationName = this.state.live.rotationSets[this.state.live.screen.rotation].next;
 		const newRotationValue = this.state.live.rotationSets[newRotationName];
-		LiveActions.setSensorAccelerometer(this.state.projectId, newRotationValue.x, newRotationValue.y, newRotationValue.z, newRotationName);
+		LiveActions.setSensorAccelerometer(this.props.avmId, newRotationValue.x, newRotationValue.y, newRotationValue.z, newRotationName);
 
 		setTimeout(() => {
 			LiveActions.setDelayedRotation();
@@ -160,9 +160,9 @@ const LiveSensors = class extends React.Component {
 
 	_onLocationSubmit(e) {
 		e.preventDefault();
-		const lat = this.refs.lat.getValue();
-		const lon = this.refs.lon.getValue();
-		LiveActions.setSensorLocation(this.state.projectId, lat, lon);
+		const lat = parseFloat(this.refs.lat.getValue());
+		const lon = parseFloat(this.refs.lon.getValue());
+		LiveActions.setSensorLocation(this.props.avmId, lat, lon);
 	}
 
 	_onRecordStart(e) {
