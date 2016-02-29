@@ -49,7 +49,8 @@ const {
 	LogBoxRow,
 	AppUtils,
 	MachineCardLive,
-	InfoBox
+	InfoBox,
+	MachineCard
 } = require('app/components');
 
 // var logBoxRef = Array.apply(0, Array(8)).map(function (v, i) { return { message: 'Message ' + i , time: i }; });
@@ -211,28 +212,28 @@ const ThemesPage = class extends React.Component {
 				'avm_novnc_host': '127.0.0.1',
 				'avm_owner': 'marco',
 				'avm_id': 'jHLGWPeRSVyVzyCpWRsEjg',
-				'avm_status': 'READY',
+				'avm_status': MachineCard.VMSTATE.READY,
 				'avm_novnc_port': '5909'
 			},
 			{ // eslint-disable-line quote-props
 				'avm_novnc_host': '127.0.0.1',
 				'avm_owner': 'marco',
 				'avm_id': 'sijEK9O9T962JYWOuUzHHg',
-				'avm_status': 'READY',
+				'avm_status': MachineCard.VMSTATE.READY,
 				'avm_novnc_port': '5946'
 			},
 			{ // eslint-disable-line quote-props
 				'avm_novnc_host': '127.0.0.1',
 				'avm_owner': 'marco',
 				'avm_id': 'sijEK9O9T962JYWOuUzHHg',
-				'avm_status': 'CREATING',
+				'avm_status': MachineCard.VMSTATE.CREATING,
 				'avm_novnc_port': '5946'
 			},
 			{ // eslint-disable-line quote-props
 				'avm_novnc_host': '127.0.0.1',
 				'avm_owner': 'marco',
 				'avm_id': 'sijEK9O9T962JYWOuUzHHg',
-				'avm_status': 'CREATE_FAILED',
+				'avm_status': MachineCard.VMSTATE.FAILED,
 				'avm_novnc_port': '5946',
 				'avm_status_reason': 'Resource CREATE failed: OverLimit: VolumeLimitExceeded: \nMaximum number of volumes allowed (50) exceeded (HTTP 413) \n(Request-ID: req-2896fb29-7db3-4b0c-8a96-1554e6dc5f39)'
 			}
