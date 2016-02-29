@@ -9,10 +9,12 @@ const Router = require('react-router');
 const Route = Router.Route;
 const Redirect = Router.Redirect;
 const DefaultRoute = Router.DefaultRoute;
+const NotFoundRoute = Router.NotFoundRoute;
 
 // Pages //
 const Main = require('app/views/main');
 const Home = require('app/views/home');
+const NotFound = require('app/views/not-found');
 const Themes = require('app/views/themes');
 const ProjectWrapper = require('app/views/project/wrapper');
 const ProjectList = require('app/views/project/list');
@@ -44,6 +46,7 @@ const AppRoutes = (
 		</Route>
 
 		<DefaultRoute handler={Home}/>
+		<NotFoundRoute handler={NotFound} />
 	</Route>
 );
 

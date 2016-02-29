@@ -81,3 +81,4 @@ TODO List
 	* disconnect user when token is invalid in any backend request
 	* true logout (now is just application sided not server sided)
 	* replace localstorage by another storage?
+* ~~Not found route~~ :white_check_mark:

@@ -1,6 +1,7 @@
 module.exports = {
 	Home: require('./home'),
 	Main: require('./main'),
+	NotFound: require('./not-found'),
 	Themes: require('./themes'),
 	Project: {
 		ApkList: require('./project/apk-list'),
