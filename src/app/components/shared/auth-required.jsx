@@ -1,4 +1,3 @@
-/* global window */
 'use strict';
 
 // React
@@ -30,11 +29,11 @@ const AuthRequired = class extends React.Component {
 	//   } );
 		// AuthActions
 		debug('AuthRequired.componentWillMount');
-		if (!AuthActions.isLogged()) {
+		if (AuthActions.isLogged()) {
+			debug('user is logged');
+		} else {
 			debug('user not logged, redirect');
 			AuthActions.redirectDisconnected(this.context.router);
-		} else {
-			debug('user is logged');
 		}
 		// const stateObj = { foo: "bar" };
 		// history.pushState(stateObj, "page 2", "bar.html");

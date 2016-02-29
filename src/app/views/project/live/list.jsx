@@ -11,7 +11,7 @@ const {
 } = mui;
 
 // Vendor
-const debuggerGoby = require('debug')('AiC:View:Live:List');
+const debug = require('debug')('AiC:View:Live:List');
 
 // APP
 const {
@@ -49,7 +49,7 @@ const LiveList = class extends React.Component {
 	}
 
 	_onEnterSession(avmId) {
-		console.log('enter session', arguments);
+		debug('enter session', arguments);
 		this.context.router.transitionTo('live-session', {
 			projectId,
 			androId: avmId
@@ -83,7 +83,7 @@ const LiveList = class extends React.Component {
 	}
 
 	_onStateChange(state) {
-		debuggerGoby('changing state', this.state.live ? this.state.live.status : '', state);
+		debug('changing state', this.state.live ? this.state.live.status : '', state);
 		// if (state.live.status === 'LIVE_STATUS_VMSTARTED' && state.live.avm.avm_id) {
 		//   // this._onEnterSession(state.live.avm.avm_id);
 		//   LiveListActions.list();

@@ -5,7 +5,7 @@
 const Reflux = require('reflux');
 
 // Vendor
-const debuggerGoby = require('debug')('AiC:Live:Actions');
+const debug = require('debug')('AiC:Live:Actions');
 
 // APP
 const BackendAPI = require('app/stores/backend-api');
@@ -47,11 +47,11 @@ LiveActions.setProjectId.listen(function () {
 });
 
 LiveActions.start.listen(function (variant) {
-	debuggerGoby('start called');
+	debug('start called');
 	BackendAPI.liveStart(variant)
 	.then(res => {
-		debuggerGoby('start back');
-		debuggerGoby(arguments);
+		debug('start back');
+		debug(arguments);
 		if (res.hasOwnProperty('avm_id')) {
 			this.completed(res);
 		} else {
@@ -61,21 +61,21 @@ LiveActions.start.listen(function (variant) {
 });
 
 LiveActions.stop.listen(function (avmId) {
-	debuggerGoby('stop called');
+	debug('stop called');
 	BackendAPI.liveStop(avmId)
 	.then(() => {
-		debuggerGoby('stop back');
-		debuggerGoby(arguments);
+		debug('stop back');
+		debug(arguments);
 	})
 	.catch(() => {
-		debuggerGoby('stop back catch');
-		debuggerGoby(arguments);
+		debug('stop back catch');
+		debug(arguments);
 	});
 	// [undefined, 'nocontent', Object]0: undefined1: 'nocontent'2: Objectabort: (a)always: ()complete: ()done: ()error: ()fail: ()getAllResponseHeaders: ()getResponseHeader: (a)overrideMimeType: (a)pipe: ()progress: ()promise: (a)readyState: 4responseText: 'setRequestHeader: (a,b)state: ()status: 204statusCode: (a)statusText: 'No Content'success: ()then: ()__proto__: Objectcallee: (...)get callee: ThrowTypeError()set callee: ThrowTypeError()caller: (...)get caller: ThrowTypeError()set caller: ThrowTypeError()length: 3Symbol(Symbol.iterator): values()__proto__: Object
 	// [Object, 'error', 'Not Found'] +1ms
 	// .then(res => {
-	//   debuggerGoby('stop back');
-	//   debuggerGoby(res);
+	//   debug('stop back');
+	//   debug(res);
 	//   if (res.hasOwnProperty('avm_id')) {
 	//     this.completed(res);
 	//   } else {
@@ -85,10 +85,10 @@ LiveActions.stop.listen(function (avmId) {
 });
 
 LiveActions.loadInfo.listen(function (avmId) {
-	debuggerGoby('load info called');
+	debug('load info called');
 	BackendAPI.liveList()
 	.then(res => {
-		debuggerGoby('back');
+		debug('back');
 		if (res.hasOwnProperty('avms')) {
 			const avmInfo = res.avms.filter(currentValue => {
 				return currentValue.avm_id === avmId;
@@ -122,11 +122,11 @@ LiveActions.liveCheck.listen(function () {
 // LiveActions.liveStart.listen(function () {
 //   const token = '';
 //   BackendAPI.liveStart(token, res => {
-//     console.log(res);
+//     debug(res);
 //     if (res.hasOwnProperty('responseJSON') ) {
 //       res = res.responseJSON;
 //     }
-//     console.log(res);
+//     debug(res);
 //     if (res.hasOwnProperty('vncip') && res.hasOwnProperty('vncport') ) {
 //       this.completed( res.vncip, res.vncport );
 //     }else{
@@ -233,8 +233,8 @@ LiveActions.createImageName = function () {
 window.onscriptsload = function () {
 	// const updateState = function (rfb, state, oldstate, msg) {
 	const updateState = function (rfb, state) {
-		console.log('rfb updateState');
-		console.log(arguments);
+		debug('rfb updateState');
+		debug(arguments);
 		if (state === 'normal') {
 			window.AiClive.completed = true;
 			LiveActions.logMessage('noVNC utils loaded.');
@@ -257,9 +257,9 @@ LiveActions.tryWebsocket = function () {
 		LiveActions.logMessage('Connecting to VNC session.');
 		window.AiClive.socket = new WebSocket(`ws://${window.AiClive.host}:${window.AiClive.port}`, 'base64');
 		window.AiClive.socket.onerror = function () {
-			console.log('socket test on error');
-			console.log(arguments);
-			console.log(LiveActions);
+			debug('socket test on error');
+			debug(arguments);
+			debug(LiveActions);
 			if (window.AiClive.errorCount >= window.AiClive.maxTries) {
 				window.AiClive.completed = true;
 				LiveActions.logMessage('Unable to connect session (websockify error).');
@@ -273,14 +273,14 @@ LiveActions.tryWebsocket = function () {
 		};
 		// window.AiClive.socket.onopen = function (event) {
 		window.AiClive.socket.onopen = function () {
-			console.log('socket test on open');
-			console.log(LiveActions);
+			debug('socket test on open');
+			debug(LiveActions);
 			window.AiClive.socket.close();
 			window.rfb.connect(window.AiClive.host, window.AiClive.port, window.AiClive.password, window.AiClive.path);
 		};
 		// window.AiClive.socket.onclose = function (event) {
 		window.AiClive.socket.onclose = function () {
-			console.log('socket test on close');
+			debug('socket test on close');
 		};
 	} catch (exc) {
 		// ignore errors
@@ -347,48 +347,48 @@ LiveActions.tryAudioConnection = function (audiohost, audioport, cb) {
 	gobyVMAudio.tries = 0;
 	gobyVMAudio.maxTries = 4;
 	gobyVMAudio.addEventListener('error', function (e) {
-		console.log('audio error:', arguments);
+		debug('audio error:', arguments);
 		// audio playback failed - show a message saying why
 		// to get the source of the audio element use $(this).src
 		switch (e.target.error.code) {
 			case e.target.error.MEDIA_ERR_ABORTED:
-				console.log('You aborted the video playback.');
+				debug('You aborted the video playback.');
 				break;
 			case e.target.error.MEDIA_ERR_NETWORK:
-				console.log('A network error caused the audio download to fail.');
+				debug('A network error caused the audio download to fail.');
 				break;
 			case e.target.error.MEDIA_ERR_DECODE:
-				console.log('The audio playback was aborted due to a corruption problem or because the video used features your browser did not support.');
+				debug('The audio playback was aborted due to a corruption problem or because the video used features your browser did not support.');
 				break;
 			case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-				console.log('The video audio not be loaded, either because the server or network failed or because the format is not supported.');
+				debug('The video audio not be loaded, either because the server or network failed or because the format is not supported.');
 				gobyVMAudio.tries += 1;
 				if (gobyVMAudio.tries < gobyVMAudio.maxTries) {
-					console.log('audio trying again in', 2000 * gobyVMAudio.tries);
+					debug('audio trying again in', 2000 * gobyVMAudio.tries);
 					setTimeout(() => {
-						console.log('audio setting src', gobyVMAudio.src + gobyVMAudio.tries);
+						debug('audio setting src', gobyVMAudio.src + gobyVMAudio.tries);
 						gobyVMAudio.src += gobyVMAudio.tries;
 						gobyVMAudio.play();
 					}, 2000 * gobyVMAudio.tries);
 				} else {
-					console.log('audio max tries reached.');
+					debug('audio max tries reached.');
 				}
 				break;
 			default:
-				console.log('An unknown error occurred.');
+				debug('An unknown error occurred.');
 				break;
 		}
 	}, false);
 	// gobyVMAudio.addEventListener('canplay', function(ev) {
-	//   console.log('audio canplay:', arguments);
+	//   debug('audio canplay:', arguments);
 	//   if( gobyVMAudio.duration == 0 || gobyVMAudio.paused ){
-	//     console.log('audio canplay not pause');
+	//     debug('audio canplay not pause');
 	//     gobyVMAudio.play();
 	//   }
 	// }, false);
 	// FIXME: put url parser
 	const audioURL = `http://${audiohost}:${audioport}/test.webm?uid=${Date.now()}`;
-	console.log('setting audio url', audioURL);
+	debug('setting audio url', audioURL);
 	gobyVMAudio.src = audioURL;
 	gobyVMAudio.play();
 	cb({success: true, errorMessage: ''});
@@ -396,7 +396,7 @@ LiveActions.tryAudioConnection = function (audiohost, audioport, cb) {
 
 LiveActions.stopAudioConnection = function () {
 	const gobyVMAudio = document.getElementById('gobyVMAudio');
-	console.log(gobyVMAudio);
+	debug(gobyVMAudio);
 	if (gobyVMAudio) {
 		gobyVMAudio.pause();
 		gobyVMAudio.src = '';

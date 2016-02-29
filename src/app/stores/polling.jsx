@@ -6,7 +6,7 @@
 const Reflux = require('reflux');
 
 // Vendor
-const debuggerGoby = require('debug')('AiC:Polling:Store');
+const debug = require('debug')('AiC:Polling:Store');
 
 // APP
 const MachineCard = require('app/components/project/machine-card');
@@ -50,25 +50,25 @@ const PollingStore = Reflux.createStore({
 	},
 
 	onRetryCompleted(res, apiIndex, apiArgs, tries) {
-		debuggerGoby('retry completed, state:', this.state);
+		debug('retry completed, state:', this.state);
 		if (areDifferentObjects(res, this.state.polling[apiIndex].data)) {
-			debuggerGoby('object different');
+			debug('object different');
 			NotificationActions.update(apiIndex, res);
 			this.state.polling[apiIndex].data = res;
 		} else {
-			debuggerGoby('object same');
+			debug('object same');
 			const remainingTries = tries - 1;
 			if (remainingTries > 0) {
 				this.doRetry(apiIndex, apiArgs, remainingTries);
 			} else {
-				debuggerGoby('No tries left and no changes detected.', arguments);
+				debug('No tries left and no changes detected.', arguments);
 			}
 		}
 		this.checkData(res, apiIndex, apiArgs);
 	},
 
 	onRetryFailure() {
-		debuggerGoby('something very bad happened!', arguments);
+		debug('something very bad happened!', arguments);
 	},
 
 	// Methods //
@@ -95,19 +95,19 @@ const PollingStore = Reflux.createStore({
 				const onGoingStatus = [MachineCard.VMSTATE.CREATING, MachineCard.VMSTATE.DELETING];
 				const avms = res.avms;
 				let avm;
-				debuggerGoby('checking avms:', avms, onGoingStatus);
+				debug('checking avms:', avms, onGoingStatus);
 				for (let avmIndex = 0; avmIndex < avms.length; avmIndex++) {
 					avm = avms[avmIndex];
-					debuggerGoby('checking', avm.avm_status);
+					debug('checking', avm.avm_status);
 					if (onGoingStatus.indexOf(avm.avm_status) !== -1) {
-						debuggerGoby('polling again');
+						debug('polling again');
 						PollingActions.liveList();
 						break;
 					}
 				}
 				break;
 			default:
-				debuggerGoby('apiIndex not found', arguments);
+				debug('apiIndex not found', arguments);
 		}
 	},
 

@@ -4,6 +4,9 @@
 // Reflux
 const Reflux = require('reflux');
 
+// Vendors
+const debug = require('debug')('AiC:Actions:Websocket');
+
 // APP
 const BackendAPI = require('app/stores/backend-api');
 const AppUtils = require('app/components/shared/app-utils');
@@ -28,7 +31,7 @@ const WebsocketActions = Reflux.createActions({
 WebsocketActions.connect.listen((token, service) => {
 	let actionServiceName;
 
-	console.log('Trying to connect to Websocket', service);
+	debug('Trying to connect to Websocket', service);
 
 	actionServiceName = service ? `${AppUtils.capitalize(service)}Actions` : null;
 
@@ -39,7 +42,7 @@ WebsocketActions.connect.listen((token, service) => {
 
 	// Close previously opened websocket
 	if (GobyWebsocket && typeof GobyWebsocket.close === 'function') {
-		console.log('Websocket closing prev');
+		debug('Websocket closing prev');
 		GobyWebsocket.close();
 	}
 
@@ -50,24 +53,24 @@ WebsocketActions.connect.listen((token, service) => {
 	loadedActions[service] = GobyActions[actionServiceName];
 
 	GobyWebsocket.onopen = function () {
-		console.log('websocket open');
-		console.log('sending token', token);
+		debug('websocket open');
+		debug('sending token', token);
 		GobyWebsocket.send(token);
 		WebsocketActions.connect.completed(token);
 	};
 
 	GobyWebsocket.onmessage = function (e) {
-		console.log('websocket message', e.data, this);
+		debug('websocket message', e.data, this);
 		const res = JSON.parse(e.data);
 		loadedActions[GobyWebsocket.gobyService].socketMessage(e);
-		console.log(res);
+		debug(res);
 		// if (res.hasOwnProperty('message')) {
 		//   switch( res.message ){
 		//     case 'Stack created':
 		//       LiveActions.liveCheck.completed(false);
 		//       break;
 		//     case 'Docker created':
-		//       console.log('docker created');
+		//       debug('docker created');
 		//       LiveActions.liveStart.completed( res.data.vncip, res.data.vncport );
 		//       LiveActions.liveConnect( res.data.vncip, res.data.vncport );
 		//       break;
@@ -80,12 +83,12 @@ WebsocketActions.connect.listen((token, service) => {
 	};
 
 	GobyWebsocket.onerror = function (e) {
-		console.log('websocket error', e);
+		debug('websocket error', e);
 		WebsocketActions.error(e);
 	};
 
 	GobyWebsocket.onclose = function () {
-		console.log('websocket close');
+		debug('websocket close');
 		WebsocketActions.close.completed();
 	};
 });

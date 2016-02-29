@@ -2,7 +2,7 @@
 
 // Vendors
 const inspector = require('schema-inspector');
-// const debuggerGoby = require('debug')('AiC:libs:SanitizeObject');
+// const debug = require('debug')('AiC:libs:SanitizeObject');
 
 // APP
 
@@ -17,7 +17,7 @@ const SanitizeObject = {
 
 		if (result.valid) {
 			const sanitizedData = inspector.sanitize(dataObj.schema, dataObj.data);
-			// debuggerGoby('data valid', sanitizedData);
+			// debug('data valid', sanitizedData);
 			return sanitizedData.data;
 		}
 		throw new Error(result.format());

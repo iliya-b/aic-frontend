@@ -35,6 +35,9 @@ const {StylePropable} = mui.Mixins;
 const Typography = mui.Styles.Typography;
 const ThemeManager = new mui.Styles.ThemeManager();
 
+// Vendors
+const debug = require('debug')('AiC:Views:Themes');
+
 // APP
 
 const {
@@ -523,7 +526,7 @@ const ThemesPage = class extends React.Component {
 	}
 
 	addLogBox(e) {
-		console.log(arguments);
+		debug(arguments);
 		e.preventDefault();
 		const n = (this.state.logbox.length % logBoxRef.length) + 1;
 		this.setState({logbox: logBoxRef.slice(0, n)});

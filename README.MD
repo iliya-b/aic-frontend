@@ -72,7 +72,7 @@ TODO List
 * When new version is available put back to npm the nyc package ([instead of the fork with --extension](https://github.com/bcoe/nyc/pull/163))
 * Apply [this](https://gist.github.com/tomazzaman/790bc607eb7ca3fd347f) integration testing (just a check if the app is working)
 * Write all the unit tests for all the components (the POC is for a single component and does nothing).
-* Write/adapt features
+* ~~Write/adapt features~~ (transfered to aic_features project) :x:
 * Try other browsers for behavior testing
 * ~~Configure backend so the tests can pass~~ :white_check_mark:
 * Update node packages (a lot of work since everything will be broken by that)
@@ -82,3 +82,4 @@ TODO List
 	* true logout (now is just application sided not server sided)
 	* replace localstorage by another storage?
 * ~~Not found route~~ :white_check_mark:
+* Get initial VM state to set the frontend sensors (for example battery slides should be relative to the vm battery)

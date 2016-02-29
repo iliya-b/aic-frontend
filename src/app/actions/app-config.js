@@ -5,7 +5,7 @@
 const Reflux = require('reflux');
 
 // Vendors
-const debuggerGoby = require('debug')('AiC:Actions:AppConfig');
+const debug = require('debug')('AiC:Actions:AppConfig');
 
 // APP
 const BackendAPI = require('app/stores/backend-api');
@@ -23,11 +23,11 @@ AppConfigActions.load.listen(() => {
 	};
 	BackendAPI.apiCall(options)
 	.then(data => {
-		debuggerGoby('load.listen then', arguments);
+		debug('load.listen then', arguments);
 		AppConfigActions.load.completed(data);
 	})
 	.catch((data, textStatus, errorThrown) => {
-		debuggerGoby('load.listen catch', arguments);
+		debug('load.listen catch', arguments);
 		AppConfigActions.load.failure(errorThrown);
 	});
 });
@@ -35,11 +35,11 @@ AppConfigActions.load.listen(() => {
 AppConfigActions.loadConfigPromise = false;
 
 AppConfigActions.loadConfigFactory = function () {
-	console.log('loadConfigFactory');
+	debug('loadConfigFactory');
 
 	// Configuration is already loaded
 	if (window.GobyAppGlobals.config) {
-		console.log('loadConfigFactory loaded');
+		debug('loadConfigFactory loaded');
 		return new Promise(resolve => {
 			resolve(true);
 		});
@@ -47,24 +47,24 @@ AppConfigActions.loadConfigFactory = function () {
 
 	// Another promise for configuration load already exists
 	if (AppConfigActions.loadConfigPromise) {
-		console.log('loadConfigFactory exists');
+		debug('loadConfigFactory exists');
 		return AppConfigActions.loadConfigPromise;
 	}
 
 	// First time loading configuration
-	console.log('loadConfigFactory creating');
+	debug('loadConfigFactory creating');
 
 	AppConfigActions.loadConfigPromise = new Promise((resolve, reject) => {
 		BackendAPI.loadConfig(result => {
 			if (result.hasOwnProperty('status') && result.status !== 200) {
-				console.log('loadConfigFactory backend', arguments);
+				debug('loadConfigFactory backend', arguments);
 				reject('Error!');
 			} else if (result.hasOwnProperty('backend')) {
-				console.log('result', result);
+				debug('result', result);
 				window.GobyAppGlobals.config = result;
 				resolve(true);
 			} else {
-				console.log('loadConfigFactory backend', arguments);
+				debug('loadConfigFactory backend', arguments);
 				reject('It was not possible to verify login status.');
 			}
 		});

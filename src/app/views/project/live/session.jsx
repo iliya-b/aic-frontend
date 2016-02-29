@@ -13,6 +13,9 @@ const {
 	CircularProgress
 } = mui;
 
+// Vendors
+const debug = require('debug')('AiC:Views:Project:Live:Session');
+
 // APP
 const {
 	AppUtils,
@@ -222,10 +225,10 @@ const LiveSession = class extends React.Component {
 	}
 
 	_onLiveAction(actionName) {
-		// console.log(arguments);
+		// debug(arguments);
 		switch (actionName) {
 			case 'test':
-				console.log(arguments);
+				debug(arguments);
 
 				break;
 			case 'check':
@@ -265,11 +268,11 @@ const LiveSession = class extends React.Component {
 	}
 
 	_onInputFocus() {
-		console.log('focus');
+		debug('focus');
 		if (!window.rfb) {
 			return;
 		}
-		console.log('rfb exists?');
+		debug('rfb exists?');
 		window.rfb.get_keyboard().set_focused(false);
 		window.rfb.get_mouse().set_focused(false);
 	}
@@ -283,7 +286,7 @@ const LiveSession = class extends React.Component {
 	}
 
 	componentDidMount() {
-		// console.log('componentDidMount');
+		// debug('componentDidMount');
 		const projectId = AppUtils.getProjectIdFromRouter(this.context.router);
 		const avmId = AppUtils.getAVMIdFromRouter(this.context.router);
 		this.unsubscribe = LiveStore.listen(this._onStateChange);

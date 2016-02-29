@@ -4,7 +4,7 @@
 const Reflux = require('reflux');
 
 // Vendor
-const debuggerGoby = require('debug')('AiC:Polling:Store');
+const debug = require('debug')('AiC:Polling:Store');
 
 // APP
 const LiveListActions = require('./live-list');
@@ -22,7 +22,7 @@ NotificationActions.update = function (apiIndex, res) {
 			LiveListActions.list.completed(res.avms);
 			break;
 		default:
-			debuggerGoby('unknow api index:', arguments);
+			debug('unknow api index:', arguments);
 	}
 };
 

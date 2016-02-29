@@ -4,7 +4,7 @@
 const Reflux = require('reflux');
 
 // // Vendors
-// const debuggerGoby = require('debug')('AiC:LiveList:Actions');
+// const debug = require('debug')('AiC:LiveList:Actions');
 
 // // APP
 // const BackendAPI = require('app/stores/backend-api.jsx');
@@ -17,10 +17,10 @@ const LiveListActions = Reflux.createActions({
 // Listeners for asynchronous Backend API calls
 
 // LiveListActions.list.listen(function () {
-//   debuggerGoby('list called');
+//   debug('list called');
 //   BackendAPI.liveList()
 //   .then(res => {
-//     debuggerGoby('back');
+//     debug('back');
 //     if (res.hasOwnProperty('avms')) {
 //       this.completed(res.avms);
 //     } else {

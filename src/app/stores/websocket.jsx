@@ -3,6 +3,9 @@
 // Reflux
 const Reflux = require('reflux');
 
+// Vendors
+const debug = require('debug')('AiC:Stores:Websocket');
+
 // APP
 // const AppUtils = require('app/components/shared/app-utils');
 const {WebsocketActions} = require('app/actions');
@@ -23,13 +26,13 @@ const WebsocketStore = Reflux.createStore({
 
 	// Connect
 	onConnect() {
-		console.log('onConnect');
+		debug('onConnect');
 		this.state.websocket.status = 'WEBSOCKET_STATUS_CONNECTING';
 		this.updateState();
 	},
 
 	onConnectCompleted(token) {
-		console.log('onConnectCompleted', token);
+		debug('onConnectCompleted', token);
 		this.state.websocket.token = token;
 		this.state.websocket.status = 'WEBSOCKET_STATUS_CONNECTED';
 		this.updateState();
@@ -60,7 +63,7 @@ const WebsocketStore = Reflux.createStore({
 
 	// Message
 	onMessage(message) {
-		console.log('received message', message);
+		debug('received message', message);
 		this.state.websocket.message = message;
 		this.updateState();
 	},

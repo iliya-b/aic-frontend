@@ -3,6 +3,9 @@
 // Reflux
 const Reflux = require('reflux');
 
+// Vendors
+const debug = require('debug')('AiC:Stores:Campaign');
+
 // APP
 const AppUtils = require('app/components/shared/app-utils');
 const {CampaignActions} = require('app/actions');
@@ -81,7 +84,7 @@ const CampaignStore = Reflux.createStore({
 	// SocketMessage
 	onSocketMessage(message) {
 		const messageParsed = JSON.parse(message.data);
-		console.log('onSocketMessage', messageParsed);
+		debug('onSocketMessage', messageParsed);
 		if (messageParsed.hasOwnProperty('message')) {
 			this.onLogMessage(messageParsed.message);
 			switch (messageParsed.message) {
@@ -202,8 +205,8 @@ const CampaignStore = Reflux.createStore({
 	},
 
 	changeBoxes(typeName, field, newValue) {
-		// console.log(this.state);
-		// console.log(arguments);
+		// debug(this.state);
+		// debug(arguments);
 		const replacement = {};
 		replacement[field] = newValue;
 		this.state.campaign.boxes = this.state.campaign.boxes.map(
@@ -237,8 +240,8 @@ const CampaignStore = Reflux.createStore({
 	// State update
 
 	updateState() {
-		// console.log('updateState');
-		// console.log(this.state.campaign.status);
+		// debug('updateState');
+		// debug(this.state.campaign.status);
 		const actualStatus = this.statusUpdating[this.state.campaign.status];
 		this.changeBoxes(actualStatus.typeName, 'status', actualStatus.newStatus);
 		this.trigger(this.state);

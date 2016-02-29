@@ -116,7 +116,7 @@ const APKSelectionDialog = class extends React.Component {
 	// }
 
 	_onRowSelection(selectedRows) {
-		// console.log(selectedRows);
+		// debug(selectedRows);
 		this.setState({selectedIndex: selectedRows});
 	}
 
@@ -142,7 +142,7 @@ const APKSelectionDialog = class extends React.Component {
 			return {name: {content: item.name}, apkId: item.apkId, selected: item.checked};
 		});
 
-		// console.log(state);
+		// debug(state);
 		this.setState(state);
 		switch (this.state.status) {
 			case 'reloadList':

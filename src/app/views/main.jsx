@@ -15,6 +15,9 @@ const ThemeManager = new mui.Styles.ThemeManager();
 const Colors = mui.Styles.Colors;
 const {RaisedButton} = mui;
 
+// Vendors
+const debug = require('debug')('AiC:Views:Home');
+
 // APP
 const GobyTheme = require('app/configs/goby-theme');
 const {
@@ -83,7 +86,7 @@ const Main = class extends React.Component {
 				textAlign: 'center'
 			}
 		};
-		// console.log('render state ', this.state);
+		// debug('render state ', this.state);
 
 		if (this.state.config && this.state.config.isLoaded && !this.state.config.hasErrors) {
 			return (
@@ -119,7 +122,7 @@ const Main = class extends React.Component {
 	}
 
 	_onStateChange(newState) {
-		console.log('main new state');
+		debug('main new state');
 		if (newState.login) {
 			const currentPathName = AuthActions.getPathName(this.context.router);
 			if (newState.login.status === 'LOGIN_STATUS_DISCONNECTED' &&
@@ -137,19 +140,19 @@ const Main = class extends React.Component {
 			// and we need login information on WillTransitionTo of AuthRequired component
 			window.GobyAppGlobals.login = newState.login;
 			this.setState(newState);
-			// console.log('changed main state' , newState ,  currentPathName);
+			// debug('changed main state' , newState ,  currentPathName);
 		}
 		if (newState.config) {
-			console.log('Config loaded');
+			debug('Config loaded');
 			window.GobyAppGlobals.config = newState.config;
-			// console.log('main new state config', newState, window.GobyAppGlobals);
+			// debug('main new state config', newState, window.GobyAppGlobals);
 			// Set state MUST be the last call
 			this.setState(newState);
 		}
 	}
 
 	componentWillMount() {
-		console.log('Main componentWillMount');
+		debug('Main componentWillMount');
 		// ThemeManager.setPalette(GobyPalette);
 		ThemeManager.setTheme(GobyTheme);
 		this.unsubscribe.push(AuthStore.listen(this._onStateChange));
@@ -175,7 +178,7 @@ const Main = class extends React.Component {
 };
 
 Main.willTransitionTo = function (transition, params, query, callback) {
-	console.log('Main willTransitionTo');
+	debug('Main willTransitionTo');
 	// this.unsubscribe.push(AppConfigStore.listen( this._onStateChange ));
 	// AppConfigActions.load();
 	callback();

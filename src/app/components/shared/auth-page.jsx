@@ -4,6 +4,9 @@
 // React
 const React = require('react');
 
+// Vendors
+const debug = require('debug')('AiC:Components:AuthPage');
+
 // APP
 const {AuthActions} = require('app/actions');
 
@@ -14,11 +17,11 @@ const AuthPage = class extends React.Component {};
 AuthPage.willTransitionTo = function (transition, params, query, callback) {
 	// TODO: globals should not be used
 	const globalContext = window.GobyAppGlobals.login;
-	console.log('AuthPage willTransitionTo', globalContext);
+	debug('AuthPage willTransitionTo', globalContext);
 	AuthActions.loadContextIfEmpty(globalContext).then(userIsLogged => {
-		console.log('AuthPage result', userIsLogged);
+		debug('AuthPage result', userIsLogged);
 		if (userIsLogged) {
-			console.log('AuthPage transition', transition);
+			debug('AuthPage transition', transition);
 			// transition.redirect('/home');
 			AuthActions.redirectConnected(transition);
 			callback();
@@ -27,27 +30,27 @@ AuthPage.willTransitionTo = function (transition, params, query, callback) {
 			callback();
 		}
 	}, err => {
-		console.log('Something really bad happened on AuthPage.', err);
+		debug('Something really bad happened on AuthPage.', err);
 	});
 };
 
 AuthPage.willTransitionFrom = function (transition, component, callback) {
 	// TODO: globals should not be used
 	const globalContext = window.GobyAppGlobals.login;
-	console.log('AuthPage willTransitionFrom', globalContext, arguments);
+	debug('AuthPage willTransitionFrom', globalContext, arguments);
 	AuthActions.loadContextIfEmpty(globalContext).then(userIsLogged => {
-		console.log('AuthPage willTransitionFrom result', userIsLogged);
+		debug('AuthPage willTransitionFrom result', userIsLogged);
 		if (userIsLogged) {
 			callback();
 		} else {
-			console.log('AuthPage willTransitionFrom transition', transition);
+			debug('AuthPage willTransitionFrom transition', transition);
 			// transition.redirect('/home');
 			AuthActions.redirectDisconnected(transition);
 			callback();
 			// AuthActions.redirectDisconnected(transition);
 		}
 	}, err => {
-		console.log('Something really bad happened on auth.', err);
+		debug('Something really bad happened on auth.', err);
 	});
 };
 

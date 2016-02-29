@@ -3,6 +3,9 @@
 // React
 const React = require('react');
 
+// Vendors
+const debug = require('debug')('AiC:Views:Home');
+
 // Material design
 const mui = require('material-ui');
 const {Typography} = mui.Styles;
@@ -106,7 +109,7 @@ const Home = class extends React.Component {
 
 	// Example with componentWillMount
 	componentWillMount() {
-		console.log(this.context.loginStatus);
+		debug(this.context.loginStatus);
 		// Auth.redirectIfLogged(this.context.router);
 	}
 

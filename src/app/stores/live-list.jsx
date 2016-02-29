@@ -4,7 +4,7 @@
 const Reflux = require('reflux');
 
 // Vendor
-const debuggerGoby = require('debug')('AiC:LiveList:Store');
+const debug = require('debug')('AiC:LiveList:Store');
 
 // APP
 const {LiveListActions} = require('app/actions');
@@ -28,7 +28,7 @@ const LiveListStore = Reflux.createStore({
 
 	// Live list
 	onList() {
-		debuggerGoby('onlist');
+		debug('onlist');
 		this.state.live.status = 'LIVE_STATUS_LISTING';
 		this.updateState();
 	},

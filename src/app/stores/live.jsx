@@ -4,7 +4,7 @@
 const Reflux = require('reflux');
 
 // Vendor
-const debuggerGoby = require('debug')('AiC:Live:Store');
+const debug = require('debug')('AiC:Live:Store');
 
 // APP
 const AppUtils = require('app/components/shared/app-utils');
@@ -52,8 +52,8 @@ const LiveStore = Reflux.createStore({
 	onLoadInfoCompleted(avmInfo) {
 		// avmInfo.avm_novnc_host
 		// window.GobyAppGlobals.config.backend.host
-		debuggerGoby('avmInfo');
-		debuggerGoby(avmInfo);
+		debug('avmInfo');
+		debug(avmInfo);
 		this.state.liveInfo = avmInfo;
 		LiveActions.liveConnect(avmInfo.avm_novnc_host, avmInfo.avm_novnc_port);
 	},
@@ -82,7 +82,7 @@ const LiveStore = Reflux.createStore({
 
 	// Live list
 	onList() {
-		debuggerGoby('onlist');
+		debug('onlist');
 		this.state.live.status = 'LIVE_STATUS_LISTING';
 		this.updateState();
 	},
@@ -230,7 +230,7 @@ const LiveStore = Reflux.createStore({
 	// Socket Message
 	onSocketMessage(message) {
 		const messageParsed = JSON.parse(message.data);
-		console.log('onSocketMessage', messageParsed);
+		debug('onSocketMessage', messageParsed);
 		if (messageParsed.hasOwnProperty('message')) {
 			this.addLogMessage(messageParsed.message);
 			switch (messageParsed.message) {
@@ -239,7 +239,7 @@ const LiveStore = Reflux.createStore({
 					LiveActions.liveStart();
 					break;
 				case 'Docker created and ready.':
-					console.log('docker created');
+					debug('docker created');
 					LiveActions.liveStart.completed(messageParsed.data.vncip, messageParsed.data.vncport);
 					LiveActions.liveConnect(messageParsed.data.vncip, messageParsed.data.vncport);
 					break;
@@ -303,8 +303,8 @@ const LiveStore = Reflux.createStore({
 	},
 
 	changeBoxes(typeName, field, newValue) {
-		// console.log(this.state);
-		// console.log(arguments);
+		// debug(this.state);
+		// debug(arguments);
 		const replacement = {};
 		replacement[field] = newValue;
 		this.state.live.boxes = this.state.live.boxes.map(

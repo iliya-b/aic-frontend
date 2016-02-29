@@ -4,7 +4,7 @@
 const Reflux = require('reflux');
 
 // Vendors
-const debuggerGoby = require('debug')('AiC:Polling:Actions');
+const debug = require('debug')('AiC:Polling:Actions');
 
 // APP
 const BackendAPI = require('app/stores/backend-api');
@@ -20,7 +20,7 @@ const PollingActions = Reflux.createActions({
 // Listeners for asynchronous Backend API calls
 
 PollingActions.retry.listen(function (apiIndex, apiArgs, remainingTries) {
-	debuggerGoby('retry called', arguments);
+	debug('retry called', arguments);
 	Reflect.apply(BackendAPI[apiIndex], BackendAPI, apiArgs)
 	.then(res => {
 		this.completed(res, apiIndex, apiArgs, remainingTries);
@@ -34,7 +34,7 @@ PollingActions.retry.listen(function (apiIndex, apiArgs, remainingTries) {
 			LiveListActions.list();
 			break;
 		default:
-			debuggerGoby('apiIndex not found', arguments);
+			debug('apiIndex not found', arguments);
 	}
 });
 

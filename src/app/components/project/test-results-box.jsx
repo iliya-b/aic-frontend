@@ -28,7 +28,7 @@ const CodeBox = require('app/components/shared/code-box');
 const TestResultsBox = class extends React.Component {
 
 	render() {
-		// console.log(this.props.results);
+		// debug(this.props.results);
 		const resultsRendered = this.props.results.map((item, index) => {
 			const testCasesRendered = item.testCases.map((testCase, testCaseIndex) => {
 				const statusIcon = testCase.failure ? <FontIcon className="mdi mdi-close" style={{color: this.context.muiTheme.palette.errorColor}} /> :

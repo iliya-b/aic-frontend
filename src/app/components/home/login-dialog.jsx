@@ -72,8 +72,8 @@ const LoginDialog = class extends React.Component {
 	}
 
 	validFields(newState) {
-		// console.log('newState');
-		// console.log(newState);
+		// debug('newState');
+		// debug(newState);
 		const fieldAreValid = ['loginEmail', 'loginPassword'].reduce((previous, item) => {
 			if (newState.fieldsChanged && newState.fieldsChanged.indexOf(item) > -1) {
 				newState[`${item}Error`] = AppUtils.fieldIsRequired(previous[1].refs[item]);

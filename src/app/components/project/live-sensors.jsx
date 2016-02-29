@@ -147,12 +147,12 @@ const LiveSensors = class extends React.Component {
 		}, 1500);
 
 		// setTimeout(function(){
-		//   // console.log(Live.getRotation() );
+		//   // debug(Live.getRotation() );
 		//   if(this.state.live.screen.rotation === 'horizontal'){
-		//     // console.log('h');
+		//     // debug('h');
 		//     $('#novnciframe').css('width','800px').css('height','600px');
 		//   }else if(this.state.live.screen.rotation === 'vertical'){
-		//     // console.log('v');
+		//     // debug('v');
 		//     $('#novnciframe').css('width','600px').css('height','800px');
 		//   }
 		// }, 1500);

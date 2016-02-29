@@ -176,11 +176,11 @@ const BackendAPI = {
 			.then(parseJSON)
 			.then(data => {
 				debug('return ajax', arguments, data);
-				console.log('request succeeded with JSON response', data);
+				debug('request succeeded with JSON response', data);
 				resolve(data);
 			})
 			.catch(error => {
-				console.log('request failed', error);
+				debug('request failed', error);
 				reject(null, error, error);
 			});
 		});

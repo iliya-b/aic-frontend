@@ -35,13 +35,13 @@ const ProjectPage = React.createClass({
 	// _onItemTap(index, e) { //, index, menuItem
 	// _onItemTap(e, index, menuItem) {
 	_onItemTap(e, index) {
-		// console.log(arguments);
+		// debug(arguments);
 		const {projectId} = this.context.router.getCurrentParams();
 		this.context.router.transitionTo(menuItems[index].path, {projectId});
 	},
 
 	_onItemClick(index, e) {
-		// console.log(arguments);
+		// debug(arguments);
 		e.preventDefault();
 		const {projectId} = this.context.router.getCurrentParams();
 		this.context.router.transitionTo(menuItems[index].path, {projectId});
@@ -107,7 +107,7 @@ const ProjectPage = React.createClass({
 		// const menusItems = menuItems.map(function (item, index) {
 		//   return <ObjectListItem key={index} index={index} text="ka" />
 		// }, this);
-		// console.log(menusItems);
+		// debug(menusItems);
 				// <div style={styles.menu} >
 				// {menusItems}
 				// </div>

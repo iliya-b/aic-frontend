@@ -8,7 +8,7 @@ const mui = require('material-ui');
 const {LinearProgress} = mui;
 
 // Vendor
-const debuggerGoby = require('debug')('AiC:Component:LiveList');
+const debug = require('debug')('AiC:Component:LiveList');
 
 // APP
 const MachineCardLive = require('app/components/project/machine-card-live');
@@ -53,7 +53,7 @@ const LiveMachineList = class extends React.Component {
 	}
 
 	_onStateChange(state) {
-		debuggerGoby('changing state', state);
+		debug('changing state', state);
 		this.setState(state);
 	}
 

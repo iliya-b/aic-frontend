@@ -4,7 +4,7 @@
 const Reflux = require('reflux');
 
 // Vendor
-const debuggerGoby = require('debug')('AiC:Store:AppConfig');
+const debug = require('debug')('AiC:Store:AppConfig');
 
 // APP
 const {AppConfigActions} = require('app/actions');
@@ -28,7 +28,7 @@ const AppConfigStore = Reflux.createStore({
 	},
 
 	onLoadCompleted(data) {
-		debuggerGoby('onLoadCompleted', data);
+		debug('onLoadCompleted', data);
 		this.state.config = data;
 		this.state.config.isLoaded = true;
 		this.state.config.hasErrors = false;
@@ -36,7 +36,7 @@ const AppConfigStore = Reflux.createStore({
 	},
 
 	onLoadFailure(error) {
-		debuggerGoby('onLoadFailure', error);
+		debug('onLoadFailure', error);
 		this.state.config.isLoaded = true;
 		this.state.config.hasErrors = true;
 		this.state.config.error = error;

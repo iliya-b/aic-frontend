@@ -3,6 +3,9 @@
 // Reflux
 const Reflux = require('reflux');
 
+// Vendors
+const debug = require('debug')('AiC:Stores:Auth');
+
 // APP
 const {AuthActions} = require('app/actions');
 
@@ -46,7 +49,7 @@ const AuthStore = Reflux.createStore({
 	},
 
 	onLogoutCompleted(showMessage) {
-		console.log('onLogoutCompleted', showMessage);
+		debug('onLogoutCompleted', showMessage);
 		this.state.login.showMessage = typeof showMessage === 'undefined' ? true : showMessage;
 		this.state.login.status = 'LOGIN_STATUS_DISCONNECTED';
 		this.updateState();
