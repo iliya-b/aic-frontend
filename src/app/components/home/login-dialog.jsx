@@ -121,7 +121,7 @@ const LoginDialog = class extends React.Component {
 			debug('this.props.location', this.props.location);
 			debug('this.context.route', this.context.route);
 			debug('this.context.location', this.context.location);
-			AuthActions.redirectConnected(this.context.router, this.context.location);
+			AuthActions.redirectConnected(this.context.router, this.props.location);
 		}
 		this.setState(newState);
 	}
@@ -132,16 +132,18 @@ const LoginDialog = class extends React.Component {
 	}
 
 	componentWillUnmount() {
-		// Subscribe and unsubscribe because we don't want to use the mixins
-		debug('unsubscribe');
 		this.unsubscribe();
+		debug('unsubscribe');
 	}
 
 };
 
 LoginDialog.contextTypes = {
 	muiTheme: React.PropTypes.object,
-	router: React.PropTypes.object,
+	router: React.PropTypes.object
+};
+
+LoginDialog.propTypes = {
 	location: React.PropTypes.object
 };
 

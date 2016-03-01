@@ -46,6 +46,7 @@ const AuthRequired = class extends React.Component {
 	componentWillUnmount() {
 		// Subscribe and unsubscribe because we don't want to use the mixins
 		this.unsubscribe();
+		debug('unsubscribe');
 	}
 };
 

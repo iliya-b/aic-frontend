@@ -83,3 +83,4 @@ TODO List
 	* replace localstorage by another storage?
 * ~~Not found route~~ :white_check_mark:
 * Get initial VM state to set the frontend sensors (for example battery slides should be relative to the vm battery)
+* Reflux unsubscribe method is broken

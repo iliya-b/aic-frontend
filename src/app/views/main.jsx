@@ -176,6 +176,7 @@ const Main = class extends React.Component {
 		this.unsubscribe.map(func => {
 			func();
 		});
+		debug('unsubscribe');
 	}
 
 };

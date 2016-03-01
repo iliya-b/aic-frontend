@@ -92,7 +92,7 @@ const Home = class extends React.Component {
 							style={styles.buttonStyle}
 							primary
 							/>
-						<LoginDialog ref="loginDialog" />
+						<LoginDialog ref="loginDialog" location={this.props.location}/>
 					</div>
 			</FullWidthSection>
 		);
