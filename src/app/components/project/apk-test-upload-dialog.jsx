@@ -140,7 +140,7 @@ APKTestUploadDialog.mixins = [StylePropable];
 
 APKTestUploadDialog.contextTypes = {
 	muiTheme: React.PropTypes.object,
-	router: React.PropTypes.func
+	router: React.PropTypes.object
 };
 
 APKTestUploadDialog.propTypes = {

@@ -14,10 +14,7 @@ const {
 const debug = require('debug')('AiC:View:Live:List');
 
 // APP
-const {
-	AppUtils,
-	LiveMachineList
-} = require('app/components');
+const {LiveMachineList} = require('app/components');
 const {LiveStore} = require('app/stores');
 const {
 	LiveActions,
@@ -50,10 +47,11 @@ const LiveList = class extends React.Component {
 
 	_onEnterSession(avmId) {
 		debug('enter session', arguments);
-		this.context.router.transitionTo('live-session', {
-			projectId,
-			androId: avmId
-		});
+		this.context.router.push(`/projects/${projectId}/live/${avmId}`);
+		// this.context.router.transitionTo('live-session', {
+		// 	projectId,
+		// 	androId: avmId
+		// });
 	}
 
 	_onStopSession(avmId) {
@@ -95,7 +93,10 @@ const LiveList = class extends React.Component {
 	}
 
 	componentDidMount() {
-		projectId = AppUtils.getProjectIdFromRouter(this.context.router);
+		// projectId = AppUtils.getProjectIdFromRouter(this.context.router);
+		debug('this.props', this.props);
+		debug('this.context.router', this.context.router);
+		projectId = this.props.params.projectId;
 		this.unsubscribe = LiveStore.listen(this._onStateChange);
 		LiveActions.setProjectId(projectId);
 	}
@@ -108,9 +109,13 @@ const LiveList = class extends React.Component {
 };
 
 LiveList.contextTypes = {
-	router: React.PropTypes.func,
+	router: React.PropTypes.object,
 	muiTheme: React.PropTypes.object,
 	appConfig: React.PropTypes.object
+};
+
+LiveList.propTypes = {
+	params: React.PropTypes.object
 };
 
 module.exports = LiveList;

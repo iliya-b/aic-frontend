@@ -1,34 +1,23 @@
 'use strict';
 
-// React
-const React = require('react');
-
-// Router
-const Router = require('react-router');
-const {RouteHandler} = Router;
+// Vendors
+import React from 'react';
 
 // APP
-const LiveList = require('./list');
-
 const LiveWrapper = class extends React.Component {
 
 	render() {
-		const params = this.context.router.getCurrentParams();
-
-		const list = params.hasOwnProperty('androId') ? null : <LiveList />;
-
 		return (
 			<div>
-				{list}
-				<RouteHandler />
+				{this.props.children}
 			</div>
 		);
 	}
 
 };
 
-LiveWrapper.contextTypes = {
-	router: React.PropTypes.func.isRequired
+LiveWrapper.propTypes = {
+	children: React.PropTypes.node
 };
 
 module.exports = LiveWrapper;

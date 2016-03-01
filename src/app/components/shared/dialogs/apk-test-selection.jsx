@@ -157,7 +157,7 @@ const APKTestSelectionDialog = class extends React.Component {
 
 APKTestSelectionDialog.contextTypes = {
 	muiTheme: React.PropTypes.object,
-	router: React.PropTypes.func
+	router: React.PropTypes.object
 };
 
 APKTestSelectionDialog.propTypes = {

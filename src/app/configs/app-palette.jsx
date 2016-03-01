@@ -1,11 +1,11 @@
 'use strict';
 
 // Material design
-const mui = require('material-ui');
-const Colors = mui.Styles.Colors;
-const ColorManipulator = mui.Utils.ColorManipulator;
+import * as Colors from 'material-ui/lib/styles/colors';
+import ColorManipulator from 'material-ui/lib/utils/color-manipulator';
 
-const GobyPalette = {
+const AppPalette = {
+	// Base theme colors
 	primary1Color: Colors.lightBlue500,
 	primary2Color: Colors.lightBlue700,
 	primary3Color: Colors.lightBlue300,
@@ -13,9 +13,15 @@ const GobyPalette = {
 	accent2Color: Colors.lightGreen700,
 	accent3Color: Colors.lightGreen300,
 	textColor: Colors.darkBlack,
+	alternateTextColor: Colors.white,
 	canvasColor: Colors.white,
 	borderColor: Colors.grey300,
 	disabledColor: ColorManipulator.fade(Colors.darkBlack, 0.3),
+	pickerHeaderColor: Colors.lightBlue500,
+	clockCircleColor: ColorManipulator.fade(Colors.darkBlack, 0.07),
+	shadowColor: Colors.fullBlack,
+
+	// App Colors
 	logo1Color: '#2D8BCB',
 	logo2Color: '#A2C846',
 	textLightColor: Colors.grey200,
@@ -25,4 +31,4 @@ const GobyPalette = {
 	warnColor: Colors.amber800
 };
 
-module.exports = GobyPalette;
+module.exports = AppPalette;

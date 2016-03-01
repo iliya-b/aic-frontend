@@ -31,10 +31,11 @@ const ProjectWrapper = class extends AuthRequired {
 		};
 		this._onLeftIconButtonTouchTap = this._onLeftIconButtonTouchTap.bind(this);
 		this._onRightIconButtonTouchTap = this._onRightIconButtonTouchTap.bind(this);
+		this.updateTitle = this.updateTitle.bind(this);
 	}
 
 	_onLeftIconButtonTouchTap() {
-		this.context.router.transitionTo('projects');
+		this.context.router.push('/projects');
 	}
 
 	_onRightIconButtonTouchTap() {
@@ -51,15 +52,17 @@ const ProjectWrapper = class extends AuthRequired {
 					zDepth={0}
 					iconElementRight={<IconButton title="Logout" onClick={this._onRightIconButtonTouchTap} iconClassName="mdi mdi-logout" />}
 					/>
-				<RouteHandler />
+				{this.props.children}
 			</div>
 		);
 	}
 
 	updateTitle() {
-		const thisPage = this.context.router.getCurrentPath();
+		// const thisPage = this.context.router.getCurrentPath();
+		const thisPage = this.props.location.pathname;
 		if (this.state.lastPage !== thisPage) {
-			const routerParams = this.context.router.getCurrentParams();
+			// const routerParams = this.context.router.getCurrentParams();
+			const routerParams = this.props.location.query;
 			if (routerParams.hasOwnProperty('projectId')) {
 				ProjectActions.getNameById(routerParams.projectId)
 				.then(res => {
@@ -91,7 +94,7 @@ const ProjectWrapper = class extends AuthRequired {
 };
 
 ProjectWrapper.contextTypes = {
-	router: React.PropTypes.func.isRequired
+	router: React.PropTypes.object.isRequired
 };
 
 module.exports = ProjectWrapper;

@@ -128,7 +128,7 @@ const MachineIcon = class extends React.Component {
 
 MachineIcon.contextTypes = {
 	muiTheme: React.PropTypes.object,
-	router: React.PropTypes.func
+	router: React.PropTypes.object
 };
 
 MachineIcon.propTypes = {

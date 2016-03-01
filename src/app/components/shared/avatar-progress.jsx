@@ -105,7 +105,7 @@ const AvatarProgress = class extends React.Component {
 
 AvatarProgress.contextTypes = {
 	muiTheme: React.PropTypes.object,
-	router: React.PropTypes.func
+	router: React.PropTypes.object
 };
 
 AvatarProgress.propTypes = {

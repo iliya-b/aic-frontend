@@ -287,8 +287,11 @@ const LiveSession = class extends React.Component {
 
 	componentDidMount() {
 		// debug('componentDidMount');
-		const projectId = AppUtils.getProjectIdFromRouter(this.context.router);
-		const avmId = AppUtils.getAVMIdFromRouter(this.context.router);
+		// const projectId = AppUtils.getProjectIdFromRouter(this.context.router);
+		// const avmId = AppUtils.getAVMIdFromRouter(this.context.router);
+		debug('this.props.params', this.props.params);
+		const projectId = this.props.params.projectId;
+		const avmId = this.props.params.androId;
 		this.unsubscribe = LiveStore.listen(this._onStateChange);
 		LiveActions.liveReset();
 		LiveActions.setProjectId(projectId);
@@ -303,14 +306,15 @@ const LiveSession = class extends React.Component {
 };
 
 LiveSession.contextTypes = {
-	router: React.PropTypes.func,
+	router: React.PropTypes.object,
 	muiTheme: React.PropTypes.object,
 	appConfig: React.PropTypes.object
 };
 
 LiveSession.propTypes = {
 	onInputFocus: React.PropTypes.func,
-	onInputBlur: React.PropTypes.func
+	onInputBlur: React.PropTypes.func,
+	params: React.PropTypes.object
 };
 
 module.exports = LiveSession;

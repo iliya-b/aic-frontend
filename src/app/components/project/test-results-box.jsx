@@ -112,7 +112,7 @@ const TestResultsBox = class extends React.Component {
 
 TestResultsBox.contextTypes = {
 	muiTheme: React.PropTypes.object,
-	router: React.PropTypes.func
+	router: React.PropTypes.object
 };
 
 TestResultsBox.propTypes = {

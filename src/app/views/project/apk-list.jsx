@@ -2,7 +2,7 @@
 
 // React
 const React = require('react');
-const ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 // Material design
 const mui = require('material-ui');
@@ -131,7 +131,7 @@ const ProjectApkList = class extends React.Component {
 };
 
 ProjectApkList.contextTypes = {
-	router: React.PropTypes.func,
+	router: React.PropTypes.object,
 	muiTheme: React.PropTypes.object
 };
 

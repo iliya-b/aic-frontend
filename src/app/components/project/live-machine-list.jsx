@@ -69,7 +69,7 @@ const LiveMachineList = class extends React.Component {
 };
 
 LiveMachineList.contextTypes = {
-	router: React.PropTypes.func,
+	router: React.PropTypes.object,
 	muiTheme: React.PropTypes.object,
 	appConfig: React.PropTypes.object
 };

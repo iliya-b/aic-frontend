@@ -111,7 +111,7 @@ const DeviceSelectionDialog = class extends React.Component {
 
 DeviceSelectionDialog.contextTypes = {
 	muiTheme: React.PropTypes.object,
-	router: React.PropTypes.func
+	router: React.PropTypes.object
 };
 
 DeviceSelectionDialog.propTypes = {

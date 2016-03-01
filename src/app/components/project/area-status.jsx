@@ -56,7 +56,7 @@ const AreaStatus = class extends React.Component {
 
 AreaStatus.contextTypes = {
 	muiTheme: React.PropTypes.object,
-	router: React.PropTypes.func
+	router: React.PropTypes.object
 };
 
 AreaStatus.propTypes = {

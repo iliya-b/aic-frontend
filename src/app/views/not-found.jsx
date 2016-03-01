@@ -38,7 +38,7 @@ const NotFound = class extends React.Component {
 };
 
 NotFound.contextTypes = {
-	router: React.PropTypes.func,
+	router: React.PropTypes.object,
 	muiTheme: React.PropTypes.object
 };
 

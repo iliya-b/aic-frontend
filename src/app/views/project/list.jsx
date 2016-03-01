@@ -24,7 +24,7 @@ const ProjectList = class extends React.Component {
 
 	_onItemTap(index, e) {
 		e.preventDefault();
-		this.context.router.transitionTo('project-page', {projectId: this.state.projects[index].id});
+		this.context.router.push(`/projects/${this.state.projects[index].id}`);
 	}
 
 	render() {
@@ -66,7 +66,7 @@ const ProjectList = class extends React.Component {
 };
 
 ProjectList.contextTypes = {
-	router: React.PropTypes.func
+	router: React.PropTypes.object
 };
 
 module.exports = ProjectList;

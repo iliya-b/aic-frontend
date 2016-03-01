@@ -1,46 +1,31 @@
-const React = require('react');
-const mui = require('material-ui');
-const ClearFix = mui.ClearFix;
-const {StyleResizable, StylePropable} = mui.Mixins;
-const DesktopGutter = mui.Styles.Spacing.desktopGutter;
+'use strict';
+
+import React from 'react';
+import ClearFix from 'material-ui/lib/clearfix';
+// const {StyleResizable, StylePropable} = mui.Mixins;
+import {desktopGutter} from 'material-ui/lib/styles/spacing';
+import {StyleResizable} from 'material-ui/lib/mixins';
 
 const FullWidthSection = React.createClass({
 
-	mixins: [StylePropable, StyleResizable],
+	// mixins: [StylePropable, StyleResizable],
 
 	propTypes: {
-		useContent: React.PropTypes.bool,
-		contentType: React.PropTypes.string,
-		contentStyle: React.PropTypes.object,
 		children: React.PropTypes.node,
-		style: React.PropTypes.object
+		contentStyle: React.PropTypes.object,
+		contentType: React.PropTypes.string,
+		style: React.PropTypes.object,
+		useContent: React.PropTypes.bool
 	},
+
+	mixins: [
+		StyleResizable
+	],
 
 	getDefaultProps() {
 		return {
 			useContent: false,
 			contentType: 'div'
-		};
-	},
-
-	getStyles() {
-		return {
-			root: {
-				padding: `${DesktopGutter}px`,
-				boxSizing: 'border-box'
-			},
-			content: {
-				maxWidth: '1200px',
-				margin: '0 auto'
-			},
-			rootWhenSmall: {
-				paddingTop: `${(DesktopGutter * 2)}px`,
-				paddingBottom: `${(DesktopGutter * 2)}px`
-			},
-			rootWhenLarge: {
-				paddingTop: `${(DesktopGutter * 3)}px`,
-				paddingBottom: `${(DesktopGutter * 3)}px`
-			}
 		};
 	},
 
@@ -53,31 +38,49 @@ const FullWidthSection = React.createClass({
 			...other
 		} = this.props;
 
-		const styles = this.getStyles();
+		const styles = {
+			root: {
+				padding: `${desktopGutter}px`,
+				boxSizing: 'border-box'
+			},
+			content: {
+				maxWidth: '1200px',
+				margin: '0 auto'
+			},
+			rootWhenSmall: {
+				paddingTop: `${(desktopGutter * 2)}px`,
+				paddingBottom: `${(desktopGutter * 2)}px`
+			},
+			rootWhenLarge: {
+				paddingTop: `${(desktopGutter * 3)}px`,
+				paddingBottom: `${(desktopGutter * 3)}px`
+			}
+		};
 
 		let content;
 		if (useContent) {
 			content =
-			React.createElement(
-				contentType,
-				{style: this.mergeAndPrefix(styles.content, contentStyle)},
-				this.props.children
+				React.createElement(
+					contentType,
+					{style: Object.assign(styles.content, contentStyle)},
+					this.props.children
 				);
 		} else {
 			content = this.props.children;
 		}
 
 		return (
-			<ClearFix {...other}
-				style={this.mergeAndPrefix(
-				styles.root,
-				style,
-				this.isDeviceSize(StyleResizable.statics.Sizes.SMALL) && styles.rootWhenSmall,
-				this.isDeviceSize(StyleResizable.statics.Sizes.LARGE) && styles.rootWhenLarge)}
+			<ClearFix
+				{...other}
+				style={Object.assign(
+					styles.root,
+					style,
+					this.isDeviceSize(StyleResizable.statics.Sizes.SMALL) && styles.rootWhenSmall,
+					this.isDeviceSize(StyleResizable.statics.Sizes.LARGE) && styles.rootWhenLarge)}
 				>
-			{content}
+				{content}
 			</ClearFix>
-			);
+		);
 	}
 });
 

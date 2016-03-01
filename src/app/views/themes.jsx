@@ -33,7 +33,7 @@ const MenuItem = require('material-ui/lib/menus/menu-item');
 const {StylePropable} = mui.Mixins;
 
 const Typography = mui.Styles.Typography;
-const ThemeManager = new mui.Styles.ThemeManager();
+// const ThemeManager = new mui.Styles.ThemeManager();
 
 // Vendors
 const debug = require('debug')('AiC:Views:Themes');
@@ -73,7 +73,7 @@ const ThemesPage = class extends React.Component {
 	}
 
 	getStyles() {
-		const canvasColor = ThemeManager.getCurrentTheme().palette.canvasColor;
+		const canvasColor = this.context.muiTheme.palette.canvasColor;
 		const styles = {
 			group: {
 				float: 'left',
@@ -183,21 +183,21 @@ const ThemesPage = class extends React.Component {
 
 		const boxesLive = allStatus.map(function (itemStatus, indexStatus) {
 			const boxes = this.map((itemBox, indexBox, arrayBox) => {
-				return <BoxStatus key={indexBox} objectName={'session'} typeName={itemBox} status={itemStatus} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox + 1)} />;
+				return <BoxStatus key={indexBox} objectName={'session'} typeName={itemBox} status={itemStatus} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox + 1)}/>;
 			});
 			return <div key={indexStatus}>{boxes}</div>;
 		}, allLiveTypes);
 
 		const boxesCampaign = allStatus.map(function (itemStatus, indexStatus) {
 			const boxes = this.map((itemBox, indexBox, arrayBox) => {
-				return <BoxStatus key={indexBox} objectName={'campaign'} typeName={itemBox} status={itemStatus} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox + 1)} />;
+				return <BoxStatus key={indexBox} objectName={'campaign'} typeName={itemBox} status={itemStatus} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox + 1)}/>;
 			});
 			return <div key={indexStatus}>{boxes}</div>;
 		}, allCampaignTypes);
 
 		const boxesLogBox = (<div>
 			{allCampaignTypes.map((itemBox, indexBox, arrayBox) => {
-				return <BoxStatus key={indexBox} objectName={'campaign'} typeName={itemBox} status={'success'} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox + 1)} />;
+				return <BoxStatus key={indexBox} objectName={'campaign'} typeName={itemBox} status={'success'} isFirst={indexBox === 0} isLast={arrayBox.length === (indexBox + 1)}/>;
 			})}
 		</div>);
 
@@ -240,7 +240,7 @@ const ThemesPage = class extends React.Component {
 		];
 
 		const avmsRendered = avms.map((currentValue, index) => {
-			return <MachineCardLive {...currentValue} key={index} />;
+			return <MachineCardLive {...currentValue} key={index}/>;
 		});
 
 		const infoStylesTypes = [InfoBox.STYLE_BIG, ''];
@@ -263,70 +263,70 @@ const ThemesPage = class extends React.Component {
 		infoValues = Reflect.apply([].concat, [], infoValues);
 
 		const infoBoxes = infoValues.map((infoProps, infoIndex) => {
-			return <InfoBox style={{margin: '10px'}} key={infoIndex} {...infoProps} />;
+			return <InfoBox style={{margin: '10px'}} key={infoIndex} {...infoProps}/>;
 		});
 
 		return (
-				<div>
+			<div>
 				<ClearFix>
-					<RaisedButton linkButton href={'/'} secondary label={'Back to Home'} />
+					<RaisedButton linkButton href={'/'} secondary label={'Back to Home'}/>
 				</ClearFix>
 
 				<ClearFix>
 
 					<div style={styles.group}>
 						<div style={styles.containerCentered}>
-							<FloatingActionButton iconClassName="mdi mdi-star" disabled />
+							<FloatingActionButton iconClassName="mdi mdi-star" disabled/>
 						</div>
 						<div style={styles.containerCentered}>
 							<FloatingActionButton iconClassName="mdi mdi-star" disabled={false}/>
 						</div>
 						<div style={styles.containerCentered}>
-							<FloatingActionButton iconClassName="mdi mdi-star" disabled={false} secondary />
+							<FloatingActionButton iconClassName="mdi mdi-star" disabled={false} secondary/>
 						</div>
 						<div style={styles.containerCentered}>
-							<RaisedButton label="Secondary" secondary />
+							<RaisedButton label="Secondary" secondary/>
 						</div>
 						<div style={styles.containerCentered}>
-							<RaisedButton label="Primary" primary />
+							<RaisedButton label="Primary" primary/>
 						</div>
 						<div style={styles.containerCentered}>
-							<RaisedButton label="Default" />
+							<RaisedButton label="Default"/>
 						</div>
 						<div style={styles.containerCentered}>
-							<FlatButton label="Secondary" secondary />
+							<FlatButton label="Secondary" secondary/>
 						</div>
 						<div style={styles.containerCentered}>
-							<FlatButton label="Primary" primary />
+							<FlatButton label="Primary" primary/>
 						</div>
 						<div style={styles.containerCentered}>
-							<FlatButton label="Default" />
+							<FlatButton label="Default"/>
 						</div>
 					</div>
 
 					<div style={styles.group}>
 						<div style={styles.container}>
-							<Checkbox name="checkboxName1" value="checkboxValue1" label="checkbox" />
-							<Checkbox name="checkboxName2" value="checkboxValue2" label="disabled checkbox" disabled />
+							<Checkbox name="checkboxName1" value="checkboxValue1" label="checkbox"/>
+							<Checkbox name="checkboxName2" value="checkboxValue2" label="disabled checkbox" disabled/>
 						</div>
 						<div style={styles.container}>
 							<RadioButtonGroup name="shipSpeed" defaultSelected="usd">
-								<RadioButton value="usd" label="USD" />
-								<RadioButton value="euro" label="Euro" defaultChecked />
-								<RadioButton value="mxn" label="MXN" disabled />
+								<RadioButton value="usd" label="USD"/>
+								<RadioButton value="euro" label="Euro" defaultChecked/>
+								<RadioButton value="mxn" label="MXN" disabled/>
 							</RadioButtonGroup>
 						</div>
 						<div style={styles.container}>
-							<Toggle name="toggleName1" value="toggleValue1" label="toggle" />
-							<Toggle name="toggleName2" value="toggleValue2" label="disabled toggle" defaultToggled disabled />
+							<Toggle name="toggleName1" value="toggleValue1" label="toggle"/>
+							<Toggle name="toggleName2" value="toggleValue2" label="disabled toggle" defaultToggled disabled/>
 						</div>
 						<div style={styles.container}>
 
 							<Menu style={styles.menu}>
-								<MenuItem primaryText="Maps" />
-								<MenuItem primaryText="Books" />
-								<MenuItem primaryText="Flights" />
-								<MenuItem primaryText="Apps" />
+								<MenuItem primaryText="Maps"/>
+								<MenuItem primaryText="Books"/>
+								<MenuItem primaryText="Flights"/>
+								<MenuItem primaryText="Apps"/>
 							</Menu>
 						</div>
 					</div>
@@ -351,12 +351,12 @@ const ThemesPage = class extends React.Component {
 					</div>
 
 					<div style={styles.groupSlider}>
-						<Slider style={styles.slider} name="slider2" defaultValue={0.5} />
+						<Slider style={styles.slider} name="slider2" defaultValue={0.5}/>
 					</div>
 
 					<div style={styles.group}>
 						<div style={styles.containerCentered}>
-							<FlatButton label="View Dialog" onTouchTap={this.handleTouchTapDialog} />
+							<FlatButton label="View Dialog" onTouchTap={this.handleTouchTapDialog}/>
 							<Dialog ref="dialog" title="Dialog With Standard Actions" actions={standardActions}>
 								The actions in this window are created from the json that&#39;s passed in.
 							</Dialog>
@@ -369,7 +369,7 @@ const ThemesPage = class extends React.Component {
 								onTouchTap={this.handleClickNav}
 								label="View LeftNav"
 								/>
-							<LeftNav ref="leftNav" docked={false} menuItems={menuItemsNav} />
+							<LeftNav ref="leftNav" docked={false} menuItems={menuItemsNav}/>
 						</div>
 					</div>
 
@@ -387,7 +387,7 @@ const ThemesPage = class extends React.Component {
 								/>
 						</div>
 					</div>
-			</ClearFix>
+				</ClearFix>
 
 				<ClearFix>
 					<h2>Status for live</h2>
@@ -401,108 +401,107 @@ const ThemesPage = class extends React.Component {
 
 				<ClearFix>
 
-					<RaisedButton label="Session Ended Dialog" ref="btSessionEnded" primary onClick={this.handleClickSessionEnded} />
-					<SessionEndedDialog ref="sessionEndedDialog" />
+					<RaisedButton label="Session Ended Dialog" ref="btSessionEnded" primary onClick={this.handleClickSessionEnded}/>
+					<SessionEndedDialog ref="sessionEndedDialog"/>
 
 				</ClearFix>
 
 				<ClearFix>
-				<AvatarProgress
-					progress={0}
-					icon={<FontIcon className="mdi mdi-android" />}
-					color={styles.avatarProgressAndro.color}
-					backgroundColor={styles.avatarProgressAndro.backgroundColor}
-					foregroundColor={styles.avatarProgressAndro.foregroundColor}
-					/>
-
-				<AvatarProgress
-					style={{marginLeft: '10px'}}
-					progress={12}
-					icon={<FontIcon className="mdi mdi-android" />}
-					color={styles.avatarProgressAndro.color}
-					backgroundColor={styles.avatarProgressAndro.backgroundColor}
-					foregroundColor={styles.avatarProgressAndro.foregroundColor}
-					/>
-
-				<AvatarProgress
-					style={{marginLeft: '10px'}}
-					progress={25}
-					icon={<FontIcon className="mdi mdi-android" />}
-					color={styles.avatarProgressAndro.color}
-					backgroundColor={styles.avatarProgressAndro.backgroundColor}
-					foregroundColor={styles.avatarProgressAndro.foregroundColor}
-					/>
-
-				<AvatarProgress
-					style={{marginLeft: '10px'}}
-					progress={50}
-					icon={<FontIcon className="mdi mdi-android" />}
-					color={styles.avatarProgressAndro.color}
-					backgroundColor={styles.avatarProgressAndro.backgroundColor}
-					foregroundColor={styles.avatarProgressAndro.foregroundColor}
-					/>
-
-				<AvatarProgress
-					style={{marginLeft: '10px'}}
-					progress={75}
-					icon={<FontIcon className="mdi mdi-android" />}
-					color={styles.avatarProgressAndro.color}
-					backgroundColor={styles.avatarProgressAndro.backgroundColor}
-					foregroundColor={styles.avatarProgressAndro.foregroundColor}
-					/>
-
-				<AvatarProgress
-					style={{marginLeft: '10px'}}
-					progress={100}
-					icon={<FontIcon className="mdi mdi-android" />}
-					color={styles.avatarProgressAndro.color}
-					backgroundColor={styles.avatarProgressAndro.backgroundColor}
-					foregroundColor={styles.avatarProgressAndro.foregroundColor}
-					/>
-
-				</ClearFix>
-
-				<ClearFix>
-
-				<Paper style={styles.spacing}>
-
-					<h2>Results</h2>
-
-					<TestResultsBox results={results} />
-
-					<br />
-
-					<div style={styles.center} >
-					<FlatButton
-						label="Start new campaign"
-						primary
-						/>
-					</div>
-
-				</Paper>
-
-				</ClearFix>
-
-				<ClearFix>
-
-				<Paper style={styles.spacing} zDepth={0} >
-
-					<FlatButton
-						label="Add log line"
-						primary
-						onClick={this.addLogBox}
+					<AvatarProgress
+						progress={0}
+						icon={<FontIcon className="mdi mdi-android"/>}
+						color={styles.avatarProgressAndro.color}
+						backgroundColor={styles.avatarProgressAndro.backgroundColor}
+						foregroundColor={styles.avatarProgressAndro.foregroundColor}
 						/>
 
-					<h2>LogBox</h2>
+					<AvatarProgress
+						style={{marginLeft: '10px'}}
+						progress={12}
+						icon={<FontIcon className="mdi mdi-android"/>}
+						color={styles.avatarProgressAndro.color}
+						backgroundColor={styles.avatarProgressAndro.backgroundColor}
+						foregroundColor={styles.avatarProgressAndro.foregroundColor}
+						/>
 
-					{boxesLogBox} <br />
-					<div style={{width: '547px'}}>
-					<LogBox>
-					{logBoxRows}
-					</LogBox>
-					</div>
+					<AvatarProgress
+						style={{marginLeft: '10px'}}
+						progress={25}
+						icon={<FontIcon className="mdi mdi-android"/>}
+						color={styles.avatarProgressAndro.color}
+						backgroundColor={styles.avatarProgressAndro.backgroundColor}
+						foregroundColor={styles.avatarProgressAndro.foregroundColor}
+						/>
 
-				</Paper>
+					<AvatarProgress
+						style={{marginLeft: '10px'}}
+						progress={50}
+						icon={<FontIcon className="mdi mdi-android"/>}
+						color={styles.avatarProgressAndro.color}
+						backgroundColor={styles.avatarProgressAndro.backgroundColor}
+						foregroundColor={styles.avatarProgressAndro.foregroundColor}
+						/>
+
+					<AvatarProgress
+						style={{marginLeft: '10px'}}
+						progress={75}
+						icon={<FontIcon className="mdi mdi-android"/>}
+						color={styles.avatarProgressAndro.color}
+						backgroundColor={styles.avatarProgressAndro.backgroundColor}
+						foregroundColor={styles.avatarProgressAndro.foregroundColor}
+						/>
+
+					<AvatarProgress
+						style={{marginLeft: '10px'}}
+						progress={100}
+						icon={<FontIcon className="mdi mdi-android"/>}
+						color={styles.avatarProgressAndro.color}
+						backgroundColor={styles.avatarProgressAndro.backgroundColor}
+						foregroundColor={styles.avatarProgressAndro.foregroundColor}
+						/>
+				</ClearFix>
+
+				<ClearFix>
+
+					<Paper style={styles.spacing}>
+
+						<h2>Results</h2>
+
+						<TestResultsBox results={results}/>
+
+						<br/>
+
+						<div style={styles.center} >
+							<FlatButton
+								label="Start new campaign"
+								primary
+								/>
+						</div>
+
+					</Paper>
+
+				</ClearFix>
+
+				<ClearFix>
+
+					<Paper style={styles.spacing} zDepth={0} >
+
+						<FlatButton
+							label="Add log line"
+							primary
+							onClick={this.addLogBox}
+							/>
+
+						<h2>LogBox</h2>
+
+						{boxesLogBox} <br/>
+						<div style={{width: '547px'}}>
+							<LogBox>
+							{logBoxRows}
+							</LogBox>
+						</div>
+
+					</Paper>
 
 				</ClearFix>
 
@@ -522,8 +521,7 @@ const ThemesPage = class extends React.Component {
 
 				</ClearFix>
 
-				</div>
-				);
+			</div>);
 	}
 
 	addLogBox(e) {
@@ -531,16 +529,6 @@ const ThemesPage = class extends React.Component {
 		e.preventDefault();
 		const n = (this.state.logbox.length % logBoxRef.length) + 1;
 		this.setState({logbox: logBoxRef.slice(0, n)});
-	}
-
-	// Toggles between light and dark themes
-	onTabChange() {
-		if (this.state.isThemeDark) {
-			ThemeManager.setTheme(ThemeManager.types.LIGHT);
-		} else {
-			ThemeManager.setTheme(ThemeManager.types.DARK);
-		}
-		this.setState({isThemeDark: !this.state.isThemeDark});
 	}
 
 	handleClickSessionEnded() {
@@ -566,7 +554,7 @@ const ThemesPage = class extends React.Component {
 };
 
 ThemesPage.contextTypes = {
-	router: React.PropTypes.func,
+	router: React.PropTypes.object,
 	muiTheme: React.PropTypes.object
 };
 

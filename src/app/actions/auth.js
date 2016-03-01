@@ -62,13 +62,15 @@ AuthActions.getToken = function () {
 	return localStorage.token;
 };
 
+// TODO: all this redirects and getFoo should be updated to the new format of react-router
 AuthActions.redirectDisconnected = function (routerOrTransition) {
-	this.redirectTo(routerOrTransition, 'home', {nextPath: this.getPath(routerOrTransition)});
+	this.redirectTo(routerOrTransition, '/', {nextPath: this.getPath(routerOrTransition)});
 };
 
-AuthActions.redirectConnected = function (routerOrTransition) {
-	const urlQuery = AuthActions.getQuery(routerOrTransition);
-	const nextPath = urlQuery ? urlQuery.nextPath : null;
+AuthActions.redirectConnected = function (routerOrTransition, location) {
+	// const urlQuery = AuthActions.getQuery(routerOrTransition);
+	const nextPath = location.query && location.query.nextPath ? location.query.nextPath : null;
+	debug('nextPath', nextPath);
 	if (nextPath) {
 		// Go to the visited page that required authentication
 		AuthActions.redirectTo(routerOrTransition, nextPath);
@@ -80,6 +82,7 @@ AuthActions.redirectConnected = function (routerOrTransition) {
 
 AuthActions.getQuery = function (routerOrTransition) {
 	const currentPath = AuthActions.getPath(routerOrTransition);
+	debug('currentPath', currentPath);
 	const urlParsed = url.parse(currentPath, true);
 	return urlParsed.query;
 };
@@ -96,16 +99,24 @@ AuthActions.getPath = function (routerOrTransition) {
 
 AuthActions.getPathName = function (routerOrTransition) {
 	const currentPath = AuthActions.getPath(routerOrTransition);
+	debug('currentPath', currentPath);
 	const urlParsed = url.parse(currentPath, true);
 	return urlParsed.pathname;
 };
 
+// TODO: remove unused cases
 AuthActions.redirectTo = function (routerOrTransition, page, query) {
+	// react-router 2.0 case
+	if (typeof routerOrTransition.push === 'function') {
+		debug('transitionTo');
+		routerOrTransition.push({pathname: page, query});
 	// transition case
-	if (typeof routerOrTransition.redirect === 'function') {
+	} else if (typeof routerOrTransition.redirect === 'function') {
+		debug('transitionTo');
 		routerOrTransition.redirect(page, {}, query);
 	// router case
 	} else if (typeof routerOrTransition.transitionTo === 'function') {
+		debug('router');
 		routerOrTransition.transitionTo(page, {}, query);
 	}
 };

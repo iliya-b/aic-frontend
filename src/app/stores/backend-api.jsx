@@ -64,15 +64,15 @@ const BackendObjects = {
 
 };
 
-function checkStatus(response) {
-	debug('response checkStatus', response);
-	if (response.status >= 200 && response.status < 300) {
-		return response;
-	}
-	const error = new Error(response.statusText);
-	error.response = response;
-	throw error;
-}
+// function checkStatus(response) {
+// 	debug('response checkStatus', response);
+// 	if (response.status >= 200 && response.status < 300) {
+// 		return response;
+// 	}
+// 	const error = new Error(response.statusText);
+// 	error.response = response;
+// 	throw error;
+// }
 
 function parseJSON(response) {
 	debug('response parseJSON', response);
@@ -105,6 +105,7 @@ const BackendAPI = {
 		// url, data, cb, headers, method, authRequired, file, cbProgress
 		options.method = (typeof options.method === 'undefined') ? 'POST' : options.method;
 		options.headers = (typeof options.headers === 'undefined') ? {} : options.headers;
+		// TODO: change to signoutOnUnauthorized
 		options.authRequired = (typeof options.authRequired === 'undefined') ? false : options.authRequired;
 		if (typeof options.data === 'undefined') {
 			options.data = options.rawData || false;
@@ -172,15 +173,30 @@ const BackendAPI = {
 			// .then((response) => {
 			//   debug('return ajax', arguments, response);
 			// })
-			.then(checkStatus)
+			.then(response => {
+				debug('response checkStatus', response);
+				if (response.status >= 200 && response.status < 300) {
+					return response;
+				} else if (response.status === 401 && options.authRequired) {
+					debug('fetch response', response);
+					const {AuthActions} = require('app/actions');
+					AuthActions.logout('Your session has been ended2.');
+				}
+				const error = new Error(response.statusText);
+				error.response = response;
+				throw error;
+			})
+			// .then(checkStatus)
 			.then(parseJSON)
 			.then(data => {
 				debug('return ajax', arguments, data);
 				debug('request succeeded with JSON response', data);
 				resolve(data);
 			})
-			.catch(error => {
-				debug('request failed', error);
+			.catch((error, e2) => {
+				debug('request failed 1', error);
+				debug('request failed 2', e2);
+				debug('arguments', arguments);
 				reject(null, error, error);
 			});
 		});

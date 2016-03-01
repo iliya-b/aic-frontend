@@ -28,18 +28,6 @@ const AppUtils = {
 		return newObj;
 	},
 
-	getProjectIdFromRouter(router) {
-		const routerParams = router.getCurrentParams();
-		return routerParams.hasOwnProperty('projectId') ? routerParams.projectId : null;
-		// TODO: error handling
-	},
-
-	getAVMIdFromRouter(router) {
-		const routerParams = router.getCurrentParams();
-		return routerParams.hasOwnProperty('androId') ? routerParams.androId : null;
-		// TODO: error handling
-	},
-
 	capitalize(word) {
 		return word.charAt(0).toUpperCase() + word.slice(1);
 	},

@@ -1,21 +1,21 @@
 /* global window, document */
 'use strict';
 
-(function () {
-	require('babel-polyfill');
+require('babel-polyfill');
 
+// Vendors
+// import React from 'react';
+import ReactDOM from 'react-dom';
+
+// APP
+import {AppRoutes} from 'app/configs';
+
+(function () {
 	// Needed for configuration
 	window.GobyAppGlobals = window.GobyAppGlobals || {};
-	const {AppRoutes} = require('app/configs');
 
 	// Needed to enable debugging on console
 	window.GobyAppGlobals.Debugger = require('debug');
-
-	// React
-	const React = require('react');
-
-	// Needed for React Developer Tools
-	// window.React = React;
 
 	// Tap
 	const injectTapEventPlugin = require('react-tap-event-plugin');
@@ -34,13 +34,5 @@
 	}
 
 	// Router
-	const Router = require('react-router');
-	Router
-		.create({
-			routes: AppRoutes,
-			scrollBehavior: Router.ScrollToTopBehavior
-		})
-		.run(Handler => {
-			React.render(<Handler/>, document.body);
-		});
+	ReactDOM.render(AppRoutes, document.getElementById('gobyApp'));
 })();

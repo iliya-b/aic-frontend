@@ -77,7 +77,7 @@ AuthRequired.willTransitionTo = function (transition, params, query, callback) {
 
 AuthRequired.contextTypes = {
 	muiTheme: React.PropTypes.object,
-	router: React.PropTypes.func,
+	router: React.PropTypes.object,
 	loginStatus: React.PropTypes.func
 };
 

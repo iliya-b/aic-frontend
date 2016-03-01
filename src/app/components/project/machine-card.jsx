@@ -70,7 +70,7 @@ MachineCard.ACTIONS.STOP = 'stop';
 
 MachineCard.contextTypes = {
 	muiTheme: React.PropTypes.object,
-	router: React.PropTypes.func
+	router: React.PropTypes.object
 };
 
 // TODO: change variable names

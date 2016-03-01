@@ -310,7 +310,7 @@ const ProjectCampaign = class extends AuthRequired {
 };
 
 ProjectCampaign.contextTypes = {
-	router: React.PropTypes.func,
+	router: React.PropTypes.object,
 	muiTheme: React.PropTypes.object,
 	appConfig: React.PropTypes.object
 };

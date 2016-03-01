@@ -139,7 +139,7 @@ const APKUploadDialog = class extends React.Component {
 
 APKUploadDialog.contextTypes = {
 	muiTheme: React.PropTypes.object,
-	router: React.PropTypes.func
+	router: React.PropTypes.object
 };
 
 APKUploadDialog.propTypes = {

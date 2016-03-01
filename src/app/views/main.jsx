@@ -5,21 +5,17 @@
 // React
 const React = require('react');
 
-// Router
-const Router = require('react-router');
-const RouteHandler = Router.RouteHandler;
-
 // Material design
 const mui = require('material-ui');
-const ThemeManager = new mui.Styles.ThemeManager();
 const Colors = mui.Styles.Colors;
 const {RaisedButton} = mui;
+import MuiThemeProvider from 'material-ui/lib/MuiThemeProvider';
 
 // Vendors
 const debug = require('debug')('AiC:Views:Home');
 
 // APP
-const GobyTheme = require('app/configs/goby-theme');
+const AppTheme = require('app/configs/app-theme');
 const {
 	FullWidthSection,
 	SessionEndedDialog
@@ -53,7 +49,8 @@ const Main = class extends React.Component {
 
 	getChildContext() {
 		return {
-			muiTheme: ThemeManager.getCurrentTheme(),
+			// muiTheme: ThemeManager.getCurrentTheme(),
+			muiTheme: AppTheme,
 			appConfig: this.state.config ? this.state.config : {},
 			loginStatus: this.state.login ? this.state.login : {}
 		};
@@ -78,7 +75,8 @@ const Main = class extends React.Component {
 				color: Colors.darkWhite
 			},
 			root: {
-				backgroundColor: ThemeManager.getCurrentTheme().palette.logo1Color,
+				// backgroundColor: ThemeManager.getCurrentTheme().palette.logo1Color,
+				backgroundColor: AppTheme.palette.logo1Color,
 				overflow: 'hidden',
 				width: '100vw',
 				height: '100vh',
@@ -90,18 +88,20 @@ const Main = class extends React.Component {
 
 		if (this.state.config && this.state.config.isLoaded && !this.state.config.hasErrors) {
 			return (
-				<div>
-					<RouteHandler />
-					<FullWidthSection useContent style={styles.footer}>
-						<p style={styles.p}>COPYRIGHT © AiC</p>
+				<MuiThemeProvider muiTheme={AppTheme}>
+					<div>
+						{this.props.children}
+						<FullWidthSection useContent style={styles.footer}>
+							<p style={styles.p}>COPYRIGHT © AiC</p>
 
-						{this.state.config.debug ? ([
-							<RaisedButton key={1} label="Test Theme" title="Test Theme" primar onClick={this._onThemeClick} />,
-							<RaisedButton key={2} linkButton primary href="#/home" >home</RaisedButton>]
-						) : null}
-					</FullWidthSection>
-					<SessionEndedDialog ref="sessionEndedDialog" />
-				</div>
+							{this.state.config.debug ? ([
+								<RaisedButton key={1} label="Test Theme" title="Test Theme" primar onClick={this._onThemeClick} />,
+								<RaisedButton key={2} linkButton primary href="#/home" >home</RaisedButton>]
+							) : null}
+						</FullWidthSection>
+						<SessionEndedDialog ref="sessionEndedDialog" />
+					</div>
+				</MuiThemeProvider>
 			);
 		}
 
@@ -124,7 +124,10 @@ const Main = class extends React.Component {
 	_onStateChange(newState) {
 		debug('main new state');
 		if (newState.login) {
-			const currentPathName = AuthActions.getPathName(this.context.router);
+			debug('this.context.router', this.context.router);
+			debug('this.props.location', this.props.location);
+			// const currentPathName = AuthActions.getPathName(this.context.router);
+			const currentPathName = this.props.location.pathname;
 			if (newState.login.status === 'LOGIN_STATUS_DISCONNECTED' &&
 				currentPathName !== '/' &&
 				currentPathName !== '/home') {
@@ -154,7 +157,7 @@ const Main = class extends React.Component {
 	componentWillMount() {
 		debug('Main componentWillMount');
 		// ThemeManager.setPalette(GobyPalette);
-		ThemeManager.setTheme(GobyTheme);
+		// ThemeManager.setTheme(GobyTheme);
 		this.unsubscribe.push(AuthStore.listen(this._onStateChange));
 		AuthStore.init();
 		this.unsubscribe.push(AppConfigStore.listen(this._onStateChange));
@@ -185,7 +188,7 @@ Main.willTransitionTo = function (transition, params, query, callback) {
 };
 
 Main.contextTypes = {
-	router: React.PropTypes.func,
+	router: React.PropTypes.object,
 	muiTheme: React.PropTypes.object,
 	appConfig: React.PropTypes.object
 };

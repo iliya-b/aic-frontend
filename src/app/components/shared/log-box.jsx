@@ -72,7 +72,7 @@ const LogBox = class extends React.Component {
 
 LogBox.contextTypes = {
 	muiTheme: React.PropTypes.object,
-	router: React.PropTypes.func
+	router: React.PropTypes.object
 };
 
 LogBox.propTypes = {

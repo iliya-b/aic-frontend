@@ -1,61 +1,36 @@
-const React = require('react');
+'use strict';
 
-const Router = require('react-router');
-const {
-	RouteHandler,
-	State
-} = Router;
-
-const mui = require('material-ui');
-// const { Menu } = mui;
-const Menu = require('material-ui/lib/menus/menu');
-const MenuItem = require('material-ui/lib/menus/menu-item');
-const {
-	Spacing,
-	Colors
-} = mui.Styles;
+// Vendors
+import React from 'react';
+import Spacing from 'material-ui/lib/styles/spacing';
+import * as Colors from 'material-ui/lib/styles/colors';
+import Menu from 'material-ui/lib/menus/menu';
+import MenuItem from 'material-ui/lib/menus/menu-item';
 
 const menuItems = [
-	{path: 'apks', text: 'APK List'},
-	{path: 'apks-test', text: 'APK Test List'},
-	// { path: 'settings', text: 'Settings'},
+	{path: '', text: 'APK Manager'},
 	{path: 'live', text: 'Live Mode'},
 	{path: 'campaign', text: 'Campaign'}
 ];
 
-const ProjectPage = React.createClass({
-
-	mixins: [State],
-
-	propTypes: {
-		params: React.PropTypes.object,
-		query: React.PropTypes.object
-	},
-
-	// _onItemTap(index, e) { //, index, menuItem
-	// _onItemTap(e, index, menuItem) {
-	_onItemTap(e, index) {
-		// debug(arguments);
-		const {projectId} = this.context.router.getCurrentParams();
-		this.context.router.transitionTo(menuItems[index].path, {projectId});
-	},
+const ProjectPage = class extends React.Component {
 
 	_onItemClick(index, e) {
 		// debug(arguments);
 		e.preventDefault();
-		const {projectId} = this.context.router.getCurrentParams();
-		this.context.router.transitionTo(menuItems[index].path, {projectId});
-	},
+		const {projectId} = this.props.params;
+		this.context.router.push(`/projects/${projectId}/${menuItems[index].path}`);
+	}
 
 	_getSelectedIndex() {
 		let currentItem;
 		for (let i = menuItems.length - 1; i >= 0; i--) {
 			currentItem = menuItems[i];
-			if (currentItem.path && this.context.router.isActive(currentItem.path, this.props.params, this.props.query)) {
+			if (currentItem.path && this.context.router.isActive({pathname: currentItem.path})) {
 				return i;
 			}
 		}
-	},
+	}
 
 	// 192px - 224 / 24+8
 
@@ -86,7 +61,7 @@ const ProjectPage = React.createClass({
 		};
 
 		return styles;
-	},
+	}
 
 	render() {
 		const styles = this.getStyles();
@@ -115,29 +90,28 @@ const ProjectPage = React.createClass({
 		return (
 			<div style={styles.root}>
 				<div style={{width: 100}}>
-				<Menu style={styles.menu} zDepth={0}>
-					{menusItems}
-				</Menu>
+					<Menu style={styles.menu} zDepth={0}>
+						{menusItems}
+					</Menu>
 				</div>
 
 				<div style={styles.content}>
-
-				<RouteHandler />
+					{this.props.children}
 				</div>
 
 			</div>
 		);
 	}
-});
+};
 
 ProjectPage.contextTypes = {
-	router: React.PropTypes.func,
+	router: React.PropTypes.object,
 	muiTheme: React.PropTypes.object
 };
 
-// ProjectPage.propTypes = {
-// 	params: React.PropTypes.string,
-// 	query: React.PropTypes.string
-// };
+ProjectPage.propTypes = {
+	children: React.PropTypes.node,
+	params: React.PropTypes.object
+};
 
 module.exports = ProjectPage;

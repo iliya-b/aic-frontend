@@ -64,7 +64,7 @@ const MachineCardLive = class extends React.Component {
 
 MachineCardLive.contextTypes = {
 	muiTheme: React.PropTypes.object,
-	router: React.PropTypes.func
+	router: React.PropTypes.object
 };
 
 module.exports = MachineCardLive;

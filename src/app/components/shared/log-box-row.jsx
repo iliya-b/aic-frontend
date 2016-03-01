@@ -20,15 +20,12 @@ const {
 //   TableRow,
 //   TableRowColumn } = mui;
 
-// APP
-const GobyPalette = require('app/configs/goby-palette');
-
 const LogBoxRow = class extends React.Component {
 	render() {
 		const style = {
 			root: {
 				backgroundColor: this.props.style.backgroundColor || '#fff',
-				color: this.props.style.color || GobyPalette.primary1Color,
+				color: this.props.style.color || this.muiTheme.palette.primary1Color,
 				// fontFamily: this.context.muiTheme.contentFontFamily,
 				fontSize: 12,
 				padding: Spacing.desktopGutterMini / 2
@@ -55,7 +52,7 @@ LogBoxRow.contextTypes = {
 };
 
 LogBoxRow.propTypes = {
-	children: React.PropTypes.object,
+	children: React.PropTypes.node,
 	style: React.PropTypes.object,
 	time: React.PropTypes.string
 };

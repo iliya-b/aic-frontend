@@ -83,7 +83,7 @@ const LiveScreen = class extends React.Component {
 
 LiveScreen.contextTypes = {
 	muiTheme: React.PropTypes.object,
-	router: React.PropTypes.func
+	router: React.PropTypes.object
 };
 
 module.exports = LiveScreen;

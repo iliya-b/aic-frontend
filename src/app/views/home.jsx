@@ -116,7 +116,7 @@ const Home = class extends React.Component {
 };
 
 Home.contextTypes = {
-	router: React.PropTypes.func,
+	router: React.PropTypes.object,
 	muiTheme: React.PropTypes.object,
 	loginStatus: React.PropTypes.object
 };

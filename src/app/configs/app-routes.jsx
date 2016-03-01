@@ -2,52 +2,62 @@
 
 // React
 // Must be define because Route depends on it
-const React = require('react');
+import React from 'react';
 
 // Router
-const Router = require('react-router');
-const Route = Router.Route;
-const Redirect = Router.Redirect;
-const DefaultRoute = Router.DefaultRoute;
-const NotFoundRoute = Router.NotFoundRoute;
+import {
+	Router,
+	Route,
+	Redirect,
+	IndexRoute,
+	hashHistory
+} from 'react-router';
 
-// Pages //
-const Main = require('app/views/main');
-const Home = require('app/views/home');
-const NotFound = require('app/views/not-found');
-const Themes = require('app/views/themes');
-const ProjectWrapper = require('app/views/project/wrapper');
-const ProjectList = require('app/views/project/list');
-const ProjectPage = require('app/views/project/page');
-const ProjectApkList = require('app/views/project/apk-list');
-const ProjectApkTestList = require('app/views/project/apk-test-list');
-const LiveWrapper = require('app/views/project/live/wrapper');
-const LiveSession = require('app/views/project/live/session');
-const ProjectCampaign = require('app/views/project/campaign');
+// Views
+import {
+	Main,
+	Home,
+	NotFound,
+	Themes,
+	ProjectWrapper,
+	ProjectList,
+	ProjectPage,
+	ProjectApkManager,
+	ProjectApkTestList,
+	ProjectLiveWrapper,
+	ProjectLiveSession,
+	ProjectLiveList,
+	ProjectCampaign
+} from 'app/views';
 
-// Routes //
+// import {
+// 	Router,
+// 	hashHistory
+// } from 'react-router';
+
+// Routes
 const AppRoutes = (
-	<Route name="main" path="/" handler={Main}>
-		<Route name="home" handler={Home} />
-		<Route name="theme-test" handler={Themes} />
-
-		<Route name="projects" handler={ProjectWrapper}>
-			<Route name="project-list" path="list" handler={ProjectList} />
-			<Route name="project-page" path=":projectId" handler={ProjectPage}>
-				<Route name="apks" handler={ProjectApkList} />
-				<Route name="apks-test" handler={ProjectApkTestList} />
-				<Route name="live" handler={LiveWrapper} >
-					<Route name="live-session" path=":androId" handler={LiveSession} />
+	<Router history={hashHistory}>
+		<Route path="/" component={Main}>
+			<IndexRoute component={Home} />
+			<Route path="theme-test" component={Themes} />
+			<Route path="projects" component={ProjectWrapper}>
+				<IndexRoute component={ProjectList} />
+				<Route path=":projectId" component={ProjectPage}>
+					<IndexRoute component={ProjectApkManager} />
+					<Route path="apks-test" component={ProjectApkTestList} />
+					<Route path="live" component={ProjectLiveWrapper}>
+						<IndexRoute component={ProjectLiveList} />
+						<Route path=":androId" component={ProjectLiveSession} />
+					</Route>
+					<Route path="campaign" component={ProjectCampaign} />
+					<Redirect from="/projects/:projectId" to="apks" />
 				</Route>
-				<Route name="campaign" handler={ProjectCampaign} />
-				<Redirect from="/projects/:projectId" to="apks" />
+				<Redirect from="/projects" to="project-list" />
 			</Route>
-			<Redirect from="/projects" to="project-list" />
+			<Route path="*" component={NotFound} />
 		</Route>
-
-		<DefaultRoute handler={Home}/>
-		<NotFoundRoute handler={NotFound} />
-	</Route>
+	</Router>
 );
 
 module.exports = AppRoutes;
