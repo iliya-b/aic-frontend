@@ -5,7 +5,6 @@ const React = require('react');
 
 // Material design
 const mui = require('material-ui');
-const {StylePropable} = mui.Mixins;
 const {Paper} = mui;
 
 // APP
@@ -85,7 +84,7 @@ const InfoBox = class extends React.Component {
 		}
 
 		return (
-			<Paper style={StylePropable.mergeStyles(styles.div, style)} {...other}>
+			<Paper style={Object.assign(styles.div, style)} {...other}>
 				{content}
 			</Paper>
 			);

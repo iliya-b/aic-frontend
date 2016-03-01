@@ -1,9 +1,11 @@
-const React = require('react');
+'use strict';
 
-const mui = require('material-ui');
-const FontIcon = mui.FontIcon;
-const StylePropable = mui.Mixins.StylePropable;
+// Vendor
+import React from 'react';
+import FontIcon from 'material-ui/lib/font-icon';
+import StylePropable from 'material-ui/lib/mixins/style-propable';
 
+// APP
 const TogglableIcon = React.createClass({
 
 	propTypes: {
@@ -11,8 +13,6 @@ const TogglableIcon = React.createClass({
 		style: React.PropTypes.object,
 		isOn: React.PropTypes.bool
 	},
-
-	mixins: [StylePropable],
 
 	render() {
 		const {
@@ -32,9 +32,7 @@ const TogglableIcon = React.createClass({
 
 		return (
 			<FontIcon
-				style={this.mergeAndPrefix(
-					styles.icon,
-					style)}
+				style={Object.assign(styles.icon, style)}
 				{...other}
 				className={iconClassName}
 				/>
