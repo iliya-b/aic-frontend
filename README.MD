@@ -84,3 +84,6 @@ TODO List
 * ~~Not found route~~ :white_check_mark:
 * Get initial VM state to set the frontend sensors (for example battery slides should be relative to the vm battery)
 * Reflux unsubscribe method is broken
+* Missing on the backend
+  * Live
+    * Audio port
