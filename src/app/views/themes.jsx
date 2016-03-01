@@ -30,8 +30,6 @@ const {
 const Menu = require('material-ui/lib/menus/menu');
 const MenuItem = require('material-ui/lib/menus/menu-item');
 
-const {StylePropable} = mui.Mixins;
-
 const Typography = mui.Styles.Typography;
 // const ThemeManager = new mui.Styles.ThemeManager();
 
@@ -61,6 +59,17 @@ const logBoxRef = [
 	{time: AppUtils.getDate(), message: 'Docker created and ready.'}
 ];
 
+//
+// ref="dialog"
+// ref="leftNav"
+// ref="btSessionEnded"
+// ref="sessionEndedDialog"
+// ref="dialog"
+// ref="leftNav"
+// ref="snackbar"
+// ref="btSessionEnded"
+// ref="sessionEndedDialog"
+
 const ThemesPage = class extends React.Component {
 
 	constructor(props) {
@@ -70,6 +79,12 @@ const ThemesPage = class extends React.Component {
 			// logbox: [],
 			logbox: logBoxRef
 		};
+		this.setrefs = {};
+	}
+
+	setRef(component) {
+		debug('component', component);
+		// this.setrefs[] = component;
 	}
 
 	getStyles() {
@@ -137,8 +152,8 @@ const ThemesPage = class extends React.Component {
 			}
 		};
 
-		styles.containerCentered = StylePropable.mergeStyles(styles.container, styles.containerCentered);
-		styles.groupSlider = StylePropable.mergeStyles(styles.group, styles.groupSlider);
+		styles.containerCentered = Object.assign(styles.container, styles.containerCentered);
+		styles.groupSlider = Object.assign(styles.group, styles.groupSlider);
 
 		return styles;
 	}
@@ -331,7 +346,7 @@ const ThemesPage = class extends React.Component {
 						</div>
 					</div>
 
-					<div style={StylePropable.mergeStyles(styles.group, {marginTop: 0})}>
+					<div style={Object.assign(styles.group, {marginTop: 0})}>
 						<div style={styles.container}>
 							<TextField
 								style={styles.textfield}
@@ -357,7 +372,7 @@ const ThemesPage = class extends React.Component {
 					<div style={styles.group}>
 						<div style={styles.containerCentered}>
 							<FlatButton label="View Dialog" onTouchTap={this.handleTouchTapDialog}/>
-							<Dialog ref="dialog" title="Dialog With Standard Actions" actions={standardActions}>
+							<Dialog open={false} ref="dialog" title="Dialog With Standard Actions"  actionsxx={standardActions}>
 								The actions in this window are created from the json that&#39;s passed in.
 							</Dialog>
 						</div>
@@ -369,7 +384,7 @@ const ThemesPage = class extends React.Component {
 								onTouchTap={this.handleClickNav}
 								label="View LeftNav"
 								/>
-							<LeftNav ref="leftNav" docked={false} menuItems={menuItemsNav}/>
+							<LeftNav ref={this.setRef} refName="leftNav" docked={false} menuItems={menuItemsNav}/>
 						</div>
 					</div>
 
@@ -383,6 +398,8 @@ const ThemesPage = class extends React.Component {
 								ref="snackbar"
 								message="This is a snackbar"
 								action="Got It!"
+								onRequestClose={() => {}}
+								open={false}
 								onActionTouchTap={this.handleAction}
 								/>
 						</div>

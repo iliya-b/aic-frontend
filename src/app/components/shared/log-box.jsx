@@ -76,7 +76,7 @@ LogBox.contextTypes = {
 };
 
 LogBox.propTypes = {
-	children: React.PropTypes.object
+	children: React.PropTypes.node
 };
 
 module.exports = LogBox;

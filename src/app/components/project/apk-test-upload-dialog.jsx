@@ -5,7 +5,6 @@ const React = require('react');
 
 // Material design
 const mui = require('material-ui');
-const {StylePropable} = mui.Mixins;
 const {Dialog, FlatButton, Toolbar, ToolbarGroup, IconButton} = mui;
 
 // Vendors
@@ -135,8 +134,6 @@ const APKTestUploadDialog = class extends React.Component {
 	}
 
 };
-
-APKTestUploadDialog.mixins = [StylePropable];
 
 APKTestUploadDialog.contextTypes = {
 	muiTheme: React.PropTypes.object,

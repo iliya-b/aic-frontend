@@ -3,7 +3,6 @@ const React = require('react');
 
 const mui = require('material-ui');
 const {FontIcon, Toggle, Checkbox, LinearProgress} = mui;
-const {StylePropable} = mui.Mixins;
 const {Transitions} = mui.Styles;
 
 const Types = {
@@ -13,8 +12,6 @@ const Types = {
 };
 
 const ObjectListItem = React.createClass({
-
-	mixins: [StylePropable],
 
 	contextTypes: {
 		muiTheme: React.PropTypes.object
@@ -174,19 +171,19 @@ const ObjectListItem = React.createClass({
 		const styles = this.getStyles();
 
 		if (this.props.iconClassName) {
-			icon = <FontIcon style={this.mergeAndPrefix(styles.icon, this.props.iconStyle)} className={this.props.iconClassName} />;
+			icon = <FontIcon style={Object.assign(styles.icon, this.props.iconStyle)} className={this.props.iconClassName} />;
 		}
 		if (this.props.iconRightClassName) {
-			iconRight = <FontIcon style={this.mergeAndPrefix(styles.iconRight, this.props.iconRightStyle)} className={this.props.iconRightClassName} />;
+			iconRight = <FontIcon style={Object.assign(styles.iconRight, this.props.iconRightStyle)} className={this.props.iconRightClassName} />;
 		}
 		if (this.props.data) {
-			data = <span style={this.mergeAndPrefix(styles.data)}>{this.props.data}</span>;
+			data = <span style={Object.assign(styles.data)}>{this.props.data}</span>;
 		}
 		if (this.props.number !== undefined) {
-			number = <span style={this.mergeAndPrefix(styles.number)}>{this.props.number}</span>;
+			number = <span style={Object.assign(styles.number)}>{this.props.number}</span>;
 		}
 		if (this.props.attribute !== undefined) {
-			attribute = <span style={this.mergeAndPrefix(styles.style)}>{this.props.attribute}</span>;
+			attribute = <span style={Object.assign(styles.style)}>{this.props.attribute}</span>;
 		}
 		if (this.props.toggle) {
 			toggleElement = <Toggle {...other} onToggle={this._handleToggle} style={styles.toggle}/>;
@@ -213,7 +210,7 @@ const ObjectListItem = React.createClass({
 				onClick={this._handleOnClick}
 				onMouseOver={this._handleMouseOver}
 				onMouseOut={this._handleMouseOut}
-				style={this.mergeAndPrefix(
+				style={Object.assign(
 					styles.root,
 					this.props.selected && styles.rootWhenSelected,
 					(this.state.hovered && !this.props.disabled) && styles.rootWhenHovered,

@@ -3,15 +3,12 @@ const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 const mui = require('material-ui');
 const {Paper} = mui;
-const {StylePropable} = mui.Mixins;
 const {Transitions} = mui.Styles;
 const {KeyLine, Dom, CssEvent} = mui.Utils;
 
 const ObjectListItem = require('./object-list-item');
 
 const ObjectList = React.createClass({
-
-	mixins: [StylePropable],
 
 	contextTypes: {
 		muiTheme: React.PropTypes.object
@@ -109,7 +106,7 @@ const ObjectList = React.createClass({
 			<Paper
 				ref="paperContainer"
 				zDepth={this.props.zDepth}
-				style={this.mergeAndPrefix(
+				style={Object.assign(
 					styles.root,
 					this.props.hideable && styles.hideable,
 					this.props.style)}
@@ -162,7 +159,7 @@ const ObjectList = React.createClass({
 							icon={icon}
 							data={data}
 							className={this.props.objectListItemClassName}
-							style={this.mergeAndPrefix(styles.item, this.props.objectListItemStyle)}
+							style={Object.assign(styles.item, this.props.objectListItemStyle)}
 							attribute={attribute}
 							number={number}
 							toggle={toggle}

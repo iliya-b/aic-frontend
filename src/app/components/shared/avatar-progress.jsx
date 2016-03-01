@@ -1,12 +1,9 @@
 'use strict';
 
-// React
+// Vendor
 const React = require('react');
 
-// Material design
-const mui = require('material-ui');
-const {StylePropable} = mui.Mixins;
-
+// APP
 const AvatarProgress = class extends React.Component {
 
 	render() {
@@ -70,7 +67,7 @@ const AvatarProgress = class extends React.Component {
 			}
 		};
 
-		styles.root = StylePropable.mergeStyles(styles.root, {
+		styles.root = Object.assign(styles.root, {
 			backgroundColor,
 			textAlign: 'center',
 			lineHeight: `${size}px`,
@@ -84,11 +81,11 @@ const AvatarProgress = class extends React.Component {
 
 		const iconElement = icon ? React.cloneElement(icon, {
 			color,
-			style: StylePropable.mergeStyles(styleIcon, icon.props.style)
+			style: Object.assign(styleIcon, icon.props.style)
 		}) : null;
 
 		return (
-			<figure className="chart" data-percent={progress} style={StylePropable.mergeStyles(styles.chart, style)}>
+			<figure className="chart" data-percent={progress} style={Object.assign(styles.chart, style)}>
 				<svg width="40" height="40" style={styles.svg}>
 					<circle style={styles.outerBG} cx="170" cy="20" r="17" transform="rotate(-90, 95, 95)"/>
 					<circle style={styles.outer} className="outer" cx="170" cy="20" r="17" transform="rotate(-90, 95, 95)"/>
@@ -114,9 +111,9 @@ AvatarProgress.propTypes = {
 	backgroundColor: React.PropTypes.string,
 	foregroundColor: React.PropTypes.string,
 	color: React.PropTypes.string,
-	icon: React.PropTypes.string,
+	icon: React.PropTypes.node,
 	size: React.PropTypes.string,
-	progress: React.PropTypes.string,
+	progress: React.PropTypes.number,
 	src: React.PropTypes.string
 };
 

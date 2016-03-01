@@ -40,11 +40,11 @@ const Main = class extends React.Component {
 	}
 
 	_onThemeClick() {
-		this.context.router.transitionTo('theme-test');
+		this.context.router.push('/theme-test');
 	}
 
 	_onHomeClick() {
-		this.context.router.transitionTo('home');
+		this.context.router.push('/');
 	}
 
 	getChildContext() {

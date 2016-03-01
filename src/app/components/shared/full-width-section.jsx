@@ -2,13 +2,10 @@
 
 import React from 'react';
 import ClearFix from 'material-ui/lib/clearfix';
-// const {StyleResizable, StylePropable} = mui.Mixins;
 import {desktopGutter} from 'material-ui/lib/styles/spacing';
 import {StyleResizable} from 'material-ui/lib/mixins';
 
 const FullWidthSection = React.createClass({
-
-	// mixins: [StylePropable, StyleResizable],
 
 	propTypes: {
 		children: React.PropTypes.node,

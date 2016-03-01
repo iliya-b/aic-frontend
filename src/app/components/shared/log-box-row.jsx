@@ -1,14 +1,13 @@
 'use strict';
 
-// React
+// Vendor
 const React = require('react');
-
-// Material design
 const mui = require('material-ui');
 const {
 	Spacing,
 	Colors
 } = mui.Styles;
+// const debug = require('debug')('AiC:Components:LogBoxRow');
 
 // const { Spacing } = mui.Styles;
 // const {
@@ -25,7 +24,7 @@ const LogBoxRow = class extends React.Component {
 		const style = {
 			root: {
 				backgroundColor: this.props.style.backgroundColor || '#fff',
-				color: this.props.style.color || this.muiTheme.palette.primary1Color,
+				color: this.props.style.color || this.context.muiTheme.palette.primary1Color,
 				// fontFamily: this.context.muiTheme.contentFontFamily,
 				fontSize: 12,
 				padding: Spacing.desktopGutterMini / 2

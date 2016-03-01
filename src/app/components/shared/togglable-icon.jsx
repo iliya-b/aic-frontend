@@ -3,7 +3,6 @@
 // Vendor
 import React from 'react';
 import FontIcon from 'material-ui/lib/font-icon';
-import StylePropable from 'material-ui/lib/mixins/style-propable';
 
 // APP
 const TogglableIcon = React.createClass({
