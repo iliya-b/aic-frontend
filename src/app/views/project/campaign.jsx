@@ -4,109 +4,109 @@
 const React = require('react');
 
 // Material design
-const mui = require('material-ui');
-const {Spacing} = mui.Styles;
-const {
-	FlatButton,
-	Paper,
-	TextField,
-	Tabs,
-	Tab
-} = mui;
+// const mui = require('material-ui');
+// const {Spacing} = mui.Styles;
+// const {
+// 	FlatButton,
+// 	Paper,
+// 	TextField,
+// 	Tabs,
+// 	Tab
+// } = mui;
 
 // APP
 const {
-	APKSelectionDialog,
-	APKTestSelectionDialog,
-	DeviceSelectionDialog,
-	AreaStatus,
-	AppUtils,
-	TestResultsBox,
-	LogBox,
-	LogBoxRow,
+// 	APKSelectionDialog,
+// 	APKTestSelectionDialog,
+// 	DeviceSelectionDialog,
+// 	AreaStatus,
+// 	AppUtils,
+// 	TestResultsBox,
+// 	LogBox,
+// 	LogBoxRow,
 	AuthRequired
 } = require('app/components');
 
-const {CampaignStore} = require('app/stores');
-const {CampaignActions} = require('app/actions');
+// const {CampaignStore} = require('app/stores');
+// const {CampaignActions} = require('app/actions');
 
 const ProjectCampaign = class extends AuthRequired {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			res: '',
-			device: null,
-			apk: [],
-			apkTest: [],
-			errorMessage: ''
-		};
+		// this.state = {
+		// 	res: '',
+		// 	device: null,
+		// 	apk: [],
+		// 	apkTest: [],
+		// 	errorMessage: ''
+		// };
 
-		this._onDeviceSelectClick = this._onDeviceSelectClick.bind(this);
-		this._onAPKSelectClick = this._onAPKSelectClick.bind(this);
-		this._onAPKTestSelectClick = this._onAPKTestSelectClick.bind(this);
-		this._onLaunchCampaignSubmit = this._onLaunchCampaignSubmit.bind(this);
-		this._onLauchAnotherCampaignSubmit = this._onLauchAnotherCampaignSubmit.bind(this);
-		this._onDeviceSelect = this._onDeviceSelect.bind(this);
-		this._onAPKSelect = this._onAPKSelect.bind(this);
-		this._onAPKTestSelect = this._onAPKTestSelect.bind(this);
-		// this.getLauchFieldsDisable = this.getLauchFieldsDisable.bind(this);
-		this._onStateChange = this._onStateChange.bind(this);
+		// this._onDeviceSelectClick = this._onDeviceSelectClick.bind(this);
+		// this._onAPKSelectClick = this._onAPKSelectClick.bind(this);
+		// this._onAPKTestSelectClick = this._onAPKTestSelectClick.bind(this);
+		// this._onLaunchCampaignSubmit = this._onLaunchCampaignSubmit.bind(this);
+		// this._onLauchAnotherCampaignSubmit = this._onLauchAnotherCampaignSubmit.bind(this);
+		// this._onDeviceSelect = this._onDeviceSelect.bind(this);
+		// this._onAPKSelect = this._onAPKSelect.bind(this);
+		// this._onAPKTestSelect = this._onAPKTestSelect.bind(this);
+		// // this.getLauchFieldsDisable = this.getLauchFieldsDisable.bind(this);
+		// this._onStateChange = this._onStateChange.bind(this);
 	}
 
 	render() {
-		const style = {
-			paperCenter: {
-				textAlign: 'center',
-				padding: Spacing.desktopGutter
-			},
-			center: {
-				textAlign: 'center'
-			},
-			spacing: {
-				padding: Spacing.desktopGutter
-			},
-			error: {
-				icon: {
-					color: this.context.muiTheme.palette.errorColor,
-					fontSize: '50px',
-					float: 'left'
-				},
-				message: {
-					color: this.context.muiTheme.palette.errorColor
-				},
-				status: {
-					display: 'none'
-				}
-			},
-			infoArea: {
-				width: 547,
-				margin: '0 auto',
-				paddingBottom: `${Spacing.desktopGutter}px`
-			}
-		};
+		// const style = {
+		// 	paperCenter: {
+		// 		textAlign: 'center',
+		// 		padding: Spacing.desktopGutter
+		// 	},
+		// 	center: {
+		// 		textAlign: 'center'
+		// 	},
+		// 	spacing: {
+		// 		padding: Spacing.desktopGutter
+		// 	},
+		// 	error: {
+		// 		icon: {
+		// 			color: this.context.muiTheme.palette.errorColor,
+		// 			fontSize: '50px',
+		// 			float: 'left'
+		// 		},
+		// 		message: {
+		// 			color: this.context.muiTheme.palette.errorColor
+		// 		},
+		// 		status: {
+		// 			display: 'none'
+		// 		}
+		// 	},
+		// 	infoArea: {
+		// 		width: 547,
+		// 		margin: '0 auto',
+		// 		paddingBottom: `${Spacing.desktopGutter}px`
+		// 	}
+		// };
 
-		const apksRendered = this.state.apk ? this.state.apk.map((item, index) => {
-			return (
-				<div key={index}>
-					<TextField floatingLabelText="APK Name" value={item.name} disabled /><br />
-					<TextField floatingLabelText="APK ID" value={item.id} disabled /><br />
-				</div>
-			);
-		}) : null;
+		// const apksRendered = this.state.apk ? this.state.apk.map((item, index) => {
+		// 	return (
+		// 		<div key={index}>
+		// 			<TextField floatingLabelText="APK Name" value={item.name} disabled /><br />
+		// 			<TextField floatingLabelText="APK ID" value={item.id} disabled /><br />
+		// 		</div>
+		// 	);
+		// }) : null;
 
-		const apksTestRendered = this.state.apkTest ? this.state.apkTest.map((item, index) => {
-			return (
-				<div key={index}>
-					<TextField floatingLabelText="APK Test Name" value={item.name} disabled /><br />
-					<TextField floatingLabelText="APK Test ID" value={item.id} disabled /><br />
-				</div>
-			);
-		}) : null;
+		// const apksTestRendered = this.state.apkTest ? this.state.apkTest.map((item, index) => {
+		// 	return (
+		// 		<div key={index}>
+		// 			<TextField floatingLabelText="APK Test Name" value={item.name} disabled /><br />
+		// 			<TextField floatingLabelText="APK Test ID" value={item.id} disabled /><br />
+		// 		</div>
+		// 	);
+		// }) : null;
 
-		const logBoxRows = (this.state && this.state.campaign) ? this.state.campaign.logBox.map((v, i) => {
-			return <LogBoxRow key={i} time={v.time}>{v.message}</LogBoxRow>;
-		}) : null;
+		// const logBoxRows = (this.state && this.state.campaign) ? this.state.campaign.logBox.map((v, i) => {
+		// 	return <LogBoxRow key={i} time={v.time}>{v.message}</LogBoxRow>;
+		// }) : null;
 
 		return (
 			<div>
@@ -252,66 +252,66 @@ const ProjectCampaign = class extends AuthRequired {
 		// );
 	}
 
-	_onDeviceSelectClick() {
-		this.refs.deviceDialog.show();
-	}
+	// _onDeviceSelectClick() {
+	// 	this.refs.deviceDialog.show();
+	// }
 
-	_onAPKSelectClick() {
-		this.refs.APKDialog.show();
-	}
+	// _onAPKSelectClick() {
+	// 	this.refs.APKDialog.show();
+	// }
 
-	_onAPKTestSelectClick() {
-		this.refs.APKTestDialog.show();
-	}
+	// _onAPKTestSelectClick() {
+	// 	this.refs.APKTestDialog.show();
+	// }
 
-	_onDeviceSelect(selectedDevice) {
-		this.setState({device: selectedDevice});
-	}
+	// _onDeviceSelect(selectedDevice) {
+	// 	this.setState({device: selectedDevice});
+	// }
 
-	_onAPKSelect(selectedAPK) {
-		this.setState({apk: selectedAPK});
-	}
+	// _onAPKSelect(selectedAPK) {
+	// 	this.setState({apk: selectedAPK});
+	// }
 
-	_onAPKTestSelect(selectedAPK) {
-		this.setState({apkTest: selectedAPK});
-	}
+	// _onAPKTestSelect(selectedAPK) {
+	// 	this.setState({apkTest: selectedAPK});
+	// }
 
-	_onLaunchCampaignSubmit() {
-		const projectId = this.state.campaign.projectId;
-		const instanceId = this.state.device.id;
-		const instanceName = this.state.device.name;
+	// _onLaunchCampaignSubmit() {
+	// 	const projectId = this.state.campaign.projectId;
+	// 	const instanceId = this.state.device.id;
+	// 	const instanceName = this.state.device.name;
 
-		const APKIds = this.state.apk.map(item => {
-			return item.apkId;
-		});
-		const APKTestIds = this.state.apkTest.map(item => {
-			return item.apkId;
-		});
+	// 	const APKIds = this.state.apk.map(item => {
+	// 		return item.apkId;
+	// 	});
+	// 	const APKTestIds = this.state.apkTest.map(item => {
+	// 		return item.apkId;
+	// 	});
 
-		CampaignActions.create(projectId, instanceId, instanceName, APKIds, APKTestIds);
-	}
+	// 	CampaignActions.create(projectId, instanceId, instanceName, APKIds, APKTestIds);
+	// }
 
-	_onLauchAnotherCampaignSubmit() {
-		// this.setState({campaign: CAMPAIGN_NOT_STARTED});
-		CampaignActions.restart();
-	}
+	// _onLauchAnotherCampaignSubmit() {
+	// 	// this.setState({campaign: CAMPAIGN_NOT_STARTED});
+	// 	CampaignActions.restart();
+	// }
 
-	_onStateChange(state) {
-		this.setState(state);
-	}
+	// _onStateChange(state) {
+	// 	this.setState(state);
+	// }
 
-	componentDidMount() {
-		// const projectId = AppUtils.getProjectIdFromRouter(this.context.router);
-		const projectId = this.props.params.projectId;
-		this.unsubscribe = CampaignStore.listen(this._onStateChange);
-		CampaignActions.reset();
-		CampaignActions.setProjectId(projectId);
-	}
+	// componentDidMount() {
+	// 	// const projectId = AppUtils.getProjectIdFromRouter(this.context.router);
+	// 	const projectId = this.props.params.projectId;
+	// 	this.unsubscribe = CampaignStore.listen(this._onStateChange);
+	// 	CampaignActions.reset();
+	// 	CampaignActions.setProjectId(projectId);
+	// }
 
-	componentWillUnmount() {
-		// Subscribe and unsubscribe because we don't want to use the mixins
-		this.unsubscribe();
-	}
+	// componentWillUnmount() {
+	// 	// Subscribe and unsubscribe because we don't want to use the mixins
+	// 	this.unsubscribe();
+	// }
 
 };
 

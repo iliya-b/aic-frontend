@@ -18,8 +18,7 @@ const SessionEndedDialog = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this._onClose = this._onClose.bind(this);
-		this.state = {open: false};
+		this.handleClose = this.handleClose.bind(this);
 	}
 
 	render() {
@@ -34,27 +33,21 @@ const SessionEndedDialog = class extends React.Component {
 				title="Go to homepage"
 				href="#"
 				secondary
-				onClick={this._onClose}
+				onClick={this.handleClose}
 				/>
 		];
 
 		return (
-			<Dialog modal title="Session Timeout" actions={loginActions} {...other} ref="sessionEndedDialog" onShow={this.cleanFields} open={this.state.open}>
+			<Dialog modal title="Session Timeout" actions={loginActions} {...other}>
 				<InfoBox boxType={InfoBox.ERROR}>Your session has been ended.</InfoBox>
 			</Dialog>
 			);
 	}
 
-	show() {
-		// this.refs.sessionEndedDialog.show();
-		this.setState({open: true});
-	}
-
-	_onClose(e) {
+	handleClose(e) {
 		e.preventDefault();
+		this.props.onRequestClose();
 		AuthActions.redirectDisconnected(this.context.router);
-		// this.refs.sessionEndedDialog.dismiss();
-		this.setState({open: false});
 	}
 
 };
@@ -62,6 +55,11 @@ const SessionEndedDialog = class extends React.Component {
 SessionEndedDialog.contextTypes = {
 	muiTheme: React.PropTypes.object,
 	router: React.PropTypes.object
+};
+
+SessionEndedDialog.propTypes = {
+	open: React.PropTypes.bool.isRequired,
+	onRequestClose: React.PropTypes.func.isRequired
 };
 
 module.exports = SessionEndedDialog;

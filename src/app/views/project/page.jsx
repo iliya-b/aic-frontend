@@ -66,11 +66,12 @@ const ProjectPage = class extends React.Component {
 	render() {
 		const styles = this.getStyles();
 		const menusItems = menuItems.map(function (item, index) {
+			const handleOnClickMenuItem = this._onItemClick.bind(this, index);
 			return (<MenuItem
 				key={index}
 				primaryText={item.text}
 				path={item.path}
-				onClick={this._onItemClick.bind(this, index)}
+				onClick={handleOnClickMenuItem}
 				title={item.text}
 				href="#"
 				style={this._getSelectedIndex() === index ? styles.menuItemSelected : null}

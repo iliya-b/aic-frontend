@@ -59,7 +59,7 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-util": "^3.0.7",
     "highlight.js": "^9.2.0",
-    "material-ui": "^0.15.0-alpha",
+    "material-ui": "^0.15.0-alpha.1",
     "mdi": "^1.4.57",
     "noVNC": "git+https://github.com/kanaka/noVNC.git",
     "pretty-hrtime": "^1.0.2",

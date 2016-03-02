@@ -8,9 +8,9 @@ const Nl2Br = class extends React.Component {
 	render() {
 		return (
 			<div>
-				{this.props.children.split('\n').map(item => {
+				{this.props.children.split('\n').map((item, i) => {
 					return (
-						<span>
+						<span key={i}>
 							{item}
 							<br/>
 						</span>

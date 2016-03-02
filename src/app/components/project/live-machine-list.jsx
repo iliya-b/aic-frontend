@@ -33,13 +33,13 @@ const LiveMachineList = class extends React.Component {
 					informationBox = <InfoBox style={{textAlign: 'center'}}>Loading sessions...</InfoBox>;
 				}
 				loading = (<div>
-					<LinearProgress mode="indeterminate" style={{backgroundColor: 'rgba(0, 0, 0, 0.54)'}} />
+					<LinearProgress mode="indeterminate" style={{backgroundColor: 'rgba(0, 0, 0, 0.54)'}}/>
 					{informationBox}
 				</div>);
 			}
 			if (this.state.live.avms && this.state.live.avms.length) {
 				avmsRendered = this.state.live.avms.map(currentValue => {
-					return <MachineCardLive {...currentValue} key={currentValue.avm_id} actionEnter={this.props.actionEnter} actionStop={this.props.actionStop} />;
+					return <MachineCardLive {...currentValue} key={currentValue.avm_id} actionEnter={this.props.actionEnter} actionStop={this.props.actionStop}/>;
 				});
 			} else if (this.state.live.status === 'LIVE_STATUS_LISTED') {
 				avmsRendered = <InfoBox style={{textAlign: 'center'}}>No sessions found. You can start a new session.</InfoBox>;
@@ -47,9 +47,9 @@ const LiveMachineList = class extends React.Component {
 		}
 
 		return (<div>
-						{loading}
-						{avmsRendered}
-					</div>);
+			{loading}
+			{avmsRendered}
+		</div>);
 	}
 
 	_onStateChange(state) {

@@ -76,7 +76,7 @@ const InfoBox = class extends React.Component {
 				paddingTop: '15px'
 			};
 			content = [
-				<MachineIcon status={status} {...iconProps} key={1} />,
+				<MachineIcon status={status} {...iconProps} key={1}/>,
 				<div style={styleChildren} key={2}>{children}</div>
 			];
 		} else {

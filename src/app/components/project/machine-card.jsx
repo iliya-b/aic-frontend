@@ -36,24 +36,24 @@ const MachineCard = class extends React.Component {
 		statusMessage[MachineCard.VMSTATE.FAILED] = 'error';
 		statusMessage[MachineCard.VMSTATE.DELETING] = 'deleting';
 
-		const machineState = <MachineIcon status={statusIcon[this.props.avm_status]} />;
+		const machineState = <MachineIcon status={statusIcon[this.props.avm_status]}/>;
 
 		const infoTests = (<div style={styles.info}>
-				<strong>{this.props.avm_id}</strong> <br />
-				status: {statusMessage[this.props.avm_status]}, owner: {this.props.avm_owner}
-			</div>);
+			<strong>{this.props.avm_id}</strong> <br/>
+			status: {statusMessage[this.props.avm_status]}, owner: {this.props.avm_owner}
+		</div>);
 
 		return (<Card expandable>
-						<CardHeader
-							title={''}
-							subtitle={infoTests}
-							avatar={machineState}
-							showExpandableButton
-							/>
-						<CardText expandable>
-						{this.props.children}
-						</CardText>
-					</Card>);
+			<CardHeader
+				title={''}
+				subtitle={infoTests}
+				avatar={machineState}
+				showExpandableButton
+				/>
+			<CardText expandable>
+			{this.props.children}
+			</CardText>
+		</Card>);
 	}
 
 };

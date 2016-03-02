@@ -32,15 +32,14 @@ const {
 const Main = class extends React.Component {
 	constructor(props) {
 		super(props);
-		this._onThemeClick = this._onThemeClick.bind(this);
 		this._onHomeClick = this._onHomeClick.bind(this);
 		this._onStateChange = this._onStateChange.bind(this);
-		this.state = {};
+		this.handleSessionEndedDialogClose = this.handleSessionEndedDialogClose.bind(this);
+		this.handleSessionEndedDialogOpen = this.handleSessionEndedDialogOpen.bind(this);
+		this.state = {
+			sessionEndedDialogOpen: false
+		};
 		this.unsubscribe = [];
-	}
-
-	_onThemeClick() {
-		this.context.router.push('/theme-test');
 	}
 
 	_onHomeClick() {
@@ -95,11 +94,11 @@ const Main = class extends React.Component {
 							<p style={styles.p}>COPYRIGHT © AiC</p>
 
 							{this.state.config.debug ? ([
-								<RaisedButton key={1} label="Test Theme" title="Test Theme" primar onClick={this._onThemeClick} />,
-								<RaisedButton key={2} linkButton primary href="#/home" >home</RaisedButton>]
+								<RaisedButton key={1} linkButton label="Test Theme" title="Test Theme" primary href="#/theme-test"/>,
+								<RaisedButton key={2} linkButton primary href="#/" label="home"/>]
 							) : null}
 						</FullWidthSection>
-						<SessionEndedDialog ref="sessionEndedDialog" />
+						<SessionEndedDialog open={this.state.sessionEndedDialogOpen} onRequestClose={this.handleSessionEndedDialogClose}/>
 					</div>
 				</MuiThemeProvider>
 			);
@@ -108,7 +107,7 @@ const Main = class extends React.Component {
 		if (this.state.config && this.state.config.isLoaded && this.state.config.hasErrors) {
 			return (
 				<FullWidthSection style={styles.root}>
-					It was not possible to load the application. <br />
+					It was not possible to load the application. <br/>
 					Please contact administrator to verify the application installation.
 				</FullWidthSection>
 			);
@@ -119,6 +118,14 @@ const Main = class extends React.Component {
 				Loading application configuration.
 			</FullWidthSection>
 		);
+	}
+
+	handleSessionEndedDialogClose() {
+		this.setState({sessionEndedDialogOpen: false});
+	}
+
+	handleSessionEndedDialogOpen() {
+		this.setState({sessionEndedDialogOpen: true});
 	}
 
 	_onStateChange(newState) {
@@ -132,7 +139,7 @@ const Main = class extends React.Component {
 				currentPathName !== '/' &&
 				currentPathName !== '/home') {
 				if (newState.login.showMessage) {
-					this.refs.sessionEndedDialog.show();
+					this.handleSessionEndedDialogOpen();
 				} else {
 					AuthActions.redirectDisconnected(this.context.router);
 				}
@@ -198,6 +205,11 @@ Main.childContextTypes = {
 	muiTheme: React.PropTypes.object,
 	appConfig: React.PropTypes.object,
 	loginStatus: React.PropTypes.object
+};
+
+Main.propTypes = {
+	location: React.PropTypes.object,
+	children: React.PropTypes.node
 };
 
 module.exports = Main;

@@ -119,8 +119,8 @@ const MachineIcon = class extends React.Component {
 		styles.root = deepExtend(styles.root, style);
 
 		return (<div style={styles.root}>
-			<FontIcon className="mdi mdi-android" style={styles.andro} />
-			<FontIcon className={statusClassName} style={styles.status} />
+			<FontIcon className="mdi mdi-android" style={styles.andro}/>
+			<FontIcon className={statusClassName} style={styles.status}/>
 		</div>);
 	}
 

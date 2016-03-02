@@ -21,14 +21,16 @@ const LiveSensors = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this._onStateChange = this._onStateChange.bind(this);
-		this._onBatteryChange = this._onBatteryChange.bind(this);
-		this._onRotationChange = this._onRotationChange.bind(this);
-		this._onLocationSubmit = this._onLocationSubmit.bind(this);
-		this._onRecordStart = this._onRecordStart.bind(this);
-		this._onRecordStop = this._onRecordStop.bind(this);
-		this._onScreenshot = this._onScreenshot.bind(this);
+		this.handleStateChange = this.handleStateChange.bind(this);
+		this.handleBatteryChange = this.handleBatteryChange.bind(this);
+		this.handleRotationChange = this.handleRotationChange.bind(this);
+		this.handleLocationSubmit = this.handleLocationSubmit.bind(this);
+		this.handleRecordStart = this.handleRecordStart.bind(this);
+		this.handleRecordStop = this.handleRecordStop.bind(this);
+		this.handleScreenshot = this.handleScreenshot.bind(this);
 		this.state = {};
+		this.setRefLat = c => this.lat = c;
+		this.setRefLon = c => this.lon = c;
 	}
 
 	render() {
@@ -72,14 +74,14 @@ const LiveSensors = class extends React.Component {
 
 		// const imageNVideo = (
 		// 	<div>
-		// 	<TogglableIcon style={style.sensorIcon} isOn iconName="file-video" />
+		// 	<TogglableIcon style={style.sensorIcon} isOn iconName="file-video"/>
 		// 	<FlatButton
 		// 		label="Start recording"
 		// 		title="Start recording"
 		// 		href="#"
 		// 		primary
 		// 		disabled={this.state.live.recording}
-		// 		onClick={this._onRecordStart}
+		// 		onClick={this.handleRecordStart}
 		// 		/>
 		// 	<FlatButton
 		// 		label="Stop recording"
@@ -87,9 +89,9 @@ const LiveSensors = class extends React.Component {
 		// 		href="#"
 		// 		primary
 		// 		disabled={!this.state.live.recording}
-		// 		onClick={this._onRecordStop}
+		// 		onClick={this.handleRecordStop}
 		// 		/>
-		// 	<br />
+		// 	<br/>
 		// 	<TogglableIcon style={style.sensorIcon} isOn iconName="file-image"
 		// 	/>
 		// 	<FlatButton
@@ -98,7 +100,7 @@ const LiveSensors = class extends React.Component {
 		// 		href="#"
 		// 		primary
 		// 		disabled={this.state.live.recording}
-		// 		onClick={this._onScreenshot}
+		// 		onClick={this.handleScreenshot}
 		// 		/>
 		// 	</div>
 		// );
@@ -106,37 +108,37 @@ const LiveSensors = class extends React.Component {
 		if (this.state.live) {
 			return (
 				<Paper style={style.sensors}>
-					<TogglableIcon style={style.sensorIcon} isOn iconName="battery-charging-60" />
+					<TogglableIcon style={style.sensorIcon} isOn iconName="battery-charging-60"/>
 					<div style={style.sensorBox}>
-						<Slider name="battery" max={100} min={0} step={1} value={this.state.live.battery} onChange={this._onBatteryChange} />
-					</div> <br />
-					<TogglableIcon style={style.sensorIconRotation} isOn iconName="screen-rotation" onClick={this._onRotationChange} />
+						<Slider name="battery" max={100} min={0} step={1} value={this.state.live.battery} onChange={this.handleBatteryChange}/>
+					</div> <br/>
+					<TogglableIcon style={style.sensorIconRotation} isOn iconName="screen-rotation" onClick={this.handleRotationChange}/>
 					<span>{this.state.live ? this.state.live.screen.rotation : ''}</span>
-					<br />
-					<TogglableIcon style={style.sensorIcon} isOn iconName="map-marker" />
-					<TextField ref="lat" floatingLabelText="latitude" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur} />
-					<TextField ref="lon" floatingLabelText="longitude" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur} />
+					<br/>
+					<TogglableIcon style={style.sensorIcon} isOn iconName="map-marker"/>
+					<TextField ref={this.setRefLat} floatingLabelText="latitude" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+					<TextField ref={this.setRefLon} floatingLabelText="longitude" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 					<FlatButton
 						label="Submit"
 						title="Submit"
 						href="#"
 						primary
-						onClick={this._onLocationSubmit}
+						onClick={this.handleLocationSubmit}
 						/>
-					<br />
+					<br/>
 				</Paper>
 			);
 		}
 		return null;
 	}
 
-	_onBatteryChange(e, value) {
+	handleBatteryChange(e, value) {
 		e.preventDefault();
 		// const intValue = parseInt(value, 10);
 		LiveActions.setSensorBattery(this.props.avmId, value);
 	}
 
-	_onRotationChange(e) {
+	handleRotationChange(e) {
 		e.preventDefault();
 		const newRotationName = this.state.live.rotationSets[this.state.live.screen.rotation].next;
 		const newRotationValue = this.state.live.rotationSets[newRotationName];
@@ -158,34 +160,34 @@ const LiveSensors = class extends React.Component {
 		// }, 1500);
 	}
 
-	_onLocationSubmit(e) {
+	handleLocationSubmit(e) {
 		e.preventDefault();
-		const lat = parseFloat(this.refs.lat.getValue());
-		const lon = parseFloat(this.refs.lon.getValue());
+		const lat = parseFloat(this.lat.getValue());
+		const lon = parseFloat(this.lon.getValue());
 		LiveActions.setSensorLocation(this.props.avmId, lat, lon);
 	}
 
-	_onRecordStart(e) {
+	handleRecordStart(e) {
 		e.preventDefault();
 		LiveActions.recordStart(this.state.projectId);
 	}
 
-	_onRecordStop(e) {
+	handleRecordStop(e) {
 		e.preventDefault();
 		LiveActions.recordStop(this.state.projectId, this.state.live.recordingFileName);
 	}
 
-	_onScreenshot(e) {
+	handleScreenshot(e) {
 		e.preventDefault();
 		LiveActions.screenshot(this.state.projectId);
 	}
 
-	_onStateChange(state) {
+	handleStateChange(state) {
 		this.setState(state);
 	}
 
 	componentDidMount() {
-		this.unsubscribe = LiveStore.listen(this._onStateChange);
+		this.unsubscribe = LiveStore.listen(this.handleStateChange);
 		LiveActions.loadState();
 	}
 

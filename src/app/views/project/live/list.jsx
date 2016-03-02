@@ -23,6 +23,11 @@ const {
 
 let projectId;
 
+const kitkat = 'R3_CRB01-00-20160222-141328';
+// const kitkat = 'opengl';
+const lollipop = 'lollipop';
+const variants = [kitkat, lollipop];
+
 const LiveList = class extends React.Component {
 
 	constructor(props) {
@@ -60,21 +65,19 @@ const LiveList = class extends React.Component {
 	}
 
 	render() {
-		const kitkat = 'R3_CRB01-00-20160222-141328';
-		// const kitkat = 'opengl';
-
+		const startButtons = variants.map(variant => {
+			const handleClick = this._onStartSession.bind(this, variant);
+			return <RaisedButton key={variant} linkButton primary label="Start new session Kitkat" onClick={handleClick}/>;
+		});
 		return (
 			<div>
 				<h2>Live Sessions</h2>
 
 				<CardActions>
-
-				<RaisedButton linkButton primary label="Start new session Kitkat" onClick={this._onStartSession.bind(this, kitkat)} />
-				<RaisedButton linkButton primary label="Start new session Lollipop" onClick={this._onStartSession.bind(this, 'lollipop')} />
-
+					{startButtons}
 				</CardActions>
 
-				<LiveMachineList actionEnter={this._onEnterSession} actionStop={this._onStopSession} />
+				<LiveMachineList actionEnter={this._onEnterSession} actionStop={this._onStopSession}/>
 
 			</div>
 		);

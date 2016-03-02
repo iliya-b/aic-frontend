@@ -28,9 +28,9 @@ const NotFound = class extends React.Component {
 
 		return (
 			<FullWidthSection style={styles.root}>
-					<div style={styles.tagline}>
-						<h1 style={styles.h1}>404 Page not found.</h1>
-					</div>
+				<div style={styles.tagline}>
+					<h1 style={styles.h1}>404 Page not found.</h1>
+				</div>
 			</FullWidthSection>
 		);
 	}

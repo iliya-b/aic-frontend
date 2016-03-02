@@ -52,17 +52,17 @@ const LiveScreen = class extends React.Component {
 		}
 
 		return (<div>
-							<div style={style.iframeRotation}>
-								<canvas id="noVNC_canvas">
-										Canvas not supported.
-								</canvas>
-							</div>
-							<div style={style.audio}>
-								<audio id="gobyVMAudio" controls>
-									Your browser does not support the <code>audio</code> element.
-								</audio>
-							</div>
-						</div>);
+			<div style={style.iframeRotation}>
+				<canvas id="noVNC_canvas">
+						Canvas not supported.
+				</canvas>
+			</div>
+			<div style={style.audio}>
+				<audio id="gobyVMAudio" controls>
+					Your browser does not support the <code>audio</code> element.
+				</audio>
+			</div>
+		</div>);
 	}
 
 	_onStateChange(state) {

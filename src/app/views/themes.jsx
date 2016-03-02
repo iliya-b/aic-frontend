@@ -59,32 +59,43 @@ const logBoxRef = [
 	{time: AppUtils.getDate(), message: 'Docker created and ready.'}
 ];
 
-//
-// ref="dialog"
-// ref="leftNav"
-// ref="btSessionEnded"
-// ref="sessionEndedDialog"
-// ref="dialog"
-// ref="leftNav"
-// ref="snackbar"
-// ref="btSessionEnded"
-// ref="sessionEndedDialog"
+const componentsThatOpen = ['dialog', 'leftNav', 'sessionEndedDialog', 'snackbar'];
 
 const ThemesPage = class extends React.Component {
 
 	constructor(props) {
 		super(props);
+		const openComponents = {};
+		componentsThatOpen.map(componentName => {
+			openComponents[componentName] = false;
+		});
 		this.state = {
 			isThemeDark: false,
 			// logbox: [],
-			logbox: logBoxRef
+			logbox: logBoxRef,
+			openComponents
 		};
-		this.setrefs = {};
+		this.handleOpenable = {
+			open: {},
+			close: {}
+		};
+		componentsThatOpen.map(componentName => {
+			this.handleOpenable.open[componentName] = this.handleBoxesControl.bind(this, componentName, true);
+			this.handleOpenable.close[componentName] = this.handleBoxesControl.bind(this, componentName, false);
+		});
+		this.handleClickAddLogBox = this.handleClickAddLogBox.bind(this);
 	}
 
-	setRef(component) {
-		debug('component', component);
-		// this.setrefs[] = component;
+	handleBoxesControl(componentName, toOpen) {
+		// debug('e', e);
+		// debug('arguments', arguments);
+		// debug('e.target', e.target);
+		// debug('e.currentTarget', e.currentTarget);
+		// debug('Object.keys(e.currentTarget)', Object.keys(e.currentTarget));
+		// Copy the current state
+		const currentOpenComponents = JSON.parse(JSON.stringify(this.state.openComponents));
+		currentOpenComponents[componentName] = toOpen;
+		this.setState({openComponents: currentOpenComponents});
 	}
 
 	getStyles() {
@@ -168,8 +179,8 @@ const ThemesPage = class extends React.Component {
 			{payload: '5', text: 'Weekly'}
 		];
 		const standardActions = [
-			{text: 'Cancel'},
-			{text: 'Submit', onClick: this._onDialogSubmit}
+			<FlatButton key="1" label="Cancel" onClick={this.handleOpenable.close.dialog}/>,
+			<FlatButton key="2" primary label="Submit" onClick={this.handleOpenable.close.dialog}/>
 		];
 		const menuItemsNav = [
 			{route: 'get-started', text: 'Get Started'},
@@ -371,8 +382,8 @@ const ThemesPage = class extends React.Component {
 
 					<div style={styles.group}>
 						<div style={styles.containerCentered}>
-							<FlatButton label="View Dialog" onTouchTap={this.handleTouchTapDialog}/>
-							<Dialog open={false} ref="dialog" title="Dialog With Standard Actions"  actionsxx={standardActions}>
+							<FlatButton label="View Dialog" onClick={this.handleOpenable.open.dialog} boxRef="dialog" boxOpen/>
+							<Dialog open={this.state.openComponents.dialog} title="Dialog With Standard Actions" actions={standardActions}>
 								The actions in this window are created from the json that&#39;s passed in.
 							</Dialog>
 						</div>
@@ -391,17 +402,10 @@ const ThemesPage = class extends React.Component {
 					<div style={styles.group}>
 						<div style={styles.containerCentered}>
 							<FlatButton
-								onTouchTap={this.handleClickSnackbar}
+								onTouchTap={this.handleOpenable.open.snackbar}
 								label="View Snackbar"
 								/>
-							<Snackbar
-								ref="snackbar"
-								message="This is a snackbar"
-								action="Got It!"
-								onRequestClose={() => {}}
-								open={false}
-								onActionTouchTap={this.handleAction}
-								/>
+							<Snackbar message="This is a snackbar" action="Got It!" open={this.state.openComponents.snackbar} onRequestClose={this.handleOpenable.close.snackbar}/>
 						</div>
 					</div>
 				</ClearFix>
@@ -418,8 +422,8 @@ const ThemesPage = class extends React.Component {
 
 				<ClearFix>
 
-					<RaisedButton label="Session Ended Dialog" ref="btSessionEnded" primary onClick={this.handleClickSessionEnded}/>
-					<SessionEndedDialog ref="sessionEndedDialog"/>
+					<RaisedButton label="Session Ended Dialog" primary onClick={this.handleOpenable.open.sessionEndedDialog}/>
+					<SessionEndedDialog open={this.state.openComponents.sessionEndedDialog} onRequestClose={this.handleOpenable.close.sessionEndedDialog}/>
 
 				</ClearFix>
 
@@ -506,7 +510,7 @@ const ThemesPage = class extends React.Component {
 						<FlatButton
 							label="Add log line"
 							primary
-							onClick={this.addLogBox}
+							onClick={this.handleClickAddLogBox}
 							/>
 
 						<h2>LogBox</h2>
@@ -541,31 +545,11 @@ const ThemesPage = class extends React.Component {
 			</div>);
 	}
 
-	addLogBox(e) {
+	handleClickAddLogBox(e) {
 		debug(arguments);
 		e.preventDefault();
 		const n = (this.state.logbox.length % logBoxRef.length) + 1;
 		this.setState({logbox: logBoxRef.slice(0, n)});
-	}
-
-	handleClickSessionEnded() {
-		this.refs.sessionEndedDialog.show();
-	}
-
-	handleAction() {
-		this.refs.snackbar.dismiss();
-	}
-
-	handleClickNav() {
-		this.refs.leftNav.toggle();
-	}
-
-	handleClickSnackbar() {
-		this.refs.snackbar.show();
-	}
-
-	handleTouchTapDialog() {
-		this.refs.dialog.show();
 	}
 
 };

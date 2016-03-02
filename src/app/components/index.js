@@ -7,8 +7,6 @@ module.exports = {
 	LoginDialog: require('./home/login-dialog'),
 
 	/* Project */
-	APKUploadDialog: require('./project/apk-upload-dialog'),
-	APKTestUploadDialog: require('./project/apk-test-upload-dialog'),
 	AreaStatus: require('./project/area-status'),
 	BoxStatus: require('./project/box-status'),
 
@@ -23,11 +21,7 @@ module.exports = {
 	TestResultsBox: require('./project/test-results-box'),
 
 	/* Shared */
-	ObjectList: require('./shared/object-list/object-list'),
 	AppUtils: require('./shared/app-utils'),
-	APKSelectionDialog: require('./shared/dialogs/apk-selection'),
-	APKTestSelectionDialog: require('./shared/dialogs/apk-test-selection'),
-	DeviceSelectionDialog: require('./shared/dialogs/device-selection'),
 	FullWidthSection: require('./shared/full-width-section'),
 	InfoBox: require('./shared/info-box'),
 	TogglableIcon: require('./shared/togglable-icon'),

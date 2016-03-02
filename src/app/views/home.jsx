@@ -1,15 +1,10 @@
 'use strict';
 
-// React
-const React = require('react');
-
 // Vendors
+const React = require('react');
+const Typography = require('material-ui/lib/styles/typography');
+const RaisedButton = require('material-ui/lib/raised-button');
 const debug = require('debug')('AiC:Views:Home');
-
-// Material design
-const mui = require('material-ui');
-const {Typography} = mui.Styles;
-const {RaisedButton} = mui;
 
 // APP
 const {
@@ -22,9 +17,11 @@ const Home = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this._onLoginClick = this._onLoginClick.bind(this);
-		this._onSignUpClick = this._onSignUpClick.bind(this);
-		// this.willTransitionTo = this.willTransitionTo.bind(this);
+		this.handleLoginOpen = this.handleLoginOpen.bind(this);
+		this.handleLoginClose = this.handleLoginClose.bind(this);
+		this.state = {
+			loginDialogOpen: false
+		};
 	}
 
 	render() {
@@ -77,37 +74,36 @@ const Home = class extends React.Component {
 
 		return (
 			<FullWidthSection style={styles.root}>
-
-					<div style={styles.tagline}>
-						<h1 style={styles.h1}><img style={styles.svgLogo} src="images/logo.png" /></h1>
-						<h2 style={styles.h2}>
-							A platform for testing Android applications in the Cloud
-						</h2>
-						<RaisedButton
-							label="Login"
-							title="Login"
-							href="#"
-							onClick={this._onLoginClick}
-							linkButton
-							style={styles.buttonStyle}
-							primary
-							/>
-						<LoginDialog ref="loginDialog" location={this.props.location}/>
-					</div>
+				<div style={styles.tagline}>
+					<h1 style={styles.h1}><img style={styles.svgLogo} src="images/logo.png"/></h1>
+					<h2 style={styles.h2}>
+						A platform for testing Android applications in the Cloud
+					</h2>
+					<RaisedButton
+						label="Login"
+						title="Login"
+						href="#"
+						onClick={this.handleLoginOpen}
+						linkButton
+						style={styles.buttonStyle}
+						primary
+						/>
+					<LoginDialog open={this.state.loginDialogOpen} onRequestClose={this.handleLoginClose} location={this.props.location}/>
+				</div>
 			</FullWidthSection>
 		);
 	}
 
-	_onLoginClick(e) {
+	handleLoginOpen(e) {
 		e.preventDefault();
-		this.refs.loginDialog.show();
+		this.setState({loginDialogOpen: true});
 	}
 
-	_onSignUpClick() {
-		this.refs.signUpDialog.show();
+	handleLoginClose(e) {
+		e.preventDefault();
+		this.setState({loginDialogOpen: false});
 	}
 
-	// Example with componentWillMount
 	componentWillMount() {
 		debug(this.context.loginStatus);
 		// Auth.redirectIfLogged(this.context.router);
@@ -119,6 +115,10 @@ Home.contextTypes = {
 	router: React.PropTypes.object,
 	muiTheme: React.PropTypes.object,
 	loginStatus: React.PropTypes.object
+};
+
+Home.propTypes = {
+	location: React.PropTypes.object
 };
 
 module.exports = Home;

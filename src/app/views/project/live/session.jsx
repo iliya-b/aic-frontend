@@ -18,7 +18,6 @@ const debug = require('debug')('AiC:Views:Project:Live:Session');
 
 // APP
 const {
-	AppUtils,
 	LiveScreen,
 	LiveSensors,
 	AreaStatus,
@@ -28,11 +27,17 @@ const {
 const {LiveStore} = require('app/stores');
 const {LiveActions} = require('app/actions');
 
+const availableLiveActions = ['test', 'check', 'start', 'load', 'connect', 'close', 'setState', 'check', 'close', 'restart'];
+
 const LiveSession = class extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this._onStateChange = this._onStateChange.bind(this);
+		this.handleOnLiveActions = {};
+		availableLiveActions.map(actionName => {
+			this.handleOnLiveActions[actionName] = this.handleOnLiveAction.bind(this, actionName);
+		});
 	}
 
 	render() {
@@ -76,7 +81,7 @@ const LiveSession = class extends React.Component {
 			<div>
 
 				<div style={style.infoArea}>
-					<AreaStatus typeName="live" /><br />
+					<AreaStatus typeName="live"/><br/>
 					<div style={{width: 547}}>
 						<LogBox>
 						{logBoxRows}
@@ -85,66 +90,66 @@ const LiveSession = class extends React.Component {
 				</div>
 
 				{this.context.appConfig.debug ? (
-				<div>
-					<Paper style={style.paperCenter}>
+					<div>
+						<Paper style={style.paperCenter}>
 
-						<h3>Debug</h3>
+							<h3>Debug</h3>
 
-						<FlatButton
-							label="Test"
-							title="Test"
-							href="#"
-							primary
-							onTouchTap={this._onLiveAction.bind(this, 'test')}
-							/>
+							<FlatButton
+								label="Test"
+								title="Test"
+								href="#"
+								primary
+								onTouchTap={this.handleOnLiveActions.test}
+								/>
 
-						<FlatButton
-							label="Search"
-							title="Search"
-							primary
-							onTouchTap={this._onLiveAction.bind(this, 'check')}
-							/>
+							<FlatButton
+								label="Search"
+								title="Search"
+								primary
+								onTouchTap={this.handleOnLiveActions.check}
+								/>
 
-						<FlatButton
-							label="Create"
-							title="Create"
-							primary
-							onTouchTap={this._onLiveAction.bind(this, 'start')}
-							/>
+							<FlatButton
+								label="Create"
+								title="Create"
+								primary
+								onTouchTap={this.handleOnLiveActions.start}
+								/>
 
-						<FlatButton
-							label="Load"
-							title="Load"
-							primary
-							onTouchTap={this._onLiveAction.bind(this, 'load')}
-							/>
+							<FlatButton
+								label="Load"
+								title="Load"
+								primary
+								onTouchTap={this.handleOnLiveActions.load}
+								/>
 
-						<FlatButton
-							label="Connect"
-							title="Connect"
-							primary
-							onTouchTap={this._onLiveAction.bind(this, 'connect')}
-							/>
+							<FlatButton
+								label="Connect"
+								title="Connect"
+								primary
+								onTouchTap={this.handleOnLiveActions.connect}
+								/>
 
-						<FlatButton
-							label="Close"
-							title="Close"
-							primary
-							onTouchTap={this._onLiveAction.bind(this, 'close')}
-							/>
+							<FlatButton
+								label="Close"
+								title="Close"
+								primary
+								onTouchTap={this.handleOnLiveActions.close}
+								/>
 
-						<FlatButton
-							label="Set State"
-							title="Set State"
-							primary
-							onTouchTap={this._onLiveAction.bind(this, 'setState')}
-							/>
+							<FlatButton
+								label="Set State"
+								title="Set State"
+								primary
+								onTouchTap={this.handleOnLiveActions.setState}
+								/>
 
-						<input onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur} />
+							<input onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 
-					</Paper>
-					<br />
-				</div>
+						</Paper>
+						<br/>
+					</div>
 				) : null}
 
 				{this.state && this.state.live.status === 'LIVE_STATUS_INITIALIZED' ? (
@@ -153,53 +158,53 @@ const LiveSession = class extends React.Component {
 							label="Start New Live Session"
 							title="Start New Live Session"
 							primary
-							onTouchTap={this._onLiveAction.bind(this, 'check')}
+							onTouchTap={this.handleOnLiveActions.check}
 							/>
 					</Paper>
 				) : null}
 
 				{this.state && this.state.live.status.substr(-6) === 'FAILED' ? (
-				<Paper style={style.paperCenter}>
+					<Paper style={style.paperCenter}>
 
-						<span style={style.error.icon} className="mdi mdi-android" />
+						<span style={style.error.icon} className="mdi mdi-android"/>
 						<p style={style.error.status}>{this.state.live.status}</p>
 						<p style={style.error.message}>{this.state.live.message}</p>
 
-				</Paper>
+					</Paper>
 				) : null}
 
 				{this.state && (this.state.live.status === 'LIVE_STATUS_CONNECTING' || this.state.live.status === 'LIVE_STATUS_CONNECTED') ? (
-				<Paper style={style.paperLive}>
+					<Paper style={style.paperLive}>
 
-							{this.state.live.status === 'LIVE_STATUS_CONNECTING' ? (
-								<div style={style.paperCenter}>
-									<CircularProgress mode="indeterminate" size={2} />
-								</div>
-							) : null}
-
-							<LiveScreen />
-
-							{this.state.live.status === 'LIVE_STATUS_CONNECTED' ? (
-							<div>
-							<LiveSensors onInputFocus={this._onInputFocus} onInputBlur={this._onInputBlur} avmId={this.state.liveInfo.avm_id} />
-							<br />
-							<Paper style={style.paperCenter}>
-								<FlatButton
-									label="Stop Live"
-									title="Stop Live"
-									primary
-									disabled={this.state.live.status === 'LIVE_STATUS_STOPPING'}
-									onTouchTap={this._onLiveAction.bind(this, 'close')}
-									/>
-							</Paper>
+						{this.state.live.status === 'LIVE_STATUS_CONNECTING' ? (
+							<div style={style.paperCenter}>
+								<CircularProgress mode="indeterminate" size={2}/>
 							</div>
-							) : null}
+						) : null}
 
-				</Paper>
+						<LiveScreen/>
+
+						{this.state.live.status === 'LIVE_STATUS_CONNECTED' ? (
+							<div>
+								<LiveSensors onInputFocus={this.handleOnInputFocus} onInputBlur={this.handleOnInputBlur} avmId={this.state.liveInfo.avm_id}/>
+								<br/>
+								<Paper style={style.paperCenter}>
+									<FlatButton
+										label="Stop Live"
+										title="Stop Live"
+										primary
+										disabled={this.state.live.status === 'LIVE_STATUS_STOPPING'}
+										onTouchTap={this.handleOnLiveActions.close}
+										/>
+								</Paper>
+							</div>
+						) : null}
+
+					</Paper>
 				) : null}
 
 				{this.state && (this.state.live.status === 'LIVE_STATUS_STOPPED') ? (
-				<Paper style={style.paperCenter}>
+					<Paper style={style.paperCenter}>
 
 						<p>Your live session was sucessfully stopped.</p>
 
@@ -207,10 +212,10 @@ const LiveSession = class extends React.Component {
 							label="Start New Live Session"
 							title="Start New Live Session"
 							primary
-							onTouchTap={this._onLiveAction.bind(this, 'restart')}
+							onTouchTap={this.handleOnLiveActions.restart}
 							/>
 
-				</Paper>
+					</Paper>
 				) : null}
 
 			</div>
@@ -224,12 +229,11 @@ const LiveSession = class extends React.Component {
 		// }
 	}
 
-	_onLiveAction(actionName) {
+	handleOnLiveAction(actionName) {
 		// debug(arguments);
 		switch (actionName) {
 			case 'test':
 				debug(arguments);
-
 				break;
 			case 'check':
 				LiveActions.liveCheck();
@@ -247,7 +251,7 @@ const LiveSession = class extends React.Component {
 			case 'close':
 				LiveActions.liveStop(this.state.live.screen.port);
 				break;
-			case 'setState':
+			case 'setState': {
 				if (!this.context.appConfig.debug) {
 					return;
 				}
@@ -262,12 +266,13 @@ const LiveSession = class extends React.Component {
 				newState.live.delayedRotation = 'horizontal';
 				LiveActions.setState(newState);
 				break;
+			}
 			default:
 				break;
 		}
 	}
 
-	_onInputFocus() {
+	handleOnInputFocus() {
 		debug('focus');
 		if (!window.rfb) {
 			return;
@@ -277,7 +282,7 @@ const LiveSession = class extends React.Component {
 		window.rfb.get_mouse().set_focused(false);
 	}
 
-	_onInputBlur() {
+	handleOnInputBlur() {
 		if (!window.rfb) {
 			return;
 		}
@@ -299,6 +304,7 @@ const LiveSession = class extends React.Component {
 	}
 
 	componentWillUnmount() {
+		this.handleOnInputFocus();
 		// Subscribe and unsubscribe because we don't want to use the mixins
 		this.unsubscribe();
 	}

@@ -91,7 +91,7 @@ const PollingStore = Reflux.createStore({
 
 	checkData(res, apiIndex) {
 		switch (apiIndex) {
-			case 'liveList':
+			case 'liveList': {
 				const onGoingStatus = [MachineCard.VMSTATE.CREATING, MachineCard.VMSTATE.DELETING];
 				const avms = res.avms;
 				let avm;
@@ -106,6 +106,7 @@ const PollingStore = Reflux.createStore({
 					}
 				}
 				break;
+			}
 			default:
 				debug('apiIndex not found', arguments);
 		}

@@ -1,17 +1,12 @@
 'use strict';
 
-// React
+// Vendor
 const React = require('react');
-
-// Material design
-const mui = require('material-ui');
 const {
 	Dialog,
 	TextField,
 	FlatButton
-} = mui;
-
-// Vendors
+} = require('material-ui');
 const debug = require('debug')('AiC:Component:Home:LoginDialog');
 
 // APP
@@ -23,12 +18,16 @@ const LoginDialog = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this._onLoginSubmit = this._onLoginSubmit.bind(this);
-		this._onLoginCancel = this._onLoginCancel.bind(this);
-		this._onStateChange = this._onStateChange.bind(this);
-		this._onKeyDown = this._onKeyDown.bind(this);
+		this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
+		this.handleLoginCancel = this.handleLoginCancel.bind(this);
+		this.handleStateChange = this.handleStateChange.bind(this);
+		this.handleKeyDown = this.handleKeyDown.bind(this);
 		this.validFields = this.validFields.bind(this);
-		this.state = {open: false};
+		this.handleFieldChanges = {};
+		this.handleFieldChanges.loginEmail = this.handleFieldChange.bind(this, 'loginEmail');
+		this.handleFieldChanges.loginPassword = this.handleFieldChange.bind(this, 'loginPassword');
+		this.refLoginPassword = c => this.loginPassword = c;
+		this.refLoginEmail = c => this.loginEmail = c;
 	}
 
 	render() {
@@ -38,7 +37,7 @@ const LoginDialog = class extends React.Component {
 				label="Cancel"
 				title="Cancel"
 				secondary
-				onTouchTap={this._onLoginCancel}
+				onTouchTap={this.handleLoginCancel}
 				className="btLoginCancel"
 				/>,
 			<FlatButton
@@ -46,7 +45,7 @@ const LoginDialog = class extends React.Component {
 				label="Submit"
 				title="Submit"
 				primary
-				onTouchTap={this._onLoginSubmit}
+				onTouchTap={this.handleLoginSubmit}
 				className="btLoginSubmit"
 				/>
 		];
@@ -54,25 +53,38 @@ const LoginDialog = class extends React.Component {
 		const errorBox = this.state && this.state.login && this.state.login.status === 'LOGIN_STATUS_CONNECT_FAILED' ? <div style={{color: this.context.muiTheme.palette.errorColor}}>{this.state.login.message}</div> : null;
 
 		return (
-			<Dialog title="Login" actions={loginActions} ref="loginDialogIn" onShow={this.cleanFields} open={this.state.open}>
+			<Dialog title="Login" actions={loginActions} open={this.props.open}>
 				{this.state && this.state.login ?
-				<form onSubmit={this._onLoginSubmit}>
-				{errorBox}
-				<TextField name="fieldLogin" className="loginEmail" onKeyDown={this._onKeyDown} ref="loginEmail" onChange={this._onFieldChange.bind(this, 'loginEmail')} errorText={this.state.hasOwnProperty('loginEmailError') ? this.state.loginEmailError : ''} floatingLabelText="login" disabled={this.state.login.status === 'LOGIN_STATUS_CONNECTING'} /><br />
-				<TextField name="fieldPassword" className="loginPassword" onKeyDown={this._onKeyDown} ref="loginPassword" onChange={this._onFieldChange.bind(this, 'loginPassword')} errorText={this.state.hasOwnProperty('loginPasswordError') ? this.state.loginPasswordError : ''} type="password" floatingLabelText="password" disabled={this.state.login.status === 'LOGIN_STATUS_CONNECTING'} />
-				</form> : null}
-				<br />
+					<form onSubmit={this.handleLoginSubmit}>
+						{errorBox}
+						<TextField
+							name="fieldLogin"
+							className="loginEmail"
+							onKeyDown={this.handleKeyDown}
+							ref={this.refLoginEmail}
+							onChange={this.handleFieldChanges.loginEmail}
+							errorText={this.state.hasOwnProperty('loginEmailError') ? this.state.loginEmailError : ''}
+							floatingLabelText="login"
+							disabled={this.state.login.status === 'LOGIN_STATUS_CONNECTING'}
+							/><br/>
+						<TextField
+							name="fieldPassword"
+							className="loginPassword"
+							onKeyDown={this.handleKeyDown}
+							ref={this.refLoginPassword}
+							onChange={this.handleFieldChanges.loginPassword}
+							errorText={this.state.hasOwnProperty('loginPasswordError') ? this.state.loginPasswordError : ''}
+							type="password"
+							floatingLabelText="password"
+							disabled={this.state.login.status === 'LOGIN_STATUS_CONNECTING'}
+							/>
+					</form> : null}
+				<br/>
 			</Dialog>
 			);
 	}
 
-	show() {
-		this.setState({fieldsChanged: [], loginEmailError: '', loginPasswordError: ''});
-		// this.refs.loginDialogIn.show();
-		this.setState({open: true});
-	}
-
-	_onFieldChange(ref) {
+	handleFieldChange(ref) {
 		const fieldsChanged = this.state.fieldsChanged ? this.state.fieldsChanged : [];
 		fieldsChanged.push(ref);
 		this.validFields(AppUtils.extend(this.state, {fieldsChanged}));
@@ -83,38 +95,37 @@ const LoginDialog = class extends React.Component {
 		// debug(newState);
 		const fieldAreValid = ['loginEmail', 'loginPassword'].reduce((previous, item) => {
 			if (newState.fieldsChanged && newState.fieldsChanged.indexOf(item) > -1) {
-				newState[`${item}Error`] = AppUtils.fieldIsRequired(previous[1].refs[item]);
+				newState[`${item}Error`] = AppUtils.fieldIsRequired(previous[1][item]);
 			}
-			return [previous[0] && !AppUtils.isEmpty(previous[1].refs[item].getValue()), previous[1]];
+			return [previous[0] && !AppUtils.isEmpty(previous[1][item].getValue()), previous[1]];
 		}, [true, this]);
 		this.setState(newState);
 		return fieldAreValid[0];
 	}
 
-	_onKeyDown(e) {
-		// debug('_onKeyDown e', e);
+	handleKeyDown(e) {
+		// debug('handleKeyDown e', e);
 		if (e.keyCode === 13) {
 			e.preventDefault();
-			this._onLoginSubmit(e);
+			this.handleLoginSubmit(e);
 		}
 	}
 
-	_onLoginSubmit(e) {
+	handleLoginSubmit(e) {
 		e.preventDefault();
 		if (this.validFields(AppUtils.extend(this.state, {fieldsChanged: ['loginEmail', 'loginPassword']}))) {
-			const email = this.refs.loginEmail.getValue();
-			const pass = this.refs.loginPassword.getValue();
+			const email = this.loginEmail.getValue();
+			const pass = this.loginPassword.getValue();
 			AuthActions.login(email, pass);
 		}
 	}
 
-	_onLoginCancel(e) {
+	handleLoginCancel(e) {
 		e.preventDefault();
-		// this.refs.loginDialogIn.dismiss();
-		this.setState({open: false});
+		this.props.onRequestClose(e);
 	}
 
-	_onStateChange(newState) {
+	handleStateChange(newState) {
 		// TODO: this should be in the store not in the view
 		if (newState.login.status === 'LOGIN_STATUS_CONNECTED') {
 			debug('this.context.router', this.context.router);
@@ -126,8 +137,15 @@ const LoginDialog = class extends React.Component {
 		this.setState(newState);
 	}
 
+	componentWillReceiveProps(nextProps) {
+		if (this.props.open !== nextProps.open && nextProps.open) {
+			// onShow
+			this.setState({fieldsChanged: [], loginEmailError: '', loginPasswordError: ''});
+		}
+	}
+
 	componentDidMount() {
-		this.unsubscribe = AuthStore.listen(this._onStateChange);
+		this.unsubscribe = AuthStore.listen(this.handleStateChange);
 		AuthStore.init();
 	}
 
@@ -144,7 +162,9 @@ LoginDialog.contextTypes = {
 };
 
 LoginDialog.propTypes = {
-	location: React.PropTypes.object
+	location: React.PropTypes.object,
+	open: React.PropTypes.bool,
+	onRequestClose: React.PropTypes.func
 };
 
 module.exports = LoginDialog;

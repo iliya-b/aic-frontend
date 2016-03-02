@@ -10,10 +10,6 @@ const {
 	IconButton
 } = mui;
 
-// Router
-const Router = require('react-router');
-const {RouteHandler} = Router;
-
 // APP
 const {AuthActions} = require('app/actions');
 const {ProjectActions} = require('app/actions');
@@ -29,16 +25,16 @@ const ProjectWrapper = class extends AuthRequired {
 			lastPage: false,
 			title: ''
 		};
-		this._onLeftIconButtonTouchTap = this._onLeftIconButtonTouchTap.bind(this);
-		this._onRightIconButtonTouchTap = this._onRightIconButtonTouchTap.bind(this);
+		this.handleOnLeftIconButtonTouchTap = this.handleOnLeftIconButtonTouchTap.bind(this);
+		this.handleOnRightIconButtonTouchTap = this.handleOnRightIconButtonTouchTap.bind(this);
 		this.updateTitle = this.updateTitle.bind(this);
 	}
 
-	_onLeftIconButtonTouchTap() {
+	handleOnLeftIconButtonTouchTap() {
 		this.context.router.push('/projects');
 	}
 
-	_onRightIconButtonTouchTap() {
+	handleOnRightIconButtonTouchTap() {
 		AuthActions.logout(false);
 		// AuthActions.redirectDisconnected(this.context.router);
 	}
@@ -47,10 +43,10 @@ const ProjectWrapper = class extends AuthRequired {
 		return (
 			<div>
 				<AppBar
-					onLeftIconButtonTouchTap={this._onLeftIconButtonTouchTap}
+					onLeftIconButtonTouchTap={this.handleOnLeftIconButtonTouchTap}
 					title={this.state.title}
 					zDepth={0}
-					iconElementRight={<IconButton title="Logout" onClick={this._onRightIconButtonTouchTap} iconClassName="mdi mdi-logout" />}
+					iconElementRight={<IconButton title="Logout" onClick={this.handleOnRightIconButtonTouchTap} iconClassName="mdi mdi-logout"/>}
 					/>
 				{this.props.children}
 			</div>

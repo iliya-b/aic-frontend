@@ -29,13 +29,13 @@ const AreaStatus = class extends React.Component {
 
 		if (this.state.hasOwnProperty(this.props.typeName)) {
 			boxesTags = this.state[this.props.typeName].boxes.map((item, index) => {
-				return item.enabled ? <BoxStatus key={index} typeName={item.typeName} status={item.status} isFirst={item.isFirst} isLast={item.isLast} objectName={item.objectName} /> : null;
+				return item.enabled ? <BoxStatus key={index} typeName={item.typeName} status={item.status} isFirst={item.isFirst} isLast={item.isLast} objectName={item.objectName}/> : null;
 			});
 		}
 
 		return (<div style={this.props.style}>
-							{boxesTags}
-						</div>);
+			{boxesTags}
+		</div>);
 	}
 
 	_onStateChange(state) {

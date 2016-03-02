@@ -18,23 +18,24 @@ const ProjectList = class extends React.Component {
 		this.state = {
 			projects: []
 		};
-		this._onItemTap = this._onItemTap.bind(this);
+		this.handleItemTap = this.handleItemTap.bind(this);
 		this._onStateChange = this._onStateChange.bind(this);
 	}
 
-	_onItemTap(index, e) {
+	handleItemTap(index, e) {
 		e.preventDefault();
 		this.context.router.push(`/projects/${this.state.projects[index].id}`);
 	}
 
 	render() {
 		const menusItems = this.state.projects.map(function (item, index) {
+			const handleClick = this.handleItemTap.bind(this, index);
 			return (
 				<MenuItem
 					key={index}
 					primaryText={item.name}
 					path={item.path}
-					onClick={this._onItemTap.bind(this, index)}
+					onClick={handleClick}
 					title={item.name}
 					href="#"
 					/>

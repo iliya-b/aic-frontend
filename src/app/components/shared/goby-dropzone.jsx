@@ -1,8 +1,14 @@
 /* global URL */
 const React = require('react');
+const ReactDOM = require('react-dom');
 const accept = require('attr-accept');
 
 const Dropzone = class extends React.Component {
+
+	constructor(props) {
+		super(props);
+		this.setRefFileInput = c => this.fileINput = c;
+	}
 
 	getDefaultProps() {
 		return {
@@ -21,7 +27,7 @@ const Dropzone = class extends React.Component {
 		return files.every(file => accept(file, this.props.accept));
 	}
 
-	onDragEnter(e) {
+	handleDragEnter(e) {
 		e.preventDefault();
 
 		// This is tricky. During the drag even the dataTransfer.files is null
@@ -42,11 +48,11 @@ const Dropzone = class extends React.Component {
 		}
 	}
 
-	onDragOver(e) {
+	handleDragOver(e) {
 		e.preventDefault();
 	}
 
-	onDragLeave(e) {
+	handleDragLeave(e) {
 		e.preventDefault();
 
 		this.setState({
@@ -59,7 +65,7 @@ const Dropzone = class extends React.Component {
 		}
 	}
 
-	onDrop(e) {
+	handleDrop(e) {
 		e.preventDefault();
 
 		this.setState({
@@ -92,14 +98,14 @@ const Dropzone = class extends React.Component {
 		}
 	}
 
-	onClick() {
+	handleClick() {
 		if (!this.props.disableClick) {
 			this.open();
 		}
 	}
 
 	open() {
-		const fileInput = React.findDOMNode(this.refs.fileInput);
+		const fileInput = ReactDOM.findDOMNode(this.fileInput);
 		fileInput.value = null;
 		fileInput.click();
 	}
@@ -156,11 +162,11 @@ const Dropzone = class extends React.Component {
 			<div
 				className={className}
 				style={appliedStyle}
-				onClick={this.onClick}
-				onDragEnter={this.onDragEnter}
-				onDragOver={this.onDragOver}
-				onDragLeave={this.onDragLeave}
-				onDrop={this.onDrop}
+				onClick={this.handleClick}
+				onDragEnter={this.handleDragEnter}
+				onDragOver={this.handleDragOver}
+				onDragLeave={this.handleDragLeave}
+				onDrop={this.handleDrop}
 				>
 				{this.props.children}
 				<input
@@ -169,10 +175,10 @@ const Dropzone = class extends React.Component {
 					name={this.props.name}
 					style={{position: 'absolute', overflow: 'hidden', clip: 'rect(0 0 0 0)', height: 1, width: 1, margin: -1, padding: 0, border: 0}}
 					type="file"
-					ref="fileInput"
+					ref={this.setRefFileInput}
 					multiple={this.props.multiple}
 					accept={this.props.accept}
-					onChange={this.onDrop}
+					onChange={this.handleDrop}
 					/>
 			</div>
 		);

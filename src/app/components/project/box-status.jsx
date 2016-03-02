@@ -409,33 +409,33 @@ const BoxStatus = class extends React.Component {
 			message = iconsNMessages[typeName][statusFound];
 			statusIcons = iconsNMessages[typeName].icons === undefined ? null :
 											iconsNMessages[typeName].icons.map((item, index) => {
-												return <span style={item.style} className={item.className} key={index} />;
+												return <span style={item.style} className={item.className} key={index}/>;
 											});
 		}
 
 		return (<div style={styles.wrapper}>
 
-							{isFirst ? null : (
+			{isFirst ? null : (
 
-									<FontIcon
-										style={styles.iconDivider}
-										className="mdi mdi-dots-horizontal"
-										/>
+				<FontIcon
+					style={styles.iconDivider}
+					className="mdi mdi-dots-horizontal"
+					/>
 
-							)}
+			)}
 
-							<Paper style={styles.box}>
+			<Paper style={styles.box}>
 
-								<div style={styles.iconBox}>
-								{statusIcons}
-								</div>
+				<div style={styles.iconBox}>
+				{statusIcons}
+				</div>
 
-								<div style={styles.messageBox}>
-									<p style={styles.message}>{message}</p>
-								</div>
-							</Paper>
+				<div style={styles.messageBox}>
+					<p style={styles.message}>{message}</p>
+				</div>
+			</Paper>
 
-						</div>);
+		</div>);
 	}
 };
 
