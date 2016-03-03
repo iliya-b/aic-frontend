@@ -14,7 +14,7 @@ const {
 const debug = require('debug')('AiC:View:Live:List');
 
 // APP
-const {LiveMachineList} = require('app/components');
+const {LiveMachineList, AppUtils} = require('app/components');
 const {LiveStore} = require('app/stores');
 const {
 	LiveActions,
@@ -26,7 +26,7 @@ let projectId;
 const kitkat = 'R3_CRB01-00-20160222-141328';
 // const kitkat = 'opengl';
 const lollipop = 'lollipop';
-const variants = [kitkat, lollipop];
+const variants = [{id: kitkat, name: 'kitkat'}, {id: lollipop, name: 'lollipop'}];
 
 const LiveList = class extends React.Component {
 
@@ -67,7 +67,17 @@ const LiveList = class extends React.Component {
 	render() {
 		const startButtons = variants.map(variant => {
 			const handleClick = this._onStartSession.bind(this, variant);
-			return <RaisedButton key={variant} linkButton primary label="Start new session Kitkat" onClick={handleClick}/>;
+			return (
+				<RaisedButton
+					key={variant.id}
+					linkButton
+					primary
+					label={`Start new session ${variant.name}`}
+					title={`Start new session ${variant.name}`}
+					className={`btStartSession${AppUtils.capitalize(variant.name)}`}
+					onClick={handleClick}
+					/>
+			);
 		});
 		return (
 			<div>
