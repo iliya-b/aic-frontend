@@ -62,6 +62,13 @@ output. The coverage files are created in a folder named `./coverage`.
 Integration tests are now in [another repository](https://git.rnd.alterway.fr/aic-documentation/aic_features). The gitlabci build
 will automatically clone it.
 
+
+Known Bugs
+==========
+
+* Tables: can not be unselect all ([open issue](https://github.com/callemall/material-ui/issues/3074) on the Table component of material-ui)
+* Tables: header separator bugs on DOM change (to debug)
+
 TODO List
 =========
 

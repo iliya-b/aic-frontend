@@ -52,6 +52,8 @@ const {
 	LiveToolbox
 } = require('app/components');
 
+import TableAPK from 'app/components/table/table-apk';
+
 // var logBoxRef = Array.apply(0, Array(8)).map(function (v, i) { return { message: 'Message ' + i , time: i }; });
 const logBoxRef = [
 	{time: AppUtils.getDate(), message: 'Stack creation scheduled'},
@@ -293,19 +295,39 @@ const ThemesPage = class extends React.Component {
 			return <InfoBox style={{margin: '10px'}} key={infoIndex} {...infoProps}/>;
 		});
 
+		const apkList = [
+			{
+				id: 'abc',
+				filename: 'def',
+				status: 'uploaded'
+			},
+			{
+				id: '123',
+				filename: '456',
+				status: 'sending'
+			}
+		];
+
+		// const apkList = [];
+
 		const notShow = true;
 
 		return (
 			<div>
-				<ClearFix style={{width: 800, padding: 20}}>
-					<LiveToolbox/>
-				</ClearFix>
 				<ClearFix>
 					<RaisedButton linkButton href={'/'} secondary label={'Back to Home'}/>
 				</ClearFix>
 
+				<ClearFix style={{width: 800, padding: 20}}>
+					<TableAPK list={apkList}/>
+				</ClearFix>
+
 				{notShow ? null : (
 					<div>
+						<ClearFix style={{width: 800, padding: 20}}>
+							<LiveToolbox/>
+						</ClearFix>
+
 						<ClearFix>
 
 							<div style={styles.group}>

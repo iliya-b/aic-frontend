@@ -1,26 +1,20 @@
 /* global URL */
-const React = require('react');
-const ReactDOM = require('react-dom');
-const accept = require('attr-accept');
 
+// Vendor
+import React from 'react';
+import ReactDOM from 'react-dom';
+import accept from 'attr-accept';
+
+// APP
 const Dropzone = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.setRefFileInput = c => this.fileINput = c;
-	}
-
-	getDefaultProps() {
-		return {
-			disableClick: false,
-			multiple: false
-		};
-	}
-
-	getInitialState() {
-		return {
+		this.state = {
 			isDragActive: false
 		};
+		this.setRefFileInput = c => this.fileInput = c;
+		this.handleClick = this.handleClick.bind(this);
 	}
 
 	allFilesAccepted(files) {
@@ -207,6 +201,11 @@ Dropzone.propTypes = {
 	id: React.PropTypes.string,
 	title: React.PropTypes.string,
 	name: React.PropTypes.string
+};
+
+Dropzone.defaultProps = {
+	disableClick: false,
+	multiple: false
 };
 
 module.exports = Dropzone;
