@@ -11,7 +11,6 @@ module.exports = {
 	BoxStatus: require('./project/box-status'),
 
 	/* Live */
-	LiveSensors: require('./project/live-sensors'),
 	LiveScreen: require('./project/live-screen'),
 	LiveToolbox: require('./project/live-toolbox'),
 	MachineCard: require('./project/machine-card'),

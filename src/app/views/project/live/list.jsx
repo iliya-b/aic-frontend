@@ -20,6 +20,7 @@ const {
 	LiveActions,
 	PollingActions
 } = require('app/actions');
+import ToolbarLive from 'app/components/toolbar/toolbar-live';
 
 let projectId;
 
@@ -36,6 +37,7 @@ const LiveList = class extends React.Component {
 		this._onStartSession = this._onStartSession.bind(this);
 		this._onEnterSession = this._onEnterSession.bind(this);
 		this._onStopSession = this._onStopSession.bind(this);
+		this.handleStartSession = this._onStartSession.bind(this);
 		this.state = {};
 	}
 
@@ -81,14 +83,11 @@ const LiveList = class extends React.Component {
 		});
 		return (
 			<div>
-				<h2>Live Sessions</h2>
-
-				<CardActions>
-					{startButtons}
-				</CardActions>
-
+				<ToolbarLive
+					onClickStart={this.handleStartSession}
+					variants={variants}
+					/>
 				<LiveMachineList actionEnter={this._onEnterSession} actionStop={this._onStopSession}/>
-
 			</div>
 		);
 	}
