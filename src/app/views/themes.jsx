@@ -48,7 +48,8 @@ const {
 	AppUtils,
 	MachineCardLive,
 	InfoBox,
-	MachineCard
+	MachineCard,
+	LiveToolbox
 } = require('app/components');
 
 // var logBoxRef = Array.apply(0, Array(8)).map(function (v, i) { return { message: 'Message ' + i , time: i }; });
@@ -292,257 +293,266 @@ const ThemesPage = class extends React.Component {
 			return <InfoBox style={{margin: '10px'}} key={infoIndex} {...infoProps}/>;
 		});
 
+		const notShow = true;
+
 		return (
 			<div>
+				<ClearFix style={{width: 800, padding: 20}}>
+					<LiveToolbox/>
+				</ClearFix>
 				<ClearFix>
 					<RaisedButton linkButton href={'/'} secondary label={'Back to Home'}/>
 				</ClearFix>
 
-				<ClearFix>
+				{notShow ? null : (
+					<div>
+						<ClearFix>
 
-					<div style={styles.group}>
-						<div style={styles.containerCentered}>
-							<FloatingActionButton iconClassName="mdi mdi-star" disabled/>
-						</div>
-						<div style={styles.containerCentered}>
-							<FloatingActionButton iconClassName="mdi mdi-star" disabled={false}/>
-						</div>
-						<div style={styles.containerCentered}>
-							<FloatingActionButton iconClassName="mdi mdi-star" disabled={false} secondary/>
-						</div>
-						<div style={styles.containerCentered}>
-							<RaisedButton label="Secondary" secondary/>
-						</div>
-						<div style={styles.containerCentered}>
-							<RaisedButton label="Primary" primary/>
-						</div>
-						<div style={styles.containerCentered}>
-							<RaisedButton label="Default"/>
-						</div>
-						<div style={styles.containerCentered}>
-							<FlatButton label="Secondary" secondary/>
-						</div>
-						<div style={styles.containerCentered}>
-							<FlatButton label="Primary" primary/>
-						</div>
-						<div style={styles.containerCentered}>
-							<FlatButton label="Default"/>
-						</div>
-					</div>
+							<div style={styles.group}>
+								<div style={styles.containerCentered}>
+									<FloatingActionButton iconClassName="mdi mdi-star" disabled/>
+								</div>
+								<div style={styles.containerCentered}>
+									<FloatingActionButton iconClassName="mdi mdi-star" disabled={false}/>
+								</div>
+								<div style={styles.containerCentered}>
+									<FloatingActionButton iconClassName="mdi mdi-star" disabled={false} secondary/>
+								</div>
+								<div style={styles.containerCentered}>
+									<RaisedButton label="Secondary" secondary/>
+								</div>
+								<div style={styles.containerCentered}>
+									<RaisedButton label="Primary" primary/>
+								</div>
+								<div style={styles.containerCentered}>
+									<RaisedButton label="Default"/>
+								</div>
+								<div style={styles.containerCentered}>
+									<FlatButton label="Secondary" secondary/>
+								</div>
+								<div style={styles.containerCentered}>
+									<FlatButton label="Primary" primary/>
+								</div>
+								<div style={styles.containerCentered}>
+									<FlatButton label="Default"/>
+								</div>
+							</div>
 
-					<div style={styles.group}>
-						<div style={styles.container}>
-							<Checkbox name="checkboxName1" value="checkboxValue1" label="checkbox"/>
-							<Checkbox name="checkboxName2" value="checkboxValue2" label="disabled checkbox" disabled/>
-						</div>
-						<div style={styles.container}>
-							<RadioButtonGroup name="shipSpeed" defaultSelected="usd">
-								<RadioButton value="usd" label="USD"/>
-								<RadioButton value="euro" label="Euro" defaultChecked/>
-								<RadioButton value="mxn" label="MXN" disabled/>
-							</RadioButtonGroup>
-						</div>
-						<div style={styles.container}>
-							<Toggle name="toggleName1" value="toggleValue1" label="toggle"/>
-							<Toggle name="toggleName2" value="toggleValue2" label="disabled toggle" defaultToggled disabled/>
-						</div>
-						<div style={styles.container}>
+							<div style={styles.group}>
+								<div style={styles.container}>
+									<Checkbox name="checkboxName1" value="checkboxValue1" label="checkbox"/>
+									<Checkbox name="checkboxName2" value="checkboxValue2" label="disabled checkbox" disabled/>
+								</div>
+								<div style={styles.container}>
+									<RadioButtonGroup name="shipSpeed" defaultSelected="usd">
+										<RadioButton value="usd" label="USD"/>
+										<RadioButton value="euro" label="Euro" defaultChecked/>
+										<RadioButton value="mxn" label="MXN" disabled/>
+									</RadioButtonGroup>
+								</div>
+								<div style={styles.container}>
+									<Toggle name="toggleName1" value="toggleValue1" label="toggle"/>
+									<Toggle name="toggleName2" value="toggleValue2" label="disabled toggle" defaultToggled disabled/>
+								</div>
+								<div style={styles.container}>
 
-							<Menu style={styles.menu}>
-								<MenuItem primaryText="Maps"/>
-								<MenuItem primaryText="Books"/>
-								<MenuItem primaryText="Flights"/>
-								<MenuItem primaryText="Apps"/>
-							</Menu>
-						</div>
-					</div>
+									<Menu style={styles.menu}>
+										<MenuItem primaryText="Maps"/>
+										<MenuItem primaryText="Books"/>
+										<MenuItem primaryText="Flights"/>
+										<MenuItem primaryText="Apps"/>
+									</Menu>
+								</div>
+							</div>
 
-					<div style={Object.assign(styles.group, {marginTop: 0})}>
-						<div style={styles.container}>
-							<TextField
-								style={styles.textfield}
-								hintText="TextField"
+							<div style={Object.assign(styles.group, {marginTop: 0})}>
+								<div style={styles.container}>
+									<TextField
+										style={styles.textfield}
+										hintText="TextField"
+										/>
+								</div>
+								<div style={styles.container}>
+									<DatePicker
+										hintText="Landscape Dialog"
+										mode="landscape"
+										style={{width: '100%'}}
+										/>
+								</div>
+								<div style={styles.container}>
+									<DropDownMenu menuItems={menuItems} style={{width: '100%'}}/>
+								</div>
+							</div>
+
+							<div style={styles.groupSlider}>
+								<Slider style={styles.slider} name="slider2" defaultValue={0.5}/>
+							</div>
+
+							<div style={styles.group}>
+								<div style={styles.containerCentered}>
+									<FlatButton label="View Dialog" onClick={this.handleOpenable.open.dialog} boxRef="dialog" boxOpen/>
+									<Dialog open={this.state.openComponents.dialog} title="Dialog With Standard Actions" actions={standardActions}>
+										The actions in this window are created from the json that&#39;s passed in.
+									</Dialog>
+								</div>
+							</div>
+
+							<div style={styles.group}>
+								<div style={styles.containerCentered}>
+									<FlatButton
+										onTouchTap={this.handleClickNav}
+										label="View LeftNav"
+										/>
+									<LeftNav ref={this.setRef} refName="leftNav" docked={false} menuItems={menuItemsNav}/>
+								</div>
+							</div>
+
+							<div style={styles.group}>
+								<div style={styles.containerCentered}>
+									<FlatButton
+										onTouchTap={this.handleOpenable.open.snackbar}
+										label="View Snackbar"
+										/>
+									<Snackbar message="This is a snackbar" action="Got It!" open={this.state.openComponents.snackbar} onRequestClose={this.handleOpenable.close.snackbar}/>
+								</div>
+							</div>
+						</ClearFix>
+
+						<ClearFix>
+							<h2>Status for live</h2>
+							{boxesLive}
+						</ClearFix>
+
+						<ClearFix>
+							<h2>Status for campaign</h2>
+							{boxesCampaign}
+						</ClearFix>
+
+						<ClearFix>
+
+							<RaisedButton label="Session Ended Dialog" primary onClick={this.handleOpenable.open.sessionEndedDialog}/>
+							<SessionEndedDialog open={this.state.openComponents.sessionEndedDialog} onRequestClose={this.handleOpenable.close.sessionEndedDialog}/>
+
+						</ClearFix>
+
+						<ClearFix>
+							<AvatarProgress
+								progress={0}
+								icon={<FontIcon className="mdi mdi-android"/>}
+								color={styles.avatarProgressAndro.color}
+								backgroundColor={styles.avatarProgressAndro.backgroundColor}
+								foregroundColor={styles.avatarProgressAndro.foregroundColor}
 								/>
-						</div>
-						<div style={styles.container}>
-							<DatePicker
-								hintText="Landscape Dialog"
-								mode="landscape"
-								style={{width: '100%'}}
+
+							<AvatarProgress
+								style={{marginLeft: '10px'}}
+								progress={12}
+								icon={<FontIcon className="mdi mdi-android"/>}
+								color={styles.avatarProgressAndro.color}
+								backgroundColor={styles.avatarProgressAndro.backgroundColor}
+								foregroundColor={styles.avatarProgressAndro.foregroundColor}
 								/>
-						</div>
-						<div style={styles.container}>
-							<DropDownMenu menuItems={menuItems} style={{width: '100%'}}/>
-						</div>
-					</div>
 
-					<div style={styles.groupSlider}>
-						<Slider style={styles.slider} name="slider2" defaultValue={0.5}/>
-					</div>
-
-					<div style={styles.group}>
-						<div style={styles.containerCentered}>
-							<FlatButton label="View Dialog" onClick={this.handleOpenable.open.dialog} boxRef="dialog" boxOpen/>
-							<Dialog open={this.state.openComponents.dialog} title="Dialog With Standard Actions" actions={standardActions}>
-								The actions in this window are created from the json that&#39;s passed in.
-							</Dialog>
-						</div>
-					</div>
-
-					<div style={styles.group}>
-						<div style={styles.containerCentered}>
-							<FlatButton
-								onTouchTap={this.handleClickNav}
-								label="View LeftNav"
+							<AvatarProgress
+								style={{marginLeft: '10px'}}
+								progress={25}
+								icon={<FontIcon className="mdi mdi-android"/>}
+								color={styles.avatarProgressAndro.color}
+								backgroundColor={styles.avatarProgressAndro.backgroundColor}
+								foregroundColor={styles.avatarProgressAndro.foregroundColor}
 								/>
-							<LeftNav ref={this.setRef} refName="leftNav" docked={false} menuItems={menuItemsNav}/>
-						</div>
-					</div>
 
-					<div style={styles.group}>
-						<div style={styles.containerCentered}>
-							<FlatButton
-								onTouchTap={this.handleOpenable.open.snackbar}
-								label="View Snackbar"
+							<AvatarProgress
+								style={{marginLeft: '10px'}}
+								progress={50}
+								icon={<FontIcon className="mdi mdi-android"/>}
+								color={styles.avatarProgressAndro.color}
+								backgroundColor={styles.avatarProgressAndro.backgroundColor}
+								foregroundColor={styles.avatarProgressAndro.foregroundColor}
 								/>
-							<Snackbar message="This is a snackbar" action="Got It!" open={this.state.openComponents.snackbar} onRequestClose={this.handleOpenable.close.snackbar}/>
-						</div>
-					</div>
-				</ClearFix>
 
-				<ClearFix>
-					<h2>Status for live</h2>
-					{boxesLive}
-				</ClearFix>
-
-				<ClearFix>
-					<h2>Status for campaign</h2>
-					{boxesCampaign}
-				</ClearFix>
-
-				<ClearFix>
-
-					<RaisedButton label="Session Ended Dialog" primary onClick={this.handleOpenable.open.sessionEndedDialog}/>
-					<SessionEndedDialog open={this.state.openComponents.sessionEndedDialog} onRequestClose={this.handleOpenable.close.sessionEndedDialog}/>
-
-				</ClearFix>
-
-				<ClearFix>
-					<AvatarProgress
-						progress={0}
-						icon={<FontIcon className="mdi mdi-android"/>}
-						color={styles.avatarProgressAndro.color}
-						backgroundColor={styles.avatarProgressAndro.backgroundColor}
-						foregroundColor={styles.avatarProgressAndro.foregroundColor}
-						/>
-
-					<AvatarProgress
-						style={{marginLeft: '10px'}}
-						progress={12}
-						icon={<FontIcon className="mdi mdi-android"/>}
-						color={styles.avatarProgressAndro.color}
-						backgroundColor={styles.avatarProgressAndro.backgroundColor}
-						foregroundColor={styles.avatarProgressAndro.foregroundColor}
-						/>
-
-					<AvatarProgress
-						style={{marginLeft: '10px'}}
-						progress={25}
-						icon={<FontIcon className="mdi mdi-android"/>}
-						color={styles.avatarProgressAndro.color}
-						backgroundColor={styles.avatarProgressAndro.backgroundColor}
-						foregroundColor={styles.avatarProgressAndro.foregroundColor}
-						/>
-
-					<AvatarProgress
-						style={{marginLeft: '10px'}}
-						progress={50}
-						icon={<FontIcon className="mdi mdi-android"/>}
-						color={styles.avatarProgressAndro.color}
-						backgroundColor={styles.avatarProgressAndro.backgroundColor}
-						foregroundColor={styles.avatarProgressAndro.foregroundColor}
-						/>
-
-					<AvatarProgress
-						style={{marginLeft: '10px'}}
-						progress={75}
-						icon={<FontIcon className="mdi mdi-android"/>}
-						color={styles.avatarProgressAndro.color}
-						backgroundColor={styles.avatarProgressAndro.backgroundColor}
-						foregroundColor={styles.avatarProgressAndro.foregroundColor}
-						/>
-
-					<AvatarProgress
-						style={{marginLeft: '10px'}}
-						progress={100}
-						icon={<FontIcon className="mdi mdi-android"/>}
-						color={styles.avatarProgressAndro.color}
-						backgroundColor={styles.avatarProgressAndro.backgroundColor}
-						foregroundColor={styles.avatarProgressAndro.foregroundColor}
-						/>
-				</ClearFix>
-
-				<ClearFix>
-
-					<Paper style={styles.spacing}>
-
-						<h2>Results</h2>
-
-						<TestResultsBox results={results}/>
-
-						<br/>
-
-						<div style={styles.center} >
-							<FlatButton
-								label="Start new campaign"
-								primary
+							<AvatarProgress
+								style={{marginLeft: '10px'}}
+								progress={75}
+								icon={<FontIcon className="mdi mdi-android"/>}
+								color={styles.avatarProgressAndro.color}
+								backgroundColor={styles.avatarProgressAndro.backgroundColor}
+								foregroundColor={styles.avatarProgressAndro.foregroundColor}
 								/>
-						</div>
 
-					</Paper>
+							<AvatarProgress
+								style={{marginLeft: '10px'}}
+								progress={100}
+								icon={<FontIcon className="mdi mdi-android"/>}
+								color={styles.avatarProgressAndro.color}
+								backgroundColor={styles.avatarProgressAndro.backgroundColor}
+								foregroundColor={styles.avatarProgressAndro.foregroundColor}
+								/>
+						</ClearFix>
 
-				</ClearFix>
+						<ClearFix>
 
-				<ClearFix>
+							<Paper style={styles.spacing}>
 
-					<Paper style={styles.spacing} zDepth={0} >
+								<h2>Results</h2>
 
-						<FlatButton
-							label="Add log line"
-							primary
-							onClick={this.handleClickAddLogBox}
-							/>
+								<TestResultsBox results={results}/>
 
-						<h2>LogBox</h2>
+								<br/>
 
-						{boxesLogBox} <br/>
-						<div style={{width: '547px'}}>
-							<LogBox>
-							{logBoxRows}
-							</LogBox>
-						</div>
+								<div style={styles.center} >
+									<FlatButton
+										label="Start new campaign"
+										primary
+										/>
+								</div>
 
-					</Paper>
+							</Paper>
 
-				</ClearFix>
+						</ClearFix>
 
-				<ClearFix>
+						<ClearFix>
 
-					<h2>Live Sessions</h2>
+							<Paper style={styles.spacing} zDepth={0} >
 
-					{avmsRendered}
+								<FlatButton
+									label="Add log line"
+									primary
+									onClick={this.handleClickAddLogBox}
+									/>
 
-				</ClearFix>
+								<h2>LogBox</h2>
 
-				<ClearFix>
+								{boxesLogBox} <br/>
+								<div style={{width: '547px'}}>
+									<LogBox>
+									{logBoxRows}
+									</LogBox>
+								</div>
 
-					<h2>Info Boxes</h2>
+							</Paper>
 
-					{infoBoxes}
+						</ClearFix>
 
-				</ClearFix>
+						<ClearFix>
 
-			</div>);
+							<h2>Live Sessions</h2>
+
+							{avmsRendered}
+
+						</ClearFix>
+
+						<ClearFix>
+
+							<h2>Info Boxes</h2>
+
+							{infoBoxes}
+
+						</ClearFix>
+					</div>
+			)}
+			</div>
+		);
 	}
 
 	handleClickAddLogBox(e) {

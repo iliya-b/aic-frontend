@@ -66,7 +66,7 @@ const LiveList = class extends React.Component {
 
 	render() {
 		const startButtons = variants.map(variant => {
-			const handleClick = this._onStartSession.bind(this, variant);
+			const handleClick = this._onStartSession.bind(this, variant.id);
 			return (
 				<RaisedButton
 					key={variant.id}

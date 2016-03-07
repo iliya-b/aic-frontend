@@ -21,6 +21,7 @@ const {
 	LiveScreen,
 	LiveSensors,
 	AreaStatus,
+	LiveToolbox,
 	LogBox,
 	LogBoxRow
 } = require('app/components');
@@ -28,7 +29,7 @@ const {LiveStore} = require('app/stores');
 const {LiveActions} = require('app/actions');
 
 const availableLiveActions = ['test', 'check', 'start', 'load', 'connect', 'close', 'setState', 'check', 'close', 'restart'];
-
+let avmId;
 const LiveSession = class extends React.Component {
 
 	constructor(props) {
@@ -38,6 +39,9 @@ const LiveSession = class extends React.Component {
 		availableLiveActions.map(actionName => {
 			this.handleOnLiveActions[actionName] = this.handleOnLiveAction.bind(this, actionName);
 		});
+		this.handleBatteryChange = this.handleBatteryChange.bind(this);
+		this.handleClickGPS = this.handleClickGPS.bind(this);
+		this.handleChangeRotation = this.handleChangeRotation.bind(this);
 	}
 
 	render() {
@@ -186,17 +190,21 @@ const LiveSession = class extends React.Component {
 
 						{this.state.live.status === 'LIVE_STATUS_CONNECTED' ? (
 							<div>
-								<LiveSensors onInputFocus={this.handleOnInputFocus} onInputBlur={this.handleOnInputBlur} avmId={this.state.liveInfo.avm_id}/>
-								<br/>
-								<Paper style={style.paperCenter}>
-									<FlatButton
-										label="Stop Live"
-										title="Stop Live"
-										primary
-										disabled={this.state.live.status === 'LIVE_STATUS_STOPPING'}
-										onTouchTap={this.handleOnLiveActions.close}
-										/>
-								</Paper>
+								<LiveToolbox
+									onInputFocus={this.handleOnInputFocus}
+									onInputBlur={this.handleOnInputBlur}
+									avmId={this.state.liveInfo.avm_id}
+									// battery
+									onChangeBattery={this.handleBatteryChange}
+									batteryValue={this.state.live.battery}
+									// Terminate
+									onClickTerminate={this.handleStopVM}
+									// GPS
+									onClickGPS={this.handleClickGPS}
+									// Rotation
+									rotation={this.state.live.screen.rotation}
+									onChangeRotation={this.handleChangeRotation}
+									/>
 							</div>
 						) : null}
 
@@ -290,13 +298,40 @@ const LiveSession = class extends React.Component {
 		window.rfb.get_mouse().set_focused(true);
 	}
 
+	handleBatteryChange(e, value) {
+		e.preventDefault();
+		LiveActions.setSensorBattery(avmId, value);
+	}
+
+	handleChangeRotation(e) {
+		e.preventDefault();
+		const newRotationName = this.state.live.rotationSets[this.state.live.screen.rotation].next;
+		const newRotationValue = this.state.live.rotationSets[newRotationName];
+		LiveActions.setSensorAccelerometer(avmId, newRotationValue.x, newRotationValue.y, newRotationValue.z, newRotationName);
+
+		setTimeout(() => {
+			LiveActions.setDelayedRotation();
+		}, 1500);
+	}
+
+	handleClickGPS(e, lat, lon) {
+		// e.preventDefault();
+		// const lat = parseFloat(this.lat.getValue());
+		// const lon = parseFloat(this.lon.getValue());
+		LiveActions.setSensorLocation(avmId, lat, lon);
+	}
+
+	handleStopVM() {
+		LiveActions.stop(avmId);
+	}
+
 	componentDidMount() {
 		// debug('componentDidMount');
 		// const projectId = AppUtils.getProjectIdFromRouter(this.context.router);
 		// const avmId = AppUtils.getAVMIdFromRouter(this.context.router);
 		debug('this.props.params', this.props.params);
 		const projectId = this.props.params.projectId;
-		const avmId = this.props.params.androId;
+		avmId = this.props.params.androId;
 		this.unsubscribe = LiveStore.listen(this._onStateChange);
 		LiveActions.liveReset();
 		LiveActions.setProjectId(projectId);

@@ -139,3 +139,25 @@ body {
   .generate-chart-keyframes(@n, (@i + 1));
 }
 
+
+
+
+
+
+.hideToBottom-enter {
+  transform: translate(800px, 0);
+}
+
+.hideToBottom-enter.hideToBottom-enter-active {
+  transform: translate(0, 0);
+  transition: transform 1000ms linear;
+}
+
+.hideToBottom-leave {
+  transform: translate(0, 0);
+}
+
+.hideToBottom-leave.hideToBottom-leave-active {
+  transform: translate(-800px, 0);
+  transition: transform 1000ms linear;
+}

@@ -13,6 +13,7 @@ module.exports = {
 	/* Live */
 	LiveSensors: require('./project/live-sensors'),
 	LiveScreen: require('./project/live-screen'),
+	LiveToolbox: require('./project/live-toolbox'),
 	MachineCard: require('./project/machine-card'),
 	MachineCardLive: require('./project/machine-card-live'),
 	LiveMachineList: require('./project/live-machine-list'),
