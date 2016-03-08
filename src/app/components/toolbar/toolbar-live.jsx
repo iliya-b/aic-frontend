@@ -10,6 +10,11 @@ import FontIcon from 'material-ui/lib/font-icon';
 import IconButton from 'material-ui/lib/icon-button';
 
 // APP
+const icons = {
+	kitkat: require('app/components/icons/kitkat'),
+	lollipop: require('app/components/icons/lollipop')
+};
+
 const ToolbarAPK = class extends React.Component {
 
 	constructor(props) {
@@ -48,10 +53,14 @@ const ToolbarAPK = class extends React.Component {
 		if (this.props.variants.length) {
 			this.props.variants.map((v, i) => {
 				const handleClickStartVariant = this.handleClickStart.bind(this, v.id);
+				const icon = icons[v.name]({
+					color: 'rgba(0, 0, 0, 0.4)',
+					hoverColor: 'rgba(0, 0, 0, 0.87)'
+				});
 				buttons.push(
 					// <img key={i}  style={{height: 30}} src={`/images/android-${v.name}.png`}/>
 					<IconButton key={i} tooltip={`Start ${v.name}`} style={styles.button} onClick={handleClickStartVariant}>
-						<FontIcon className="mdi mdi-android" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+						{icon}
 					</IconButton>
 				);
 			});

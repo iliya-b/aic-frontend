@@ -33,7 +33,8 @@ const BackendObjects = {
 	},
 	OBJSCHEMA_LIVE: {type: 'object', strict: true,
 		properties: {
-			variant: {type: 'string', optional: true}
+			image: {type: 'string'},
+			project_id: {type: 'string'} // eslint-disable-line camelcase
 		}
 	},
 	OBJSCHEMA_SENSOR_BATTERY: {type: 'object', strict: true,
@@ -488,11 +489,12 @@ const BackendAPI = {
 		return this.apiCallAuth(options);
 	},
 
-	liveStart(variant) {
+	liveStart(variant, projectId) {
 		// TODO: should not be raw data
 		const data = new FormData();
 		// data.append('variant', 'opengl');
-		data.append('variant', variant);
+		data.append('image', variant);
+		data.append('project_id', 'default');
 		const options = {
 			pathname: BackendObjects.URLPATH_LIVE,
 			method: 'POST',

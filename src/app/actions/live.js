@@ -47,9 +47,9 @@ LiveActions.setProjectId.listen(function () {
 	});
 });
 
-LiveActions.start.listen(function (variant) {
+LiveActions.start.listen(function (variant, projectId) {
 	debug('start called');
-	BackendAPI.liveStart(variant)
+	BackendAPI.liveStart(variant, projectId)
 	.then(res => {
 		debug('start back');
 		debug(arguments);

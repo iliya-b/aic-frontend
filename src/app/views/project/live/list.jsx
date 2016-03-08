@@ -24,7 +24,8 @@ import ToolbarLive from 'app/components/toolbar/toolbar-live';
 
 let projectId;
 
-const kitkat = 'R3_CRB01-00-20160222-141328';
+// const kitkat = 'R3_CRB01-00-20160222-141328';
+const kitkat = 'R3_CRB01-00-20160223-154224';
 // const kitkat = 'opengl';
 const lollipop = 'lollipop';
 const variants = [{id: kitkat, name: 'kitkat'}, {id: lollipop, name: 'lollipop'}];
@@ -48,7 +49,7 @@ const LiveList = class extends React.Component {
 	// }
 
 	_onStartSession(variant) {
-		LiveActions.start(variant);
+		LiveActions.start(variant, projectId);
 		PollingActions.liveList();
 	}
 
@@ -67,20 +68,20 @@ const LiveList = class extends React.Component {
 	}
 
 	render() {
-		const startButtons = variants.map(variant => {
-			const handleClick = this._onStartSession.bind(this, variant.id);
-			return (
-				<RaisedButton
-					key={variant.id}
-					linkButton
-					primary
-					label={`Start new session ${variant.name}`}
-					title={`Start new session ${variant.name}`}
-					className={`btStartSession${AppUtils.capitalize(variant.name)}`}
-					onClick={handleClick}
-					/>
-			);
-		});
+		// const startButtons = variants.map(variant => {
+		// 	const handleClick = this._onStartSession.bind(this, variant.id);
+		// 	return (
+		// 		<RaisedButton
+		// 			key={variant.id}
+		// 			linkButton
+		// 			primary
+		// 			label={`Start new session ${variant.name}`}
+		// 			title={`Start new session ${variant.name}`}
+		// 			className={`btStartSession${AppUtils.capitalize(variant.name)}`}
+		// 			onClick={handleClick}
+		// 			/>
+		// 	);
+		// });
 		return (
 			<div>
 				<ToolbarLive
