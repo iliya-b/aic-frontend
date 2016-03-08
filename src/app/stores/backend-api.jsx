@@ -60,8 +60,147 @@ const BackendObjects = {
 			filename: {type: 'string', rules: ['trim']},
 			start: {type: 'boolean'}
 		}
+	},
+	OBJSCHEMA_SENSOR: {
+		accelerometer: {
+			type: 'object',
+			strict: true,
+			properties: {
+				x: {type: 'number'},
+				y: {type: 'number'},
+				z: {type: 'number'}
+			}
+		},
+		battery: {
+			type: 'object',
+			strict: true,
+			properties: {
+				level_percent: {type: 'number', min: 0, max: 100}, // eslint-disable-line camelcase
+				ac_online: {type: 'integer', min: 0, max: 1} // eslint-disable-line camelcase
+			}
+		},
+		gps: {
+			type: 'object',
+			strict: true,
+			properties: {
+				latitude: {type: 'number'},
+				longitude: {type: 'number'}
+			}
+		},
+		gravity: {
+			type: 'object',
+			strict: true,
+			properties: {
+				x: {type: 'number'},
+				y: {type: 'number'},
+				z: {type: 'number'}
+			}
+		},
+		gsm: {
+			type: 'object',
+			strict: true,
+			properties: {
+				action_type: { // eslint-disable-line camelcase
+					enum: ['RECEIVE_CALL', 'ACCEPT_CALL', 'CANCEL_CALL', 'HOLD_CALL', 'RECEIVE_SMS', 'SET_SIGNAL', 'SET_NETWORK_TYPE', 'SET_NETWORK_REGISTRATION']
+				},
+				phone_number: {type: 'string'}, // eslint-disable-line camelcase
+				sms_text: {type: 'string'}, // eslint-disable-line camelcase
+				signal_strength: {enum: [0, 1, 2, 3, 4]}, // eslint-disable-line camelcase
+				network: {enum: ['umts', 'lte', 'gprs', 'gsm', 'hspa', 'edge', 'cdma', 'evdo', 'hsdpa', 'hsupa', 'full']},
+				registration: {enum: ['home', 'denied', 'searching', 'roaming', 'none']}
+			}
+		},
+		gyroscope: {
+			type: 'object',
+			strict: true,
+			properties: {
+				azimuth: {type: 'number'},
+				pitch: {type: 'number'},
+				roll: {type: 'number'}
+			}
+		},
+		light: {
+			type: 'object',
+			strict: true,
+			properties: {
+				light: {type: 'number'}
+			}
+		},
+		linear_acc: { // eslint-disable-line camelcase
+			type: 'object',
+			strict: true,
+			properties: {
+				x: {type: 'number'},
+				y: {type: 'number'},
+				z: {type: 'number'}
+			}
+		},
+		magnetometer: {
+			type: 'object',
+			strict: true,
+			properties: {
+				x: {type: 'number'},
+				y: {type: 'number'},
+				z: {type: 'number'}
+			}
+		},
+		orientation: {
+			type: 'object',
+			strict: true,
+			properties: {
+				azimuth: {type: 'number'},
+				pitch: {type: 'number'},
+				roll: {type: 'number'}
+			}
+		},
+		pressure: {
+			type: 'object',
+			strict: true,
+			properties: {
+				pressure: {type: 'number'}
+			}
+		},
+		proximity: {
+			type: 'object',
+			strict: true,
+			properties: {
+				distance: {type: 'number'}
+			}
+		},
+		// TODO: senza does not have schema
+		recording: {
+			type: 'object',
+			strict: true,
+			properties: {
+				filename: {type: 'string'},
+				start: {type: 'integer', min: 0, max: 1}
+			}
+		},
+		relative_humidity: { // eslint-disable-line camelcase
+			type: 'object',
+			strict: true,
+			properties: {
+				relative_humidity: {type: 'number'} // eslint-disable-line camelcase
+			}
+		},
+		// TODO: remove system?
+		// TODO: senza does not have schema
+		system: {
+			type: 'object',
+			strict: true,
+			properties: {
+				uid: {type: 'string'},
+				command: {type: 'string'}
+			}
+		},
+		temperature: {
+			type: 'object',
+			strict: true,
+			properties: {
+				temperature: {type: 'number'}
+			}
+		}
 	}
-
 };
 
 // function checkStatus(response) {
@@ -430,6 +569,19 @@ const BackendAPI = {
 			schema: BackendObjects.OBJSCHEMA_SENSOR_RECORDING
 		};
 		return this.sensor(data, 'recording', liveId);
+	},
+
+	setSensor(liveId, sensor, payload) {
+		const data = {
+			data: payload,
+			schema: BackendObjects.OBJSCHEMA_SENSOR[sensor]
+		};
+		const options = {
+			pathname: sprintf(BackendObjects.URLPATH_LIVE_SENSOR, sensor, liveId),
+			method: 'POST',
+			data
+		};
+		return this.apiCallAuth(options);
 	},
 
 	recordingStart(filename, liveId) {

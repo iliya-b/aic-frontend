@@ -63,10 +63,11 @@ const ToolbarGPS = class extends React.Component {
 	}
 
 	handleClickGPS(e) {
-		const lat = parseFloat(this.lat.getValue());
-		const lon = parseFloat(this.lon.getValue());
-		console.log('e, lat, lon');
-		this.props.onClickGPS(e, lat, lon);
+		const payload = {
+			lat: parseFloat(this.lat.getValue()),
+			lon: parseFloat(this.lon.getValue())
+		};
+		this.props.onChange(e, payload);
 	}
 };
 
@@ -77,7 +78,10 @@ ToolbarGPS.contextTypes = {
 
 ToolbarGPS.propTypes = {
 	onClickBack: React.PropTypes.func,
-	style: React.PropTypes.object
+	style: React.PropTypes.object,
+	onChange: React.PropTypes.func,
+	onInputBlur: React.PropTypes.func,
+	onInputFocus: React.PropTypes.func
 };
 
 module.exports = ToolbarGPS;

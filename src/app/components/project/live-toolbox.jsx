@@ -12,19 +12,6 @@ import ToolbarCamera from 'app/components/toolbar/toolbar-camera';
 import ToolbarGSM from 'app/components/toolbar/toolbar-gsm';
 import ToolbarAPKs from 'app/components/toolbar/toolbar-apks';
 import ToolbarError from 'app/components/toolbar/toolbar-error';
-import ToolbarGPS from 'app/components/toolbar/toolbar-gps';
-import ToolbarBattery from 'app/components/toolbar/toolbar-battery';
-import ToolbarAccelerometer from 'app/components/toolbar/toolbar-accelerometer';
-import ToolbarLight from 'app/components/toolbar/toolbar-light';
-import ToolbarGravity from 'app/components/toolbar/toolbar-gravity';
-import ToolbarGyroscope from 'app/components/toolbar/toolbar-gyroscope';
-import ToolbarLinearAcc from 'app/components/toolbar/toolbar-linearacc';
-import ToolbarMagnetometer from 'app/components/toolbar/toolbar-magnetometer';
-import ToolbarOrientation from 'app/components/toolbar/toolbar-orientation';
-import ToolbarPressure from 'app/components/toolbar/toolbar-pressure';
-import ToolbarProximity from 'app/components/toolbar/toolbar-proximity';
-import ToolbarHumidity from 'app/components/toolbar/toolbar-humidity';
-import ToolbarTemperature from 'app/components/toolbar/toolbar-temperature';
 
 // Android toolbar
 const TOOLBAR_ANDROID = 'android';
@@ -49,6 +36,22 @@ const TOOLBAR_PROXIMITY = 'proximity';
 const TOOLBAR_HUMIDITY = 'humidity';
 const TOOLBAR_TEMPERATURE = 'temperature';
 const TOOLBAR_SENSORS_ORDER = [TOOLBAR_GPS, TOOLBAR_BATTERY, TOOLBAR_ACCELEROMETER, TOOLBAR_LIGHT, TOOLBAR_GRAVITY, TOOLBAR_GYROSCOPE, TOOLBAR_LINEARACC, TOOLBAR_MAGNETOMETER, TOOLBAR_ORIENTATION, TOOLBAR_PRESSURE, TOOLBAR_PROXIMITY, TOOLBAR_HUMIDITY, TOOLBAR_TEMPERATURE];
+
+// NOFIX: can not put in a map because browserify will then not resolve the requires
+const toolbars = {};
+toolbars.gps = require('app/components/toolbar/toolbar-gps');
+toolbars.battery = require('app/components/toolbar/toolbar-battery');
+toolbars.accelerometer = require('app/components/toolbar/toolbar-accelerometer');
+toolbars.light = require('app/components/toolbar/toolbar-light');
+toolbars.gravity = require('app/components/toolbar/toolbar-gravity');
+toolbars.gyroscope = require('app/components/toolbar/toolbar-gyroscope');
+toolbars.linearacc = require('app/components/toolbar/toolbar-linearacc');
+toolbars.magnetometer = require('app/components/toolbar/toolbar-magnetometer');
+toolbars.orientation = require('app/components/toolbar/toolbar-orientation');
+toolbars.pressure = require('app/components/toolbar/toolbar-pressure');
+toolbars.proximity = require('app/components/toolbar/toolbar-proximity');
+toolbars.humidity = require('app/components/toolbar/toolbar-humidity');
+toolbars.temperature = require('app/components/toolbar/toolbar-temperature');
 
 const LiveToolbox = class extends React.Component {
 
@@ -87,6 +90,11 @@ const LiveToolbox = class extends React.Component {
 		this.setState({activeSecondBar: toolbar});
 	}
 
+	handleChangeSensors(sensorType, e, payload) {
+		console.warn(arguments);
+		this.props.onChangeSensor(sensorType, e, payload);
+	}
+
 	render() {
 		const styles = {
 			toolbar: {
@@ -103,6 +111,8 @@ const LiveToolbox = class extends React.Component {
 				// position: 'relative'
 			}
 		};
+
+		// Build the main toolbar
 		let currentBar = <ToolbarError/>;
 
 		switch (this.state.activeBar) {
@@ -156,53 +166,24 @@ const LiveToolbox = class extends React.Component {
 				break;
 		}
 
-		let currentSecondBar = <ToolbarError/>;
+		// Build second toolbar (when clicking on the sensors for example)
+		let currentSecondBar;
 
-		switch (this.state.activeSecondBar) {
-			case TOOLBAR_NONE:
-				currentSecondBar = null;
-				break;
-			case TOOLBAR_GPS:
-				currentSecondBar = (
-					<ToolbarGPS
-						style={styles.secondToolbar}
-						onClickGPS={this.props.onClickGPS}
-						onInputFocus={this.props.onInputFocus}
-						onInputBlur={this.props.onInputBlur}
-						/>
-				);
-				break;
-			case TOOLBAR_BATTERY:
-				currentSecondBar = (
-					<ToolbarBattery
-						style={styles.secondToolbar}
-						batteryValue={this.props.batteryValue}
-						onChangeBattery={this.props.onChangeBattery}
-						/>
-				);
-				break;
-			case TOOLBAR_ACCELEROMETER:
-				currentSecondBar = (
-					<ToolbarAccelerometer
-						style={styles.secondToolbar}
-						rotation={this.props.rotation}
-						onChangeRotation={this.props.onChangeRotation}
-						/>
-				);
-				break;
-			case TOOLBAR_LIGHT: currentSecondBar = <ToolbarLight style={styles.secondToolbar}/>; break;
-			case TOOLBAR_GRAVITY: currentSecondBar = <ToolbarGravity style={styles.secondToolbar}/>; break;
-			case TOOLBAR_GYROSCOPE: currentSecondBar = <ToolbarGyroscope style={styles.secondToolbar}/>; break;
-			case TOOLBAR_LINEARACC: currentSecondBar = <ToolbarLinearAcc style={styles.secondToolbar}/>; break;
-			case TOOLBAR_MAGNETOMETER: currentSecondBar = <ToolbarMagnetometer style={styles.secondToolbar}/>; break;
-			case TOOLBAR_ORIENTATION: currentSecondBar = <ToolbarOrientation style={styles.secondToolbar}/>; break;
-			case TOOLBAR_PRESSURE: currentSecondBar = <ToolbarPressure style={styles.secondToolbar}/>; break;
-			case TOOLBAR_PROXIMITY: currentSecondBar = <ToolbarProximity style={styles.secondToolbar}/>; break;
-			case TOOLBAR_HUMIDITY: currentSecondBar = <ToolbarHumidity style={styles.secondToolbar}/>; break;
-			case TOOLBAR_TEMPERATURE: currentSecondBar = <ToolbarTemperature style={styles.secondToolbar}/>; break;
-			default:
-				debug('could not find second toolbar', this.state.activeSecondBar);
-				break;
+		if (this.state.activeSecondBar === TOOLBAR_NONE) {
+			currentSecondBar = null;
+		} else if (TOOLBAR_SENSORS_ORDER.indexOf(this.state.activeSecondBar) === -1) {
+			currentSecondBar = <ToolbarError/>;
+			debug('could not find second toolbar', this.state.activeSecondBar);
+		} else {
+			const onChangeSensorBinded = this.handleChangeSensors.bind(this, this.state.activeSecondBar);
+			const props = {
+				style: styles.secondToolbar,
+				onInputFocus: this.props.onInputFocus,
+				onInputBlur: this.props.onInputBlur,
+				onChange: onChangeSensorBinded
+			};
+			props[this.state.activeSecondBar] = this.props.sensorsValues[this.state.activeSecondBar];
+			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
 		}
 
 		// <ReactCSSTransitionGroup transitionName="hideToBottom" transitionEnterTimeout={1200} transitionLeaveTimeout={1200}>
@@ -220,6 +201,13 @@ const LiveToolbox = class extends React.Component {
 LiveToolbox.contextTypes = {
 	muiTheme: React.PropTypes.object,
 	router: React.PropTypes.object
+};
+
+LiveToolbox.propTypes = {
+	onChangeSensor: React.PropTypes.func,
+	onInputFocus: React.PropTypes.func,
+	onInputBlur: React.PropTypes.func,
+	sensorsValues: React.PropTypes.object
 };
 
 module.exports = LiveToolbox;

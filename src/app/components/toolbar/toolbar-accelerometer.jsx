@@ -8,7 +8,25 @@ import Paper from 'material-ui/lib/paper';
 import TogglableIcon from 'app/components/shared/togglable-icon';
 
 // APP
-const ToolbarGPS = class extends React.Component {
+
+const rotationSets = {
+	horizontal: {x: 0, y: 5.9, z: 0},
+	vertical: {x: 5.9, y: 0, z: 0}
+};
+
+const oposite = {
+	horizontal: 'vertical',
+	vertical: 'horizontal'
+};
+
+function isRotation(set, rotation) {
+	return set.x === rotationSets[rotation].x && set.y === rotationSets[rotation].y && set.z === rotationSets[rotation].z;
+}
+
+const ToolbarAccelerometer = class extends React.Component {
+	onChange(rotationName, e) {
+		this.props.onChange(e, rotationSets[oposite[rotationName]]);
+	}
 
 	render() {
 		const styles = {
@@ -53,33 +71,40 @@ const ToolbarGPS = class extends React.Component {
 		};
 
 		// TODO: improve this if
-		if (this.props.rotation === 'horizontal') {
+		let rotationName = '';
+		if (isRotation(this.props.accelerometer, 'horizontal')) {
 			styles.sensorIconRotation = styles.sensorIconRotationHorizontal;
-		} else if (this.props.rotation === 'vertical') {
+			rotationName = 'horizontal';
+		} else if (isRotation(this.props.accelerometer, 'vertical')) {
 			styles.sensorIconRotation = styles.sensorIconRotationVertical;
+			rotationName = 'vertical';
 		} else {
 			styles.sensorIconRotation = styles.sensorIcon;
 		}
+		const onChange = this.onChange.bind(this, rotationName);
 		return (
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-screen-rotation" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<TogglableIcon style={styles.sensorIconRotation} isOn iconName="screen-rotation" onClick={this.props.onChangeRotation}/>
-				<span>{this.props.rotation}</span>
+				<TogglableIcon style={styles.sensorIconRotation} isOn iconName="screen-rotation" onClick={onChange}/>
+				<span>{rotationName}</span>
 			</Paper>
 		);
 	}
 };
 
-ToolbarGPS.contextTypes = {
+ToolbarAccelerometer.contextTypes = {
 	muiTheme: React.PropTypes.object,
 	router: React.PropTypes.object
 };
 
-ToolbarGPS.propTypes = {
+ToolbarAccelerometer.propTypes = {
 	onClickBack: React.PropTypes.func,
 	style: React.PropTypes.object,
-	rotation: React.PropTypes.string
+	onChange: React.PropTypes.func,
+	onInputBlur: React.PropTypes.func,
+	onInputFocus: React.PropTypes.func,
+	accelerometer: React.PropTypes.object
 };
 
-module.exports = ToolbarGPS;
+module.exports = ToolbarAccelerometer;

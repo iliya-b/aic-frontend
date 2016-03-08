@@ -26,6 +26,7 @@ const LiveActions = Reflux.createActions({
 	liveStart: {children: ['completed', 'failure']},
 	liveConnect: {children: ['completed', 'failure']},
 	liveStop: {asyncResult: true},
+	setSensor: {asyncResult: true},
 	setSensorBattery: {asyncResult: true},
 	setSensorAccelerometer: {asyncResult: true},
 	setSensorLocation: {asyncResult: true},
@@ -190,6 +191,12 @@ LiveActions.setSensorAccelerometer.listen(function (liveId, x, y, z) {
 LiveActions.setSensorLocation.listen(function (projectId, lat, lon) {
 	const token = '';
 	BackendAPI.sensorLocation(token, projectId, lat, lon, res => {
+		this.completed(res);
+	});
+});
+
+LiveActions.setSensor.listen(function (avmId, sensor, payload) {
+	BackendAPI.setSensor(avmId, sensor, payload, res => {
 		this.completed(res);
 	});
 });

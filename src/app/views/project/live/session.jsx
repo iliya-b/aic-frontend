@@ -19,7 +19,6 @@ const debug = require('debug')('AiC:Views:Project:Live:Session');
 // APP
 const {
 	LiveScreen,
-	LiveSensors,
 	AreaStatus,
 	LiveToolbox,
 	LogBox,
@@ -42,6 +41,7 @@ const LiveSession = class extends React.Component {
 		this.handleBatteryChange = this.handleBatteryChange.bind(this);
 		this.handleClickGPS = this.handleClickGPS.bind(this);
 		this.handleChangeRotation = this.handleChangeRotation.bind(this);
+		this.handleChangeSensor = this.handleChangeSensor.bind(this);
 	}
 
 	render() {
@@ -194,16 +194,46 @@ const LiveSession = class extends React.Component {
 									onInputFocus={this.handleOnInputFocus}
 									onInputBlur={this.handleOnInputBlur}
 									avmId={this.state.liveInfo.avm_id}
-									// battery
+									// Terminate //
+									onClickTerminate={this.handleStopVM}
+									// Sensors //
+									onChangeSensor={this.handleChangeSensor}
+									sensorsValues={this.state.live.sensors}
+									// Battery
 									onChangeBattery={this.handleBatteryChange}
 									batteryValue={this.state.live.battery}
-									// Terminate
-									onClickTerminate={this.handleStopVM}
 									// GPS
 									onClickGPS={this.handleClickGPS}
 									// Rotation
 									rotation={this.state.live.screen.rotation}
 									onChangeRotation={this.handleChangeRotation}
+									// Light
+									light={this.state.live.light}
+									onChangeLight={this.handleChangeLight}
+									// Gravity
+									gravity={this.state.live.gravity}
+									onChangeGravity={this.handleChangeGravity}
+									// Gyroscope
+									// Linear Acceleration
+									// Magnetic
+									// Orientation
+									// Pressure
+									// Proximity
+									// Humidity
+									// Temperature
+									// const TOOLBAR_GPS = 'gps';
+									// const TOOLBAR_BATTERY = 'battery';
+									// const TOOLBAR_ACCELEROMETER = 'accelerometer';
+									// const TOOLBAR_LIGHT = 'light';
+									// const TOOLBAR_GRAVITY = 'gravity';
+									// const TOOLBAR_GYROSCOPE = 'gyroscope';
+									// const TOOLBAR_LINEARACC = 'linearacc';
+									// const TOOLBAR_MAGNETOMETER = 'magnetometer';
+									// const TOOLBAR_ORIENTATION = 'orientation';
+									// const TOOLBAR_PRESSURE = 'pressure';
+									// const TOOLBAR_PROXIMITY = 'proximity';
+									// const TOOLBAR_HUMIDITY = 'humidity';
+									// const TOOLBAR_TEMPERATURE = 'temperature';
 									/>
 							</div>
 						) : null}
@@ -296,6 +326,12 @@ const LiveSession = class extends React.Component {
 		}
 		window.rfb.get_keyboard().set_focused(true);
 		window.rfb.get_mouse().set_focused(true);
+	}
+
+	handleChangeSensor(sensor, e, payload) {
+		debug('handleChangeSensor', arguments);
+		debug('handleChangeSensor', e, sensor, payload);
+		LiveActions.setSensor(avmId, sensor, payload);
 	}
 
 	handleBatteryChange(e, value) {

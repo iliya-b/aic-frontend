@@ -13,6 +13,22 @@ import GravityIcon from 'app/components/icons/gravity';
 
 const ToolbarGPS = class extends React.Component {
 
+	constructor(props) {
+		super(props);
+		this.setRefX = c => this.x = c;
+		this.setRefY = c => this.y = c;
+		this.setRefZ = c => this.z = c;
+	}
+
+	onChange(e) {
+		const payload = {
+			x: parseFloat(this.x.getValue()),
+			y: parseFloat(this.y.getValue()),
+			z: parseFloat(this.z.getValue())
+		};
+		this.props.onChange(e, payload);
+	}
+
 	render() {
 		const styles = {
 			button: {
@@ -40,19 +56,20 @@ const ToolbarGPS = class extends React.Component {
 				float: 'left'
 			}
 		};
+		const onChange = this.onChange.bind(this);
 		return (
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
 				<GravityIcon style={styles.icon} color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<TextField style={styles.items} ref={this.setRefLat} hintText="x" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
-				<TextField style={styles.items} ref={this.setRefLon} hintText="y" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
-				<TextField style={styles.items} ref={this.setRefLon} hintText="z" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<TextField style={styles.items} ref={this.setRefX} hintText="x" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<TextField style={styles.items} ref={this.setRefY} hintText="y" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<TextField style={styles.items} ref={this.setRefZ} hintText="z" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<RaisedButton
 					label="Submit"
 					title="Submit"
 					href="#"
 					secondary
-					onClick={this.handleLocationSubmit}
+					onClick={onChange}
 					style={styles.buttonSubmit}
 					/>
 			</Paper>
@@ -67,7 +84,10 @@ ToolbarGPS.contextTypes = {
 
 ToolbarGPS.propTypes = {
 	onClickBack: React.PropTypes.func,
-	style: React.PropTypes.object
+	style: React.PropTypes.object,
+	onChange: React.PropTypes.func,
+	onInputFocus: React.PropTypes.func,
+	onInputBlur: React.PropTypes.func
 };
 
 module.exports = ToolbarGPS;

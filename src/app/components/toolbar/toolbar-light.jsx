@@ -10,6 +10,10 @@ import Paper from 'material-ui/lib/paper';
 // APP
 const ToolbarBattery = class extends React.Component {
 
+	onChange(e, value) {
+		this.props.onChange(e, {light: value});
+	}
+
 	render() {
 		const styles = {
 			separator: {
@@ -28,11 +32,12 @@ const ToolbarBattery = class extends React.Component {
 				float: 'left'
 			}
 		};
+		const onChange = this.onChange.bind(this);
 		return (
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-white-balance-incandescent" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<Slider style={styles.items} name="battery" max={100} min={0} step={1} onChange={this.handleBatteryChange}/>
+				<Slider style={styles.items} name="light" max={100} min={0} step={1} onChange={onChange}/>
 			</Paper>
 		);
 	}
@@ -45,7 +50,8 @@ ToolbarBattery.contextTypes = {
 
 ToolbarBattery.propTypes = {
 	onClickBack: React.PropTypes.func,
-	style: React.PropTypes.object
+	style: React.PropTypes.object,
+	onChange: React.PropTypes.func
 };
 
 module.exports = ToolbarBattery;

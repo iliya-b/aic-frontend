@@ -197,6 +197,10 @@ const LiveStore = Reflux.createStore({
 
 	// Live sensors
 
+	onSetSensor(avmId, sensor, payload) {
+		this.state.live.sensors[sensor] = payload;
+	},
+
 	onSetSensorBattery(projectId, value) {
 		this.state.live.battery = value;
 	},
@@ -276,6 +280,9 @@ const LiveStore = Reflux.createStore({
 		this.state.live.screen.rotation = 'horizontal';
 		this.state.live.delayedRotation = 'horizontal';
 		this.state.live.battery = 100;
+		this.state.live.sensors = {};
+		this.state.live.sensors.accelerometer = {x: 0, y: 5.9, z: 0};
+		this.state.live.sensors.battery = 100;
 	},
 
 	resetLive() {
