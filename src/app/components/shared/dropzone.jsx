@@ -15,6 +15,7 @@ const Dropzone = class extends React.Component {
 		};
 		this.setRefFileInput = c => this.fileInput = c;
 		this.handleClick = this.handleClick.bind(this);
+		this.handleDrop = this.handleDrop.bind(this);
 	}
 
 	allFilesAccepted(files) {

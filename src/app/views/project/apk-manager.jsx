@@ -36,7 +36,9 @@ const APKManager = class extends React.Component {
 		};
 		this.handleClickUploadOpen = this.toogleDialogUploadAPK.bind(this, true);
 		this.handleClickUploadClose = this.toogleDialogUploadAPK.bind(this, false);
-		this.handleDropFiles = () => {};
+		this.handleDropFiles = files => {
+			APKActions.upload(projectId, files);
+		};
 		this.handleDeleteSelected = () => {};
 		this.handleSelectFiles = this.handleSelectFiles.bind(this);
 		this.handleStateChange = this.handleStateChange.bind(this);

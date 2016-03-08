@@ -480,10 +480,12 @@ const BackendAPI = {
 	},
 
 	apkUpload(projectId, file, cbProgress) {
+		const data = new FormData();
+		data.append('file', file)
 		const options = {
 			pathname: sprintf(BackendObjects.URLPATH_APK, projectId),
 			method: 'POST',
-			file,
+			rawData: data,
 			cbProgress
 		};
 		return this.apiCallAuth(options);
