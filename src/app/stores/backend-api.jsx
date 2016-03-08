@@ -17,7 +17,8 @@ const BackendObjects = {
 
 	URLPATH_LOGIN: '/user/login',
 	URLPATH_PROJECT: '/back/project',
-	URLPATH_APK: '/back/application/%s',
+	URLPATH_APK: '/project/%s/apk',
+	URLPATH_APK_DELETE: '/project/%s/apk/%s',
 	URLPATH_APKTEST: '/back/test/%s',
 	URLPATH_LIVE: '/android',
 	URLPATH_LIVE_MACHINE: '/android/%s',
@@ -447,8 +448,8 @@ const BackendAPI = {
 			tenants: [{
 				description: 'test\'s project',
 				enabled: true,
-				id: 'a532574a46954bf3a85dd6284ed8f5e8',
-				name: 'test'}],
+				id: 'default',
+				name: 'default'}],
 			tenants_links: [] // eslint-disable-line camelcase
 		});
 		// return this.apiCallAuth(options);
@@ -466,7 +467,16 @@ const BackendAPI = {
 			pathname: sprintf(BackendObjects.URLPATH_APK, projectId),
 			method: 'GET'
 		};
-		return this.apiCallAuth(options);
+		return this.apiCallAuth(options)
+			.then(data => {
+				return data.apks.map(apk => {
+					return {
+						id: apk.apk_id,
+						filename: apk.apk_id,
+						status: ''
+					};
+				});
+			});
 	},
 
 	apkUpload(projectId, file, cbProgress) {
@@ -494,7 +504,7 @@ const BackendAPI = {
 		const data = new FormData();
 		// data.append('variant', 'opengl');
 		data.append('image', variant);
-		data.append('project_id', 'default');
+		data.append('project_id', projectId);
 		const options = {
 			pathname: BackendObjects.URLPATH_LIVE,
 			method: 'POST',

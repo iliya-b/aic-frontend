@@ -8,6 +8,8 @@ import Paper from 'material-ui/lib/paper';
 import ToolbarAPK from 'app/components/toolbar/toolbar-apk';
 import TableAPK from 'app/components/table/table-apk';
 import Dropzone from 'app/components/shared/dropzone';
+import APKActions from 'app/actions/apk';
+import APKStore from 'app/stores/apk';
 
 // const apkList = [
 // 	{
@@ -22,7 +24,7 @@ import Dropzone from 'app/components/shared/dropzone';
 // 	}
 // ];
 
-const apkList = [];
+let projectId = null;
 
 const APKManager = class extends React.Component {
 
@@ -37,6 +39,7 @@ const APKManager = class extends React.Component {
 		this.handleDropFiles = () => {};
 		this.handleDeleteSelected = () => {};
 		this.handleSelectFiles = this.handleSelectFiles.bind(this);
+		this.handleStateChange = this.handleStateChange.bind(this);
 	}
 
 	toogleDialogUploadAPK(open) {
@@ -47,7 +50,7 @@ const APKManager = class extends React.Component {
 		let finalFileIndexes;
 
 		if (fileIndexes === 'all') {
-			finalFileIndexes = apkList.map((v, i) => {
+			finalFileIndexes = this.state.apks.map((v, i) => {
 				return i;
 			});
 		} else if (fileIndexes === 'none') {
@@ -57,6 +60,10 @@ const APKManager = class extends React.Component {
 		}
 
 		this.setState({selectFileIndexes: finalFileIndexes});
+	}
+
+	handleStateChange(newState) {
+		this.setState(newState);
 	}
 
 	render() {
@@ -93,11 +100,11 @@ const APKManager = class extends React.Component {
 		}
 
 		let table;
-		if (apkList.length) {
+		if (this.state.apks && this.state.apks.length) {
 			table = (
 				<TableAPK
 					onRowSelection={this.handleSelectFiles}
-					list={apkList}
+					list={this.state.apks}
 					selected={this.state.selectFileIndexes}
 					/>
 			);
@@ -124,11 +131,25 @@ const APKManager = class extends React.Component {
 			</div>
 		);
 	}
+
+	componentDidMount() {
+		projectId = this.props.params.projectId;
+		this.unsubscribe = APKStore.listen(this.handleStateChange);
+		APKActions.list(projectId);
+	}
+
+	componentWillUnmount() {
+		this.unsubscribe();
+	}
 };
 
 APKManager.contextTypes = {
 	router: React.PropTypes.object,
 	muiTheme: React.PropTypes.object
+};
+
+APKManager.propTypes = {
+	params: React.PropTypes.object
 };
 
 module.exports = APKManager;

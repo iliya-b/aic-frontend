@@ -1,22 +1,38 @@
 'use strict';
 
-// Reflux
-const Reflux = require('reflux');
+// Vendor
+import Reflux from 'reflux';
 
 // APP
-const BackendAPI = require('app/stores/backend-api');
+import BackendAPI from 'app/stores/backend-api';
 
 // Actions
 const APKActions = Reflux.createActions({
-	load: {asyncResult: true},
+	list: {asyncResult: true},
+	upload: {asyncResult: true},
+	delete: {asyncResult: true},
 	toggleDelete: {}
 });
 
 // Listeners for asynchronous Backend API calls
-APKActions.load.listen(function (projectId) {
+APKActions.list.listen(function (projectId) {
 	BackendAPI.apkList(projectId)
 	.then(res => {
-		this.completed(res.results);
+		this.completed(res);
+	});
+});
+
+APKActions.upload.listen(function (projectId, file) {
+	BackendAPI.apkUpload(projectId, file)
+	.then(res => {
+		this.completed(res);
+	});
+});
+
+APKActions.delete.listen(function (projectId) {
+	BackendAPI.apkDelete(projectId)
+	.then(res => {
+		this.completed(res);
 	});
 });
 
