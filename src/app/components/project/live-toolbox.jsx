@@ -58,12 +58,12 @@ toolbars.accelerometer = require('app/components/toolbar/toolbar-accelerometer')
 toolbars.light = require('app/components/toolbar/toolbar-light');
 toolbars.gravity = require('app/components/toolbar/toolbar-gravity');
 toolbars.gyroscope = require('app/components/toolbar/toolbar-gyroscope');
-toolbars.linear_acc = require('app/components/toolbar/toolbar-linearacc');
+toolbars.linear_acc = require('app/components/toolbar/toolbar-linearacc'); // eslint-disable-line camelcase
 toolbars.magnetometer = require('app/components/toolbar/toolbar-magnetometer');
 toolbars.orientation = require('app/components/toolbar/toolbar-orientation');
 toolbars.pressure = require('app/components/toolbar/toolbar-pressure');
 toolbars.proximity = require('app/components/toolbar/toolbar-proximity');
-toolbars.relative_humidity = require('app/components/toolbar/toolbar-humidity');
+toolbars.relative_humidity = require('app/components/toolbar/toolbar-humidity'); // eslint-disable-line camelcase
 toolbars.temperature = require('app/components/toolbar/toolbar-temperature');
 
 // APKs panels
@@ -205,7 +205,7 @@ const LiveToolbox = class extends React.Component {
 			};
 			props[this.state.activeSecondBar] = this.props.sensorsValues[this.state.activeSecondBar];
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
-		} else if (PANEL_APKS_ORDER.indexOf(this.state.activeSecondBar) !== -1) {
+		} else if (PANEL_APKS_ORDER.indexOf(this.state.activeSecondBar) !== -1) { // eslint-disable-line no-negated-condition
 			// const onChangeSensorBinded = this.handleChangeSensors.bind(this, this.state.activeSecondBar);
 			// const props = {
 			// 	style: styles.secondToolbar,
@@ -246,7 +246,9 @@ LiveToolbox.propTypes = {
 	onInputFocus: React.PropTypes.func,
 	onInputBlur: React.PropTypes.func,
 	sensorsValues: React.PropTypes.object,
-	onClickTerminate: React.PropTypes.func
+	onClickTerminate: React.PropTypes.func,
+	onInstallAPK: React.PropTypes.func,
+	apkList: React.PropTypes.array
 };
 
 module.exports = LiveToolbox;

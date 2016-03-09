@@ -1,25 +1,14 @@
 'use strict';
 
-// React
-const React = require('react');
-
-// Material design
-const mui = require('material-ui');
-const {
-	CardActions,
-	RaisedButton
-} = mui;
-
 // Vendor
+import React from 'react';
 const debug = require('debug')('AiC:View:Live:List');
 
 // APP
-const {LiveMachineList, AppUtils} = require('app/components');
-const {LiveStore} = require('app/stores');
-const {
-	LiveActions,
-	PollingActions
-} = require('app/actions');
+import LiveStore from 'app/stores/live';
+import LiveActions from 'app/actions/live';
+import PollingActions from 'app/actions/polling';
+import LiveMachineList from 'app/components/project/live-machine-list';
 import ToolbarLive from 'app/components/toolbar/toolbar-live';
 
 let projectId;

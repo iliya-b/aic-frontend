@@ -16,7 +16,7 @@ const ToolbarGPS = class extends React.Component {
 		this.setRefHumidity = c => this.humidity = c;
 		this.handleClick = e => {
 			const payload = {
-				relative_humidity: parseFloat(this.humidity.getValue())
+				relative_humidity: parseFloat(this.humidity.getValue()) // eslint-disable-line camelcase
 			};
 			this.props.onChange(e, payload);
 		};
