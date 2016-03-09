@@ -17,33 +17,34 @@ const APKStore = Reflux.createStore({
 
 	init() {
 		this.state = {};
-		this.state.apks = [];
-		this.state.itemsToDelete = [];
-		this.state.status = 'init';
+		this.state.apk = {};
+		this.state.apk.apks = [];
+		this.state.apk.itemsToDelete = [];
+		this.state.apk.status = 'init';
 	},
 
 	// Actions //
 
 	onListCompleted(data) {
-		this.state.apks = data;
-		this.state.status = 'listCompleted';
+		this.state.apk.apks = data;
+		this.state.apk.status = 'listCompleted';
 		this.updateState();
 	},
 
 	onUploadCompleted(data) {
 		debug('onUploadCompleted', data);
-		this.state.status = 'uploadCompleted';
+		this.state.apk.status = 'uploadCompleted';
 		this.updateState();
 	},
 
 	onDeleteCompleted(data) {
 		debug('onDeleteCompleted', data);
-		this.state.status = 'deleteCompleted';
+		this.state.apk.status = 'deleteCompleted';
 		this.updateState();
 	},
 
 	// onToggleDelete(apkId) {
-	// 	this.state.apks = this.state.apks.map(item => {
+	// 	this.state.apk.apks = this.state.apk.apks.map(item => {
 	// 		return (item.id === apkId) ? AppUtils.extend(item, {toDelete: !item.toDelete, checked: !item.toDelete}) : item;
 	// 	});
 	// 	this.updateItemsToDelete();
@@ -51,18 +52,18 @@ const APKStore = Reflux.createStore({
 	// },
 
 	// onDeleteSelectedCompleted() {
-	// 	this.state.status = 'reloadList';
+	// 	this.state.apk.status = 'reloadList';
 	// 	this.updateState();
 	// },
 
 	// onLoadCompleted(data) {
-	// 	this.state.apks = this.convertToListItems(data.map(apk => {
+	// 	this.state.apk.apks = this.convertToListItems(data.map(apk => {
 	// 		return {id: apk[0], name: apk[1], toDelete: this.isMarkedToDelete(apk[0]), checked: this.isMarkedToDelete(apk[0])};
 	// 	}, this));
 	// 	this.updateItemsToDelete();
-	// 	switch (this.state.status) {
+	// 	switch (this.state.apk.status) {
 	// 		case 'reloadList' :
-	// 			this.state.status = 'deleteFinished';
+	// 			this.state.apk.status = 'deleteFinished';
 	// 			break;
 	// 		default:
 	// 			break;
@@ -92,11 +93,11 @@ const APKStore = Reflux.createStore({
 	// },
 
 	// isMarkedToDelete(id) {
-	// 	return (this.state.itemsToDelete.indexOf(id) > -1);
+	// 	return (this.state.apk.itemsToDelete.indexOf(id) > -1);
 	// },
 
 	// updateItemsToDelete() {
-	// 	this.state.itemsToDelete = this.state.apks.reduce((previousValue, item) => {
+	// 	this.state.apk.itemsToDelete = this.state.apk.apks.reduce((previousValue, item) => {
 	// 		return item.toDelete ? previousValue.concat(item.id) : previousValue;
 	// 	}, []);
 	// }

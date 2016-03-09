@@ -24,11 +24,14 @@ const {
 	LogBox,
 	LogBoxRow
 } = require('app/components');
-const {LiveStore} = require('app/stores');
-const {LiveActions} = require('app/actions');
+import LiveStore from 'app/stores/live';
+import APKStore from 'app/stores/apk';
+import LiveActions from 'app/actions/live';
+import APKActions from 'app/actions/apk';
 
 const availableLiveActions = ['test', 'check', 'start', 'load', 'connect', 'close', 'setState', 'check', 'close', 'restart'];
 let avmId;
+let projectId;
 const LiveSession = class extends React.Component {
 
 	constructor(props) {
@@ -42,6 +45,9 @@ const LiveSession = class extends React.Component {
 		this.handleClickGPS = this.handleClickGPS.bind(this);
 		this.handleChangeRotation = this.handleChangeRotation.bind(this);
 		this.handleChangeSensor = this.handleChangeSensor.bind(this);
+		this.handleAPKs = (e, apkId) => {
+			LiveActions.installAPK(projectId, avmId, apkId);
+		};
 	}
 
 	render() {
@@ -199,41 +205,9 @@ const LiveSession = class extends React.Component {
 									// Sensors //
 									onChangeSensor={this.handleChangeSensor}
 									sensorsValues={this.state.live.sensors}
-									// Battery
-									onChangeBattery={this.handleBatteryChange}
-									batteryValue={this.state.live.battery}
-									// GPS
-									onClickGPS={this.handleClickGPS}
-									// Rotation
-									rotation={this.state.live.screen.rotation}
-									onChangeRotation={this.handleChangeRotation}
-									// Light
-									light={this.state.live.light}
-									onChangeLight={this.handleChangeLight}
-									// Gravity
-									gravity={this.state.live.gravity}
-									onChangeGravity={this.handleChangeGravity}
-									// Gyroscope
-									// Linear Acceleration
-									// Magnetic
-									// Orientation
-									// Pressure
-									// Proximity
-									// Humidity
-									// Temperature
-									// const TOOLBAR_GPS = 'gps';
-									// const TOOLBAR_BATTERY = 'battery';
-									// const TOOLBAR_ACCELEROMETER = 'accelerometer';
-									// const TOOLBAR_LIGHT = 'light';
-									// const TOOLBAR_GRAVITY = 'gravity';
-									// const TOOLBAR_GYROSCOPE = 'gyroscope';
-									// const TOOLBAR_LINEARACC = 'linearacc';
-									// const TOOLBAR_MAGNETOMETER = 'magnetometer';
-									// const TOOLBAR_ORIENTATION = 'orientation';
-									// const TOOLBAR_PRESSURE = 'pressure';
-									// const TOOLBAR_PROXIMITY = 'proximity';
-									// const TOOLBAR_HUMIDITY = 'humidity';
-									// const TOOLBAR_TEMPERATURE = 'temperature';
+									// APKs
+									onInstallAPK={this.handleAPKs}
+									apkList={this.state.apk.apks}
 									/>
 							</div>
 						) : null}
@@ -366,18 +340,21 @@ const LiveSession = class extends React.Component {
 		// const projectId = AppUtils.getProjectIdFromRouter(this.context.router);
 		// const avmId = AppUtils.getAVMIdFromRouter(this.context.router);
 		debug('this.props.params', this.props.params);
-		const projectId = this.props.params.projectId;
+		projectId = this.props.params.projectId;
 		avmId = this.props.params.androId;
-		this.unsubscribe = LiveStore.listen(this._onStateChange);
+		this.unsubscribe = [];
+		this.unsubscribe.push(LiveStore.listen(this._onStateChange));
+		this.unsubscribe.push(APKStore.listen(this._onStateChange));
 		LiveActions.liveReset();
 		LiveActions.setProjectId(projectId);
 		LiveActions.loadInfo(avmId);
+		APKActions.list(projectId);
 	}
 
 	componentWillUnmount() {
 		this.handleOnInputFocus();
 		// Subscribe and unsubscribe because we don't want to use the mixins
-		this.unsubscribe();
+		this.unsubscribe.map(v => v());
 	}
 
 };

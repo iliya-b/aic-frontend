@@ -19,33 +19,33 @@ const ToolbarAndroid = class extends React.Component {
 				float: 'left'
 			},
 			separator: {
-				margin: '0 5px 0 0px'
+				marginLeft: 1
 			}
 		};
 		return (
 			<Toolbar style={this.props.style}>
-				<ToolbarGroup firstChild>
+				<ToolbarGroup firstChild lastChild>
 					<IconButton style={styles.button}>
 						<FontIcon className="mdi mdi-android" color="rgba(0, 0, 0, 0.4)"/>
 					</IconButton>
 					<ToolbarTitle text="Toolbar"/>
 					<ToolbarSeparator style={styles.separator}/>
-					<IconButton tooltip="Sensors" style={styles.button} onClick={this.props.onClickSensor}>
+					<IconButton tooltip="Sensors" style={styles.button} onClick={this.props.onClick.sensors}>
 						<FontIcon className="mdi mdi-map-marker" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="Camera" style={styles.button} onClick={this.props.onClickCamera}>
+					<IconButton tooltip="Camera" style={styles.button} onClick={this.props.onClick.camera}>
 						<FontIcon className="mdi mdi-camera" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="GSM" style={styles.button} onClick={this.props.onClickGSM}>
+					<IconButton tooltip="GSM" style={styles.button} onClick={this.props.onClick.gsm}>
 						<FontIcon className="mdi mdi-phone" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="APKs" style={styles.button} onClick={this.props.onClickAPKs}>
+					<IconButton tooltip="APKs" style={styles.button} onClick={this.props.onClick.apks}>
 						<FontIcon className="mdi mdi-puzzle" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="Session Details" style={styles.button} onClick={this.props.onClickDetails}>
+					<IconButton tooltip="Session Details" style={styles.button} onClick={this.props.onClick.details}>
 						<FontIcon className="mdi mdi-information" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="Terminate Session" style={styles.button} onClick={this.props.onClickTerminate}>
+					<IconButton tooltip="Terminate Session" style={styles.button} onClick={this.props.onClick.terminate}>
 						<FontIcon className="mdi mdi-power" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
 				</ToolbarGroup>
@@ -61,12 +61,7 @@ ToolbarAndroid.contextTypes = {
 
 ToolbarAndroid.propTypes = {
 	style: React.PropTypes.object,
-	onClickSensor: React.PropTypes.func,
-	onClickCamera: React.PropTypes.func,
-	onClickGSM: React.PropTypes.func,
-	onClickAPKs: React.PropTypes.func,
-	onClickDetails: React.PropTypes.func,
-	onClickTerminate: React.PropTypes.func
+	onClick: React.PropTypes.object
 };
 
 module.exports = ToolbarAndroid;

@@ -28,18 +28,18 @@ const ToolbarAPKs = class extends React.Component {
 		return (
 			<Toolbar style={this.props.style}>
 				<ToolbarGroup firstChild lastChild>
-					<IconButton tooltip="Back to toolbar" tooltipPosition="bottom-right" style={styles.button} onClick={this.props.onClickBack}>
+					<IconButton tooltip="Back to toolbar" tooltipPosition="bottom-right" style={styles.button} onClick={this.props.onClick.android}>
 						<FontIcon className="mdi mdi-arrow-left-bold" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
 					<ToolbarTitle text="APKs" style={styles.title}/>
 					<ToolbarSeparator style={styles.separator}/>
-					<IconButton tooltip="Upload file" style={styles.button}>
+					<IconButton tooltip="Upload file" style={styles.button} onClick={this.props.onClick.apkUpload}>
 						<FontIcon className="mdi mdi-cloud-upload" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="Install" style={styles.button}>
+					<IconButton tooltip="Install" style={styles.button} onClick={this.props.onClick.apkInstall}>
 						<FontIcon className="mdi mdi-file-send" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="Remove" style={styles.button}>
+					<IconButton tooltip="Remove" style={styles.button} onClick={this.props.onClick.apkUninstall}>
 						<FileCancel color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
 				</ToolbarGroup>
@@ -54,7 +54,7 @@ ToolbarAPKs.contextTypes = {
 };
 
 ToolbarAPKs.propTypes = {
-	onClickBack: React.PropTypes.func,
+	onClick: React.PropTypes.object,
 	style: React.PropTypes.object
 };
 

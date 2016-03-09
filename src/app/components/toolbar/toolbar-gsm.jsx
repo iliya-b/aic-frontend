@@ -37,7 +37,7 @@ const ToolbarGSM = class extends React.Component {
 			// 'SET_NETWORK_TYPE', 'SET_NETWORK_REGISTRATION'
 			<Toolbar style={this.props.style}>
 				<ToolbarGroup firstChild lastChild>
-					<IconButton tooltip="Back to toolbar" tooltipPosition="bottom-right" style={styles.button} onClick={this.props.onClickBack}>
+					<IconButton tooltip="Back to toolbar" tooltipPosition="bottom-right" style={styles.button} onClick={this.props.onClick.android}>
 						<FontIcon className="mdi mdi-arrow-left-bold" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
 					<ToolbarTitle text="GSM" style={styles.title}/>
@@ -78,7 +78,7 @@ ToolbarGSM.contextTypes = {
 };
 
 ToolbarGSM.propTypes = {
-	onClickBack: React.PropTypes.func,
+	onClick: React.PropTypes.object,
 	style: React.PropTypes.object
 };
 

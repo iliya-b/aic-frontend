@@ -32,7 +32,8 @@ const LiveActions = Reflux.createActions({
 	setSensorLocation: {asyncResult: true},
 	recordStart: {asyncResult: true},
 	recordStop: {asyncResult: true},
-	screenshot: {asyncResult: true}
+	screenshot: {asyncResult: true},
+	installAPK: {asyncResult: true}
 });
 
 // Listeners for asynchronous Backend API calls
@@ -221,6 +222,12 @@ LiveActions.screenshot.listen(function (projectId, filename) {
 	const token = '';
 	// const filename = LiveActions.createImageName();
 	BackendAPI.screenshot(token, projectId, filename, res => {
+		this.completed(res);
+	});
+});
+
+LiveActions.installAPK.listen((projectId, avmId, apkId) => {
+	BackendAPI.liveInstallAPK(projectId, avmId, apkId, res => {
 		this.completed(res);
 	});
 });

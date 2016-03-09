@@ -23,6 +23,7 @@ const BackendObjects = {
 	URLPATH_LIVE: '/android',
 	URLPATH_LIVE_MACHINE: '/android/%s',
 	URLPATH_LIVE_SENSOR: '/android/sensors/%s/%s',
+	URLPATH_LIVE_INSTALL_APK: '/android/%s/apk/%s',
 
 	// Validation/Sanitization Objects
 
@@ -616,6 +617,17 @@ const BackendAPI = {
 
 	screenshot(filename, liveId) {
 		this.recording(filename, 'true', liveId);
+	},
+
+	liveInstallAPK(projectId, liveId, apkId) {
+		const data = new FormData();
+		data.append('project_id', projectId);
+		const options = {
+			pathname: sprintf(BackendObjects.URLPATH_LIVE_INSTALL_APK, liveId, apkId),
+			method: 'POST',
+			rawData: data
+		};
+		return this.apiCallAuth(options);
 	},
 
 	// NOT IMPLEMENTED ON MICROSERVICES //

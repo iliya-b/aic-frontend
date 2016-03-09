@@ -25,8 +25,9 @@ import ToolbarLive from 'app/components/toolbar/toolbar-live';
 let projectId;
 
 // const kitkat = 'R3_CRB01-00-20160222-141328';
-const kitkat = 'R3_CRB01-00-20160223-154224';
+// const kitkat = 'R3_CRB01-00-20160223-154224';
 // const kitkat = 'opengl';
+const kitkat = 'kitkat';
 const lollipop = 'lollipop';
 const variants = [{id: kitkat, name: 'kitkat'}, {id: lollipop, name: 'lollipop'}];
 

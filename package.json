@@ -16,7 +16,8 @@
     "coverage": "nyc --extension .jsx npm run test-unit && nyc report --reporter=lcov",
     "start": "gulp watch",
     "build": "gulp build",
-    "create-conf-from-env": "gulp create-conf-from-env"
+    "create-conf-from-env": "gulp create-conf-from-env",
+    "no-console": "grep -rnw 'src' -e \"console\""
   },
   "browserify": {
     "extension": [

@@ -44,66 +44,79 @@ const ToolbarSensors = class extends React.Component {
 
 		const buttons = [
 			{
+				id: 'gps',
 				name: 'GPS',
 				tooltip: 'GPS',
 				fontIcon: 'mdi mdi-map-marker'
 			},
 			{
+				id: 'battery',
 				name: 'Battery',
 				tooltip: 'Battery',
 				fontIcon: 'mdi mdi-battery-charging-40'
 			},
 			{
+				id: 'accelerometer',
 				name: 'Accelerometer',
 				tooltip: 'Accelerometer',
 				fontIcon: 'mdi mdi-screen-rotation'
 			},
 			{
+				id: 'light',
 				name: 'Light',
 				tooltip: 'Light',
 				fontIcon: 'mdi mdi-white-balance-incandescent'
 			},
 			{
+				id: 'gravity',
 				name: 'Gravity',
 				tooltip: 'Gravity',
 				svgIcon: 'GravitySVG'
 			},
 			{
+				id: 'gyroscope',
 				name: 'Gyroscope',
 				tooltip: 'Gyroscope',
 				fontIcon: 'mdi mdi-crosshairs-gps'
 			},
 			{
+				id: 'linearacc',
 				name: 'LinearAcc',
 				tooltip: 'Linear acceleration',
 				fontIcon: 'mdi mdi-run'
 			},
 			{
+				id: 'magnetometer',
 				name: 'Magnetometer',
 				tooltip: 'Magnetometer',
 				fontIcon: 'mdi mdi-magnet'
 			},
 			{
+				id: 'orientation',
 				name: 'Orientation',
 				tooltip: 'Orientation',
 				fontIcon: 'mdi mdi-compass'
 			},
 			{
+				id: 'pressure',
 				name: 'Pressure',
 				tooltip: 'Pressure',
 				fontIcon: 'mdi mdi-speedometer'
 			},
 			{
+				id: 'proximity',
 				name: 'Proximity',
 				tooltip: 'Proximity',
 				svgIcon: 'VoiceSVG'
 			},
 			{
+				id: 'humidity',
 				name: 'Humidity',
 				tooltip: 'Humidity',
 				fontIcon: 'mdi mdi-water'
 			},
 			{
+				id: 'temperature',
 				name: 'Temperature',
 				tooltip: 'Temperature',
 				fontIcon: 'mdi mdi-thermometer-lines'
@@ -111,7 +124,6 @@ const ToolbarSensors = class extends React.Component {
 		];
 
 		const renderedButtons = buttons.map((b, i) => {
-			const handleClick = this.props[`onClick${b.name}`];
 			const iconColor = i === this.props.selectedIndex ? 'rgba(255, 255, 255, 0.75)' : 'rgba(0, 0, 0, 0.4)';
 			let icon;
 			if (b.fontIcon) {
@@ -120,7 +132,7 @@ const ToolbarSensors = class extends React.Component {
 				icon = React.createElement(SVGs[b.svgIcon], {color: iconColor, hoverColor: 'rgba(0, 0, 0, 0.87)'});
 			}
 			return (
-				<IconButton key={i} tooltip={b.tooltip} style={styles.button} onClick={handleClick}>
+				<IconButton key={i} tooltip={b.tooltip} style={styles.button} onClick={this.props.onClick[b.id]}>
 					{icon}
 				</IconButton>
 			);
@@ -129,7 +141,7 @@ const ToolbarSensors = class extends React.Component {
 		return (
 			<Toolbar style={this.props.style}>
 				<ToolbarGroup firstChild lastChild>
-					<IconButton tooltip="Back to toolbar" tooltipPosition="bottom-right" style={styles.button} onClick={this.props.onClickBack}>
+					<IconButton tooltip="Back to toolbar" tooltipPosition="bottom-right" style={styles.button} onClick={this.props.onClick.android}>
 						<FontIcon className="mdi mdi-arrow-left-bold" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
 					<ToolbarTitle text="Sensors" style={styles.title}/>
@@ -149,6 +161,7 @@ ToolbarSensors.contextTypes = {
 ToolbarSensors.propTypes = {
 	style: React.PropTypes.object,
 	selectedIndex: React.PropTypes.number,
+	onClick: React.PropTypes.object,
 	onClickBack: React.PropTypes.func,
 	onClickGPS: React.PropTypes.func,
 	onClickBattery: React.PropTypes.func,

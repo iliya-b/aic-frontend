@@ -43,7 +43,7 @@ const APKManager = class extends React.Component {
 		this.handleDeleteSelected = () => {
 			debug('handleDeleteSelected');
 			const apksToDelete = this.state.selectFileIndexes.map(i => {
-				return this.state.apks[i].id;
+				return this.state.apk.apks[i].id;
 			});
 			const newState = Object.assign({}, this.state);
 			newState.selectFileIndexes = [];
@@ -64,7 +64,7 @@ const APKManager = class extends React.Component {
 		let finalFileIndexes;
 
 		if (fileIndexes === 'all') {
-			finalFileIndexes = this.state.apks.map((v, i) => {
+			finalFileIndexes = this.state.apk.apks.map((v, i) => {
 				return i;
 			});
 		} else if (fileIndexes === 'none') {
@@ -80,7 +80,7 @@ const APKManager = class extends React.Component {
 
 	handleStateChange(newState) {
 		const mergedState = Object.assign({}, this.state, newState);
-		switch (mergedState.status) {
+		switch (mergedState.apk.status) {
 			case 'uploadCompleted':
 				APKActions.list(projectId);
 				break;
@@ -127,11 +127,11 @@ const APKManager = class extends React.Component {
 		}
 
 		let table;
-		if (this.state.apks && this.state.apks.length) {
+		if (this.state.apk && this.state.apk.apks && this.state.apk.apks.length) {
 			table = (
 				<TableAPK
 					onRowSelection={this.handleSelectFiles}
-					list={this.state.apks}
+					list={this.state.apk.apks}
 					selected={this.state.selectFileIndexes}
 					/>
 			);
