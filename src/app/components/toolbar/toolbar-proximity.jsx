@@ -3,7 +3,6 @@
 // Vendor
 import React from 'react';
 import ToolbarSeparator from 'material-ui/lib/toolbar/toolbar-separator';
-// import ToolbarTitle from 'material-ui/lib/toolbar/toolbar-title';
 import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 import Paper from 'material-ui/lib/paper';
@@ -12,6 +11,17 @@ import Paper from 'material-ui/lib/paper';
 import VoiceIcon from 'app/components/icons/voice';
 
 const ToolbarGPS = class extends React.Component {
+
+	constructor(props) {
+		super(props);
+		this.setRefProximity = c => this.proximity = c;
+		this.handleClick = e => {
+			const payload = {
+				distance: parseFloat(this.proximity.getValue())
+			};
+			this.props.onChange(e, payload);
+		};
+	}
 
 	render() {
 		const styles = {
@@ -43,13 +53,13 @@ const ToolbarGPS = class extends React.Component {
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
 				<VoiceIcon style={styles.icon} color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<TextField style={styles.items} ref={this.setRefLat} hintText="distance" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<TextField style={styles.items} ref={this.setRefProximity} hintText="distance" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<RaisedButton
 					label="Submit"
 					title="Submit"
 					href="#"
 					secondary
-					onClick={this.handleLocationSubmit}
+					onClick={this.handleClick}
 					style={styles.buttonSubmit}
 					/>
 			</Paper>
@@ -63,8 +73,10 @@ ToolbarGPS.contextTypes = {
 };
 
 ToolbarGPS.propTypes = {
-	onClickBack: React.PropTypes.func,
-	style: React.PropTypes.object
+	style: React.PropTypes.object,
+	onChange: React.PropTypes.func,
+	onInputFocus: React.PropTypes.func,
+	onInputBlur: React.PropTypes.func
 };
 
 module.exports = ToolbarGPS;

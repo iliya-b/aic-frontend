@@ -80,7 +80,7 @@ const ToolbarSensors = class extends React.Component {
 				fontIcon: 'mdi mdi-crosshairs-gps'
 			},
 			{
-				id: 'linearacc',
+				id: 'linear_acc',
 				name: 'LinearAcc',
 				tooltip: 'Linear acceleration',
 				fontIcon: 'mdi mdi-run'
@@ -110,7 +110,7 @@ const ToolbarSensors = class extends React.Component {
 				svgIcon: 'VoiceSVG'
 			},
 			{
-				id: 'humidity',
+				id: 'relative_humidity',
 				name: 'Humidity',
 				tooltip: 'Humidity',
 				fontIcon: 'mdi mdi-water'

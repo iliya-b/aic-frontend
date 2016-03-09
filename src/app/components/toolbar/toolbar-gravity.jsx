@@ -18,15 +18,14 @@ const ToolbarGPS = class extends React.Component {
 		this.setRefX = c => this.x = c;
 		this.setRefY = c => this.y = c;
 		this.setRefZ = c => this.z = c;
-	}
-
-	onChange(e) {
-		const payload = {
-			x: parseFloat(this.x.getValue()),
-			y: parseFloat(this.y.getValue()),
-			z: parseFloat(this.z.getValue())
+		this.handleClick = e => {
+			const payload = {
+				x: parseFloat(this.x.getValue()),
+				y: parseFloat(this.y.getValue()),
+				z: parseFloat(this.z.getValue())
+			};
+			this.props.onChange(e, payload);
 		};
-		this.props.onChange(e, payload);
 	}
 
 	render() {
@@ -56,7 +55,6 @@ const ToolbarGPS = class extends React.Component {
 				float: 'left'
 			}
 		};
-		const onChange = this.onChange.bind(this);
 		return (
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
 				<GravityIcon style={styles.icon} color="rgba(0, 0, 0, 0.4)"/>
@@ -69,7 +67,7 @@ const ToolbarGPS = class extends React.Component {
 					title="Submit"
 					href="#"
 					secondary
-					onClick={onChange}
+					onClick={this.handleClick}
 					style={styles.buttonSubmit}
 					/>
 			</Paper>
@@ -83,7 +81,6 @@ ToolbarGPS.contextTypes = {
 };
 
 ToolbarGPS.propTypes = {
-	onClickBack: React.PropTypes.func,
 	style: React.PropTypes.object,
 	onChange: React.PropTypes.func,
 	onInputFocus: React.PropTypes.func,

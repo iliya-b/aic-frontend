@@ -2,18 +2,29 @@
 
 // Vendor
 import React from 'react';
-import Toolbar from 'material-ui/lib/toolbar/toolbar';
-import ToolbarGroup from 'material-ui/lib/toolbar/toolbar-group';
 import ToolbarSeparator from 'material-ui/lib/toolbar/toolbar-separator';
-// import ToolbarTitle from 'material-ui/lib/toolbar/toolbar-title';
 import FontIcon from 'material-ui/lib/font-icon';
-import IconButton from 'material-ui/lib/icon-button';
 import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 import Paper from 'material-ui/lib/paper';
 
 // APP
-const ToolbarGPS = class extends React.Component {
+const ToolbarLinearAcceleration = class extends React.Component {
+
+	constructor(props) {
+		super(props);
+		this.setRefX = c => this.x = c;
+		this.setRefY = c => this.y = c;
+		this.setRefZ = c => this.z = c;
+		this.handleClick = e => {
+			const payload = {
+				x: parseFloat(this.x.getValue()),
+				y: parseFloat(this.y.getValue()),
+				z: parseFloat(this.z.getValue())
+			};
+			this.props.onChange(e, payload);
+		};
+	}
 
 	render() {
 		const styles = {
@@ -46,15 +57,16 @@ const ToolbarGPS = class extends React.Component {
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-run" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<TextField style={styles.items} ref={this.setRefLat} hintText="x" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
-				<TextField style={styles.items} ref={this.setRefLon} hintText="y" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
-				<TextField style={styles.items} ref={this.setRefLon} hintText="z" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<ToolbarSeparator style={styles.separator}/>
+				<TextField style={styles.items} ref={this.setRefX} hintText="x" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<TextField style={styles.items} ref={this.setRefY} hintText="y" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<TextField style={styles.items} ref={this.setRefZ} hintText="z" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<RaisedButton
 					label="Submit"
 					title="Submit"
 					href="#"
 					secondary
-					onClick={this.handleLocationSubmit}
+					onClick={this.handleClick}
 					style={styles.buttonSubmit}
 					/>
 			</Paper>
@@ -62,14 +74,16 @@ const ToolbarGPS = class extends React.Component {
 	}
 };
 
-ToolbarGPS.contextTypes = {
+ToolbarLinearAcceleration.contextTypes = {
 	muiTheme: React.PropTypes.object,
 	router: React.PropTypes.object
 };
 
-ToolbarGPS.propTypes = {
-	onClickBack: React.PropTypes.func,
-	style: React.PropTypes.object
+ToolbarLinearAcceleration.propTypes = {
+	style: React.PropTypes.object,
+	onChange: React.PropTypes.func,
+	onInputFocus: React.PropTypes.func,
+	onInputBlur: React.PropTypes.func
 };
 
-module.exports = ToolbarGPS;
+module.exports = ToolbarLinearAcceleration;

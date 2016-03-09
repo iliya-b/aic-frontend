@@ -22,12 +22,12 @@ const TOOLBAR_ACCELEROMETER = 'accelerometer';
 const TOOLBAR_LIGHT = 'light';
 const TOOLBAR_GRAVITY = 'gravity';
 const TOOLBAR_GYROSCOPE = 'gyroscope';
-const TOOLBAR_LINEARACC = 'linearacc';
+const TOOLBAR_LINEARACC = 'linear_acc';
 const TOOLBAR_MAGNETOMETER = 'magnetometer';
 const TOOLBAR_ORIENTATION = 'orientation';
 const TOOLBAR_PRESSURE = 'pressure';
 const TOOLBAR_PROXIMITY = 'proximity';
-const TOOLBAR_HUMIDITY = 'humidity';
+const TOOLBAR_HUMIDITY = 'relative_humidity';
 const TOOLBAR_TEMPERATURE = 'temperature';
 const TOOLBAR_SENSORS_ORDER = [TOOLBAR_GPS, TOOLBAR_BATTERY, TOOLBAR_ACCELEROMETER, TOOLBAR_LIGHT, TOOLBAR_GRAVITY, TOOLBAR_GYROSCOPE, TOOLBAR_LINEARACC, TOOLBAR_MAGNETOMETER, TOOLBAR_ORIENTATION, TOOLBAR_PRESSURE, TOOLBAR_PROXIMITY, TOOLBAR_HUMIDITY, TOOLBAR_TEMPERATURE];
 
@@ -58,12 +58,12 @@ toolbars.accelerometer = require('app/components/toolbar/toolbar-accelerometer')
 toolbars.light = require('app/components/toolbar/toolbar-light');
 toolbars.gravity = require('app/components/toolbar/toolbar-gravity');
 toolbars.gyroscope = require('app/components/toolbar/toolbar-gyroscope');
-toolbars.linearacc = require('app/components/toolbar/toolbar-linearacc');
+toolbars.linear_acc = require('app/components/toolbar/toolbar-linearacc');
 toolbars.magnetometer = require('app/components/toolbar/toolbar-magnetometer');
 toolbars.orientation = require('app/components/toolbar/toolbar-orientation');
 toolbars.pressure = require('app/components/toolbar/toolbar-pressure');
 toolbars.proximity = require('app/components/toolbar/toolbar-proximity');
-toolbars.humidity = require('app/components/toolbar/toolbar-humidity');
+toolbars.relative_humidity = require('app/components/toolbar/toolbar-humidity');
 toolbars.temperature = require('app/components/toolbar/toolbar-temperature');
 
 // APKs panels

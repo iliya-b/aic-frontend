@@ -9,7 +9,22 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import Paper from 'material-ui/lib/paper';
 
 // APP
-const ToolbarGPS = class extends React.Component {
+const ToolbarGyroscope = class extends React.Component {
+
+	constructor(props) {
+		super(props);
+		this.setRefAzimuth = c => this.azimuth = c;
+		this.setRefPitch = c => this.pitch = c;
+		this.setRefRoll = c => this.roll = c;
+		this.handleClick = e => {
+			const payload = {
+				azimuth: parseFloat(this.azimuth.getValue()),
+				pitch: parseFloat(this.pitch.getValue()),
+				roll: parseFloat(this.roll.getValue())
+			};
+			this.props.onChange(e, payload);
+		};
+	}
 
 	render() {
 		const styles = {
@@ -42,15 +57,15 @@ const ToolbarGPS = class extends React.Component {
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-crosshairs-gps" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<TextField style={styles.items} ref={this.setRefLat} hintText="azimuth" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
-				<TextField style={styles.items} ref={this.setRefLon} hintText="pitch" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
-				<TextField style={styles.items} ref={this.setRefLon} hintText="roll" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<TextField style={styles.items} ref={this.setRefAzimuth} hintText="azimuth" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<TextField style={styles.items} ref={this.setRefPitch} hintText="pitch" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<TextField style={styles.items} ref={this.setRefRoll} hintText="roll" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<RaisedButton
 					label="Submit"
 					title="Submit"
 					href="#"
 					secondary
-					onClick={this.handleLocationSubmit}
+					onClick={this.handleClick}
 					style={styles.buttonSubmit}
 					/>
 			</Paper>
@@ -58,14 +73,16 @@ const ToolbarGPS = class extends React.Component {
 	}
 };
 
-ToolbarGPS.contextTypes = {
+ToolbarGyroscope.contextTypes = {
 	muiTheme: React.PropTypes.object,
 	router: React.PropTypes.object
 };
 
-ToolbarGPS.propTypes = {
-	onClickBack: React.PropTypes.func,
-	style: React.PropTypes.object
+ToolbarGyroscope.propTypes = {
+	onChange: React.PropTypes.func,
+	style: React.PropTypes.object,
+	onInputFocus: React.PropTypes.func,
+	onInputBlur: React.PropTypes.func
 };
 
-module.exports = ToolbarGPS;
+module.exports = ToolbarGyroscope;
