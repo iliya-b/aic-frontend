@@ -481,12 +481,20 @@ const BackendAPI = {
 
 	apkUpload(projectId, file, cbProgress) {
 		const data = new FormData();
-		data.append('file', file)
+		data.append('file', file);
 		const options = {
 			pathname: sprintf(BackendObjects.URLPATH_APK, projectId),
 			method: 'POST',
 			rawData: data,
 			cbProgress
+		};
+		return this.apiCallAuth(options);
+	},
+
+	apkDelete(projectId, apkId) {
+		const options = {
+			pathname: sprintf(BackendObjects.URLPATH_APK_DELETE, projectId, apkId),
+			method: 'DELETE'
 		};
 		return this.apiCallAuth(options);
 	},

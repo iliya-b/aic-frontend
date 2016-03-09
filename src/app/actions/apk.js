@@ -36,24 +36,36 @@ APKActions.upload.listen((projectId, files) => {
 				}
 			})
 			.then(res => {
-				// callback end upload
-				if (res.hasOwnProperty('appId')) {
-					this.completed(file.preview);
-				} else if ((res.hasOwnProperty('code') && res.code === ERROR_DUPLICATED) ||
-					(res.hasOwnProperty('status') && res.status === ERROR_DUPLICATED)) {
-					this.failed(file.preview, 'Duplicated APK name file.');
+				if (res.hasOwnProperty('app_id')) {
+					this.completed();
 				} else {
-					this.failed(file.preview, 'Unknown');
+					this.failure('unknow error upload');
 				}
+				// callback end upload
+				// if (res.hasOwnProperty('appId')) {
+				// 	this.completed(file.preview);
+				// } else if ((res.hasOwnProperty('code') && res.code === ERROR_DUPLICATED) ||
+				// 	(res.hasOwnProperty('status') && res.status === ERROR_DUPLICATED)) {
+				// 	this.failed(file.preview, 'Duplicated APK name file.');
+				// } else {
+				// 	this.failed(file.preview, 'Unknown');
+				// }
 			});
 		});
 	}
 });
 
-APKActions.delete.listen(function (projectId) {
-	BackendAPI.apkDelete(projectId)
-	.then(res => {
-		this.completed(res);
+APKActions.delete.listen(function (projectId, apkIdList) {
+	Promise.all(
+		apkIdList.map(apkId => {
+			return BackendAPI.apkDelete(projectId, apkId);
+		})
+	)
+	.then(() => {
+		this.completed();
+	})
+	.catch(err => {
+		this.failure(err);
 	});
 });
 

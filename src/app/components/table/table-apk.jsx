@@ -32,7 +32,7 @@ const TableAPK = class extends React.Component {
 						<TableHeaderColumn>Status</TableHeaderColumn>
 					</TableRow>
 				</TableHeader>
-				<TableBody>
+				<TableBody deselectOnClickaway={false}>
 					{list}
 				</TableBody>
 			</Table>

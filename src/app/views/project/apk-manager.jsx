@@ -3,6 +3,7 @@
 // Vendors
 import React from 'react';
 import Paper from 'material-ui/lib/paper';
+const debug = require('debug')('AiC:Views:APKManager');
 
 // APP
 import ToolbarAPK from 'app/components/toolbar/toolbar-apk';
@@ -39,13 +40,24 @@ const APKManager = class extends React.Component {
 		this.handleDropFiles = files => {
 			APKActions.upload(projectId, files);
 		};
-		this.handleDeleteSelected = () => {};
+		this.handleDeleteSelected = () => {
+			debug('handleDeleteSelected');
+			const apksToDelete = this.state.selectFileIndexes.map(i => {
+				return this.state.apks[i].id;
+			});
+			const newState = Object.assign({}, this.state);
+			newState.selectFileIndexes = [];
+			this.setState(newState);
+			APKActions.delete(projectId, apksToDelete);
+		};
 		this.handleSelectFiles = this.handleSelectFiles.bind(this);
 		this.handleStateChange = this.handleStateChange.bind(this);
 	}
 
 	toogleDialogUploadAPK(open) {
-		this.setState({dialogUploadAPKOpen: open});
+		const newState = Object.assign({}, this.state);
+		newState.dialogUploadAPKOpen = open;
+		this.setState(newState);
 	}
 
 	handleSelectFiles(fileIndexes) {
@@ -61,11 +73,24 @@ const APKManager = class extends React.Component {
 			finalFileIndexes = fileIndexes;
 		}
 
-		this.setState({selectFileIndexes: finalFileIndexes});
+		const newState = Object.assign({}, this.state);
+		newState.selectFileIndexes = finalFileIndexes;
+		this.setState(newState);
 	}
 
 	handleStateChange(newState) {
-		this.setState(newState);
+		const mergedState = Object.assign({}, this.state, newState);
+		switch (mergedState.status) {
+			case 'uploadCompleted':
+				APKActions.list(projectId);
+				break;
+			case 'deleteCompleted':
+				APKActions.list(projectId);
+				break;
+			default:
+				break;
+		}
+		this.setState(mergedState);
 	}
 
 	render() {

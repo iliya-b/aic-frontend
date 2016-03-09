@@ -2,6 +2,7 @@
 
 // Vendor
 import Reflux from 'reflux';
+const debug = require('debug')('AiC:Stores:APK');
 
 // APP
 // import AppUtils from 'app/components/shared/app-utils';
@@ -18,12 +19,26 @@ const APKStore = Reflux.createStore({
 		this.state = {};
 		this.state.apks = [];
 		this.state.itemsToDelete = [];
+		this.state.status = 'init';
 	},
 
 	// Actions //
 
 	onListCompleted(data) {
 		this.state.apks = data;
+		this.state.status = 'listCompleted';
+		this.updateState();
+	},
+
+	onUploadCompleted(data) {
+		debug('onUploadCompleted', data);
+		this.state.status = 'uploadCompleted';
+		this.updateState();
+	},
+
+	onDeleteCompleted(data) {
+		debug('onDeleteCompleted', data);
+		this.state.status = 'deleteCompleted';
 		this.updateState();
 	},
 
