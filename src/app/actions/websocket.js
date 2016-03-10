@@ -36,7 +36,7 @@ WebsocketActions.connect.listen((token, service) => {
 	actionServiceName = service ? `${AppUtils.capitalize(service)}Actions` : null;
 
 	if (service === undefined || service === '' || !GobyActions.hasOwnProperty(actionServiceName)) {
-		console.error('You must inform a valid service for the websocket connection');
+		debug('[ERROR] You must inform a valid service for the websocket connection');
 		return;
 	}
 

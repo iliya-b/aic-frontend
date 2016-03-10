@@ -14,7 +14,7 @@ import {AppRoutes} from 'app/configs';
 	// Needed for configuration
 	window.GobyAppGlobals = window.GobyAppGlobals || {};
 
-	// Needed to enable debugging on console
+	// Needed to enable debugging on browser
 	window.GobyAppGlobals.Debugger = require('debug');
 
 	// Tap

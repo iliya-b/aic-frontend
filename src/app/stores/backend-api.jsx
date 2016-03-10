@@ -561,7 +561,7 @@ const BackendAPI = {
 
 	sensorBattery(_, liveId, value) {
 		// TODO: fix arguments
-		console.warn(arguments);
+		debug(arguments);
 		const data = {
 			// data: {level: parseInt(value, 10) * 500000},
 			data: {

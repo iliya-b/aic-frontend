@@ -118,7 +118,7 @@ const CampaignStore = Reflux.createStore({
 					CampaignActions.result.failure(messageParsed.error);
 					break;
 				default:
-					console.error('campaign error not treated', messageParsed.error);
+					debug('[ERROR] campaign error not treated', messageParsed.error);
 					break;
 			}
 		}
