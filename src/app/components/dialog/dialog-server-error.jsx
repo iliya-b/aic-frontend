@@ -27,33 +27,6 @@ const DialogServerError = props => {
 		);
 };
 
-// const DialogServerError = class extends React.Component {
-
-// 	render() {
-// 		const loginActions = [
-// 			<FlatButton
-// 				key="serverErrorDialogActionClose"
-// 				label="Close"
-// 				title="Close"
-// 				href="#"
-// 				secondary
-// 				onClick={this.props.onRequestClose}
-// 				/>
-// 		];
-
-// 		return (
-// 			<Dialog modal title="Server Error" actions={loginActions} {...this.props}>
-// 				<InfoBox boxType={InfoBox.SERVERERROR}>Something went wrong with the API server. Please contact service administration.</InfoBox>
-// 			</Dialog>
-// 			);
-// 	}
-// };
-
-// DialogServerError.contextTypes = {
-// 	muiTheme: React.PropTypes.object,
-// 	router: React.PropTypes.object
-// };
-
 DialogServerError.propTypes = {
 	open: React.PropTypes.bool.isRequired,
 	onRequestClose: React.PropTypes.func.isRequired

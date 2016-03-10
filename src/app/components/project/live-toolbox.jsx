@@ -2,7 +2,6 @@
 
 // Vendor
 import React from 'react';
-// import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 const debug = require('debug')('AiC:Components:Project:Live:LiveToolbox');
 
 // APP
@@ -112,7 +111,6 @@ const LiveToolbox = class extends React.Component {
 	}
 
 	handleChangeSensors(sensorType, e, payload) {
-		console.warn(arguments);
 		this.props.onChangeSensor(sensorType, e, payload);
 	}
 
@@ -139,57 +137,6 @@ const LiveToolbox = class extends React.Component {
 			currentBar = React.createElement(toolbars[this.state.activeBar], props);
 		}
 
-		// switch (this.state.activeBar) {
-		// 	case TOOLBAR_ANDROID:
-		// 		currentBar = (
-		// 			<ToolbarAndroid
-		// 				key={1}
-		// 				style={styles.toolbar}
-		// 				onClickSensor={this.handleClickSensor}
-		// 				onClickCamera={this.handleClickCamera}
-		// 				onClickGSM={this.handleClickGSM}
-		// 				onClickAPKs={this.handleClickAPKs}
-		// 				onClickTerminate={this.props.onClickTerminate}
-		// 				/>
-		// 		);
-		// 		break;
-		// 	case TOOLBAR_SENSORS:
-		// 		currentBar = (
-		// 			<ToolbarSensors
-		// 				key={2}
-		// 				selectedIndex={TOOLBAR_SENSORS_ORDER.indexOf(this.state.activeSecondBar)}
-		// 				style={styles.toolbar}
-		// 				onClickBack={this.handleClickBack}
-		// 				onClickGPS={this.handleClickGPS}
-		// 				onClickBattery={this.handleClickBattery}
-		// 				onClickAccelerometer={this.handleClickAccelerometer}
-		// 				onClickLight={this.handleClickLight}
-		// 				onClickGravity={this.handleClickGravity}
-		// 				onClickGyroscope={this.handleClickGyroscope}
-		// 				onClickLinearAcc={this.handleClickLinearAcc}
-		// 				onClickMagnetometer={this.handleClickMagnetometer}
-		// 				onClickOrientation={this.handleClickOrientation}
-		// 				onClickPressure={this.handleClickPressure}
-		// 				onClickProximity={this.handleClickProximity}
-		// 				onClickHumidity={this.handleClickHumidity}
-		// 				onClickTemperature={this.handleClickTemperature}
-		// 				/>
-		// 		);
-		// 		break;
-		// 	case TOOLBAR_CAMERA:
-		// 		currentBar = <ToolbarCamera key={3} style={styles.toolbar} onClickBack={this.handleClickBack}/>;
-		// 		break;
-		// 	case TOOLBAR_GSM:
-		// 		currentBar = <ToolbarGSM key={4} style={styles.toolbar} onClickBack={this.handleClickBack}/>;
-		// 		break;
-		// 	case TOOLBAR_APKS:
-		// 		currentBar = <ToolbarAPKs key={5} style={styles.toolbar} onClickBack={this.handleClickBack}/>;
-		// 		break;
-		// 	default:
-		// 		debug('could not find toolbar', this.state.activeBar);
-		// 		break;
-		// }
-
 		// Build second toolbar (when clicking on the sensors for example)
 		let currentSecondBar;
 
@@ -206,14 +153,6 @@ const LiveToolbox = class extends React.Component {
 			props[this.state.activeSecondBar] = this.props.sensorsValues[this.state.activeSecondBar];
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
 		} else if (PANEL_APKS_ORDER.indexOf(this.state.activeSecondBar) !== -1) { // eslint-disable-line no-negated-condition
-			// const onChangeSensorBinded = this.handleChangeSensors.bind(this, this.state.activeSecondBar);
-			// const props = {
-			// 	style: styles.secondToolbar,
-			// 	onInputFocus: this.props.onInputFocus,
-			// 	onInputBlur: this.props.onInputBlur,
-			// 	onChange: onChangeSensorBinded
-			// };
-			// props[this.state.activeSecondBar] = this.props.sensorsValues[this.state.activeSecondBar];
 			const props = {
 				apkList: this.props.apkList,
 				onClick: this.handleAPKs
@@ -223,9 +162,6 @@ const LiveToolbox = class extends React.Component {
 			currentSecondBar = React.createElement(toolbars.error);
 			debug('could not find second toolbar', this.state.activeSecondBar);
 		}
-
-		// <ReactCSSTransitionGroup transitionName="hideToBottom" transitionEnterTimeout={1200} transitionLeaveTimeout={1200}>
-		// </ReactCSSTransitionGroup>
 
 		return (
 			<div style={styles.wrapper}>
