@@ -47,12 +47,15 @@ const {
 	LogBoxRow,
 	AppUtils,
 	MachineCardLive,
-	InfoBox,
 	MachineCard,
 	LiveToolbox
 } = require('app/components');
 
 import TableAPK from 'app/components/table/table-apk';
+import PanelError from 'app/components/panel/panel-error';
+import InfoBox from 'app/components/shared/info-box';
+
+debug(InfoBox);
 
 // var logBoxRef = Array.apply(0, Array(8)).map(function (v, i) { return { message: 'Message ' + i , time: i }; });
 const logBoxRef = [
@@ -272,8 +275,8 @@ const ThemesPage = class extends React.Component {
 			return <MachineCardLive {...currentValue} key={index}/>;
 		});
 
-		const infoStylesTypes = [InfoBox.STYLE_BIG, ''];
-		const infoBoxesTypes = [InfoBox.ERROR, InfoBox.SUCCESS, InfoBox.LOADING, InfoBox.WARNING, InfoBox.INFO, InfoBox.DISABLED, ''];
+		const infoStylesTypes = [InfoBox.STYLE_XBIG, InfoBox.STYLE_BIG, ''];
+		const infoBoxesTypes = [InfoBox.SERVERERROR, InfoBox.ERROR, InfoBox.SUCCESS, InfoBox.LOADING, InfoBox.WARNING, InfoBox.INFO, InfoBox.DISABLED, ''];
 		const infoShowIcon = [true, false];
 
 		let infoValues = infoShowIcon.map(showIcon => {
@@ -319,11 +322,23 @@ const ThemesPage = class extends React.Component {
 				</ClearFix>
 
 				<ClearFix style={{width: 800, padding: 20}}>
-					<TableAPK list={apkList}/>
+					<PanelError/>
+				</ClearFix>
+
+				<ClearFix>
+
+					<h2>Info Boxes</h2>
+
+					{infoBoxes}
+
 				</ClearFix>
 
 				{notShow ? null : (
 					<div>
+						<ClearFix style={{width: 800, padding: 20}}>
+							<TableAPK list={apkList}/>
+						</ClearFix>
+
 						<ClearFix style={{width: 800, padding: 20}}>
 							<LiveToolbox/>
 						</ClearFix>
@@ -561,14 +576,6 @@ const ThemesPage = class extends React.Component {
 							<h2>Live Sessions</h2>
 
 							{avmsRendered}
-
-						</ClearFix>
-
-						<ClearFix>
-
-							<h2>Info Boxes</h2>
-
-							{infoBoxes}
 
 						</ClearFix>
 					</div>

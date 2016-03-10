@@ -1,14 +1,11 @@
 'use strict';
 
-// React
-const React = require('react');
-
-// Material design
-const mui = require('material-ui');
-const {Paper} = mui;
+// Vendor
+import React from 'react';
+import Paper from 'material-ui/lib/paper';
 
 // APP
-const MachineIcon = require('app/components/project/machine-icon');
+import MachineIcon from 'app/components/project/machine-icon';
 
 const InfoBox = class extends React.Component {
 
@@ -28,6 +25,10 @@ const InfoBox = class extends React.Component {
 		let iconProps;
 
 		switch (boxType) {
+			case InfoBox.SERVERERROR:
+				boxColor = this.context.muiTheme.palette.errorColor;
+				status = MachineIcon.SERVERERROR;
+				break;
 			case InfoBox.ERROR:
 				boxColor = this.context.muiTheme.palette.errorColor;
 				status = MachineIcon.ERROR;
@@ -69,12 +70,22 @@ const InfoBox = class extends React.Component {
 			iconProps = {bigIcon: true, style: {marginRight: '10px'}};
 		}
 
+		if (styleType === InfoBox.STYLE_XBIG) {
+			styles.div.fontSize = '20px';
+			styles.div.textAlign = 'center';
+			iconProps = {xbigIcon: true, style: {marginRight: '10px'}};
+		}
+
 		if (showIcon) {
 			const styleChildren = {
 				display: 'inline-block',
 				verticalAlign: 'top',
 				paddingTop: '15px'
 			};
+			if (styleType === InfoBox.STYLE_XBIG) {
+				styleChildren.paddingTop = '50px';
+				styleChildren.width = '77%';
+			}
 			content = [
 				<MachineIcon status={status} {...iconProps} key={1}/>,
 				<div style={styleChildren} key={2}>{children}</div>
@@ -95,6 +106,7 @@ InfoBox.contextTypes = {
 	muiTheme: React.PropTypes.object
 };
 
+InfoBox.SERVERERROR = 'serverError';
 InfoBox.ERROR = 'error';
 InfoBox.SUCCESS = 'success';
 InfoBox.LOADING = 'loading';
@@ -103,6 +115,7 @@ InfoBox.INFO = 'info';
 InfoBox.DISABLED = 'disabled';
 
 InfoBox.STYLE_BIG = 'big';
+InfoBox.STYLE_XBIG = 'XL';
 
 InfoBox.propTypes = {
 	children: React.PropTypes.node,

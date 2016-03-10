@@ -323,6 +323,10 @@ const BackendAPI = {
 					debug('fetch response', response);
 					const {AuthActions} = require('app/actions');
 					AuthActions.logout('Your session has been ended2.');
+				} else if (response.status === 500) {
+					debug('response.status === 500', response, options.url, myInit);
+					const AppActions = require('app/actions/app');
+					AppActions.displayServerError('Something went wrong with the API server. Please contact service administration.');
 				}
 				const error = new Error(response.statusText);
 				error.response = response;

@@ -48,4 +48,9 @@ TableAPK.propTypes = {
 	selected: React.PropTypes.array
 };
 
+TableAPK.defaultProps = {
+	selected: [],
+	list: []
+};
+
 module.exports = TableAPK;

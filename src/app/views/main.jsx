@@ -2,32 +2,24 @@
 // TODO: remove global window
 'use strict';
 
-// React
-const React = require('react');
-
-// Material design
-const mui = require('material-ui');
-const Colors = mui.Styles.Colors;
-const {RaisedButton} = mui;
+// Vendor
+import React from 'react';
+import * as Colors from 'material-ui/lib/styles/colors';
+import RaisedButton from 'material-ui/lib/raised-button';
 import MuiThemeProvider from 'material-ui/lib/MuiThemeProvider';
-
-// Vendors
 const debug = require('debug')('AiC:Views:Home');
 
 // APP
-const AppTheme = require('app/configs/app-theme');
-const {
-	FullWidthSection,
-	SessionEndedDialog
-} = require('app/components');
-const {
-	AuthStore,
-	AppConfigStore
-} = require('app/stores');
-const {
-	AuthActions,
-	AppConfigActions
-} = require('app/actions');
+import AppTheme from 'app/configs/app-theme';
+import FullWidthSection from 'app/components/shared/full-width-section';
+import SessionEndedDialog from 'app/components/main/session-ended-dialog';
+import AuthStore from 'app/stores/auths';
+import AppConfigStore from 'app/stores/app-config';
+import AppStore from 'app/stores/app';
+import AuthActions from 'app/actions/auth';
+import AppConfigActions from 'app/actions/app-config';
+import AppActions from 'app/actions/app';
+import ServerErrorDialog from 'app/components/dialog/dialog-server-error';
 
 const Main = class extends React.Component {
 	constructor(props) {
@@ -37,9 +29,13 @@ const Main = class extends React.Component {
 		this.handleSessionEndedDialogClose = this.handleSessionEndedDialogClose.bind(this);
 		this.handleSessionEndedDialogOpen = this.handleSessionEndedDialogOpen.bind(this);
 		this.state = {
-			sessionEndedDialogOpen: false
+			sessionEndedDialogOpen: false,
+			serverErrorDialogOpen: false
 		};
 		this.unsubscribe = [];
+
+		// this.handleServerErrorDialogOpen = () => this.setState({serverErrorDialogOpen: true});
+		this.handleServerErrorDialogClose = () => AppActions.hideServerError();
 	}
 
 	_onHomeClick() {
@@ -99,6 +95,7 @@ const Main = class extends React.Component {
 							) : null}
 						</FullWidthSection>
 						<SessionEndedDialog open={this.state.sessionEndedDialogOpen} onRequestClose={this.handleSessionEndedDialogClose}/>
+						<ServerErrorDialog open={this.state.app ? this.state.app.serverError.open : false} onRequestClose={this.handleServerErrorDialogClose}/>
 					</div>
 				</MuiThemeProvider>
 			);
@@ -159,6 +156,11 @@ const Main = class extends React.Component {
 			// Set state MUST be the last call
 			this.setState(newState);
 		}
+		if (newState.app) {
+			const mergedState = Object.assign({}, this.state);
+			mergedState.app = newState.app;
+			this.setState(mergedState);
+		}
 	}
 
 	componentWillMount() {
@@ -169,6 +171,8 @@ const Main = class extends React.Component {
 		AuthStore.init();
 		this.unsubscribe.push(AppConfigStore.listen(this._onStateChange));
 		AppConfigActions.load();
+
+		this.unsubscribe.push(AppStore.listen(this._onStateChange));
 	}
 
 	// componentDidMount() {

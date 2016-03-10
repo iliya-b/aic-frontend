@@ -1,14 +1,14 @@
 'use strict';
 
-// React
-const React = require('react');
+// Vendor
+import React from 'react';
+import FontIcon from 'material-ui/lib/font-icon';
+// TODO: remove deepExtend, we don't need it, Object.assign is sufficient for our needs
+import deepExtend from 'deep-extend';
 
-// Material design
-const mui = require('material-ui');
-const {FontIcon} = mui;
-
-// Vendors
-const deepExtend = require('deep-extend');
+// APP
+import DroidDevilSVG from 'app/components/icons/droid-devil';
+import FireSVG from 'app/components/icons/fire';
 
 const MachineIcon = class extends React.Component {
 
@@ -16,18 +16,26 @@ const MachineIcon = class extends React.Component {
 		const {
 			status,
 			style,
-			bigIcon
+			bigIcon,
+			xbigIcon
 		} = this.props;
 
 		let colorIcon;
 		let colorAndro;
 		let statusClassName;
+		let iconAndro;
+		let iconStatus;
 
 		switch (status) {
 			case MachineIcon.DISABLED:
 				colorIcon = this.context.muiTheme.palette.disabledColor;
 				colorAndro = this.context.muiTheme.palette.disabledColor;
 				statusClassName = 'mdi mdi-block-helper';
+				break;
+			case MachineIcon.SERVERERROR:
+				colorIcon = this.context.muiTheme.palette.errorColor;
+				colorAndro = this.context.muiTheme.palette.errorColor;
+				statusClassName = 'mdi mdi-fire';
 				break;
 			case MachineIcon.ERROR:
 				colorIcon = this.context.muiTheme.palette.errorColor;
@@ -98,7 +106,7 @@ const MachineIcon = class extends React.Component {
 					lineHeight: '59px'
 				},
 				andro: {
-					fontSize: '46px',
+					fontSize: 46,
 					top: 4
 				},
 				status: {
@@ -110,17 +118,53 @@ const MachineIcon = class extends React.Component {
 			styles = deepExtend(styles, bigStyles);
 		}
 
-		if (status === MachineIcon.DISABLED) {
-			styles.status.fontSize = bigIcon ? '19px' : '15px';
-			styles.status.top = bigIcon ? 23 : 17;
-			styles.status.left = bigIcon ? 26 : 17;
+		if (xbigIcon) {
+			const xbigStyles = {
+				root: {
+					width: 135,
+					height: 115
+				},
+				andro: {
+					fontSize: 110,
+					top: 4
+				},
+				status: {
+					fontSize: 83,
+					height: 83,
+					width: 70,
+					top: 39,
+					left: 38
+				}
+			};
+			styles = deepExtend(styles, xbigStyles);
+		}
+
+		iconAndro = <FontIcon className="mdi mdi-android" style={styles.andro}/>;
+		iconStatus = <FontIcon className={statusClassName} style={styles.status}/>;
+
+		if (status === MachineIcon.DISABLED && !xbigIcon) {
+			styles.status.fontSize = (bigIcon || xbigIcon) ? '19px' : '15px';
+			styles.status.top = (bigIcon || xbigIcon) ? 23 : 17;
+			styles.status.left = (bigIcon || xbigIcon) ? 26 : 17;
+		}
+
+		if (status === MachineIcon.SERVERERROR) {
+			// Android
+			styles.andro.fill = styles.andro.color;
+			styles.andro.width = styles.andro.fontSize;
+			styles.andro.height = styles.andro.fontSize + (xbigIcon ? 7 : 2);
+			iconAndro = <DroidDevilSVG style={styles.andro}/>;
+			// Status
+			styles.status.fill = 'url(#FireGradient)';
+			styles.status.stroke = 'white';
+			iconStatus = <FireSVG style={styles.status}/>;
 		}
 
 		styles.root = deepExtend(styles.root, style);
 
 		return (<div style={styles.root}>
-			<FontIcon className="mdi mdi-android" style={styles.andro}/>
-			<FontIcon className={statusClassName} style={styles.status}/>
+			{iconAndro}
+			{iconStatus}
 		</div>);
 	}
 
@@ -134,7 +178,8 @@ MachineIcon.contextTypes = {
 MachineIcon.propTypes = {
 	status: React.PropTypes.string,
 	style: React.PropTypes.object,
-	bigIcon: React.PropTypes.bool
+	bigIcon: React.PropTypes.bool,
+	xbigIcon: React.PropTypes.bool
 };
 
 MachineIcon.DISABLED = 'disabled';
@@ -143,5 +188,6 @@ MachineIcon.LOADING = 'loading';
 MachineIcon.SUCCESS = 'success';
 MachineIcon.WARNING = 'warning';
 MachineIcon.INFO = 'info';
+MachineIcon.SERVERERROR = 'serverError';
 
 module.exports = MachineIcon;
