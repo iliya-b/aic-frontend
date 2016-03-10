@@ -320,10 +320,6 @@ const ThemesPage = class extends React.Component {
 					<RaisedButton linkButton href={'/'} secondary label={'Back to Home'}/>
 				</ClearFix>
 
-				<ClearFix style={{width: 800, padding: 20}}>
-					<PanelError/>
-				</ClearFix>
-
 				<ClearFix>
 
 					<h2>Info Boxes</h2>
