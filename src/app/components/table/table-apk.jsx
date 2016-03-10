@@ -24,7 +24,7 @@ const TableAPK = class extends React.Component {
 		});
 
 		return (
-			<Table style={this.props.style} multiSelectable onRowSelection={this.props.onRowSelection}>
+			<Table className="tbAPKs" style={this.props.style} multiSelectable onRowSelection={this.props.onRowSelection}>
 				<TableHeader>
 					<TableRow>
 						<TableHeaderColumn>ID</TableHeaderColumn>

@@ -31,21 +31,21 @@ const ToolbarAPK = class extends React.Component {
 		const buttons = [];
 		if (this.props.uploadOpenVisible) {
 			buttons.push(
-				<IconButton key={1} tooltip="Upload file" style={styles.button}>
+				<IconButton className="btUploadOpen" key={1} tooltip="Upload file" style={styles.button}>
 					<FontIcon className="mdi mdi-cloud-upload" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)" onClick={this.props.onClickUploadOpen}/>
 				</IconButton>
 			);
 		}
 		if (this.props.uploadCloseVisible) {
 			buttons.push(
-				<IconButton key={2} tooltip="Close upload" style={styles.button}>
+				<IconButton className="btUploadClose" key={2} tooltip="Close upload" style={styles.button}>
 					<FontIcon className="mdi mdi-close-circle" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)" onClick={this.props.onClickUploadClose}/>
 				</IconButton>
 			);
 		}
 		if (this.props.deleteFileVisible) {
 			buttons.push(
-				<IconButton key={3} tooltip="Delete selected files" style={styles.button}>
+				<IconButton className="btDeleteSelected" key={3} tooltip="Delete selected files" style={styles.button}>
 					<FontIcon className="mdi mdi-delete" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)" onClick={this.props.onClickDeleteFile}/>
 				</IconButton>
 			);
