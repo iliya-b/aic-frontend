@@ -52,7 +52,6 @@ const {
 } = require('app/components');
 
 import TableAPK from 'app/components/table/table-apk';
-import PanelError from 'app/components/panel/panel-error';
 import InfoBox from 'app/components/shared/info-box';
 
 debug(InfoBox);
