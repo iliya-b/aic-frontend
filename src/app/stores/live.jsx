@@ -199,6 +199,10 @@ const LiveStore = Reflux.createStore({
 
 	onSetSensor(avmId, sensor, payload) {
 		this.state.live.sensors[sensor] = payload;
+		if (sensor === 'accelerometer') {
+			this.state.live.delayedRotation = this.isRotation(payload, 'horizontal') ? 'horizontal' : 'vertical';
+		}
+		this.updateState();
 	},
 
 	onSetSensorBattery(projectId, value) {
@@ -360,6 +364,10 @@ const LiveStore = Reflux.createStore({
 		LIVE_STATUS_STOP_FAILED: {typeName: 'close', newStatus: 'fail'},
 
 		LIVE_STATUS_RESET: {typeName: '', newStatus: ''}
+	},
+
+	isRotation(set, rotation) {
+		return set.x === this.state.live.rotationSets[rotation].x && set.y === this.state.live.rotationSets[rotation].y && set.z === this.state.live.rotationSets[rotation].z;
 	},
 
 	// State update
