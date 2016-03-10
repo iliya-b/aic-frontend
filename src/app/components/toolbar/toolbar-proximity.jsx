@@ -53,8 +53,9 @@ const ToolbarGPS = class extends React.Component {
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
 				<VoiceIcon style={styles.icon} color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<TextField style={styles.items} ref={this.setRefProximity} hintText="distance" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<TextField className="inputLiveSensorProximityDistance" style={styles.items} ref={this.setRefProximity} hintText="distance" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<RaisedButton
+					className="btLiveSensorProximitySubmit"
 					label="Submit"
 					title="Submit"
 					href="#"

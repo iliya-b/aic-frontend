@@ -33,13 +33,13 @@ const ToolbarAPKs = class extends React.Component {
 					</IconButton>
 					<ToolbarTitle text="APKs" style={styles.title}/>
 					<ToolbarSeparator style={styles.separator}/>
-					<IconButton tooltip="Upload file" style={styles.button} onClick={this.props.onClick.apkUpload}>
+					<IconButton className="btLiveAPKUpload" tooltip="Upload file" style={styles.button} onClick={this.props.onClick.apkUpload}>
 						<FontIcon className="mdi mdi-cloud-upload" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="Install" style={styles.button} onClick={this.props.onClick.apkInstall}>
+					<IconButton className="btLiveAPKInstall" tooltip="Install" style={styles.button} onClick={this.props.onClick.apkInstall}>
 						<FontIcon className="mdi mdi-file-send" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="Remove" style={styles.button} onClick={this.props.onClick.apkUninstall}>
+					<IconButton className="btLiveAPKUninstall" tooltip="Remove" style={styles.button} onClick={this.props.onClick.apkUninstall}>
 						<FileCancel color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
 				</ToolbarGroup>

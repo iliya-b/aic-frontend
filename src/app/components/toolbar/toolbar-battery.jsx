@@ -37,7 +37,7 @@ const ToolbarBattery = class extends React.Component {
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-battery-charging-40" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<Slider style={styles.items} name="battery" max={100} min={0} step={1} value={this.props.battery} onChange={onChange}/>
+				<Slider className="inputLiveSensorBattery" style={styles.items} name="battery" max={100} min={0} step={1} value={this.props.battery} onChange={onChange}/>
 			</Paper>
 		);
 	}

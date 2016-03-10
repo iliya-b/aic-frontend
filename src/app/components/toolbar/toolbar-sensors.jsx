@@ -8,9 +8,12 @@ import ToolbarSeparator from 'material-ui/lib/toolbar/toolbar-separator';
 import ToolbarTitle from 'material-ui/lib/toolbar/toolbar-title';
 import FontIcon from 'material-ui/lib/font-icon';
 import IconButton from 'material-ui/lib/icon-button';
-import SvgIcon from 'material-ui/lib/svg-icon';
+import slug from 'slug';
 
 // APP
+import VoiceSVG from 'app/components/icons/voice';
+import GravitySVG from 'app/components/icons/gravity';
+
 const ToolbarSensors = class extends React.Component {
 
 	render() {
@@ -23,19 +26,6 @@ const ToolbarSensors = class extends React.Component {
 				margin: '0 5px 0 0px'
 			}
 		};
-
-		const VoiceSVG = props => (
-			<SvgIcon {...props}>
-				<path d="M9,5A4,4 0 0,1 13,9A4,4 0 0,1 9,13A4,4 0 0,1 5,9A4,4 0 0,1 9,5M9,15C11.67,15 17,16.34 17,19V21H1V19C1,16.34 6.33,15 9,15M16.76,5.36C18.78,7.56 18.78,10.61 16.76,12.63L15.08,10.94C15.92,9.76 15.92,8.23 15.08,7.05L16.76,5.36M20.07,2C24,6.05 23.97,12.11 20.07,16L18.44,14.37C21.21,11.19 21.21,6.65 18.44,3.63L20.07,2Z"/>
-			</SvgIcon>
-		);
-
-		const GravitySVG = props => (
-			<SvgIcon {...props}>
-				<path transform="translate(7,5),scale(0.8)" d="M20,10C22,13 17,22 15,22C13,22 13,21 12,21C11,21 11,22 9,22C7,22 2,13 4,10C6,7 9,7 11,8V5C5.38,8.07 4.11,3.78 4.11,3.78C4.11,3.78 6.77,0.19 11,5V3H13V8C15,7 18,7 20,10Z"/>
-				<path transform="translate(0,0),scale(0.5)" d="M11,4H13V16L18.5,10.5L19.92,11.92L12,19.84L4.08,11.92L5.5,10.5L11,16V4Z"/>
-			</SvgIcon>
-		);
 
 		const SVGs = {
 			VoiceSVG,
@@ -132,7 +122,7 @@ const ToolbarSensors = class extends React.Component {
 				icon = React.createElement(SVGs[b.svgIcon], {color: iconColor, hoverColor: 'rgba(0, 0, 0, 0.87)'});
 			}
 			return (
-				<IconButton key={i} tooltip={b.tooltip} style={styles.button} onClick={this.props.onClick[b.id]}>
+				<IconButton className={`btLiveSensor${slug(b.name)}`} key={i} tooltip={b.tooltip} style={styles.button} onClick={this.props.onClick[b.id]}>
 					{icon}
 				</IconButton>
 			);

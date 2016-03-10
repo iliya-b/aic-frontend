@@ -5,19 +5,15 @@ import React from 'react';
 import FontIcon from 'material-ui/lib/font-icon';
 
 // APP
-const TogglableIcon = React.createClass({
 
-	propTypes: {
-		iconName: React.PropTypes.string,
-		style: React.PropTypes.object,
-		isOn: React.PropTypes.bool
-	},
+const TogglableIcon = class extends React.Component {
 
 	render() {
 		const {
 			iconName,
 			style,
 			isOn,
+			className,
 			...other
 		} = this.props;
 
@@ -27,7 +23,7 @@ const TogglableIcon = React.createClass({
 			}
 		};
 
-		const iconClassName = `mdi mdi-${iconName}${(isOn ? '' : '-off')}`;
+		const iconClassName = `${className} mdi mdi-${iconName}${(isOn ? '' : '-off')}`;
 
 		return (
 			<FontIcon
@@ -37,16 +33,17 @@ const TogglableIcon = React.createClass({
 				/>
 			);
 	}
-});
+};
 
 TogglableIcon.contextTypes = {
 	muiTheme: React.PropTypes.object
 };
 
-// TogglableIcon.propTypes = {
-// 	iconName: React.PropTypes.string,
-// 	style: React.PropTypes.object,
-// 	isOn: React.PropTypes.bool
-// };
+TogglableIcon.propTypes = {
+	iconName: React.PropTypes.string,
+	style: React.PropTypes.object,
+	isOn: React.PropTypes.bool,
+	className: React.PropTypes.string
+};
 
 module.exports = TogglableIcon;

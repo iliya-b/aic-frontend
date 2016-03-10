@@ -30,22 +30,22 @@ const ToolbarAndroid = class extends React.Component {
 					</IconButton>
 					<ToolbarTitle text="Toolbar"/>
 					<ToolbarSeparator style={styles.separator}/>
-					<IconButton tooltip="Sensors" style={styles.button} onClick={this.props.onClick.sensors}>
+					<IconButton className="btLiveSensors" tooltip="Sensors" style={styles.button} onClick={this.props.onClick.sensors}>
 						<FontIcon className="mdi mdi-map-marker" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="Camera" style={styles.button} onClick={this.props.onClick.camera}>
+					<IconButton className="btLiveCamera" tooltip="Camera" style={styles.button} onClick={this.props.onClick.camera}>
 						<FontIcon className="mdi mdi-camera" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="GSM" style={styles.button} onClick={this.props.onClick.gsm}>
+					<IconButton className="btLiveGSM" tooltip="GSM" style={styles.button} onClick={this.props.onClick.gsm}>
 						<FontIcon className="mdi mdi-phone" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="APKs" style={styles.button} onClick={this.props.onClick.apks}>
+					<IconButton className="btLiveAPKs" tooltip="APKs" style={styles.button} onClick={this.props.onClick.apks}>
 						<FontIcon className="mdi mdi-puzzle" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="Session Details" style={styles.button} onClick={this.props.onClick.details}>
+					<IconButton className="btLiveDetails" tooltip="Session Details" style={styles.button} onClick={this.props.onClick.details}>
 						<FontIcon className="mdi mdi-information" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="Terminate Session" style={styles.button} onClick={this.props.onClick.terminate}>
+					<IconButton className="btLiveTerminate" tooltip="Terminate Session" style={styles.button} onClick={this.props.onClick.terminate}>
 						<FontIcon className="mdi mdi-power" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
 				</ToolbarGroup>

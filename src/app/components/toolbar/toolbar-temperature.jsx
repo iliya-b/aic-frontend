@@ -52,8 +52,9 @@ const ToolbarGPS = class extends React.Component {
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-thermometer-lines" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<TextField style={styles.items} ref={this.setRefTemperature} hintText="temperature" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<TextField className="inputLiveSensorTemperature" style={styles.items} ref={this.setRefTemperature} hintText="temperature" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<RaisedButton
+					className="btLiveSensorTemperatureSubmit"
 					label="Submit"
 					title="Submit"
 					href="#"

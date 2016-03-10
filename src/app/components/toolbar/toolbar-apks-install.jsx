@@ -54,10 +54,11 @@ const PanelAPKInstall = class extends React.Component {
 			<Paper style={styles.paper} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-file-send" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<SelectField style={styles.items} maxHeight={300} value={this.state.value} onChange={this.handleChange}>
+				<SelectField className="inputLiveAPKInstallFilename" style={styles.items} maxHeight={300} value={this.state.value} onChange={this.handleChange}>
 					{items}
 				</SelectField>
 				<RaisedButton
+					className="btLiveAPKInstallSubmit"
 					label="Install"
 					title="Install"
 					href="#"

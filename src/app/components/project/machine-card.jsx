@@ -17,6 +17,13 @@ const MachineIcon = require('app/components/project/machine-icon');
 const MachineCard = class extends React.Component {
 
 	render() {
+		const {
+			children,
+			avm_status, // eslint-disable-line camelcase
+			avm_id, // eslint-disable-line camelcase
+			avm_owner, // eslint-disable-line camelcase
+			...otherProps
+		} = this.props;
 		const styles = {
 			info: {
 				paddingLeft: 10,
@@ -43,7 +50,7 @@ const MachineCard = class extends React.Component {
 			status: {statusMessage[this.props.avm_status]}, owner: {this.props.avm_owner}
 		</div>);
 
-		return (<Card expandable>
+		return (<Card expandable {...otherProps}>
 			<CardHeader
 				title={''}
 				subtitle={infoTests}
