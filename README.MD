@@ -66,8 +66,9 @@ will automatically clone it.
 Known Bugs
 ==========
 
-* Tables: can not be unselect all ([open issue](https://github.com/callemall/material-ui/issues/3074) on the Table component of material-ui)
+* Tables: can not unselect all ([open issue](https://github.com/callemall/material-ui/issues/3074) on the Table component of material-ui)
 * Tables: header separator bugs on DOM change (to debug)
+* Reflux unsubscribe method is broken, so users will get React messages like this: `Warning: setState(...): Can only update a mounted or mounting component. This usually means you called setState() on an unmounted component. This is a no-op. Please check the code for the undefined component.`
 
 TODO List
 =========
@@ -82,15 +83,16 @@ TODO List
 * ~~Write/adapt features~~ (transfered to aic_features project) :x:
 * Try other browsers for behavior testing
 * ~~Configure backend so the tests can pass~~ :white_check_mark:
-* Update node packages (a lot of work since everything will be broken by that)
+* ~~Update node packages (a lot of work since everything will be broken by that)~~ :white_check_mark:
 * Use ReactTestUtils on unit tests
 * Auth Todos
-	* disconnect user when token is invalid in any backend request
+	* ~~disconnect user when token is invalid in any backend request~~ :white_check_mark:
 	* true logout (now is just application sided not server sided)
 	* replace localstorage by another storage?
-* ~~Not found route~~ :white_check_mark:
-* Get initial VM state to set the frontend sensors (for example battery slides should be relative to the vm battery)
-* Reflux unsubscribe method is broken
+* Routing
+	* ~~Not found route~~ :white_check_mark:
+	* Next Path broken (regression)
 * Missing on the backend
   * Live
-    * Audio port
+      * Get initial VM state to set the frontend sensors (for example battery slides should be relative to the vm battery)
+      * Audio port
