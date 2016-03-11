@@ -31,33 +31,33 @@ const ToolbarGSM = class extends React.Component {
 			// 'SET_NETWORK_TYPE', 'SET_NETWORK_REGISTRATION'
 			<Toolbar style={this.props.style}>
 				<ToolbarGroup firstChild lastChild>
-					<IconButton tooltip="Back to toolbar" tooltipPosition="bottom-right" style={styles.button} onClick={this.props.onClick.android}>
+					<IconButton className="btLiveBack" tooltip="Back to toolbar" tooltipPosition="bottom-right" style={styles.button} onClick={this.props.onClick.android}>
 						<FontIcon className="mdi mdi-arrow-left-bold" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
 					<ToolbarTitle text="GSM" style={styles.title}/>
 					<ToolbarSeparator style={styles.separator}/>
-					<IconButton tooltip="Call" style={styles.button} onClick={this.props.onClick.gsmCall}>
+					<IconButton className="btLiveGSMCall" tooltip="Call" style={styles.button} onClick={this.props.onClick.gsmCall}>
 						<FontIcon className="mdi mdi-phone" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="Accept call" style={styles.button} onClick={this.props.onClick.gsmAcceptCall}>
+					<IconButton className="btLiveGSMAcceptCall" tooltip="Accept call" style={styles.button} onClick={this.props.onClick.gsmAcceptCall}>
 						<PhoneAcceptSVG color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="Hold call" style={styles.button} onClick={this.props.onClick.gsmHoldCall}>
+					<IconButton className="btLiveGSMHoldCall" tooltip="Hold call" style={styles.button} onClick={this.props.onClick.gsmHoldCall}>
 						<FontIcon className="mdi mdi-phone-paused" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="Cancel call" style={styles.button} onClick={this.props.onClick.gsmCancelCall}>
+					<IconButton className="btLiveGSMCancelCall" tooltip="Cancel call" style={styles.button} onClick={this.props.onClick.gsmCancelCall}>
 						<FontIcon className="mdi mdi-phone-missed" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="SMS" style={styles.button} onClick={this.props.onClick.gsmSMS}>
+					<IconButton className="btLiveGSMSMS" tooltip="SMS" style={styles.button} onClick={this.props.onClick.gsmSMS}>
 						<FontIcon className="mdi mdi-message-text" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="Signal" style={styles.button} onClick={this.props.onClick.gsmSignal}>
+					<IconButton className="btLiveGSMSignal" tooltip="Signal" style={styles.button} onClick={this.props.onClick.gsmSignal}>
 						<FontIcon className="mdi mdi-signal" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="Network" style={styles.button} onClick={this.props.onClick.gsmNetwork}>
+					<IconButton className="btLiveGSMNetwork" tooltip="Network" style={styles.button} onClick={this.props.onClick.gsmNetwork}>
 						<FontIcon className="mdi mdi-radio-tower" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
-					<IconButton tooltip="Roaming" style={styles.button} onClick={this.props.onClick.gsmRoaming}>
+					<IconButton className="btLiveGSMRoaming" tooltip="Roaming" style={styles.button} onClick={this.props.onClick.gsmRoaming}>
 						<FontIcon className="mdi mdi-home" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
 				</ToolbarGroup>
