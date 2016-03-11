@@ -106,11 +106,11 @@ const BackendObjects = {
 				action_type: { // eslint-disable-line camelcase
 					enum: ['RECEIVE_CALL', 'ACCEPT_CALL', 'CANCEL_CALL', 'HOLD_CALL', 'RECEIVE_SMS', 'SET_SIGNAL', 'SET_NETWORK_TYPE', 'SET_NETWORK_REGISTRATION']
 				},
-				phone_number: {type: 'string'}, // eslint-disable-line camelcase
-				sms_text: {type: 'string'}, // eslint-disable-line camelcase
-				signal_strength: {enum: [0, 1, 2, 3, 4]}, // eslint-disable-line camelcase
-				network: {enum: ['umts', 'lte', 'gprs', 'gsm', 'hspa', 'edge', 'cdma', 'evdo', 'hsdpa', 'hsupa', 'full']},
-				registration: {enum: ['home', 'denied', 'searching', 'roaming', 'none']}
+				phone_number: {type: 'string', optional: true}, // eslint-disable-line camelcase
+				sms_text: {type: 'string', optional: true}, // eslint-disable-line camelcase
+				signal_strength: {enum: [0, 1, 2, 3, 4], optional: true}, // eslint-disable-line camelcase
+				network: {enum: ['umts', 'lte', 'gprs', 'gsm', 'hspa', 'edge', 'cdma', 'evdo', 'hsdpa', 'hsupa', 'full'], optional: true},
+				registration: {enum: ['home', 'denied', 'searching', 'roaming', 'none'], optional: true}
 			}
 		},
 		gyroscope: {

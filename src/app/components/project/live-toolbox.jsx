@@ -36,6 +36,17 @@ const PANEL_APKS_INSTALL = 'apkInstall';
 const PANEL_APKS_UNINSTALL = 'apkUninstall';
 const PANEL_APKS_ORDER = [PANEL_APKS_UPLOAD, PANEL_APKS_INSTALL, PANEL_APKS_UNINSTALL];
 
+// GSM panels
+const PANEL_GSM_CALL = 'gsmCall';
+const PANEL_GSM_ACCEPTCALL = 'gsmAcceptCall';
+const PANEL_GSM_HOLDCALL = 'gsmHoldCall';
+const PANEL_GSM_CANCELCALL = 'gsmCancelCall';
+const PANEL_GSM_SMS = 'gsmSMS';
+const PANEL_GSM_SIGNAL = 'gsmSignal';
+const PANEL_GSM_NETWORK = 'gsmNetwork';
+const PANEL_GSM_ROAMING = 'gsmRoaming';
+const PANEL_GSM_ORDER = [PANEL_GSM_CALL, PANEL_GSM_ACCEPTCALL, PANEL_GSM_HOLDCALL, PANEL_GSM_CANCELCALL, PANEL_GSM_SMS, PANEL_GSM_SIGNAL, PANEL_GSM_NETWORK, PANEL_GSM_ROAMING];
+
 // Components
 // NOFIX: can not put in a map because browserify will then not resolve the requires
 const toolbars = {};
@@ -70,6 +81,13 @@ toolbars.apkUpload = require('app/components/toolbar/toolbar-apks-upload');
 toolbars.apkInstall = require('app/components/toolbar/toolbar-apks-install');
 toolbars.apkUninstall = require('app/components/toolbar/toolbar-apks-uninstall');
 
+// GSM panels
+toolbars.gsmCall = require('app/components/toolbar/toolbar-gsm-call');
+toolbars.gsmSMS = require('app/components/toolbar/toolbar-gsm-sms');
+toolbars.gsmSignal = require('app/components/toolbar/toolbar-gsm-signal');
+toolbars.gsmNetwork = require('app/components/toolbar/toolbar-gsm-network');
+toolbars.gsmRoaming = require('app/components/toolbar/toolbar-gsm-roaming');
+
 const LiveToolbox = class extends React.Component {
 
 	constructor(props) {
@@ -98,8 +116,20 @@ const LiveToolbox = class extends React.Component {
 		PANEL_APKS_ORDER.map(v => {
 			this.handleClickFirstBar[v] = this.changeActiveSecondToolbar.bind(this, v);
 		});
+		PANEL_GSM_ORDER.map(v => {
+			if (v === 'gsmAcceptCall') {
+				this.handleClickFirstBar[v] = e => this.handleGSM(e, {action_type: 'ACCEPT_CALL'}); // eslint-disable-line camelcase
+			} else if (v === 'gsmHoldCall') {
+				this.handleClickFirstBar[v] = e => this.handleGSM(e, {action_type: 'HOLD_CALL'}); // eslint-disable-line camelcase
+			} else if (v === 'gsmCancelCall') {
+				this.handleClickFirstBar[v] = e => this.handleGSM(e, {action_type: 'CANCEL_CALL'}); // eslint-disable-line camelcase
+			} else {
+				this.handleClickFirstBar[v] = this.changeActiveSecondToolbar.bind(this, v);
+			}
+		});
 
 		this.handleAPKs = (e, apkId) => this.props.onInstallAPK(e, apkId);
+		this.handleGSM = (e, payload) => this.props.onChangeSensor('gsm', e, payload);
 	}
 
 	changeActiveToolbar(toolbar) {
@@ -156,6 +186,13 @@ const LiveToolbox = class extends React.Component {
 			const props = {
 				apkList: this.props.apkList,
 				onClick: this.handleAPKs
+			};
+			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
+		} else if (PANEL_GSM_ORDER.indexOf(this.state.activeSecondBar) !== -1) { // eslint-disable-line no-negated-condition
+			const props = {
+				onChange: this.handleGSM,
+				onInputFocus: this.props.onInputFocus,
+				onInputBlur: this.props.onInputBlur
 			};
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
 		} else {
