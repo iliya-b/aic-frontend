@@ -138,7 +138,7 @@ const Main = class extends React.Component {
 				if (newState.login.showMessage) {
 					this.handleSessionEndedDialogOpen();
 				} else {
-					AuthActions.redirectDisconnected(this.context.router);
+					AuthActions.redirectDisconnected(this.context.router, this.props.location);
 				}
 			}
 			// One baby panda dies each time we use window.GobyAppGlobals

@@ -32,8 +32,9 @@ const AuthRequired = class extends React.Component {
 		if (AuthActions.isLogged()) {
 			debug('user is logged');
 		} else {
+			debug('componentWillMount', this.context, this.props);
 			debug('user not logged, redirect');
-			AuthActions.redirectDisconnected(this.context.router);
+			AuthActions.redirectDisconnected(this.context.router, this.props.location);
 		}
 		// const stateObj = { foo: "bar" };
 		// history.pushState(stateObj, "page 2", "bar.html");
@@ -80,6 +81,10 @@ AuthRequired.contextTypes = {
 	muiTheme: React.PropTypes.object,
 	router: React.PropTypes.object,
 	loginStatus: React.PropTypes.func
+};
+
+AuthRequired.propTypes = {
+	location: React.PropTypes.object
 };
 
 module.exports = AuthRequired;

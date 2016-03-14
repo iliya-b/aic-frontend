@@ -63,8 +63,8 @@ AuthActions.getToken = function () {
 };
 
 // TODO: all this redirects and getFoo should be updated to the new format of react-router
-AuthActions.redirectDisconnected = function (routerOrTransition) {
-	this.redirectTo(routerOrTransition, '/', {nextPath: this.getPath(routerOrTransition)});
+AuthActions.redirectDisconnected = function (routerOrTransition, routerLocation) {
+	this.redirectTo(routerOrTransition, '/', {nextPath: this.getPath(routerOrTransition, routerLocation)});
 };
 
 AuthActions.redirectConnected = function (routerOrTransition, location) {
@@ -87,8 +87,11 @@ AuthActions.getQuery = function (routerOrTransition) {
 	return urlParsed.query;
 };
 
-AuthActions.getPath = function (routerOrTransition) {
-	if (routerOrTransition.hasOwnProperty('path')) {
+AuthActions.getPath = function (routerOrTransition, routerLocation) {
+	debug('AuthActions.getPath', routerOrTransition, routerLocation);
+	if (routerLocation && routerLocation.hasOwnProperty('pathname')) {
+		return routerLocation.pathname;
+	} else if (routerOrTransition.hasOwnProperty('path')) {
 		return routerOrTransition.path;
 	// transition case
 	} else if (typeof routerOrTransition.getCurrentPath === 'function') {

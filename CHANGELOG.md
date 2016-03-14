@@ -5,12 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 ## [Unreleased]
 
 ### Added
-- Live GSM calls
+- Live GSM calls (not yet ready on the backend and changes on the API are to come)
 
 ### Fixed
 - Fix live rotation
+- Fix next path on logout/redirection
+- Fix home redirection when already logged
 
-## [0.2.2]
+## [0.2.2] - 2016-03-10
 
 ### Added
 - Live VM sensors: gps, battery, accelerometer, light, gravity, gyroscope, linear_acc, magnetometer, orientation, pressure, proximity, relative_humidity, temperature.

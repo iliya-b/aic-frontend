@@ -1,19 +1,18 @@
 'use strict';
 
-// Vendors
-const React = require('react');
-const Typography = require('material-ui/lib/styles/typography');
-const RaisedButton = require('material-ui/lib/raised-button');
-const debug = require('debug')('AiC:Views:Home');
+// Vendor
+import React from 'react';
+import Typography from 'material-ui/lib/styles/typography';
+import RaisedButton from 'material-ui/lib/raised-button';
+// const debug = require('debug')('AiC:Views:Home');
 
 // APP
-const {
-	FullWidthSection,
-	LoginDialog
-} = require('app/components');
+import FullWidthSection from 'app/components/shared/full-width-section';
+import LoginDialog from 'app/components/home/login-dialog';
+import AuthPage from 'app/components/shared/auth-page';
 
-// const Home = class extends AuthPage {
-const Home = class extends React.Component {
+const Home = class extends AuthPage {
+// const Home = class extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -104,9 +103,8 @@ const Home = class extends React.Component {
 		this.setState({loginDialogOpen: false});
 	}
 
-	componentWillMount() {
-		debug(this.context.loginStatus);
-		// Auth.redirectIfLogged(this.context.router);
+	willTransitionTo() {
+		super.willTransitionTo();
 	}
 
 };
