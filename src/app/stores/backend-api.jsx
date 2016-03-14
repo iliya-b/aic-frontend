@@ -515,19 +515,17 @@ const BackendAPI = {
 	},
 
 	liveStart(variant, projectId) {
-		// TODO: should not be raw data
-		const data = new FormData();
-		// data.append('variant', 'opengl');
-		data.append('image', variant);
-		data.append('project_id', projectId);
+		const data = {
+			image: variant,
+			project_id: projectId // eslint-disable-line camelcase
+		};
 		const options = {
 			pathname: BackendObjects.URLPATH_LIVE,
 			method: 'POST',
-			rawData: data
-			// data: {
-			//   data: {variant: 'opengl'},
-			//   schema: BackendObjects.OBJSCHEMA_LIVE,
-			// }
+			data: {
+				data,
+				schema: BackendObjects.OBJSCHEMA_LIVE
+			}
 		};
 		return this.apiCallAuth(options);
 	},
@@ -624,12 +622,9 @@ const BackendAPI = {
 	},
 
 	liveInstallAPK(projectId, liveId, apkId) {
-		const data = new FormData();
-		data.append('project_id', projectId);
 		const options = {
 			pathname: sprintf(BackendObjects.URLPATH_LIVE_INSTALL_APK, liveId, apkId),
-			method: 'POST',
-			rawData: data
+			method: 'POST'
 		};
 		return this.apiCallAuth(options);
 	},

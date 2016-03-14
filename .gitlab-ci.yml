@@ -15,6 +15,7 @@ test_integration:
     - sleep 1
     - git clone git@git.rnd.alterway.fr:aic-documentation/aic_features.git
     - cd aic_features
+    - npm install --unsafe-perm
     - echo ${AIC_SCREENSHOT_PATH}
     - AIC_FRONTEND_HOST=http://localhost:9080/ ./run-tests.sh
   artifacts:

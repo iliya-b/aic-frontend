@@ -7,6 +7,9 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 ### Added
 - Live GSM calls (not yet ready on the backend and changes on the API are to come)
 
+### Changed
+- Update live create to JSON (update on kyaraben API)
+
 ### Fixed
 - Fix live rotation
 - Fix next path on logout/redirection

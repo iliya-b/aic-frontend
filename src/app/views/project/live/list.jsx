@@ -16,9 +16,9 @@ let projectId;
 // const kitkat = 'R3_CRB01-00-20160222-141328';
 // const kitkat = 'R3_CRB01-00-20160223-154224';
 // const kitkat = 'opengl';
-const kitkat = 'kitkat-phone';
+const kitkat = 'kitkat';
 // const kitkat = 'kitkat';
-const lollipop = 'kitkat';
+const lollipop = 'lollipop';
 // const lollipop = 'xxx';
 const variants = [{id: kitkat, name: 'kitkat'}, {id: lollipop, name: 'lollipop'}];
 
