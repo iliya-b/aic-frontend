@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CHANGELOG](http://keepachangelog.com/).
 
-## [Unreleased]
+## [Unreleased]
 
 ### Added
 - Live GSM calls (not yet ready on the backend and changes on the API are to come)
@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 - Fix live rotation
 - Fix next path on logout/redirection
 - Fix home redirection when already logged
+- Fix when changed battery value on live
 
 ## [0.2.2] - 2016-03-10
 

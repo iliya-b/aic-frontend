@@ -91,7 +91,7 @@ TODO List
 	* replace localstorage by another storage?
 * Routing
 	* ~~Not found route~~ :white_check_mark:
-	* Next Path broken (regression)
+	* ~~Next Path broken (regression)~~ :white_check_mark:
 * Missing on the backend
   * Live
       * Get initial VM state to set the frontend sensors (for example battery slides should be relative to the vm battery)

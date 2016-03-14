@@ -181,6 +181,7 @@ const LiveToolbox = class extends React.Component {
 				onChange: onChangeSensorBinded
 			};
 			props[this.state.activeSecondBar] = this.props.sensorsValues[this.state.activeSecondBar];
+			debug('currentSecondBar props', props);
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
 		} else if (PANEL_APKS_ORDER.indexOf(this.state.activeSecondBar) !== -1) { // eslint-disable-line no-negated-condition
 			const props = {
