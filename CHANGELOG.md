@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 ### Changed
 - Update live create to JSON (update on kyaraben API)
 - Update Backend API, separate into rest-api and backend (more changes to come)
+- Update APK Manager now shows upload progress
 
 ### Fixed
 - Fix live rotation

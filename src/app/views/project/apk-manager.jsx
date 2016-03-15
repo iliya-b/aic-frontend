@@ -8,22 +8,10 @@ const debug = require('debug')('AiC:Views:APKManager');
 // APP
 import ToolbarAPK from 'app/components/toolbar/toolbar-apk';
 import TableAPK from 'app/components/table/table-apk';
+import TableProgress from 'app/components/table/table-progress';
 import Dropzone from 'app/components/shared/dropzone';
 import APKActions from 'app/actions/apk';
 import APKStore from 'app/stores/apk';
-
-// const apkList = [
-// 	{
-// 		id: 'abc',
-// 		filename: 'def',
-// 		status: 'uploaded'
-// 	},
-// 	{
-// 		id: '123',
-// 		filename: '456',
-// 		status: 'sending'
-// 	}
-// ];
 
 let projectId = null;
 
@@ -80,10 +68,10 @@ const APKManager = class extends React.Component {
 
 	handleStateChange(newState) {
 		const mergedState = Object.assign({}, this.state, newState);
+		debug('handleStateChange', newState, mergedState);
 		switch (mergedState.apk.status) {
+			case 'initCompleted':
 			case 'uploadCompleted':
-				APKActions.list(projectId);
-				break;
 			case 'deleteCompleted':
 				APKActions.list(projectId);
 				break;
@@ -120,9 +108,14 @@ const APKManager = class extends React.Component {
 		let uploadDropzone = null;
 		if (this.state.dialogUploadAPKOpen) {
 			uploadDropzone = (
-				<Dropzone onDrop={this.handleDropFiles} style={styles.dropzone.style} activeStyle={styles.dropzone.activeStyle} id="fieldAPKUpload" name="fieldAPKUpload" title="fieldAPKUpload">
-					<div>You can drop some files here, or click to select files to upload.</div>
-				</Dropzone>
+				<div>
+					<Dropzone onDrop={this.handleDropFiles} style={styles.dropzone.style} activeStyle={styles.dropzone.activeStyle} id="fieldAPKUpload" name="fieldAPKUpload" title="fieldAPKUpload">
+						<div>You can drop some files here, or click to select files to upload.</div>
+					</Dropzone>
+					<TableProgress
+						list={this.state.apk.uploadingApks}
+						/>
+				</div>
 			);
 		}
 
@@ -135,10 +128,16 @@ const APKManager = class extends React.Component {
 					selected={this.state.selectFileIndexes}
 					/>
 			);
-		} else {
+		} else if (this.state.apk && this.state.apk.status === 'listCompleted') {
 			table = (
 				<Paper style={styles.noAPKs}>
 					No files found.
+				</Paper>
+			);
+		} else {
+			table = (
+				<Paper style={styles.noAPKs}>
+					Loading files...
 				</Paper>
 			);
 		}
@@ -162,7 +161,7 @@ const APKManager = class extends React.Component {
 	componentDidMount() {
 		projectId = this.props.params.projectId;
 		this.unsubscribe = APKStore.listen(this.handleStateChange);
-		APKActions.list(projectId);
+		APKActions.initiate();
 	}
 
 	componentWillUnmount() {

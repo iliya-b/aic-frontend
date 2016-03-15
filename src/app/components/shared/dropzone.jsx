@@ -16,6 +16,9 @@ const Dropzone = class extends React.Component {
 		this.setRefFileInput = c => this.fileInput = c;
 		this.handleClick = this.handleClick.bind(this);
 		this.handleDrop = this.handleDrop.bind(this);
+		this.handleDragEnter = this.handleDragEnter.bind(this);
+		this.handleDragOver = this.handleDragOver.bind(this);
+		this.handleDragLeave = this.handleDragLeave.bind(this);
 	}
 
 	allFilesAccepted(files) {
@@ -30,7 +33,7 @@ const Dropzone = class extends React.Component {
 		const dataTransferItems = e.dataTransfer && e.dataTransfer.items ? e.dataTransfer.items : [];
 
 		// Now we need to convert the DataTransferList to Array
-		const itemsArray = Reflect.call(Array.prototype.slice, dataTransferItems);
+		const itemsArray = Reflect.apply(Array.prototype.slice, Array.prototype, dataTransferItems);
 		const allFilesAccepted = this.allFilesAccepted(itemsArray);
 
 		this.setState({

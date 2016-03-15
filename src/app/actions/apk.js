@@ -2,15 +2,17 @@
 
 // Vendor
 import Reflux from 'reflux';
-const debug = require('debug')('AiC:Actions:APK');
+// const debug = require('debug')('AiC:Actions:APK');
 
 // APP
 import BackendAPI from 'app/libs/backend-api';
 
 // Actions
 const APKActions = Reflux.createActions({
+	initiate: {},
 	list: {asyncResult: true},
 	upload: {asyncResult: true},
+	uploadProgress: {},
 	delete: {asyncResult: true},
 	toggleDelete: {}
 });
@@ -28,11 +30,11 @@ APKActions.upload.listen(function (projectId, files) {
 
 	Promise.all(
 		files.map(file => {
-			return BackendAPI.apkUpload(projectId, file, () => debug('progress', arguments));
+			return BackendAPI.apkUpload(projectId, file, event => APKActions.uploadProgress(file, event));
 		})
 	)
-	.then(() => {
-		this.completed();
+	.then(result => {
+		this.completed(result);
 	})
 	.catch(err => {
 		this.failure(err);

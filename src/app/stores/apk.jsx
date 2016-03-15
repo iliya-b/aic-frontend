@@ -19,11 +19,17 @@ const APKStore = Reflux.createStore({
 		this.state = {};
 		this.state.apk = {};
 		this.state.apk.apks = [];
+		this.state.apk.uploadingApks = [];
 		this.state.apk.itemsToDelete = [];
 		this.state.apk.status = 'init';
 	},
 
 	// Actions //
+
+	onInitiate() {
+		this.state.apk.status = 'initCompleted';
+		this.updateState();
+	},
 
 	onListCompleted(data) {
 		this.state.apk.apks = data;
@@ -31,9 +37,22 @@ const APKStore = Reflux.createStore({
 		this.updateState();
 	},
 
+	onUpload(projectId, files) {
+		debug('onUpload', arguments, projectId, files);
+		files.map(file => this.updateUploading(file.name, 0));
+		this.updateState();
+	},
+
 	onUploadCompleted(data) {
-		debug('onUploadCompleted', data);
+		debug('onUploadCompleted', data, data[0].apk_id);
 		this.state.apk.status = 'uploadCompleted';
+		this.removeUploading(data[0].apk_id);
+		this.updateState();
+	},
+
+	onUploadProgress(file, event) {
+		const progress = event.lengthComputable ? Math.round((event.loaded / event.total) * 100) : null;
+		this.updateUploading(file.name, progress);
 		this.updateState();
 	},
 
@@ -75,6 +94,27 @@ const APKStore = Reflux.createStore({
 
 	updateState() {
 		this.trigger(this.state);
+	},
+
+	updateUploading(filename, progress) {
+		const position = this.state.apk.uploadingApks.reduce((p, c, i) => {
+			return p !== -1 || c.name !== filename ? p : i;
+		}, -1);
+		if (position === -1) {
+			this.state.apk.uploadingApks.push({name: filename, progress});
+		} else {
+			this.state.apk.uploadingApks[position].progress = progress;
+		}
+	},
+
+	removeUploading(filename) {
+		const position = this.state.apk.uploadingApks.reduce((p, c, i) => {
+			return p !== -1 || c.name !== filename ? p : i;
+		}, -1);
+		debug('onUploadCompleted position', position);
+		if (position !== -1) {
+			this.state.apk.uploadingApks.splice(position, 1);
+		}
 	}
 
 	// convertToListItems(list) {
