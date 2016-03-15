@@ -9,12 +9,16 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ### Changed
 - Update live create to JSON (update on kyaraben API)
+- Update Backend API, separate into rest-api and backend (more changes to come)
 
 ### Fixed
 - Fix live rotation
 - Fix next path on logout/redirection
 - Fix home redirection when already logged
 - Fix when changed battery value on live
+
+### Removed
+- Indexes files (for now while we don't have [tree shacking](http://www.2ality.com/2015/12/webpack-tree-shaking.html))
 
 ## [0.2.2] - 2016-03-10
 

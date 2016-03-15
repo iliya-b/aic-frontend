@@ -76,6 +76,7 @@ TODO List
 * ~~Change noVNC from git submodule to a npm module~~ :white_check_mark:
 * ~~Update all code to xo default style~~ :white_check_mark:
 * Clean up gulp tasks (simplified version can be found in other R&D projects)
+	* Replace browserify by webpack with [tree shaking](http://www.2ality.com/2015/12/webpack-tree-shaking.html) then add again the indexes files
 * Update readme (config.json, how to run tests, etc...)
 * When new version is available put back to npm the nyc package ([instead of the fork with --extension](https://github.com/bcoe/nyc/pull/163))
 * Apply [this](https://gist.github.com/tomazzaman/790bc607eb7ca3fd347f) integration testing (just a check if the app is working)
