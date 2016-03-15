@@ -8,7 +8,7 @@ require('babel-polyfill');
 import ReactDOM from 'react-dom';
 
 // APP
-import {AppRoutes} from 'app/configs';
+import AppRoutes from 'app/configs/app-routes';
 
 (function () {
 	// Needed for configuration

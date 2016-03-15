@@ -13,7 +13,7 @@ const debug = require('debug')('AiC:Views:Home');
 import AppTheme from 'app/configs/app-theme';
 import FullWidthSection from 'app/components/shared/full-width-section';
 import SessionEndedDialog from 'app/components/main/session-ended-dialog';
-import AuthStore from 'app/stores/auths';
+import AuthStore from 'app/stores/auth';
 import AppConfigStore from 'app/stores/app-config';
 import AppStore from 'app/stores/app';
 import AuthActions from 'app/actions/auth';

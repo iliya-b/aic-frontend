@@ -14,26 +14,18 @@ import {
 } from 'react-router';
 
 // Views
-import {
-	Main,
-	Home,
-	NotFound,
-	Themes,
-	ProjectWrapper,
-	ProjectList,
-	ProjectPage,
-	ProjectApkManager,
-	ProjectApkTestList,
-	ProjectLiveWrapper,
-	ProjectLiveSession,
-	ProjectLiveList,
-	ProjectCampaign
-} from 'app/views';
-
-// import {
-// 	Router,
-// 	hashHistory
-// } from 'react-router';
+import Main from 'app/views/main';
+import Home from 'app/views/home';
+import NotFound from 'app/views/not-found';
+import Themes from 'app/views/themes';
+import ProjectWrapper from 'app/views/project/wrapper';
+import ProjectList from 'app/views/project/list';
+import ProjectPage from 'app/views/project/page';
+import ProjectApkManager from 'app/views/project/apk-manager';
+import ProjectLiveWrapper from 'app/views/project/live/wrapper';
+import ProjectLiveSession from 'app/views/project/live/session';
+import ProjectLiveList from 'app/views/project/live/list';
+import ProjectCampaign from 'app/views/project/campaign';
 
 // Routes
 const AppRoutes = (
@@ -45,7 +37,6 @@ const AppRoutes = (
 				<IndexRoute component={ProjectList}/>
 				<Route path=":projectId" component={ProjectPage}>
 					<IndexRoute component={ProjectApkManager}/>
-					<Route path="apks-test" component={ProjectApkTestList}/>
 					<Route path="live" component={ProjectLiveWrapper}>
 						<IndexRoute component={ProjectLiveList}/>
 						<Route path=":androId" component={ProjectLiveSession}/>
