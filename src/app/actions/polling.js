@@ -1,15 +1,12 @@
 'use strict';
 
-// Reflux
-const Reflux = require('reflux');
-
-// Vendors
+// Vendor
+import Reflux from 'reflux';
 const debug = require('debug')('AiC:Polling:Actions');
 
 // APP
-const BackendAPI = require('app/stores/backend-api');
-// const AppUtils = require('app/components/shared/app-utils');
-const LiveListActions = require('./live-list');
+import BackendAPI from 'app/libs/backend-api';
+import LiveListActions from 'app/actions/live-list';
 
 // Actions
 const PollingActions = Reflux.createActions({
@@ -21,7 +18,9 @@ const PollingActions = Reflux.createActions({
 
 PollingActions.retry.listen(function (apiIndex, apiArgs, remainingTries) {
 	debug('retry called', arguments);
-	Reflect.apply(BackendAPI[apiIndex], BackendAPI, apiArgs)
+	debug('BackendAPI', BackendAPI);
+	// Reflect.apply(BackendAPI[apiIndex], BackendAPI, apiArgs)
+	BackendAPI[apiIndex](...apiArgs)
 	.then(res => {
 		this.completed(res, apiIndex, apiArgs, remainingTries);
 	})

@@ -8,7 +8,7 @@ const debug = require('debug')('AiC:Stores:Websocket');
 
 // APP
 // const AppUtils = require('app/components/shared/app-utils');
-const {WebsocketActions} = require('app/actions');
+const WebsocketActions = require('app/actions/websocket');
 
 // Store
 const WebsocketStore = Reflux.createStore({

@@ -7,7 +7,7 @@ const Reflux = require('reflux');
 // const debug = require('debug')('AiC:LiveList:Actions');
 
 // // APP
-// const BackendAPI = require('app/stores/backend-api.jsx');
+// const BackendAPI = require('app/libs/backend-api.jsx');
 
 // Actions
 const LiveListActions = Reflux.createActions({

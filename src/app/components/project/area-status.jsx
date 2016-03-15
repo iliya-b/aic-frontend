@@ -4,8 +4,12 @@
 const React = require('react');
 
 // APP
-const GobyStores = require('app/stores');
-const GobyActions = require('app/actions');
+const GobyStores = {
+	LiveStore: require('app/stores/live')
+};
+const GobyActions = {
+	LiveActions: require('app/actions/live')
+};
 const BoxStatus = require('app/components/project/box-status');
 const AppUtils = require('app/components/shared/app-utils');
 

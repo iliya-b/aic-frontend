@@ -8,7 +8,7 @@ const debug = require('debug')('AiC:Stores:Campaign');
 
 // APP
 const AppUtils = require('app/components/shared/app-utils');
-const {CampaignActions} = require('app/actions');
+const CampaignActions = require('app/actions/campaign');
 
 // Store
 const CampaignStore = Reflux.createStore({

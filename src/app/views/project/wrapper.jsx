@@ -11,10 +11,10 @@ const {
 } = mui;
 
 // APP
-const {AuthActions} = require('app/actions');
-const {ProjectActions} = require('app/actions');
-const {PollingStore} = require('app/stores');
-const {AuthRequired} = require('app/components');
+const AuthActions = require('app/actions/auth');
+const ProjectActions = require('app/actions/project');
+const PollingStore = require('app/stores/polling');
+const AuthRequired = require('app/components/shared/auth-required');
 
 // const ProjectWrapper = class extends React.Component {
 const ProjectWrapper = class extends AuthRequired {

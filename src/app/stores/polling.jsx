@@ -10,10 +10,8 @@ const debug = require('debug')('AiC:Polling:Store');
 
 // APP
 const MachineCard = require('app/components/project/machine-card');
-const {
-	PollingActions,
-	NotificationActions
-} = require('app/actions');
+const PollingActions = require('app/actions/polling');
+const NotificationActions = require('app/actions/notification');
 
 function areDifferentObjects(obj1, obj2) {
 	return JSON.stringify(obj1) !== JSON.stringify(obj2);
@@ -37,7 +35,7 @@ const PollingStore = Reflux.createStore({
 
 	// Live list
 	onLiveList() {
-		this.doRetry('liveList', null, initialRetry);
+		this.doRetry('liveList', [], initialRetry);
 	},
 
 	onStopLiveList() {

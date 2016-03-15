@@ -1,13 +1,11 @@
 'use strict';
 
-// Reflux
-const Reflux = require('reflux');
-
 // Vendor
-const debug = require('debug')('AiC:Polling:Store');
+import Reflux from 'reflux';
+const debug = require('debug')('AiC:Actions:Notification');
 
 // APP
-const LiveListActions = require('./live-list');
+import LiveListActions from 'app/actions/live-list';
 
 // Actions
 const NotificationActions = Reflux.createActions({
@@ -17,8 +15,10 @@ const NotificationActions = Reflux.createActions({
 // Listeners for asynchronous Backend API calls
 
 NotificationActions.update = function (apiIndex, res) {
+	debug('NotificationActions.update', apiIndex, res, arguments);
 	switch (apiIndex) {
 		case 'liveList':
+			debug('NotificationActions.update liveList');
 			LiveListActions.list.completed(res.avms);
 			break;
 		default:

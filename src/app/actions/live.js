@@ -8,7 +8,7 @@ const Reflux = require('reflux');
 const debug = require('debug')('AiC:Live:Actions');
 
 // APP
-const BackendAPI = require('app/stores/backend-api');
+const BackendAPI = require('app/libs/backend-api');
 
 // Actions
 const LiveActions = Reflux.createActions({

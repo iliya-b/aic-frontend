@@ -8,9 +8,9 @@ const Reflux = require('reflux');
 const debug = require('debug')('AiC:Actions:Websocket');
 
 // APP
-const BackendAPI = require('app/stores/backend-api');
+const BackendAPI = require('app/libs/backend-api');
 const AppUtils = require('app/components/shared/app-utils');
-const GobyActions = require('app/actions');
+const GobyActions = {}; //require('app/actions');
 
 // Websocket
 let GobyWebsocket;

@@ -8,12 +8,12 @@ const mui = require('material-ui');
 const {LinearProgress} = mui;
 
 // Vendor
-const debug = require('debug')('AiC:Component:LiveList');
+const debug = require('debug')('AiC:Component:LiveMachineList');
 
 // APP
 const MachineCardLive = require('app/components/project/machine-card-live');
 const InfoBox = require('app/components/shared/info-box');
-const {LiveListStore} = require('app/stores');
+const LiveListStore = require('app/stores/live-list');
 
 const LiveMachineList = class extends React.Component {
 
@@ -58,6 +58,7 @@ const LiveMachineList = class extends React.Component {
 	}
 
 	componentDidMount() {
+		debug('listing to LiveListStore');
 		this.unsubscribe = LiveListStore.listen(this._onStateChange);
 	}
 

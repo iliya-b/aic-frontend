@@ -7,7 +7,7 @@ const Reflux = require('reflux');
 const sprintf = require('sprintf');
 
 // APP
-const BackendAPI = require('app/stores/backend-api');
+const BackendAPI = require('app/libs/backend-api');
 
 // Actions
 const ProjectActions = Reflux.createActions({

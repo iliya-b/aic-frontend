@@ -7,7 +7,7 @@ const Reflux = require('reflux');
 const debug = require('debug')('AiC:Stores:Auth');
 
 // APP
-const {AuthActions} = require('app/actions');
+const AuthActions = require('app/actions/auth');
 
 // Store
 const AuthStore = Reflux.createStore({

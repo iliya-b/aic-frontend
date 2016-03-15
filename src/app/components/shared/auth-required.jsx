@@ -7,8 +7,8 @@ const React = require('react');
 const debug = require('debug')('AiC:Components:AuthRequired');
 
 // APP
-const {AuthActions} = require('app/actions');
-const {AuthStore} = require('app/stores');
+const AuthActions = require('app/actions/auth');
+const AuthStore = require('app/stores/auth');
 
 // Redirects user if he is not logged in
 // Opposite to AuthPage

@@ -4,7 +4,7 @@
 const Reflux = require('reflux');
 
 // APP
-const BackendAPI = require('app/stores/backend-api');
+const BackendAPI = require('app/libs/backend-api');
 
 // Actions
 const CampaignActions = Reflux.createActions({

@@ -10,7 +10,7 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import RaisedButton from 'material-ui/lib/raised-button';
 
 // APP
-// TODO: Change to a single place, I think this repeats at app/stores/backend-api.js
+// TODO: Change to a single place, I think this repeats at app/libs/backend-api.js
 const GSMRoaming = ['home', 'denied', 'searching', 'roaming', 'none'];
 
 const ToolbarGSMRoaming = class extends React.Component {

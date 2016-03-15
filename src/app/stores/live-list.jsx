@@ -7,7 +7,7 @@ const Reflux = require('reflux');
 const debug = require('debug')('AiC:LiveList:Store');
 
 // APP
-const {LiveListActions} = require('app/actions');
+const LiveListActions = require('app/actions/live-list');
 
 // Store
 const LiveListStore = Reflux.createStore({
@@ -28,18 +28,20 @@ const LiveListStore = Reflux.createStore({
 
 	// Live list
 	onList() {
-		debug('onlist');
+		debug('onList');
 		this.state.live.status = 'LIVE_STATUS_LISTING';
 		this.updateState();
 	},
 
 	onListCompleted(avms) {
+		debug('onListCompleted');
 		this.state.live.avms = avms;
 		this.state.live.status = 'LIVE_STATUS_LISTED';
 		this.updateState();
 	},
 
 	onListFailure(errorMessage) {
+		debug('onListFailure');
 		this.state.live.status = 'LIVE_STATUS_LIST_FAILED';
 		this.state.live.message = errorMessage;
 		this.updateState();

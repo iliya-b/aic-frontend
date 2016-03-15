@@ -4,7 +4,7 @@
 const React = require('react');
 
 // APP
-const {FullWidthSection} = require('app/components');
+const FullWidthSection = require('app/components/shared/full-width-section');
 
 const NotFound = class extends React.Component {
 

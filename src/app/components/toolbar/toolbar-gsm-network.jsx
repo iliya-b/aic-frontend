@@ -10,7 +10,7 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import RaisedButton from 'material-ui/lib/raised-button';
 
 // APP
-// TODO: Change to a single place, I think this repeats at app/stores/backend-api.js
+// TODO: Change to a single place, I think this repeats at app/libs/backend-api.js
 const GSMNetwork = ['umts', 'lte', 'gprs', 'gsm', 'hspa', 'edge', 'cdma', 'evdo', 'hsdpa', 'hsupa', 'full'];
 
 const ToolbarGSMNetwork = class extends React.Component {

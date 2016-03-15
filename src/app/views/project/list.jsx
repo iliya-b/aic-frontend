@@ -8,8 +8,8 @@ const Menu = require('material-ui/lib/menus/menu');
 const MenuItem = require('material-ui/lib/menus/menu-item');
 
 // APP
-const {ProjectStore} = require('app/stores');
-const {ProjectActions} = require('app/actions');
+const ProjectStore = require('app/stores/project');
+const ProjectActions = require('app/actions/project');
 
 const ProjectList = class extends React.Component {
 

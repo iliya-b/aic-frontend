@@ -8,7 +8,7 @@ const debug = require('debug')('AiC:Live:Store');
 
 // APP
 const AppUtils = require('app/components/shared/app-utils');
-const {LiveActions} = require('app/actions');
+const LiveActions = require('app/actions/live');
 
 // Store
 const LiveStore = Reflux.createStore({

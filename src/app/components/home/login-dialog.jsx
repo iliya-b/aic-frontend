@@ -10,8 +10,8 @@ const {
 const debug = require('debug')('AiC:Component:Home:LoginDialog');
 
 // APP
-const {AuthStore} = require('app/stores');
-const {AuthActions} = require('app/actions');
+const AuthStore = require('app/stores/auth');
+const AuthActions = require('app/actions/auth');
 const AppUtils = require('app/components/shared/app-utils');
 
 const LoginDialog = class extends React.Component {

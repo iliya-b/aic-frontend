@@ -37,22 +37,21 @@ const Typography = mui.Styles.Typography;
 const debug = require('debug')('AiC:Views:Themes');
 
 // APP
+import BoxStatus from 'app/components/project/box-status';
+import TestResultsBox from 'app/components/project/test-results-box';
+import MachineCardLive from 'app/components/project/machine-card-live';
+import MachineCard from 'app/components/project/machine-card';
+import LiveToolbox from 'app/components/project/live-toolbox';
 
-const {
-	BoxStatus,
-	SessionEndedDialog,
-	TestResultsBox,
-	AvatarProgress,
-	LogBox,
-	LogBoxRow,
-	AppUtils,
-	MachineCardLive,
-	MachineCard,
-	LiveToolbox
-} = require('app/components');
+import SessionEndedDialog from 'app/components/main/session-ended-dialog';
 
 import TableAPK from 'app/components/table/table-apk';
+
+import AppUtils from 'app/components/shared/app-utils';
 import InfoBox from 'app/components/shared/info-box';
+import AvatarProgress from 'app/components/shared/avatar-progress';
+import LogBox from 'app/components/shared/log-box';
+import LogBoxRow from 'app/components/shared/log-box-row';
 
 debug(InfoBox);
 

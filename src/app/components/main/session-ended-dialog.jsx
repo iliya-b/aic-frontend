@@ -12,7 +12,7 @@ const {
 
 // APP
 const InfoBox = require('app/components/shared/info-box');
-const {AuthActions} = require('app/actions');
+const AuthActions = require('app/actions/auth');
 
 const SessionEndedDialog = class extends React.Component {
 

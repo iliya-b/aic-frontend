@@ -15,20 +15,8 @@ const React = require('react');
 // } = mui;
 
 // APP
-const {
-// 	APKSelectionDialog,
-// 	APKTestSelectionDialog,
-// 	DeviceSelectionDialog,
-// 	AreaStatus,
-// 	AppUtils,
-// 	TestResultsBox,
-// 	LogBox,
-// 	LogBoxRow,
-	AuthRequired
-} = require('app/components');
+const AuthRequired = require('app/components/shared/auth-required');
 
-// const {CampaignStore} = require('app/stores');
-// const {CampaignActions} = require('app/actions');
 
 const ProjectCampaign = class extends AuthRequired {
 

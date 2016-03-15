@@ -4,7 +4,7 @@
 const Reflux = require('reflux');
 
 // APP
-const {ProjectActions} = require('app/actions');
+const ProjectActions = require('app/actions/project');
 
 // Store
 const ProjectStore = Reflux.createStore({

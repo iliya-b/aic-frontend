@@ -4,8 +4,8 @@
 const React = require('react');
 
 // APP
-const {LiveStore} = require('app/stores');
-const {LiveActions} = require('app/actions');
+const LiveStore = require('app/stores/live');
+const LiveActions = require('app/actions/live');
 
 const LiveScreen = class extends React.Component {
 	constructor(props) {

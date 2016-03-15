@@ -9,7 +9,7 @@ const debug = require('debug')('AiC:Auth:Actions');
 const url = require('url');
 
 // APP
-const BackendAPI = require('app/stores/backend-api');
+const BackendAPI = require('app/libs/backend-api');
 const AppConfigActions = require('app/actions/app-config');
 
 // Actions

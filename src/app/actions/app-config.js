@@ -8,7 +8,7 @@ const Reflux = require('reflux');
 const debug = require('debug')('AiC:Actions:AppConfig');
 
 // APP
-const BackendAPI = require('app/stores/backend-api');
+const BackendAPI = require('app/libs/backend-api');
 
 // Actions
 const AppConfigActions = Reflux.createActions({
@@ -17,11 +17,7 @@ const AppConfigActions = Reflux.createActions({
 
 // Listeners for asynchronous calls
 AppConfigActions.load.listen(() => {
-	const options = {
-		url: 'config.json',
-		method: 'GET'
-	};
-	BackendAPI.apiCall(options)
+	BackendAPI.loadConfig()
 	.then(data => {
 		debug('load.listen then', arguments);
 		AppConfigActions.load.completed(data);

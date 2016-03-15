@@ -5,7 +5,7 @@ import Reflux from 'reflux';
 const debug = require('debug')('AiC:Actions:APK');
 
 // APP
-import BackendAPI from 'app/stores/backend-api';
+import BackendAPI from 'app/libs/backend-api';
 
 // Actions
 const APKActions = Reflux.createActions({

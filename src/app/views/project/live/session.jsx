@@ -17,13 +17,11 @@ const {
 const debug = require('debug')('AiC:Views:Project:Live:Session');
 
 // APP
-const {
-	LiveScreen,
-	AreaStatus,
-	LiveToolbox,
-	LogBox,
-	LogBoxRow
-} = require('app/components');
+import AreaStatus from 'app/components/project/area-status';
+import LiveScreen from 'app/components/project/live-screen';
+import LiveToolbox from 'app/components/project/live-toolbox';
+import LogBox from 'app/components/shared/log-box';
+import LogBoxRow from 'app/components/shared/log-box-row';
 import LiveStore from 'app/stores/live';
 import APKStore from 'app/stores/apk';
 import LiveActions from 'app/actions/live';
