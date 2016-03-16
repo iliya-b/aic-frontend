@@ -13,7 +13,9 @@ const ToolbarGPS = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.setRefTemperature = c => this.temperature = c;
+		this.setRefTemperature = c => {
+			this.temperature = c;
+		};
 		this.handleClick = e => {
 			const payload = {
 				temperature: parseFloat(this.temperature.getValue())

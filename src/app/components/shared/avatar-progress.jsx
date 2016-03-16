@@ -14,9 +14,7 @@ const AvatarProgress = class extends React.Component {
 			icon,
 			size,
 			progress,
-			src,
-			style,
-			...other
+			style
 		} = this.props;
 
 		const styles = {
@@ -113,8 +111,7 @@ AvatarProgress.propTypes = {
 	color: React.PropTypes.string,
 	icon: React.PropTypes.node,
 	size: React.PropTypes.string,
-	progress: React.PropTypes.number,
-	src: React.PropTypes.string
+	progress: React.PropTypes.number
 };
 
 module.exports = AvatarProgress;

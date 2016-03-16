@@ -13,7 +13,9 @@ const Dropzone = class extends React.Component {
 		this.state = {
 			isDragActive: false
 		};
-		this.setRefFileInput = c => this.fileInput = c;
+		this.setRefFileInput = c => {
+			this.fileInput = c;
+		};
 		this.handleClick = this.handleClick.bind(this);
 		this.handleDrop = this.handleDrop.bind(this);
 		this.handleDragEnter = this.handleDragEnter.bind(this);

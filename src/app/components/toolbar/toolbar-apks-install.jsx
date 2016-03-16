@@ -15,8 +15,12 @@ const PanelAPKInstall = class extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {value: this.props.apkList.length ? this.props.apkList[0].id : null};
-		this.handleChange = (event, index, value) => this.setState({value});
-		this.handleClick = e => props.onClick(e, this.state.value);
+		this.handleChange = (event, index, value) => {
+			this.setState({value});
+		};
+		this.handleClick = e => {
+			props.onClick(e, this.state.value);
+		};
 	}
 
 	render() {
@@ -47,7 +51,7 @@ const PanelAPKInstall = class extends React.Component {
 		}
 
 		const items = [];
-		this.props.apkList.map(apk => {
+		this.props.apkList.forEach(apk => {
 			items.push(<MenuItem value={apk.id} key={apk.id} primaryText={apk.filename}/>);
 		});
 		return (

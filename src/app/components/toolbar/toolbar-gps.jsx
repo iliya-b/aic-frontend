@@ -14,8 +14,12 @@ const ToolbarGPS = class extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleClickGPS = this.handleClickGPS.bind(this);
-		this.setRefLat = c => this.lat = c;
-		this.setRefLon = c => this.lon = c;
+		this.setRefLat = c => {
+			this.lat = c;
+		};
+		this.setRefLon = c => {
+			this.lon = c;
+		};
 	}
 
 	render() {

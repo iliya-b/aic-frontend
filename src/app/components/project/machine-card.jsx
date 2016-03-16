@@ -43,12 +43,14 @@ const MachineCard = class extends React.Component {
 		statusMessage[MachineCard.VMSTATE.FAILED] = 'error';
 		statusMessage[MachineCard.VMSTATE.DELETING] = 'deleting';
 
-		const machineState = <MachineIcon status={statusIcon[this.props.avm_status]}/>;
+		const machineState = <MachineIcon status={statusIcon[avm_status]}/>;
 
+		/* eslint-disable camelcase */
 		const infoTests = (<div style={styles.info}>
-			<strong>{this.props.avm_id}</strong> <br/>
-			status: {statusMessage[this.props.avm_status]}, owner: {this.props.avm_owner}
+			<strong>{avm_id}</strong> <br/>
+			status: {statusMessage[avm_status]}, owner: {avm_owner}
 		</div>);
+		/* eslint-enable camelcase */
 
 		return (<Card expandable {...otherProps}>
 			<CardHeader
@@ -58,7 +60,7 @@ const MachineCard = class extends React.Component {
 				showExpandableButton
 				/>
 			<CardText expandable>
-			{this.props.children}
+			{children}
 			</CardText>
 		</Card>);
 	}

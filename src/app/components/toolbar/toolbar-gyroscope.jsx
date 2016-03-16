@@ -13,9 +13,15 @@ const ToolbarGyroscope = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.setRefAzimuth = c => this.azimuth = c;
-		this.setRefPitch = c => this.pitch = c;
-		this.setRefRoll = c => this.roll = c;
+		this.setRefAzimuth = c => {
+			this.azimuth = c;
+		};
+		this.setRefPitch = c => {
+			this.pitch = c;
+		};
+		this.setRefRoll = c => {
+			this.roll = c;
+		};
 		this.handleClick = e => {
 			const payload = {
 				azimuth: parseFloat(this.azimuth.getValue()),

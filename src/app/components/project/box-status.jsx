@@ -35,10 +35,7 @@ const BoxStatus = class extends React.Component {
 		const {
 			typeName,
 			status,
-			subStatus,
-			isLast,
-			isFirst,
-			...other
+			isFirst
 		} = this.props;
 
 		let message;
@@ -57,7 +54,6 @@ const BoxStatus = class extends React.Component {
 		} else if (status === 'success') {
 			colorMessage = this.context.muiTheme.palette.accent1Color;
 		}
-		let statusFound;
 		const styles = {
 			wrapper: {
 				display: 'inline-block'
@@ -405,7 +401,7 @@ const BoxStatus = class extends React.Component {
 		};
 
 		if (typeName in iconsNMessages) {
-			statusFound = status in iconsNMessages[typeName] ? status : '';
+			const statusFound = status in iconsNMessages[typeName] ? status : '';
 			message = iconsNMessages[typeName][statusFound];
 			statusIcons = iconsNMessages[typeName].icons === undefined ? null :
 											iconsNMessages[typeName].icons.map((item, index) => {

@@ -23,9 +23,8 @@ const ProjectPage = class extends React.Component {
 	}
 
 	_getSelectedIndex() {
-		let currentItem;
 		for (let i = menuItems.length - 1; i >= 0; i--) {
-			currentItem = menuItems[i];
+			const currentItem = menuItems[i];
 			if (currentItem.path && this.context.router.isActive({pathname: currentItem.path})) {
 				return i;
 			}

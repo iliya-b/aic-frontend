@@ -10,7 +10,7 @@ const debug = require('debug')('AiC:Actions:Websocket');
 // APP
 const BackendAPI = require('app/libs/backend-api');
 const AppUtils = require('app/components/shared/app-utils');
-const GobyActions = {}; //require('app/actions');
+const GobyActions = {}; // require('app/actions');
 
 // Websocket
 let GobyWebsocket;
@@ -29,11 +29,9 @@ const WebsocketActions = Reflux.createActions({
 // Listeners for asynchronous Backend API calls
 
 WebsocketActions.connect.listen((token, service) => {
-	let actionServiceName;
-
 	debug('Trying to connect to Websocket', service);
 
-	actionServiceName = service ? `${AppUtils.capitalize(service)}Actions` : null;
+	const actionServiceName = service ? `${AppUtils.capitalize(service)}Actions` : null;
 
 	if (service === undefined || service === '' || !GobyActions.hasOwnProperty(actionServiceName)) {
 		debug('[ERROR] You must inform a valid service for the websocket connection');

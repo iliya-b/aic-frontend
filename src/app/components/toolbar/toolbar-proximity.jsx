@@ -14,7 +14,9 @@ const ToolbarGPS = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.setRefProximity = c => this.proximity = c;
+		this.setRefProximity = c => {
+			this.proximity = c;
+		};
 		this.handleClick = e => {
 			const payload = {
 				distance: parseFloat(this.proximity.getValue())

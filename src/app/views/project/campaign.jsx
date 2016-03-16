@@ -17,11 +17,10 @@ const React = require('react');
 // APP
 const AuthRequired = require('app/components/shared/auth-required');
 
-
 const ProjectCampaign = class extends AuthRequired {
 
-	constructor(props) {
-		super(props);
+	// constructor(props) {
+	// 	super(props);
 		// this.state = {
 		// 	res: '',
 		// 	device: null,
@@ -40,7 +39,7 @@ const ProjectCampaign = class extends AuthRequired {
 		// this._onAPKTestSelect = this._onAPKTestSelect.bind(this);
 		// // this.getLauchFieldsDisable = this.getLauchFieldsDisable.bind(this);
 		// this._onStateChange = this._onStateChange.bind(this);
-	}
+	// }
 
 	render() {
 		// const style = {

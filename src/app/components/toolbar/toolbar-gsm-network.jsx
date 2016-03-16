@@ -18,7 +18,9 @@ const ToolbarGSMNetwork = class extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {value: null};
-		this.handleChange = (event, index, value) => this.setState({value});
+		this.handleChange = (event, index, value) => {
+			this.setState({value});
+		};
 		this.handleClick = e => {
 			const payload = {
 				action_type: 'SET_NETWORK_TYPE', // eslint-disable-line camelcase
@@ -56,7 +58,7 @@ const ToolbarGSMNetwork = class extends React.Component {
 		}
 
 		const items = [];
-		GSMNetwork.map(v => {
+		GSMNetwork.forEach(v => {
 			items.push(<MenuItem value={v} key={v} primaryText={v}/>);
 		});
 		return (

@@ -26,8 +26,12 @@ const LoginDialog = class extends React.Component {
 		this.handleFieldChanges = {};
 		this.handleFieldChanges.loginEmail = this.handleFieldChange.bind(this, 'loginEmail');
 		this.handleFieldChanges.loginPassword = this.handleFieldChange.bind(this, 'loginPassword');
-		this.refLoginPassword = c => this.loginPassword = c;
-		this.refLoginEmail = c => this.loginEmail = c;
+		this.refLoginPassword = c => {
+			this.loginPassword = c;
+		};
+		this.refLoginEmail = c => {
+			this.loginEmail = c;
+		};
 	}
 
 	render() {

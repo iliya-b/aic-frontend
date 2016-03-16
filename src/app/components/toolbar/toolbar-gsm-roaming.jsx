@@ -18,7 +18,9 @@ const ToolbarGSMRoaming = class extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {value: null};
-		this.handleChange = (event, index, value) => this.setState({value});
+		this.handleChange = (event, index, value) => {
+			this.setState({value});
+		};
 		this.handleClick = e => {
 			const payload = {
 				action_type: 'SET_NETWORK_REGISTRATION', // eslint-disable-line camelcase
@@ -56,7 +58,7 @@ const ToolbarGSMRoaming = class extends React.Component {
 		}
 
 		const items = [];
-		GSMRoaming.map(v => {
+		GSMRoaming.forEach(v => {
 			items.push(<MenuItem value={v} key={v} primaryText={v}/>);
 		});
 		return (

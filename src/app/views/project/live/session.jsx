@@ -36,7 +36,7 @@ const LiveSession = class extends React.Component {
 		super(props);
 		this._onStateChange = this._onStateChange.bind(this);
 		this.handleOnLiveActions = {};
-		availableLiveActions.map(actionName => {
+		availableLiveActions.forEach(actionName => {
 			this.handleOnLiveActions[actionName] = this.handleOnLiveAction.bind(this, actionName);
 		});
 		this.handleBatteryChange = this.handleBatteryChange.bind(this);

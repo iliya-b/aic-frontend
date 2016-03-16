@@ -13,9 +13,15 @@ const ToolbarMagnetometer = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.setRefX = c => this.x = c;
-		this.setRefY = c => this.y = c;
-		this.setRefZ = c => this.z = c;
+		this.setRefX = c => {
+			this.x = c;
+		};
+		this.setRefY = c => {
+			this.y = c;
+		};
+		this.setRefZ = c => {
+			this.z = c;
+		};
 		this.handleClick = e => {
 			const payload = {
 				x: parseFloat(this.x.getValue()),

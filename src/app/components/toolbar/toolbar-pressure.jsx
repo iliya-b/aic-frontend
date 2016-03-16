@@ -13,7 +13,9 @@ const ToolbarPressure = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.setRefPressure = c => this.pressure = c;
+		this.setRefPressure = c => {
+			this.pressure = c;
+		};
 		this.handleClick = e => {
 			const payload = {
 				pressure: parseFloat(this.pressure.getValue())

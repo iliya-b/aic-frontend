@@ -184,7 +184,7 @@ const Main = class extends React.Component {
 
 	componentWillUnmount() {
 		// Subscribe and unsubscribe because we don't want to use the mixins
-		this.unsubscribe.map(func => {
+		this.unsubscribe.forEach(func => {
 			func();
 		});
 		debug('unsubscribe');

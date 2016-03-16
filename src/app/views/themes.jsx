@@ -70,7 +70,7 @@ const ThemesPage = class extends React.Component {
 	constructor(props) {
 		super(props);
 		const openComponents = {};
-		componentsThatOpen.map(componentName => {
+		componentsThatOpen.forEach(componentName => {
 			openComponents[componentName] = false;
 		});
 		this.state = {
@@ -83,7 +83,7 @@ const ThemesPage = class extends React.Component {
 			open: {},
 			close: {}
 		};
-		componentsThatOpen.map(componentName => {
+		componentsThatOpen.forEach(componentName => {
 			this.handleOpenable.open[componentName] = this.handleBoxesControl.bind(this, componentName, true);
 			this.handleOpenable.close[componentName] = this.handleBoxesControl.bind(this, componentName, false);
 		});

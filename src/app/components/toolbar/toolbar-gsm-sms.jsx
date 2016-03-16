@@ -13,7 +13,9 @@ const ToolbarGSMSMS = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.setRefSMSText = c => this.smsText = c;
+		this.setRefSMSText = c => {
+			this.smsText = c;
+		};
 		this.handleClick = e => {
 			const payload = {
 				action_type: 'RECEIVE_SMS', // eslint-disable-line camelcase

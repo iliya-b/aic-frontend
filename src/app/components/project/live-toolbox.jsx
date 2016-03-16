@@ -99,7 +99,7 @@ const LiveToolbox = class extends React.Component {
 
 		// Secondary toolbars
 		this.handleClickFirstBar = {};
-		TOOLBAR_MAIN_ORDER.map(v => {
+		TOOLBAR_MAIN_ORDER.forEach(v => {
 			this.handleClickFirstBar[v] = this.changeActiveToolbar.bind(this, v);
 		});
 
@@ -110,13 +110,13 @@ const LiveToolbox = class extends React.Component {
 		// Third toolbars - Panels
 		this.handleClickSecondBar = {};
 		this.handleClickSecondBar.android = this.changeActiveToolbar.bind(this, TOOLBAR_ANDROID);
-		TOOLBAR_SENSORS_ORDER.map(v => {
+		TOOLBAR_SENSORS_ORDER.forEach(v => {
 			this.handleClickFirstBar[v] = this.changeActiveSecondToolbar.bind(this, v);
 		});
-		PANEL_APKS_ORDER.map(v => {
+		PANEL_APKS_ORDER.forEach(v => {
 			this.handleClickFirstBar[v] = this.changeActiveSecondToolbar.bind(this, v);
 		});
-		PANEL_GSM_ORDER.map(v => {
+		PANEL_GSM_ORDER.forEach(v => {
 			if (v === 'gsmAcceptCall') {
 				this.handleClickFirstBar[v] = e => this.handleGSM(e, {action_type: 'ACCEPT_CALL'}); // eslint-disable-line camelcase
 			} else if (v === 'gsmHoldCall') {

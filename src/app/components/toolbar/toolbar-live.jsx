@@ -18,10 +18,6 @@ const icons = {
 
 const ToolbarAPK = class extends React.Component {
 
-	constructor(props) {
-		super(props);
-	}
-
 	handleClickStart(variantID) {
 		this.props.onClickStart(variantID);
 	}
@@ -52,7 +48,7 @@ const ToolbarAPK = class extends React.Component {
 
 		const buttons = [];
 		if (this.props.variants.length) {
-			this.props.variants.map((v, i) => {
+			this.props.variants.forEach((v, i) => {
 				const handleClickStartVariant = this.handleClickStart.bind(this, v.id);
 				const icon = icons[v.name]({
 					color: 'rgba(0, 0, 0, 0.4)',

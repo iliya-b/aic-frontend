@@ -13,7 +13,9 @@ const ToolbarGSMCall = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.setRefNumber = c => this.number = c;
+		this.setRefNumber = c => {
+			this.number = c;
+		};
 		this.handleClick = e => {
 			const payload = {
 				action_type: 'RECEIVE_CALL', // eslint-disable-line camelcase

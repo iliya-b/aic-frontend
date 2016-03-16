@@ -92,10 +92,9 @@ const PollingStore = Reflux.createStore({
 			case 'liveList': {
 				const onGoingStatus = [MachineCard.VMSTATE.CREATING, MachineCard.VMSTATE.DELETING];
 				const avms = res.avms;
-				let avm;
 				debug('checking avms:', avms, onGoingStatus);
 				for (let avmIndex = 0; avmIndex < avms.length; avmIndex++) {
-					avm = avms[avmIndex];
+					const avm = avms[avmIndex];
 					debug('checking', avm.avm_status);
 					if (onGoingStatus.indexOf(avm.avm_status) !== -1) {
 						debug('polling again');
