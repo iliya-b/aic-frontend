@@ -31,22 +31,22 @@ const ToolbarAPK = class extends React.Component {
 		const buttons = [];
 		if (this.props.uploadOpenVisible) {
 			buttons.push(
-				<IconButton className="btUploadOpen" key={1} tooltip="Upload file" style={styles.button}>
-					<FontIcon className="mdi mdi-cloud-upload" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)" onClick={this.props.onClickUploadOpen}/>
+				<IconButton title="Upload file" className="btUploadOpen" key={1} style={styles.button} onClick={this.props.onClickUploadOpen}>
+					<FontIcon className="mdi mdi-cloud-upload" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 				</IconButton>
 			);
 		}
 		if (this.props.uploadCloseVisible) {
 			buttons.push(
-				<IconButton className="btUploadClose" key={2} tooltip="Close upload" style={styles.button}>
-					<FontIcon className="mdi mdi-close-circle" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)" onClick={this.props.onClickUploadClose}/>
+				<IconButton title="Close upload" className="btUploadClose" key={2} style={styles.button} onClick={this.props.onClickUploadClose}>
+					<FontIcon className="mdi mdi-close-circle" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 				</IconButton>
 			);
 		}
 		if (this.props.deleteFileVisible) {
 			buttons.push(
-				<IconButton className="btDeleteSelected" key={3} tooltip="Delete selected files" style={styles.button}>
-					<FontIcon className="mdi mdi-delete" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)" onClick={this.props.onClickDeleteFile}/>
+				<IconButton title="Delete selected files" className="btDeleteSelected" key={3} style={styles.button} onClick={this.props.onClickDeleteFile}>
+					<FontIcon className="mdi mdi-delete" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 				</IconButton>
 			);
 		}

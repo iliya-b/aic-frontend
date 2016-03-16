@@ -113,7 +113,7 @@ const APKManager = class extends React.Component {
 						<div>You can drop some files here, or click to select files to upload.</div>
 					</Dropzone>
 					<TableProgress
-						list={this.state.apk.uploadingApks}
+						list={this.state.apk ? this.state.apk.uploadingApks : []}
 						/>
 				</div>
 			);

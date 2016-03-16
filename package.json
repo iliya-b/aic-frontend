@@ -16,7 +16,8 @@
     "start": "gulp watch",
     "build": "gulp build",
     "create-conf-from-env": "gulp create-conf-from-env",
-    "no-console": "echo \"Verifying for console usage. Please use debug package instead.\" && ! grep -rnw 'src' -e \"console\" && echo \"Yes! No console.something being used! Good Job!\""
+    "no-console": "echo \"Verifying for console usage. Please use debug package instead.\" && ! grep -rnw 'src' -e \"console\" && echo \"Yes! No console.something being used! Good Job!\"",
+    "no-todos": "echo \"Verifying for TODOs.\" && ! grep -rnw 'src' -e \"TODO\" && echo \"Yes! No TODOs to do! Good Job!\""
   },
   "browserify": {
     "extension": [
