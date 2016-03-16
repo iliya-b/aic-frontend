@@ -12,7 +12,8 @@ const TOOLBAR_SENSORS = 'sensors';
 const TOOLBAR_CAMERA = 'camera';
 const TOOLBAR_GSM = 'gsm';
 const TOOLBAR_APKS = 'apks';
-const TOOLBAR_MAIN_ORDER = [TOOLBAR_SENSORS, TOOLBAR_CAMERA, TOOLBAR_GSM, TOOLBAR_APKS, TOOLBAR_ANDROID];
+const TOOLBAR_MONKEYURUNNER = 'monkeyRunner';
+const TOOLBAR_MAIN_ORDER = [TOOLBAR_SENSORS, TOOLBAR_CAMERA, TOOLBAR_GSM, TOOLBAR_APKS, TOOLBAR_MONKEYURUNNER, TOOLBAR_ANDROID];
 
 // Sensors toolbar
 const TOOLBAR_GPS = 'gps';
@@ -88,6 +89,12 @@ toolbars.gsmSignal = require('app/components/toolbar/toolbar-gsm-signal');
 toolbars.gsmNetwork = require('app/components/toolbar/toolbar-gsm-network');
 toolbars.gsmRoaming = require('app/components/toolbar/toolbar-gsm-roaming');
 
+// Monkey Runner
+// http://developer.android.com/intl/es/tools/help/monkey.html
+// adb shell pm list packages -f
+// adb shell pm list packages -f | grep data
+// adb shell monkey -p com.vonglasow.michael.satstat --throttle 500 -v 10
+
 const LiveToolbox = class extends React.Component {
 
 	constructor(props) {
@@ -102,6 +109,15 @@ const LiveToolbox = class extends React.Component {
 		TOOLBAR_MAIN_ORDER.forEach(v => {
 			this.handleClickFirstBar[v] = this.changeActiveToolbar.bind(this, v);
 		});
+
+		this.handleClickFirstBar.monkeyRunner = e => {
+			this.props.onChangeSensor('system', e, {
+				uid: '123',
+				command: 'shell',
+				params: 'pm list packages -f'
+				// params: 'monkey -p com.vonglasow.michael.satstat --throttle 500 -v 10'
+			});
+		};
 
 		this.handleClickFirstBar.terminate = () => {
 			this.props.onClickTerminate();

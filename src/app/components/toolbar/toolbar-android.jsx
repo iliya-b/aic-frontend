@@ -42,6 +42,9 @@ const ToolbarAndroid = class extends React.Component {
 					<IconButton className="btLiveAPKs" tooltip="APKs" style={styles.button} onClick={this.props.onClick.apks}>
 						<FontIcon className="mdi mdi-puzzle" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
+					<IconButton className="btMonkeyRunner" tooltip="Monkey runner" style={styles.button} onClick={this.props.onClick.monkeyRunner}>
+						<FontIcon className="mdi mdi-panda" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+					</IconButton>
 					<IconButton className="btLiveDetails" tooltip="Session Details" style={styles.button} onClick={this.props.onClick.details}>
 						<FontIcon className="mdi mdi-information" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>

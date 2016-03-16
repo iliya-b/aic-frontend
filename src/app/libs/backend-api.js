@@ -190,7 +190,8 @@ const BackendObjects = {
 			strict: true,
 			properties: {
 				uid: {type: 'string'},
-				command: {type: 'string'}
+				command: {type: 'string'},
+				params: {type: 'string'}
 			}
 		},
 		temperature: {
