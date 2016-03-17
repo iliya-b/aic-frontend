@@ -9,7 +9,7 @@ import FlatButton from 'material-ui/lib/flat-button';
 import InfoBox from 'app/components/shared/info-box';
 
 const DialogServerError = props => {
-	const loginActions = [
+	const actionsButtons = [
 		<FlatButton
 			key="serverErrorDialogActionClose"
 			label="Close"
@@ -21,7 +21,7 @@ const DialogServerError = props => {
 	];
 
 	return (
-		<Dialog modal title="Server Error" actions={loginActions} {...props}>
+		<Dialog modal title="Server Error" actions={actionsButtons} {...props}>
 			<InfoBox boxType={InfoBox.SERVERERROR} showIcon zDepth={0} styleType={InfoBox.STYLE_XBIG}>Something went wrong with the API server. Please contact service administration.</InfoBox>
 		</Dialog>
 		);

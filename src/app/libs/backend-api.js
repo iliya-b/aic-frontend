@@ -13,9 +13,10 @@ const BackendObjects = {
 	// Backend URLs
 
 	URLPATH_LOGIN: '/user/login',
-	URLPATH_PROJECT: '/back/project',
-	URLPATH_APK: '/project/%s/apk',
-	URLPATH_APK_DELETE: '/project/%s/apk/%s',
+	URLPATH_PROJECT_LIST: '/projects',
+	URLPATH_PROJECT_SHOW: '/projects/%s',
+	URLPATH_APK: '/projects/%s/apk',
+	URLPATH_APK_DELETE: '/projects/%s/apk/%s',
 	URLPATH_APKTEST: '/back/test/%s',
 	URLPATH_LIVE: '/android',
 	URLPATH_LIVE_MACHINE: '/android/%s',
@@ -28,6 +29,11 @@ const BackendObjects = {
 		properties: {
 			username: {type: 'string', rules: ['trim']},
 			password: {type: 'string'}
+		}
+	},
+	OBJSCHEMA_PROJECT: {type: 'object', strict: true,
+		properties: {
+			project_name: {type: 'string'} // eslint-disable-line camelcase
 		}
 	},
 	OBJSCHEMA_LIVE: {type: 'object', strict: true,
@@ -229,20 +235,64 @@ const BackendAPI = {
 		// return RestAPI.apiCallAuth(options);
 	},
 
+	// Projects
+
 	userProjects() {
-		// const options = {
-		// 	pathname: BackendObjects.URLPATH_PROJECT,
-		// 	method: 'GET'
-		// };
-		return Promise.resolve({
-			tenants: [{
-				description: 'test\'s project',
-				enabled: true,
-				id: 'default',
-				name: 'default'}],
-			tenants_links: [] // eslint-disable-line camelcase
-		});
-		// return RestAPI.apiCallAuth(options);
+		const options = {
+			pathname: BackendObjects.URLPATH_PROJECT_LIST,
+			method: 'GET'
+		};
+		// return Promise.resolve({
+		// 	tenants: [{
+		// 		description: 'test\'s project',
+		// 		enabled: true,
+		// 		id: 'default',
+		// 		name: 'default'
+		// 	}, {
+		// 		description: 'test\'s project',
+		// 		enabled: true,
+		// 		id: 'abc',
+		// 		name: 'abc'
+		// 	}],
+		// 	tenants_links: [] // eslint-disable-line camelcase
+		// });
+		return RestAPI.apiCallAuth(options);
+	},
+
+	projectNew(projectName) {
+		const options = {
+			pathname: BackendObjects.URLPATH_PROJECT_LIST,
+			method: 'POST',
+			data: {
+				data: {
+					project_name: projectName // eslint-disable-line camelcase
+				},
+				schema: BackendObjects.OBJSCHEMA_PROJECT
+			}
+		};
+		// return Promise.resolve({
+		// 	tenants: [{
+		// 		description: 'test\'s project',
+		// 		enabled: true,
+		// 		id: 'default',
+		// 		name: 'default'
+		// 	}, {
+		// 		description: 'test\'s project',
+		// 		enabled: true,
+		// 		id: 'abc',
+		// 		name: 'abc'
+		// 	}],
+		// 	tenants_links: [] // eslint-disable-line camelcase
+		// });
+		return RestAPI.apiCallAuth(options);
+	},
+
+	projectDelete(projectId) {
+		const options = {
+			pathname: sprintf(BackendObjects.URLPATH_PROJECT_SHOW, projectId),
+			method: 'DELETE'
+		};
+		return RestAPI.apiCallAuth(options);
 	},
 
 	// APKs //

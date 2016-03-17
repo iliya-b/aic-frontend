@@ -1,10 +1,10 @@
 'use strict';
 
-// Reflux
-const Reflux = require('reflux');
+// Vendor
+import Reflux from 'reflux';
 
 // APP
-const ProjectActions = require('app/actions/project');
+import ProjectActions from 'app/actions/project';
 
 // Store
 const ProjectStore = Reflux.createStore({
@@ -14,26 +14,61 @@ const ProjectStore = Reflux.createStore({
 	listenables: ProjectActions,
 
 	init() {
-		this.state = {};
-		this.state.projects = [];
+		this.state = {project: {}};
+		this.state.project.list = [];
+		this.state.project.status = 'init';
+		this.state.project.errorMessage = null;
 	},
 
 	// Actions //
 
 	onList() {
-		// TODO:
-		// this.updateState();
-	},
-
-	onListCompleted(projects) {
-		this.state.projects = projects;
+		this.state.project.status = 'listing';
 		this.updateState();
 	},
 
-	// onListFailure(errorMessage) {
-	onListFailure() {
-		// TODO:
-		// this.updateState();
+	onListCompleted(projects) {
+		this.state.project.list = projects;
+		this.state.project.status = 'listed';
+		this.updateState();
+	},
+
+	onListFailure(errorMessage) {
+		this.state.project.status = 'error';
+		this.state.project.errorMessage = errorMessage;
+		this.updateState();
+	},
+
+	onSave() {
+		this.state.project.status = 'saving';
+		this.updateState();
+	},
+
+	onSaveCompleted() {
+		this.state.project.status = 'saved';
+		this.updateState();
+	},
+
+	onSaveFailure(errorMessage) {
+		this.state.project.status = 'error';
+		this.state.project.errorMessage = errorMessage;
+		this.updateState();
+	},
+
+	onDelete() {
+		this.state.project.status = 'deleting';
+		this.updateState();
+	},
+
+	onDeleteCompleted() {
+		this.state.project.status = 'deleted';
+		this.updateState();
+	},
+
+	onDeleteFailure(errorMessage) {
+		this.state.project.status = 'error';
+		this.state.project.errorMessage = errorMessage;
+		this.updateState();
 	},
 
 	// Methods //

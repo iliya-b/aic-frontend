@@ -11,20 +11,36 @@ const BackendAPI = require('app/libs/backend-api');
 
 // Actions
 const ProjectActions = Reflux.createActions({
-	list: {children: ['completed', 'failure']}
+	list: {children: ['completed', 'failure']},
+	save: {children: ['completed', 'failure']},
+	delete: {children: ['completed', 'failure']}
 });
 
 // Listeners for asynchronous Backend API calls
 ProjectActions.list.listen(function () {
 	BackendAPI.userProjects()
 	.then(result => {
-		if (result.hasOwnProperty('tenants')) {
-			this.completed(result.tenants);
-		} else if (result.hasOwnProperty('statusText')) {
-			this.failure(sprintf('It was not possible to list projects. Error: %s', result.statusText));
-		} else {
-			this.failure('It was not possible to list projects. Unknown error');
-		}
+		this.completed(result.projects);
+	}, err => {
+		this.failure(err);
+	});
+});
+
+ProjectActions.save.listen(function (projectName) {
+	BackendAPI.projectNew(projectName)
+	.then(result => {
+		this.completed(result);
+	}, err => {
+		this.failure(err);
+	});
+});
+
+ProjectActions.delete.listen(function (projectId) {
+	BackendAPI.projectDelete(projectId)
+	.then(result => {
+		this.completed(result);
+	}, err => {
+		this.failure(err);
 	});
 });
 
@@ -32,17 +48,13 @@ ProjectActions.list.listen(function () {
 ProjectActions.getNameById = function (projectId) {
 	return BackendAPI.userProjects()
 	.then(result => {
-		if (result.hasOwnProperty('tenants')) {
-			return result.tenants.reduce((previousValue, currentValue) => {
-				if (previousValue === false && currentValue.id === projectId) {
-					return currentValue.name;
+		if (result.hasOwnProperty('projects')) {
+			return result.projects.reduce((previousValue, currentValue) => {
+				if (previousValue === false && currentValue.project_id === projectId) {
+					return currentValue.project_name;
 				}
 				return previousValue;
 			}, false);
-		} else if (result.hasOwnProperty('statusText')) {
-			throw sprintf('It was not possible to list projects. Error: %s', result.statusText);
-		} else {
-			throw new Error('It was not possible to list projects. Unknown error)');
 		}
 	});
 };

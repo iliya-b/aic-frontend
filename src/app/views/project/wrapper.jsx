@@ -1,22 +1,20 @@
 'use strict';
 
-// React
-const React = require('react');
-
-// Material design
-const mui = require('material-ui');
-const {
-	AppBar,
-	IconButton
-} = mui;
+// Vendor
+import React from 'react';
+import AppBar from 'material-ui/lib/app-bar';
+import IconButton from 'material-ui/lib/icon-button';
+import FontIcon from 'material-ui/lib/font-icon';
+// const debug = require('debug')('AiC:Views:ProjectWrapper');
+// import IconMenu from 'material-ui/lib/menus/icon-menu';
+// import MenuItem from 'material-ui/lib/menus/menu-item';
 
 // APP
-const AuthActions = require('app/actions/auth');
-const ProjectActions = require('app/actions/project');
-const PollingStore = require('app/stores/polling');
-const AuthRequired = require('app/components/shared/auth-required');
+import AuthActions from 'app/actions/auth';
+import ProjectActions from 'app/actions/project';
+import PollingStore from 'app/stores/polling';
+import AuthRequired from 'app/components/shared/auth-required';
 
-// const ProjectWrapper = class extends React.Component {
 const ProjectWrapper = class extends AuthRequired {
 
 	constructor(props) {
@@ -36,48 +34,59 @@ const ProjectWrapper = class extends AuthRequired {
 
 	handleOnRightIconButtonTouchTap() {
 		AuthActions.logout(false);
-		// AuthActions.redirectDisconnected(this.context.router);
 	}
 
 	render() {
+		let iconLeft;
+		if (this.state.lastPage === '/projects') {
+			iconLeft = <FontIcon title="Projects" className="mdi mdi-menu" style={{color: 'white', padding: 12}}/>;
+			// iconLeft = (<IconMenu
+			// 	iconButtonElement={<IconButton tooltipPosition="bottom-right" tooltip="Project actions" title="Project actions"><FontIcon className="mdi mdi-menu" color="white" style={{color: 'white'}}/></IconButton>}
+			// 	targetOrigin={{horizontal: 'right', vertical: 'top'}}
+			// 	anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+			// 	>
+			// 	<MenuItem primaryText="Create new project"/>
+			// 	<MenuItem primaryText="Delete selected"/>
+			// </IconMenu>);
+		} else {
+			iconLeft = <IconButton tooltipPosition="bottom-right" tooltip="Back to projects" title="Back to projects" onClick={this.handleOnLeftIconButtonTouchTap} iconClassName="mdi mdi-arrow-left-bold"/>;
+		}
 		return (
 			<div>
 				<AppBar
-					onLeftIconButtonTouchTap={this.handleOnLeftIconButtonTouchTap}
 					title={this.state.title}
 					zDepth={0}
-					iconElementRight={<IconButton title="Logout" onClick={this.handleOnRightIconButtonTouchTap} iconClassName="mdi mdi-logout"/>}
+					iconElementLeft={iconLeft}
+					iconElementRight={<IconButton tooltipPosition="bottom-left" tooltip="Logout" title="Logout" onClick={this.handleOnRightIconButtonTouchTap} iconClassName="mdi mdi-logout"/>}
 					/>
 				{this.props.children}
 			</div>
 		);
 	}
 
-	updateTitle() {
+	updateTitle(nextProps) {
 		// const thisPage = this.context.router.getCurrentPath();
-		const thisPage = this.props.location.pathname;
+		const thisPage = nextProps.location.pathname;
 		if (this.state.lastPage !== thisPage) {
-			// const routerParams = this.context.router.getCurrentParams();
-			const routerParams = this.props.location.query;
-			if (routerParams.hasOwnProperty('projectId')) {
-				ProjectActions.getNameById(routerParams.projectId)
+			if (nextProps.params.hasOwnProperty('projectId')) {
+				ProjectActions.getNameById(nextProps.params.projectId)
 				.then(res => {
 					this.setState({title: res});
 				});
-			} else if (this.context.router.isActive('project-list')) {
+			} else if (thisPage === '/projects') {
 				this.setState({title: 'Projects'});
 			}
 			this.setState({lastPage: thisPage});
 		}
 	}
 
-	componentWillReceiveProps() {
-		this.updateTitle();
+	componentWillReceiveProps(nextProps) {
+		this.updateTitle(nextProps);
 	}
 
 	componentWillMount() {
 		super.componentWillMount();
-		this.updateTitle();
+		this.updateTitle(this.props);
 		this.unsubscribe = PollingStore.listen(this._onStateChange);
 	}
 
