@@ -114,8 +114,8 @@ const LiveToolbox = class extends React.Component {
 			this.props.onChangeSensor('system', e, {
 				uid: '123',
 				command: 'shell',
-				params: 'pm list packages -f'
-				// params: 'monkey -p com.vonglasow.michael.satstat --throttle 500 -v 10'
+				// params: 'pm list packages -f'
+				params: 'monkey --throttle 500 -v 10'
 			});
 		};
 
