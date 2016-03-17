@@ -39,17 +39,35 @@ const ProjectStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onSave() {
+	onCreate() {
 		this.state.project.status = 'saving';
 		this.updateState();
 	},
 
-	onSaveCompleted() {
+	onCreateCompleted() {
 		this.state.project.status = 'saved';
+		ProjectActions.list();
 		this.updateState();
 	},
 
-	onSaveFailure(errorMessage) {
+	onCreateFailure(errorMessage) {
+		this.state.project.status = 'error';
+		this.state.project.errorMessage = errorMessage;
+		this.updateState();
+	},
+
+	onUpdate() {
+		this.state.project.status = 'updating';
+		this.updateState();
+	},
+
+	onUpdateCompleted() {
+		this.state.project.status = 'updated';
+		ProjectActions.list();
+		this.updateState();
+	},
+
+	onUpdateFailure(errorMessage) {
 		this.state.project.status = 'error';
 		this.state.project.errorMessage = errorMessage;
 		this.updateState();
@@ -62,6 +80,7 @@ const ProjectStore = Reflux.createStore({
 
 	onDeleteCompleted() {
 		this.state.project.status = 'deleted';
+		ProjectActions.list();
 		this.updateState();
 	},
 

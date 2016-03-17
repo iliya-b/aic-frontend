@@ -259,7 +259,7 @@ const BackendAPI = {
 		return RestAPI.apiCallAuth(options);
 	},
 
-	projectNew(projectName) {
+	projectCreate(projectName) {
 		const options = {
 			pathname: BackendObjects.URLPATH_PROJECT_LIST,
 			method: 'POST',
@@ -270,20 +270,20 @@ const BackendAPI = {
 				schema: BackendObjects.OBJSCHEMA_PROJECT
 			}
 		};
-		// return Promise.resolve({
-		// 	tenants: [{
-		// 		description: 'test\'s project',
-		// 		enabled: true,
-		// 		id: 'default',
-		// 		name: 'default'
-		// 	}, {
-		// 		description: 'test\'s project',
-		// 		enabled: true,
-		// 		id: 'abc',
-		// 		name: 'abc'
-		// 	}],
-		// 	tenants_links: [] // eslint-disable-line camelcase
-		// });
+		return RestAPI.apiCallAuth(options);
+	},
+
+	projectUpdate(projectId, projectName) {
+		const options = {
+			pathname: sprintf(BackendObjects.URLPATH_PROJECT_SHOW, projectId),
+			method: 'PUT',
+			data: {
+				data: {
+					project_name: projectName // eslint-disable-line camelcase
+				},
+				schema: BackendObjects.OBJSCHEMA_PROJECT
+			}
+		};
 		return RestAPI.apiCallAuth(options);
 	},
 

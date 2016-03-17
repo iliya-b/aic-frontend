@@ -9,7 +9,8 @@ import BackendAPI from 'app/libs/backend-api';
 // Actions
 const ProjectActions = Reflux.createActions({
 	list: {children: ['completed', 'failure']},
-	save: {children: ['completed', 'failure']},
+	create: {children: ['completed', 'failure']},
+	update: {children: ['completed', 'failure']},
 	delete: {children: ['completed', 'failure']}
 });
 
@@ -23,8 +24,17 @@ ProjectActions.list.listen(function () {
 	});
 });
 
-ProjectActions.save.listen(function (projectName) {
-	BackendAPI.projectNew(projectName)
+ProjectActions.create.listen(function (projectName) {
+	BackendAPI.projectCreate(projectName)
+	.then(result => {
+		this.completed(result);
+	}, err => {
+		this.failure(err);
+	});
+});
+
+ProjectActions.update.listen(function (projectId, projectName) {
+	BackendAPI.projectUpdate(projectId, projectName)
 	.then(result => {
 		this.completed(result);
 	}, err => {

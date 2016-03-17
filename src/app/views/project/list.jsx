@@ -4,7 +4,6 @@
 import React from 'react';
 import Card from 'material-ui/lib/card/card';
 import CardActions from 'material-ui/lib/card/card-actions';
-import CardHeader from 'material-ui/lib/card/card-header';
 import FontIcon from 'material-ui/lib/font-icon';
 import IconButton from 'material-ui/lib/icon-button';
 import RaisedButton from 'material-ui/lib/raised-button';
@@ -27,7 +26,9 @@ const ProjectList = class extends React.Component {
 			},
 			adding: false,
 			deleting: false,
-			deleteName: null
+			deleteIndex: null,
+			updating: false,
+			updateId: null
 		};
 		this.handleClickEnter = (index, e) => {
 			e.preventDefault();
@@ -37,6 +38,11 @@ const ProjectList = class extends React.Component {
 		this.handleClickDelete = (index, e) => {
 			e.preventDefault();
 			this.setState({deleting: true, deleteIndex: index});
+		};
+
+		this.handleClickUpdate = (index, e) => {
+			e.preventDefault();
+			this.setState({updating: true, updateId: this.state.project.list[index].project_id});
 		};
 
 		this.handleCloseDialog = () => {
@@ -54,8 +60,39 @@ const ProjectList = class extends React.Component {
 		};
 
 		this.handleClickSaveProject = () => {
-			ProjectActions.save(this.projectName.getValue());
+			ProjectActions.create(this.projectName.getValue());
 			this.setState({adding: false});
+		};
+
+		this.handleClickCancelProject = () => {
+			this.setState({adding: false});
+		};
+
+		this.handleProjectUpdate = () => {
+
+		};
+
+		this.handleKeyDown = e => {
+			if (e.keyCode === 13) {
+				this.handleClickSaveProject(e);
+			}
+		};
+
+		this.handleClickUpdateSave = (index, e) => {
+			e.preventDefault();
+			ProjectActions.update(this.state.updateId, this.projectNameUpdate.getValue());
+			this.setState({updating: false, updateId: null});
+		};
+
+		this.handleClickUpdateClose = (index, e) => {
+			e.preventDefault();
+			this.setState({updating: false, updateId: null});
+		};
+
+		this.handleKeyDownUpdate = (index, e) => {
+			if (e.keyCode === 13) {
+				this.handleClickUpdateSave(index, e);
+			}
 		};
 
 		this.setRefProjectName = c => {
@@ -65,6 +102,29 @@ const ProjectList = class extends React.Component {
 				c.focus();
 			}
 		};
+
+		this.setRefProjectNameUpdate = c => {
+			debug('setRefProjectNameUpdate');
+			this.projectNameUpdate = c;
+			if (c) {
+				debug('c', c);
+				c.focus();
+				this.moveCaretToEnd(c.input);
+			}
+		};
+	}
+
+	moveCaretToEnd(el) {
+		if (typeof el.selectionStart === 'number') {
+			debug('selectionStart');
+			el.selectionStart = el.selectionEnd = el.value.length;
+		} else if (typeof el.createTextRange !== 'undefined') {
+			debug('createTextRange');
+			el.focus();
+			const range = el.createTextRange();
+			range.collapse(false);
+			range.select();
+		}
 	}
 
 	render() {
@@ -73,29 +133,55 @@ const ProjectList = class extends React.Component {
 				margin: 10
 			},
 			projectName: {
-				float: 'left',
-				padding: 22
+				display: 'inline-block'
+			},
+			styleStatic: {
+				paddingLeft: 22
 			},
 			inputProjectName: {
-				marginLeft: 10
+				marginLeft: 10,
+				height: 42
 			},
 			card: {
 				margin: 10,
 				clear: 'both'
+			},
+			cardActions: {
+				display: 'inline-block'
 			}
 		};
 		const items = this.state.project.list.map((item, index) => {
+			if (this.state.updating && this.state.updateId === item.project_id) {
+				const handleClickUpdateSaveItem = this.handleClickUpdateSave.bind(this, index);
+				const handleClickUpdateCloseItem = this.handleClickUpdateClose.bind(this, index);
+				const handleKeyDownUpdateItem = this.handleKeyDownUpdate.bind(this, index);
+				return (
+					<Card key={item.project_id} style={styles.card}>
+						<CardActions style={styles.cardActions}>
+							<TextField style={styles.inputProjectName} defaultValue={item.project_name} ref={this.setRefProjectNameUpdate} onKeyDown={handleKeyDownUpdateItem}/>
+							<IconButton className="btProjectUpdateSave" title="Save" tooltip="Save" style={styles.button} onClick={handleClickUpdateSaveItem}>
+								<FontIcon className="mdi mdi-check" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+							</IconButton>
+							<IconButton className="btProjectUpdateClose" title="Cancel" tooltip="Cancel" style={styles.button} onClick={handleClickUpdateCloseItem}>
+								<FontIcon className="mdi mdi-close" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+							</IconButton>
+						</CardActions>
+					</Card>
+				);
+			}
 			const handleClickEnterItem = this.handleClickEnter.bind(this, index);
 			const handleClickDeleteItem = this.handleClickDelete.bind(this, index);
+			const handleClickUpdateItem = this.handleClickUpdate.bind(this, index);
+
 			return (
 				<Card key={item.project_id} style={styles.card}>
-					<CardHeader
-						title={item.project_name}
-						style={styles.projectName}
-						/>
-					<CardActions>
+					<CardActions style={styles.cardActions}>
+						<span style={styles.inputProjectName}>{item.project_name}</span>
 						<IconButton className="btProjectEnter" title={`Enter ${item.project_name}`} tooltip="Enter" style={styles.button} onClick={handleClickEnterItem}>
 							<FontIcon className="mdi mdi-arrow-right-bold" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+						</IconButton>
+						<IconButton className="btProjectEdit" title={`Enter ${item.project_name}`} tooltip="Edit" style={styles.button} onClick={handleClickUpdateItem}>
+							<FontIcon className="mdi mdi-pencil" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 						</IconButton>
 						<IconButton className="btProjectDelete" title={`Delete ${item.project_name}`} tooltip="Delete" style={styles.button} onClick={handleClickDeleteItem}>
 							<FontIcon className="mdi mdi-delete" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
@@ -111,13 +197,20 @@ const ProjectList = class extends React.Component {
 			newProject = (
 				<Card key="newProjectForm" style={styles.card}>
 					<CardActions>
-						<TextField className="inputLiveSensorOrientationRoll" style={styles.inputProjectName} ref={this.setRefProjectName} hintText="Project name"/>
+						<TextField className="inputLiveSensorOrientationRoll" style={styles.inputProjectName} ref={this.setRefProjectName} hintText="Project name" onKeyDown={this.handleKeyDown}/>
 						<RaisedButton
 							label="Save"
 							title="Save"
 							primary
 							style={styles.newProject}
 							onClick={this.handleClickSaveProject}
+							/>
+						<RaisedButton
+							label="Cancel"
+							title="Cancel"
+							primary
+							style={styles.newProject}
+							onClick={this.handleClickCancelProject}
 							/>
 					</CardActions>
 				</Card>);
@@ -138,7 +231,7 @@ const ProjectList = class extends React.Component {
 				</Card>);
 		}
 
-		const deleteName = this.state.deleteIndex >= 0 ? <span> project <b> {this.state.project.list[this.state.deleteIndex].project_name}</b></span> : null;
+		const deleteName = this.state.deleting ? <span> project <b> {this.state.project.list[this.state.deleteIndex].project_name}</b></span> : null;
 
 		return (
 			<div style={{position: 'initial'}}>
@@ -152,14 +245,14 @@ const ProjectList = class extends React.Component {
 	}
 
 	_onStateChange(state) {
-		switch (state.project.status) {
-			case 'saved':
-			case 'deleted':
-				ProjectActions.list();
-				break;
-			default:
-				break;
-		}
+		// switch (state.project.status) {
+		// 	case 'saved':
+		// 	case 'deleted':
+		// 		ProjectActions.list();
+		// 		break;
+		// 	default:
+		// 		break;
+		// }
 		this.setState(state);
 	}
 
