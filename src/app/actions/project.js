@@ -1,13 +1,10 @@
 'use strict';
 
-// Reflux
-const Reflux = require('reflux');
-
-// Vendors
-const sprintf = require('sprintf');
+// Vendor
+import Reflux from 'reflux';
 
 // APP
-const BackendAPI = require('app/libs/backend-api');
+import BackendAPI from 'app/libs/backend-api';
 
 // Actions
 const ProjectActions = Reflux.createActions({
