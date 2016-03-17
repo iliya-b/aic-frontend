@@ -20,7 +20,8 @@ const AuthStore = Reflux.createStore({
 				serverError: {
 					open: false,
 					message: null
-				}
+				},
+				notFound: false
 			}
 		};
 		this.updateState();
@@ -39,6 +40,16 @@ const AuthStore = Reflux.createStore({
 	onHideServerError() {
 		this.state.app.serverError.open = false;
 		this.state.app.serverError.message = null;
+		this.updateState();
+	},
+
+	onNotFound() {
+		this.state.app.notFound = true;
+		this.updateState();
+	},
+
+	onNotFoundOff() {
+		this.state.app.notFound = false;
 		this.updateState();
 	},
 

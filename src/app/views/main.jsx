@@ -157,9 +157,17 @@ const Main = class extends React.Component {
 			this.setState(newState);
 		}
 		if (newState.app) {
-			const mergedState = Object.assign({}, this.state);
-			mergedState.app = newState.app;
-			this.setState(mergedState);
+			if (newState.app.notFound) {
+				if (this.props.location.pathname === '/not-found') {
+					AppActions.notFoundOff();
+				} else {
+					this.context.router.replace('/not-found');
+				}
+			} else {
+				const mergedState = Object.assign({}, this.state);
+				mergedState.app = newState.app;
+				this.setState(mergedState);
+			}
 		}
 	}
 

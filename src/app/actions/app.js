@@ -7,7 +7,9 @@ import Reflux from 'reflux';
 // Actions
 const AppActions = Reflux.createActions({
 	displayServerError: {},
-	hideServerError: {}
+	hideServerError: {},
+	notFound: {},
+	notFoundOff: {}
 });
 
 module.exports = AppActions;
