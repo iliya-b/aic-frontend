@@ -31,11 +31,11 @@ const MachineCard = class extends React.Component {
 			}
 		};
 
-		const statusIcon = {
-			READY: MachineIcon.SUCCESS,
-			CREATING: MachineIcon.LOADING,
-			CREATE_FAILED: MachineIcon.ERROR
-		};
+		const statusIcon = {};
+		statusIcon[MachineCard.VMSTATE.READY] = MachineIcon.SUCCESS;
+		statusIcon[MachineCard.VMSTATE.CREATING] = MachineIcon.LOADING;
+		statusIcon[MachineCard.VMSTATE.DELETING] = MachineIcon.LOADING;
+		statusIcon[MachineCard.VMSTATE.FAILED] = MachineIcon.ERROR;
 
 		const statusMessage = {};
 		statusMessage[MachineCard.VMSTATE.READY] = 'success';
