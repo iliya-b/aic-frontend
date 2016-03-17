@@ -1,10 +1,11 @@
 'use strict';
 
-// React
-const React = require('react');
+// Vendor
+import React from 'react';
 
 // APP
-const FullWidthSection = require('app/components/shared/full-width-section');
+import FullWidthSection from 'app/components/shared/full-width-section';
+import MachineIcon from 'app/components/project/machine-icon';
 
 const NotFound = class extends React.Component {
 
@@ -18,17 +19,20 @@ const NotFound = class extends React.Component {
 			tagline: {
 				margin: '32px auto 0 auto',
 				textAlign: 'center',
-				maxWidth: '575px'
+				maxWidth: '800px'
 			},
 			h1: {
 				color: '#fff',
-				fontSize: '56px'
+				fontSize: '56px',
+				display: 'inline-block',
+				verticalAlign: 'top'
 			}
 		};
 
 		return (
 			<FullWidthSection style={styles.root}>
 				<div style={styles.tagline}>
+					<MachineIcon color="white" shadowColor="rgb(45, 139, 203)" status={MachineIcon.QUESTION} xbigIcon/>
 					<h1 style={styles.h1}>404 Page not found.</h1>
 				</div>
 			</FullWidthSection>

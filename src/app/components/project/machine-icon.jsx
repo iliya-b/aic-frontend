@@ -62,12 +62,20 @@ const MachineIcon = class extends React.Component {
 				colorAndro = this.context.muiTheme.palette.primary1Color;
 				statusClassName = 'mdi mdi-information';
 				break;
+			case MachineIcon.QUESTION:
+				colorIcon = this.props.color || this.context.muiTheme.palette.primary1Color;
+				colorAndro = this.props.color || this.context.muiTheme.palette.primary1Color;
+				statusClassName = 'mdi mdi-help';
+				break;
 			default:
 				colorIcon = this.context.muiTheme.palette.accent1Color;
 				colorAndro = this.context.muiTheme.palette.primary1Color;
 				statusClassName = '';
 				break;
 		}
+
+		const shadowColor = this.props.shadowColor || '#FFFFFF';
+		const shadowSize = xbigIcon ? '2' : '1';
 
 		let styles = {
 			root: {
@@ -92,7 +100,7 @@ const MachineIcon = class extends React.Component {
 				position: 'absolute',
 				top: 15,
 				left: 15,
-				textShadow: '-1px -1px #FFFFFF,1px -1px #FFFFFF,-1px 1px #FFFFFF,1px 1px #FFFFFF',
+				textShadow: `-${shadowSize}px -${shadowSize}px ${shadowColor},${shadowSize}px -${shadowSize}px ${shadowColor},-${shadowSize}px ${shadowSize}px ${shadowColor},${shadowSize}px ${shadowSize}px ${shadowColor}`,
 				animation: (status === MachineIcon.LOADING ? 'liveIconRotate 3s linear infinite' : 'initial'),
 				fontSize: '20px'
 			}
@@ -179,7 +187,9 @@ MachineIcon.propTypes = {
 	status: React.PropTypes.string,
 	style: React.PropTypes.object,
 	bigIcon: React.PropTypes.bool,
-	xbigIcon: React.PropTypes.bool
+	xbigIcon: React.PropTypes.bool,
+	color: React.PropTypes.string,
+	shadowColor: React.PropTypes.string
 };
 
 MachineIcon.DISABLED = 'disabled';
@@ -189,5 +199,6 @@ MachineIcon.SUCCESS = 'success';
 MachineIcon.WARNING = 'warning';
 MachineIcon.INFO = 'info';
 MachineIcon.SERVERERROR = 'serverError';
+MachineIcon.QUESTION = 'question';
 
 module.exports = MachineIcon;
