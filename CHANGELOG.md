@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ### Added
 - Live GSM calls (not yet ready on the backend and changes on the API are to come)
+- Live Monkey runner (panda icon)
+- Project management
 
 ### Changed
 - Update live create to JSON (update on kyaraben API)
@@ -17,6 +19,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 - Fix next path on logout/redirection
 - Fix home redirection when already logged
 - Fix when changed battery value on live
+- Fix VM list machine status (deleting and error where without icons).
 
 ### Removed
 - Indexes files (for now while we don't have [tree shacking](http://www.2ality.com/2015/12/webpack-tree-shaking.html))
