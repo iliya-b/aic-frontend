@@ -5,7 +5,7 @@ import Reflux from 'reflux';
 const debug = require('debug')('AiC:Actions:Project');
 
 // APP
-import BackendAPI from 'app/libs/backend-api';
+import Gateway from 'app/libs/gateway';
 import AppActions from 'app/actions/app';
 
 // Actions
@@ -18,16 +18,16 @@ const ProjectActions = Reflux.createActions({
 
 // Listeners for asynchronous Backend API calls
 ProjectActions.list.listen(function () {
-	BackendAPI.userProjects()
+	Gateway.projects.list()
 	.then(result => {
-		this.completed(result.projects);
+		this.completed(result);
 	}, err => {
 		this.failure(err);
 	});
 });
 
 ProjectActions.create.listen(function (projectName) {
-	BackendAPI.projectCreate(projectName)
+	Gateway.projects.create({name: projectName})
 	.then(result => {
 		this.completed(result);
 	}, err => {
@@ -36,7 +36,7 @@ ProjectActions.create.listen(function (projectName) {
 });
 
 ProjectActions.update.listen(function (projectId, projectName) {
-	BackendAPI.projectUpdate(projectId, projectName)
+	Gateway.projects.update({id: projectId, name: projectName})
 	.then(result => {
 		this.completed(result);
 	}, err => {
@@ -45,7 +45,7 @@ ProjectActions.update.listen(function (projectId, projectName) {
 });
 
 ProjectActions.delete.listen(function (projectId) {
-	BackendAPI.projectDelete(projectId)
+	Gateway.projects.delete({id: projectId})
 	.then(result => {
 		this.completed(result);
 	}, err => {
@@ -55,15 +55,15 @@ ProjectActions.delete.listen(function (projectId) {
 
 // TODO: change to state ?
 ProjectActions.getNameById = function (projectId) {
-	return BackendAPI.userProjects()
+	return Gateway.projects.list()
 	.then(result => {
 		// TODO: Why the return does not work on this context?
 		let found = false;
-		if (result.hasOwnProperty('projects')) {
-			result.projects.forEach(v => {
-				if (v.project_id === projectId) {
+		if (result instanceof Array) {
+			result.forEach(v => {
+				if (v.id === projectId) {
 					debug('found project');
-					found = v.project_name;
+					found = v.name;
 				}
 			});
 		}

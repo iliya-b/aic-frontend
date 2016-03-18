@@ -32,7 +32,7 @@ const ProjectList = class extends React.Component {
 		};
 		this.handleClickEnter = (index, e) => {
 			e.preventDefault();
-			this.context.router.push(`/projects/${this.state.project.list[index].project_id}`);
+			this.context.router.push(`/projects/${this.state.project.list[index].id}`);
 		};
 
 		this.handleClickDelete = (index, e) => {
@@ -42,7 +42,7 @@ const ProjectList = class extends React.Component {
 
 		this.handleClickUpdate = (index, e) => {
 			e.preventDefault();
-			this.setState({updating: true, updateId: this.state.project.list[index].project_id});
+			this.setState({updating: true, updateId: this.state.project.list[index].id});
 		};
 
 		this.handleCloseDialog = () => {
@@ -50,11 +50,10 @@ const ProjectList = class extends React.Component {
 		};
 
 		this.handleConfirmDialog = () => {
-			ProjectActions.delete(this.state.project.list[this.state.deleteIndex].project_id);
+			ProjectActions.delete(this.state.project.list[this.state.deleteIndex].id);
 			this.setState({deleting: false});
 		};
 
-		this._onStateChange = this._onStateChange.bind(this);
 		this.handleClickNewProject = () => {
 			this.setState({adding: true});
 		};
@@ -112,6 +111,10 @@ const ProjectList = class extends React.Component {
 				this.moveCaretToEnd(c.input);
 			}
 		};
+
+		this.handleStateChange = state => {
+			this.setState(state);
+		};
 	}
 
 	moveCaretToEnd(el) {
@@ -151,14 +154,14 @@ const ProjectList = class extends React.Component {
 			}
 		};
 		const items = this.state.project.list.map((item, index) => {
-			if (this.state.updating && this.state.updateId === item.project_id) {
+			if (this.state.updating && this.state.updateId === item.id) {
 				const handleClickUpdateSaveItem = this.handleClickUpdateSave.bind(this, index);
 				const handleClickUpdateCloseItem = this.handleClickUpdateClose.bind(this, index);
 				const handleKeyDownUpdateItem = this.handleKeyDownUpdate.bind(this, index);
 				return (
-					<Card key={item.project_id} style={styles.card}>
+					<Card key={item.id} style={styles.card}>
 						<CardActions style={styles.cardActions}>
-							<TextField style={styles.inputProjectName} defaultValue={item.project_name} ref={this.setRefProjectNameUpdate} onKeyDown={handleKeyDownUpdateItem}/>
+							<TextField style={styles.inputProjectName} defaultValue={item.name} ref={this.setRefProjectNameUpdate} onKeyDown={handleKeyDownUpdateItem}/>
 							<IconButton className="btProjectUpdateSave" title="Save" tooltip="Save" style={styles.button} onClick={handleClickUpdateSaveItem}>
 								<FontIcon className="mdi mdi-check" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 							</IconButton>
@@ -174,16 +177,16 @@ const ProjectList = class extends React.Component {
 			const handleClickUpdateItem = this.handleClickUpdate.bind(this, index);
 
 			return (
-				<Card key={item.project_id} style={styles.card}>
+				<Card key={item.id} style={styles.card}>
 					<CardActions style={styles.cardActions}>
-						<span style={styles.inputProjectName}>{item.project_name}</span>
-						<IconButton className="btProjectEnter" title={`Enter ${item.project_name}`} tooltip="Enter" style={styles.button} onClick={handleClickEnterItem}>
+						<span style={styles.inputProjectName}>{item.name}</span>
+						<IconButton className="btProjectEnter" title={`Enter ${item.name}`} tooltip="Enter" style={styles.button} onClick={handleClickEnterItem}>
 							<FontIcon className="mdi mdi-arrow-right-bold" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 						</IconButton>
-						<IconButton className="btProjectEdit" title={`Enter ${item.project_name}`} tooltip="Edit" style={styles.button} onClick={handleClickUpdateItem}>
+						<IconButton className="btProjectEdit" title={`Enter ${item.name}`} tooltip="Edit" style={styles.button} onClick={handleClickUpdateItem}>
 							<FontIcon className="mdi mdi-pencil" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 						</IconButton>
-						<IconButton className="btProjectDelete" title={`Delete ${item.project_name}`} tooltip="Delete" style={styles.button} onClick={handleClickDeleteItem}>
+						<IconButton className="btProjectDelete" title={`Delete ${item.name}`} tooltip="Delete" style={styles.button} onClick={handleClickDeleteItem}>
 							<FontIcon className="mdi mdi-delete" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 						</IconButton>
 					</CardActions>
@@ -231,7 +234,7 @@ const ProjectList = class extends React.Component {
 				</Card>);
 		}
 
-		const deleteName = this.state.deleting ? <span> project <b> {this.state.project.list[this.state.deleteIndex].project_name}</b></span> : null;
+		const deleteName = this.state.deleting ? <span> project <b> {this.state.project.list[this.state.deleteIndex].name}</b></span> : null;
 
 		return (
 			<div style={{position: 'initial'}}>
@@ -244,20 +247,8 @@ const ProjectList = class extends React.Component {
 		);
 	}
 
-	_onStateChange(state) {
-		// switch (state.project.status) {
-		// 	case 'saved':
-		// 	case 'deleted':
-		// 		ProjectActions.list();
-		// 		break;
-		// 	default:
-		// 		break;
-		// }
-		this.setState(state);
-	}
-
 	componentDidMount() {
-		this.unsubscribe = ProjectStore.listen(this._onStateChange);
+		this.unsubscribe = ProjectStore.listen(this.handleStateChange);
 		ProjectActions.list();
 	}
 

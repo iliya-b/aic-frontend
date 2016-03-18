@@ -3,12 +3,13 @@
 
 require('babel-polyfill');
 
-// Vendors
-// import React from 'react';
+// Vendor
 import ReactDOM from 'react-dom';
+import S from 'string';
 
 // APP
 import AppRoutes from 'app/configs/app-routes';
+import gatewayRegisters from 'app/libs/gateway-registers';
 
 (function () {
 	// Needed for configuration
@@ -32,6 +33,11 @@ import AppRoutes from 'app/configs/app-routes';
 	if (!window.Promise) {
 		window.Promise = require('promise-polyfill');
 	}
+
+	// Gateway/Backend
+	gatewayRegisters();
+	S.TMPL_OPEN = '{';
+	S.TMPL_CLOSE = '}';
 
 	// Router
 	ReactDOM.render(AppRoutes, document.getElementById('gobyApp'));
