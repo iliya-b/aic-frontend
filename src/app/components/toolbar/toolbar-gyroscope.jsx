@@ -63,9 +63,9 @@ const ToolbarGyroscope = class extends React.Component {
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-crosshairs-gps" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<TextField className="inputLiveSensorGyroscopeAzimuth" style={styles.items} ref={this.setRefAzimuth} hintText="azimuth" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
-				<TextField className="inputLiveSensorGyroscopePitch" style={styles.items} ref={this.setRefPitch} hintText="pitch" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
-				<TextField className="inputLiveSensorGyroscopeRoll" style={styles.items} ref={this.setRefRoll} hintText="roll" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<TextField name="fieldLiveSensorGyroscopeAzimuth" style={styles.items} ref={this.setRefAzimuth} hintText="azimuth" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<TextField name="fieldLiveSensorGyroscopePitch" style={styles.items} ref={this.setRefPitch} hintText="pitch" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<TextField name="fieldLiveSensorGyroscopeRoll" style={styles.items} ref={this.setRefRoll} hintText="roll" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<RaisedButton
 					className="btLiveSensorGyroscopeSubmit"
 					label="Submit"

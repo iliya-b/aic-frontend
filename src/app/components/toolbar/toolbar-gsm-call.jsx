@@ -55,7 +55,7 @@ const ToolbarGSMCall = class extends React.Component {
 			<Paper style={Object.assign(this.props.style || {}, styles.paper)} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-phone" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<TextField className="inputLiveGSMPhoneNumber" style={styles.items} ref={this.setRefNumber} hintText="phone number" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<TextField name="fieldLiveGSMPhoneNumber" style={styles.items} ref={this.setRefNumber} hintText="phone number" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<RaisedButton
 					className="btLiveSensorGSMCall"
 					label="Call"

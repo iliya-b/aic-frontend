@@ -161,7 +161,7 @@ const ProjectList = class extends React.Component {
 				return (
 					<Card key={item.id} style={styles.card}>
 						<CardActions style={styles.cardActions}>
-							<TextField style={styles.inputProjectName} defaultValue={item.name} ref={this.setRefProjectNameUpdate} onKeyDown={handleKeyDownUpdateItem}/>
+							<TextField name="fieldEditProjectName" style={styles.inputProjectName} defaultValue={item.name} ref={this.setRefProjectNameUpdate} onKeyDown={handleKeyDownUpdateItem}/>
 							<IconButton className="btProjectUpdateSave" title="Save" tooltip="Save" style={styles.button} onClick={handleClickUpdateSaveItem}>
 								<FontIcon className="mdi mdi-check" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 							</IconButton>
@@ -200,7 +200,7 @@ const ProjectList = class extends React.Component {
 			newProject = (
 				<Card key="newProjectForm" style={styles.card}>
 					<CardActions>
-						<TextField className="inputLiveSensorOrientationRoll" style={styles.inputProjectName} ref={this.setRefProjectName} hintText="Project name" onKeyDown={this.handleKeyDown}/>
+						<TextField name="fieldNewProjectName" style={styles.inputProjectName} ref={this.setRefProjectName} hintText="Project name" onKeyDown={this.handleKeyDown}/>
 						<RaisedButton
 							label="Save"
 							title="Save"

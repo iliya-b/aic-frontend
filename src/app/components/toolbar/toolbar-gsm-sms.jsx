@@ -55,7 +55,7 @@ const ToolbarGSMSMS = class extends React.Component {
 			<Paper style={Object.assign(this.props.style || {}, styles.paper)} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-message-text" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<TextField className="inputLiveGSMSMSText" style={styles.items} ref={this.setRefSMSText} hintText="SMS Text" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<TextField name="fieldLiveGSMSMSText" style={styles.items} ref={this.setRefSMSText} hintText="SMS Text" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<RaisedButton
 					className="btLiveSensorGSMSMSSend"
 					label="Send"
