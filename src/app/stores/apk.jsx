@@ -43,10 +43,12 @@ const APKStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onUploadCompleted(data) {
-		debug('onUploadCompleted', data, data[0].apk_id);
+	onUploadCompleted(files) {
+		debug('onUploadCompleted', files);
 		this.state.apk.status = 'uploadCompleted';
-		this.removeUploading(data[0].apk_id);
+		files.forEach(file => {
+			this.removeUploading(file.name);
+		});
 		this.updateState();
 	},
 

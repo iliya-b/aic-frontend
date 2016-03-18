@@ -5,7 +5,7 @@ import Reflux from 'reflux';
 const debug = require('debug')('AiC:Polling:Actions');
 
 // APP
-import BackendAPI from 'app/libs/backend-api';
+import Gateway from 'app/libs/gateway';
 import LiveListActions from 'app/actions/live-list';
 
 // Actions
@@ -16,21 +16,25 @@ const PollingActions = Reflux.createActions({
 
 // Listeners for asynchronous Backend API calls
 
-PollingActions.retry.listen(function (apiIndex, apiArgs, remainingTries) {
+PollingActions.retry.listen(function (apiIndex, apiAction, apiArgs, remainingTries) {
 	debug('retry called', arguments);
-	debug('BackendAPI', BackendAPI);
-	// Reflect.apply(BackendAPI[apiIndex], BackendAPI, apiArgs)
-	BackendAPI[apiIndex](...apiArgs)
+	Gateway[apiIndex][apiAction](...apiArgs)
 	.then(res => {
-		this.completed(res, apiIndex, apiArgs, remainingTries);
+		this.completed(res, apiIndex, apiAction, apiArgs, remainingTries);
 	})
 	.catch(res => {
-		this.failure(res, apiIndex, apiArgs, remainingTries);
+		this.failure(res, apiIndex, apiAction, apiArgs, remainingTries);
 	});
 
 	switch (apiIndex) {
-		case 'liveList':
-			LiveListActions.list();
+		case 'live':
+			switch (apiAction) {
+				case 'list':
+					LiveListActions.list();
+					break;
+				default:
+					break;
+			}
 			break;
 		default:
 			debug('apiIndex not found', arguments);

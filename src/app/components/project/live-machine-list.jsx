@@ -28,14 +28,9 @@ const LiveMachineList = class extends React.Component {
 		let loading = '';
 		if (this.state.live) {
 			if (this.state.live.status === 'LIVE_STATUS_LISTING') {
-				let informationBox = '';
 				if (!this.state.live.hasOwnProperty('avms') || this.state.live.avms.length === 0) {
-					informationBox = <InfoBox style={{textAlign: 'center'}}>Loading sessions...</InfoBox>;
+					loading = <InfoBox style={{textAlign: 'center'}}>Loading sessions...</InfoBox>;
 				}
-				loading = (<div>
-					<LinearProgress mode="indeterminate" style={{backgroundColor: 'rgba(0, 0, 0, 0.54)'}}/>
-					{informationBox}
-				</div>);
 			}
 			if (this.state.live.avms && this.state.live.avms.length) {
 				avmsRendered = this.state.live.avms.map(currentValue => {

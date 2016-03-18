@@ -5,7 +5,7 @@ require('babel-polyfill');
 
 // Vendor
 import ReactDOM from 'react-dom';
-import S from 'string';
+import str from 'string';
 
 // APP
 import AppRoutes from 'app/configs/app-routes';
@@ -36,8 +36,8 @@ import gatewayRegisters from 'app/libs/gateway-registers';
 
 	// Gateway/Backend
 	gatewayRegisters();
-	S.TMPL_OPEN = '{';
-	S.TMPL_CLOSE = '}';
+	str.TMPL_OPEN = '{';
+	str.TMPL_CLOSE = '}';
 
 	// Router
 	ReactDOM.render(AppRoutes, document.getElementById('gobyApp'));

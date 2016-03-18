@@ -11,6 +11,8 @@ const {
 	RaisedButton
 } = mui;
 
+const debug = require('debug')('AiC:Components:Project:MachineCardLive');
+
 // APP
 const MachineCard = require('app/components/project/machine-card');
 const CodeBox = require('app/components/shared/code-box');
@@ -36,6 +38,8 @@ const MachineCardLive = class extends React.Component {
 		enabledButtons[MachineCard.VMSTATE.CREATING] = [MachineCard.ACTIONS.ENTER];
 		enabledButtons[MachineCard.VMSTATE.FAILED] = [MachineCard.ACTIONS.STOP];
 		enabledButtons[MachineCard.VMSTATE.DELETING] = [];
+
+		debug(state);
 
 		const buttons = availableButtons.filter(bt => {
 			return enabledButtons[state.avm_status].indexOf(bt.action) !== -1;

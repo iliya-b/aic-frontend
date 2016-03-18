@@ -17,7 +17,6 @@ const BackendObjects = {
 	URLPATH_PROJECT_SHOW: '/projects/%s',
 	URLPATH_APK: '/projects/%s/apk',
 	URLPATH_APK_DELETE: '/projects/%s/apk/%s',
-	URLPATH_APKTEST: '/back/test/%s',
 	URLPATH_LIVE: '/android',
 	URLPATH_LIVE_MACHINE: '/android/%s',
 	URLPATH_LIVE_SENSOR: '/android/sensors/%s/%s',
@@ -40,31 +39,6 @@ const BackendObjects = {
 		properties: {
 			image: {type: 'string'},
 			project_id: {type: 'string'} // eslint-disable-line camelcase
-		}
-	},
-	OBJSCHEMA_SENSOR_BATTERY: {type: 'object', strict: true,
-		properties: {
-			level_percent: {type: 'integer', min: 0, max: 100}, // eslint-disable-line camelcase
-			ac_online: {type: 'integer', min: 0, max: 1} // eslint-disable-line camelcase
-		}
-	},
-	OBJSCHEMA_SENSOR_ACCELEROMETER: {type: 'object', strict: true,
-		properties: {
-			x: {type: 'number'},
-			y: {type: 'number'},
-			z: {type: 'number'}
-		}
-	},
-	OBJSCHEMA_SENSOR_LOCATION: {type: 'object', strict: true,
-		properties: {
-			latitude: {type: 'number'},
-			longitude: {type: 'number'}
-		}
-	},
-	OBJSCHEMA_SENSOR_RECORDING: {type: 'object', strict: true,
-		properties: {
-			filename: {type: 'string', rules: ['trim']},
-			start: {type: 'boolean'}
 		}
 	},
 	OBJSCHEMA_SENSOR: {
@@ -235,119 +209,20 @@ const BackendAPI = {
 		// return RestAPI.apiCallAuth(options);
 	},
 
-	// Projects
-
-	userProjects() {
-		const options = {
-			pathname: BackendObjects.URLPATH_PROJECT_LIST,
-			method: 'GET'
-		};
-		// return Promise.resolve({
-		// 	tenants: [{
-		// 		description: 'test\'s project',
-		// 		enabled: true,
-		// 		id: 'default',
-		// 		name: 'default'
-		// 	}, {
-		// 		description: 'test\'s project',
-		// 		enabled: true,
-		// 		id: 'abc',
-		// 		name: 'abc'
-		// 	}],
-		// 	tenants_links: [] // eslint-disable-line camelcase
-		// });
-		return RestAPI.apiCallAuth(options);
-	},
-
-	projectCreate(projectName) {
-		const options = {
-			pathname: BackendObjects.URLPATH_PROJECT_LIST,
-			method: 'POST',
-			data: {
-				data: {
-					project_name: projectName // eslint-disable-line camelcase
-				},
-				schema: BackendObjects.OBJSCHEMA_PROJECT
-			}
-		};
-		return RestAPI.apiCallAuth(options);
-	},
-
-	projectUpdate(projectId, projectName) {
-		const options = {
-			pathname: sprintf(BackendObjects.URLPATH_PROJECT_SHOW, projectId),
-			method: 'PUT',
-			data: {
-				data: {
-					project_name: projectName // eslint-disable-line camelcase
-				},
-				schema: BackendObjects.OBJSCHEMA_PROJECT
-			}
-		};
-		return RestAPI.apiCallAuth(options);
-	},
-
-	projectDelete(projectId) {
-		const options = {
-			pathname: sprintf(BackendObjects.URLPATH_PROJECT_SHOW, projectId),
-			method: 'DELETE'
-		};
-		return RestAPI.apiCallAuth(options);
-	},
-
-	// APKs //
-
 	isUserLogged(cb) {
 		const url = `${this.backendRoot()}/back/project`;
 		RestAPI.apiCall(url, undefined, cb, undefined, 'GET', false);
 	},
 
-	apkList(projectId) {
-		const options = {
-			pathname: sprintf(BackendObjects.URLPATH_APK, projectId),
-			method: 'GET'
-		};
-		return RestAPI.apiCallAuth(options)
-			.then(data => {
-				return data.apks.map(apk => {
-					return {
-						id: apk.apk_id,
-						filename: apk.apk_id,
-						status: ''
-					};
-				});
-			});
-	},
-
-	apkUpload(projectId, file, cbProgress) {
-		const data = new FormData();
-		data.append('file', file);
-		const options = {
-			pathname: sprintf(BackendObjects.URLPATH_APK, projectId),
-			method: 'POST',
-			rawData: data,
-			cbProgress
-		};
-		return RestAPI.apiCallAuth(options);
-	},
-
-	apkDelete(projectId, apkId) {
-		const options = {
-			pathname: sprintf(BackendObjects.URLPATH_APK_DELETE, projectId, apkId),
-			method: 'DELETE'
-		};
-		return RestAPI.apiCallAuth(options);
-	},
-
 	// LIVE //
 
-	liveList() {
-		const options = {
-			pathname: BackendObjects.URLPATH_LIVE,
-			method: 'GET'
-		};
-		return RestAPI.apiCallAuth(options);
-	},
+	// liveList() {
+	// 	const options = {
+	// 		pathname: BackendObjects.URLPATH_LIVE,
+	// 		method: 'GET'
+	// 	};
+	// 	return RestAPI.apiCallAuth(options);
+	// },
 
 	liveStart(variant, projectId) {
 		const data = {

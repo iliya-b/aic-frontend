@@ -34,7 +34,7 @@ const LiveListStore = Reflux.createStore({
 	},
 
 	onListCompleted(avms) {
-		debug('onListCompleted');
+		debug('onListCompleted', avms);
 		this.state.live.avms = avms;
 		this.state.live.status = 'LIVE_STATUS_LISTED';
 		this.updateState();

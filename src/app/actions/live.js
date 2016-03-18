@@ -1,14 +1,13 @@
 /* global window, RFB, $D, WebSocket, Util, $, document */
 'use strict';
 
-// Reflux
-const Reflux = require('reflux');
-
 // Vendor
+import Reflux from 'reflux';
 const debug = require('debug')('AiC:Live:Actions');
 
 // APP
-const BackendAPI = require('app/libs/backend-api');
+import BackendAPI from 'app/libs/backend-api';
+import Gateway from 'app/libs/gateway';
 
 // Actions
 const LiveActions = Reflux.createActions({
@@ -88,11 +87,11 @@ LiveActions.stop.listen(function (avmId) {
 
 LiveActions.loadInfo.listen(function (avmId) {
 	debug('load info called');
-	BackendAPI.liveList()
+	Gateway.live.list()
 	.then(res => {
 		debug('back');
-		if (res.hasOwnProperty('avms')) {
-			const avmInfo = res.avms.filter(currentValue => {
+		if (res instanceof Array) {
+			const avmInfo = res.filter(currentValue => {
 				return currentValue.avm_id === avmId;
 			});
 			if (avmInfo.length) {

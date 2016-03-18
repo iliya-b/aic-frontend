@@ -1,5 +1,8 @@
 'use strict';
 
+// Should avoid to use eslint-disable-line camelcase
+// But in this file is OK since we define the converters from back-end
+
 const GatewayAdapters = {
 	projects: {
 		list: {
@@ -24,6 +27,38 @@ const GatewayAdapters = {
 				return {
 					project_name: frontendObject.name // eslint-disable-line camelcase
 				};
+			}
+		}
+	},
+	apks: {
+		list: {
+			response: data => {
+				return data.apks.map(apk => {
+					return {
+						id: apk.apk_id,
+						filename: apk.apk_filename,
+						status: apk.status
+					};
+				});
+			}
+		}
+	},
+	live: {
+		list: {
+			response: data => {
+				return data.avms.map(avm => {
+					return {
+						avm_id: avm.avm_id, // eslint-disable-line camelcase
+						avm_owner: avm.avm_owner, // eslint-disable-line camelcase
+						image: avm.image,
+						avm_novnc_host: avm.novnc_host, // eslint-disable-line camelcase
+						avm_novnc_port: avm.novnc_port, // eslint-disable-line camelcase
+						project_id: avm.project_id, // eslint-disable-line camelcase
+						stack_name: avm.stack_name, // eslint-disable-line camelcase
+						avm_status: avm.status, // eslint-disable-line camelcase
+						ts_created: avm.ts_created // eslint-disable-line camelcase
+					};
+				});
 			}
 		}
 	}

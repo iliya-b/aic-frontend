@@ -1,13 +1,10 @@
 'use strict';
 
-// Reflux
-const Reflux = require('reflux');
+// Vendor
+import Reflux from 'reflux';
 
-// // Vendors
-// const debug = require('debug')('AiC:LiveList:Actions');
-
-// // APP
-// const BackendAPI = require('app/libs/backend-api.jsx');
+// APP
+import Gateway from 'app/libs/gateway';
 
 // Actions
 const LiveListActions = Reflux.createActions({
@@ -15,18 +12,13 @@ const LiveListActions = Reflux.createActions({
 });
 
 // Listeners for asynchronous Backend API calls
-
-// LiveListActions.list.listen(function () {
-//   debug('list called');
-//   BackendAPI.liveList()
-//   .then(res => {
-//     debug('back');
-//     if (res.hasOwnProperty('avms')) {
-//       this.completed(res.avms);
-//     } else {
-//       this.failure('It was not possible to list live sessions.');
-//     }
-//   });
-// });
+LiveListActions.list.listen(function () {
+	Gateway.live.list()
+	.then(result => {
+		this.completed(result);
+	}, err => {
+		this.failure(err);
+	});
+});
 
 module.exports = LiveListActions;

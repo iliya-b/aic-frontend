@@ -14,12 +14,18 @@ const NotificationActions = Reflux.createActions({
 
 // Listeners for asynchronous Backend API calls
 
-NotificationActions.update = function (apiIndex, res) {
-	debug('NotificationActions.update', apiIndex, res, arguments);
+NotificationActions.update = function (apiIndex, apiAction, res) {
+	debug('NotificationActions.update', apiIndex, apiAction, res, arguments);
 	switch (apiIndex) {
-		case 'liveList':
-			debug('NotificationActions.update liveList');
-			LiveListActions.list.completed(res.avms);
+		case 'live':
+			switch (apiAction) {
+				case 'list':
+					debug('NotificationActions.update liveList');
+					LiveListActions.list.completed(res);
+					break;
+				default:
+					break;
+			}
 			break;
 		default:
 			debug('unknow api index:', arguments);

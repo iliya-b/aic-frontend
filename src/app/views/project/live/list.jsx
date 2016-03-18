@@ -20,7 +20,7 @@ const kitkat = 'kitkat';
 // const kitkat = 'kitkat';
 const lollipop = 'lollipop';
 // const lollipop = 'xxx';
-const variants = [{id: kitkat, name: 'kitkat'}, {id: lollipop, name: 'lollipop'}];
+const variants = [{id: kitkat, name: 'kitkat'}, {id: 'kitkat-phone', name: 'kitkatPhone'}, {id: lollipop, name: 'lollipop'}];
 
 const LiveList = class extends React.Component {
 

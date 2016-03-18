@@ -1,9 +1,8 @@
 /* global FormData */
 'use strict';
 
-// Vendors
-import S from 'string';
-
+// Vendor
+import str from 'string';
 const debug = require('debug')('AiC:Libs:Gateway');
 
 // APP
@@ -27,12 +26,25 @@ const Gateway = {
 		delete: {
 			name: 'delete',
 			method: 'DELETE'
+		},
+		login: {
+			name: 'login',
+			method: 'POST'
+		},
+		logout: {
+			name: 'logout',
+			method: 'POST'
+		},
+		upload: {
+			name: 'upload',
+			method: 'POST',
+			fileUpload: true
 		}
 	},
 
 	register(options) {
 		debug('register', options);
-		Gateway[options.namespace] = Gateway[options.namespace] || {};
+		Gateway[options.namespace] = Gateway[options.namespace] || {};
 		options.actions.forEach(action => {
 			debug('actions', action);
 			action.namespace = options.namespace;
@@ -50,14 +62,19 @@ const Gateway = {
 		const requestAdapter = Gateway.adapters[options.namespace][options.action.name] ? Gateway.adapters[options.namespace][options.action.name].request : false;
 		const responseAdapter = Gateway.adapters[options.namespace][options.action.name] ? Gateway.adapters[options.namespace][options.action.name].response : false;
 		const optionsAPI = {
-			pathname: S(options.pathname).template(obj).s,
+			pathname: str(options.pathname).template(obj).s,
 			method: options.action.method
 		};
+		if (obj && obj.file) {
+			optionsAPI.rawData = new FormData();
+			optionsAPI.rawData.append('file', obj.file);
+			optionsAPI.cbProgress = obj.progress;
+		}
 		if (obj && options.schema) {
 			optionsAPI.data = {
 				data: requestAdapter ? requestAdapter(obj) : obj,
 				schema: options.schema
-			}
+			};
 		}
 		debug(optionsAPI);
 		if (responseAdapter) {

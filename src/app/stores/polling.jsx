@@ -35,7 +35,7 @@ const PollingStore = Reflux.createStore({
 
 	// Live list
 	onLiveList() {
-		this.doRetry('liveList', [], initialRetry);
+		this.doRetry('live', 'list', [], initialRetry);
 	},
 
 	onStopLiveList() {
@@ -47,22 +47,22 @@ const PollingStore = Reflux.createStore({
 
 	},
 
-	onRetryCompleted(res, apiIndex, apiArgs, tries) {
+	onRetryCompleted(res, apiIndex, apiAction, apiArgs, tries) {
 		debug('retry completed, state:', this.state);
-		if (areDifferentObjects(res, this.state.polling[apiIndex].data)) {
+		if (areDifferentObjects(res, this.state.polling[apiIndex][apiAction].data)) {
 			debug('object different');
-			NotificationActions.update(apiIndex, res);
-			this.state.polling[apiIndex].data = res;
+			NotificationActions.update(apiIndex, apiAction, res);
+			this.state.polling[apiIndex][apiAction].data = res;
 		} else {
 			debug('object same');
 			const remainingTries = tries - 1;
 			if (remainingTries > 0) {
-				this.doRetry(apiIndex, apiArgs, remainingTries);
+				this.doRetry(apiIndex, apiAction, apiArgs, remainingTries);
 			} else {
 				debug('No tries left and no changes detected.', arguments);
 			}
 		}
-		this.checkData(res, apiIndex, apiArgs);
+		this.checkData(res, apiIndex, apiAction, apiArgs);
 	},
 
 	onRetryFailure() {
@@ -71,36 +71,44 @@ const PollingStore = Reflux.createStore({
 
 	// Methods //
 
-	doRetry(apiIndex, apiArgs, remainingTries) {
+	doRetry(apiIndex, apiAction, apiArgs, remainingTries) {
 		// 1st try: 1s, 2nd try: 6s, 3rd (and last): 11s
 		const timing = ((initialRetry - remainingTries) + 1) * 1000;
 		this.state.polling[apiIndex] = this.state.polling[apiIndex] || {};
-		this.resetRetry(apiIndex);
-		this.state.polling[apiIndex].timeout = setTimeout(PollingActions.retry, timing, apiIndex, apiArgs, remainingTries);
-		this.state.polling[apiIndex].data = this.state.polling[apiIndex].data || undefined;
+		this.state.polling[apiIndex][apiAction] = this.state.polling[apiIndex][apiAction] || {};
+		this.resetRetry(apiIndex, apiAction);
+		this.state.polling[apiIndex][apiAction].timeout = setTimeout(PollingActions.retry, timing, apiIndex, apiAction, apiArgs, remainingTries);
+		this.state.polling[apiIndex][apiAction].data = this.state.polling[apiIndex][apiAction].data || undefined;
 	},
 
-	resetRetry(apiIndex) {
-		if (this.state.polling[apiIndex].timeout) {
-			clearTimeout(this.state.polling[apiIndex].timeout);
+	resetRetry(apiIndex, apiAction) {
+		if (this.state.polling[apiIndex][apiAction].timeout) {
+			clearTimeout(this.state.polling[apiIndex][apiAction].timeout);
 		}
-		this.state.polling[apiIndex].timeout = false;
+		this.state.polling[apiIndex][apiAction].timeout = false;
 	},
 
-	checkData(res, apiIndex) {
+	checkData(res, apiIndex, apiAction) {
 		switch (apiIndex) {
-			case 'liveList': {
-				const onGoingStatus = [MachineCard.VMSTATE.CREATING, MachineCard.VMSTATE.DELETING];
-				const avms = res.avms;
-				debug('checking avms:', avms, onGoingStatus);
-				for (let avmIndex = 0; avmIndex < avms.length; avmIndex++) {
-					const avm = avms[avmIndex];
-					debug('checking', avm.avm_status);
-					if (onGoingStatus.indexOf(avm.avm_status) !== -1) {
-						debug('polling again');
-						PollingActions.liveList();
+			case 'live': {
+				switch (apiAction) {
+					case 'list': {
+						const onGoingStatus = [MachineCard.VMSTATE.CREATING, MachineCard.VMSTATE.DELETING];
+						const avms = res;
+						debug('checking avms:', avms, onGoingStatus);
+						for (let avmIndex = 0; avmIndex < avms.length; avmIndex++) {
+							const avm = avms[avmIndex];
+							debug('checking', avm.avm_status);
+							if (onGoingStatus.indexOf(avm.avm_status) !== -1) {
+								debug('polling again');
+								PollingActions.liveList();
+								break;
+							}
+						}
 						break;
 					}
+					default:
+						break;
 				}
 				break;
 			}

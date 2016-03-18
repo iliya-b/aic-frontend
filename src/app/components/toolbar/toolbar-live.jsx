@@ -13,6 +13,7 @@ import slug from 'slug';
 // APP
 const icons = {
 	kitkat: require('app/components/icons/kitkat'),
+	kitkatPhone: require('app/components/icons/kitkat-phone'),
 	lollipop: require('app/components/icons/lollipop')
 };
 
