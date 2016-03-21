@@ -1,28 +1,28 @@
 'use strict';
 
-// React
-const React = require('react');
-
-// Material design
-const mui = require('material-ui');
-const {
-	Dialog,
-	FlatButton
-} = mui;
+// Vendor
+import React from 'react';
+import Dialog from 'material-ui/lib/dialog';
+import FlatButton from 'material-ui/lib/flat-button';
 
 // APP
-const InfoBox = require('app/components/shared/info-box');
-const AuthActions = require('app/actions/auth');
+import InfoBox from 'app/components/shared/info-box';
+import AuthActions from 'app/actions/auth';
 
 const SessionEndedDialog = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.handleClose = this.handleClose.bind(this);
+		this.handleClose = e => {
+			e.preventDefault();
+			this.props.onRequestClose();
+			AuthActions.redirectDisconnected(this.context.router);
+		};
 	}
 
 	render() {
 		const {
+			onRequestClose, // eslint-disable-line no-unused-vars
 			...other
 		} = this.props;
 
@@ -39,15 +39,9 @@ const SessionEndedDialog = class extends React.Component {
 
 		return (
 			<Dialog modal title="Session Timeout" actions={loginActions} {...other}>
-				<InfoBox boxType={InfoBox.ERROR}>Your session has been ended.</InfoBox>
+				<InfoBox boxType={InfoBox.WARNING} showIcon zDepth={0}>Your session has been ended.</InfoBox>
 			</Dialog>
 			);
-	}
-
-	handleClose(e) {
-		e.preventDefault();
-		this.props.onRequestClose();
-		AuthActions.redirectDisconnected(this.context.router);
 	}
 
 };

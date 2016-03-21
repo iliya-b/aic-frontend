@@ -8,7 +8,7 @@ import RaisedButton from 'material-ui/lib/raised-button';
 
 // APP
 import FullWidthSection from 'app/components/shared/full-width-section';
-import LoginDialog from 'app/components/home/login-dialog';
+import LoginDialog from 'app/components/dialog/dialog-login';
 import AuthPage from 'app/components/shared/auth-page';
 
 const Home = class extends AuthPage {

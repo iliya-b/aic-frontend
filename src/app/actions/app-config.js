@@ -1,4 +1,3 @@
-/* global window */
 'use strict';
 
 // Vendor
@@ -27,45 +26,45 @@ AppConfigActions.load.listen(() => {
 	});
 });
 
-AppConfigActions.loadConfigPromise = false;
+// AppConfigActions.loadConfigPromise = false;
 
-AppConfigActions.loadConfigFactory = function () {
-	debug('loadConfigFactory');
+// AppConfigActions.loadConfigFactory = function () {
+// 	debug('loadConfigFactory');
 
-	// Configuration is already loaded
-	if (window.GobyAppGlobals.config) {
-		debug('loadConfigFactory loaded');
-		return new Promise(resolve => {
-			resolve(true);
-		});
-	}
+// 	// Configuration is already loaded
+// 	if (window.GobyAppGlobals.config) {
+// 		debug('loadConfigFactory loaded');
+// 		return new Promise(resolve => {
+// 			resolve(true);
+// 		});
+// 	}
 
-	// Another promise for configuration load already exists
-	if (AppConfigActions.loadConfigPromise) {
-		debug('loadConfigFactory exists');
-		return AppConfigActions.loadConfigPromise;
-	}
+// 	// Another promise for configuration load already exists
+// 	if (AppConfigActions.loadConfigPromise) {
+// 		debug('loadConfigFactory exists');
+// 		return AppConfigActions.loadConfigPromise;
+// 	}
 
-	// First time loading configuration
-	debug('loadConfigFactory creating');
+// 	// First time loading configuration
+// 	debug('loadConfigFactory creating');
 
-	AppConfigActions.loadConfigPromise = new Promise((resolve, reject) => {
-		BackendAPI.loadConfig(result => {
-			if (result.hasOwnProperty('status') && result.status !== 200) {
-				debug('loadConfigFactory backend', arguments);
-				reject('Error!');
-			} else if (result.hasOwnProperty('backend')) {
-				debug('result', result);
-				window.GobyAppGlobals.config = result;
-				resolve(true);
-			} else {
-				debug('loadConfigFactory backend', arguments);
-				reject('It was not possible to verify login status.');
-			}
-		});
-	});
+// 	// AppConfigActions.loadConfigPromise = new Promise((resolve, reject) => {
+// 	// 	BackendAPI.loadConfig(result => {
+// 	// 		if (result.hasOwnProperty('status') && result.status !== 200) {
+// 	// 			debug('loadConfigFactory backend', arguments);
+// 	// 			reject('Error!');
+// 	// 		} else if (result.hasOwnProperty('backend')) {
+// 	// 			debug('result', result);
+// 	// 			window.GobyAppGlobals.config = result;
+// 	// 			resolve(true);
+// 	// 		} else {
+// 	// 			debug('loadConfigFactory backend', arguments);
+// 	// 			reject('It was not possible to verify login status.');
+// 	// 		}
+// 	// 	});
+// 	// });
 
-	return AppConfigActions.loadConfigPromise;
-};
+// 	return AppConfigActions.loadConfigPromise;
+// };
 
 module.exports = AppConfigActions;
