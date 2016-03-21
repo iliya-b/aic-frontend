@@ -1,16 +1,15 @@
 /* global window, localStorage */
 'use strict';
 
-// Reflux
-const Reflux = require('reflux');
-
 // Vendor
+import Reflux from 'reflux';
+import url from 'url';
 const debug = require('debug')('AiC:Auth:Actions');
-const url = require('url');
 
 // APP
-const BackendAPI = require('app/libs/backend-api');
-const AppConfigActions = require('app/actions/app-config');
+// import BackendAPI from 'app/libs/backend-api';
+import Gateway from 'app/libs/gateway';
+// import AppConfigActions from 'app/actions/app-config';
 
 // Actions
 const AuthActions = Reflux.createActions({
@@ -21,7 +20,8 @@ const AuthActions = Reflux.createActions({
 
 // Listeners for asynchronous Backend API calls
 AuthActions.login.listen(function (login, pass) {
-	BackendAPI.userLogin(login, pass)
+	Gateway.user.login({login, pass})
+	// BackendAPI.userLogin(login, pass)
 	.then(result => {
 		debug('then auth login');
 		debug(arguments);
@@ -133,41 +133,43 @@ AuthActions.isLogged = function () {
 AuthActions.loadContextIfEmpty = function (loginContext) {
 	debug('loadContextIfEmpty', loginContext);
 
-	// If the context have login information
-	if (loginContext) {
-		debug('loginContext valid');
-		return new Promise(resolve => {
-			resolve(AuthActions.isLogged(loginContext));
-		});
+	throw new Error('loadContextIfEmpty is deprecated');
+	// // If the context have login information
+	// if (loginContext) {
+	// 	debug('loginContext valid');
+	// 	return new Promise(resolve => {
+	// 		resolve(AuthActions.isLogged(loginContext));
+	// 	});
 
-	// Otherwise we load the login information
-	}
-	const configLoaded = AppConfigActions.loadConfigFactory();
+	// // Otherwise we load the login information
+	// }
+	// const configLoaded = AppConfigActions.loadConfigFactory();
 
-	return Promise.all([configLoaded])
-		.then(() => {
-			return new Promise((resolve, reject) => {
-				debug('AuthActions.loadContextIfEmpty 2');
-				BackendAPI.isUserLogged(result => {
-					setTimeout(() => {
-						debug('loadContextIfEmpty result', result);
-						if (result.hasOwnProperty('status') && result.status === 401) {
-							// AuthActions.check.completed( false );
-							resolve(false);
-						} else if (result.hasOwnProperty('tenants')) {
-							// AuthActions.check.completed( true );
-							resolve(true);
-						} else {
-							reject('It was not possible to verify login status.');
-						}
-					}, 10000);
-				});
-			});
-		});
+	// return Promise.all([configLoaded])
+	// 	.then(() => {
+	// 		return new Promise((resolve, reject) => {
+	// 			debug('AuthActions.loadContextIfEmpty 2');
+	// 			BackendAPI.isUserLogged(result => {
+	// 				setTimeout(() => {
+	// 					debug('loadContextIfEmpty result', result);
+	// 					if (result.hasOwnProperty('status') && result.status === 401) {
+	// 						// AuthActions.check.completed( false );
+	// 						resolve(false);
+	// 					} else if (result.hasOwnProperty('tenants')) {
+	// 						// AuthActions.check.completed( true );
+	// 						resolve(true);
+	// 					} else {
+	// 						reject('It was not possible to verify login status.');
+	// 					}
+	// 				}, 10000);
+	// 			});
+	// 		});
+	// 	});
 };
 
 AuthActions.logout.listen(function (showMessage) {
-	BackendAPI.userLogout()
+	Gateway.user.logout()
+	// BackendAPI.userLogout()
 	.then(result => {
 		localStorage.token = '';
 		// TODO:  Fix the logout result,

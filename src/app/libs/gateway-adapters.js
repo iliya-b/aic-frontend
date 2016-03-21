@@ -7,6 +7,16 @@
 // expected by front-end
 
 const GatewayAdapters = {
+	user: {
+		login: {
+			request: frontendObject => {
+				return {
+					username: frontendObject.login,
+					password: frontendObject.pass
+				};
+			}
+		}
+	},
 	projects: {
 		list: {
 			response: result => {

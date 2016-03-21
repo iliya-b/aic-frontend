@@ -3,6 +3,7 @@
 // Gateway actions to be used to register back-end API endpoints
 
 const GatewayActions = {
+	// Generic actions
 	list: {
 		name: 'list',
 		method: 'GET'
@@ -23,6 +24,7 @@ const GatewayActions = {
 		name: 'delete',
 		method: 'DELETE'
 	},
+	// User actions
 	login: {
 		name: 'login',
 		method: 'POST'
@@ -31,10 +33,20 @@ const GatewayActions = {
 		name: 'logout',
 		method: 'POST'
 	},
+	// APKs
 	upload: {
 		name: 'upload',
 		method: 'POST',
 		fileUpload: true
+	},
+	// Live
+	installAPK: {
+		name: 'installAPK',
+		method: 'POST'
+	},
+	sensor: {
+		name: 'sensor',
+		method: 'POST'
 	}
 };
 

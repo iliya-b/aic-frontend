@@ -1,14 +1,12 @@
 /* global window */
 'use strict';
 
-// Reflux
-const Reflux = require('reflux');
-
-// Vendors
+// Vendor
+import Reflux from 'reflux';
 const debug = require('debug')('AiC:Actions:AppConfig');
 
 // APP
-const BackendAPI = require('app/libs/backend-api');
+import Gateway from 'app/libs/gateway';
 
 // Actions
 const AppConfigActions = Reflux.createActions({
@@ -17,7 +15,8 @@ const AppConfigActions = Reflux.createActions({
 
 // Listeners for asynchronous calls
 AppConfigActions.load.listen(() => {
-	BackendAPI.loadConfig()
+	Gateway.config.read()
+	// BackendAPI.loadConfig()
 	.then(data => {
 		debug('load.listen then', arguments);
 		AppConfigActions.load.completed(data);

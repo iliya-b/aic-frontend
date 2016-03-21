@@ -5,13 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 ## [Unreleased]
 
 ### Added
-- Live GSM calls (not yet ready on the backend and changes on the API are to come)
+- Live GSM calls
 - Live Monkey runner (panda icon)
 - Project management
 
 ### Changed
 - Update live create to JSON (update on kyaraben API)
-- Update Backend API, separate into rest-api and backend (more changes to come)
+- Update Backend API, separate into rest-api and gateway*
 - Update APK Manager now shows upload progress
 
 ### Fixed

@@ -191,48 +191,7 @@ const GatewaySchemas = {
 				text: {type: 'string'}
 			}
 		}
-	}// ,
-	// gsm: {
-	// 	call: {
-	// 		type: 'object',
-	// 		strict: true,
-	// 		properties: {
-	// 			action: {
-	// 				enum: ['accept', 'cancel', 'hold', 'receive']
-	// 			},
-	// 			phone_number: {type: 'string'} // eslint-disable-line camelcase
-	// 		}
-	// 	},
-	// 	network: {
-	// 		type: 'object',
-	// 		strict: true,
-	// 		properties: {
-	// 			type: {enum: ['umts', 'lte', 'gprs', 'gsm', 'hspa', 'edge', 'cdma', 'evdo', 'hsdpa', 'hsupa', 'full']}
-	// 		}
-	// 	},
-	// 	registration: {
-	// 		type: 'object',
-	// 		strict: true,
-	// 		properties: {
-	// 			type: {enum: ['home', 'denied', 'searching', 'roaming', 'none']}
-	// 		}
-	// 	},
-	// 	signal: {
-	// 		type: 'object',
-	// 		strict: true,
-	// 		properties: {
-	// 			strength: {type: 'integer', min: 0, max: 4}
-	// 		}
-	// 	},
-	// 	sms: {
-	// 		type: 'object',
-	// 		strict: true,
-	// 		properties: {
-	// 			phone_number: {type: 'string'}, // eslint-disable-line camelcase
-	// 			text: {type: 'string'}
-	// 		}
-	// 	}
-	// }
+	}
 };
 
 module.exports = GatewaySchemas;

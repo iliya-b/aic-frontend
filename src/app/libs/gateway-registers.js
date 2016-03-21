@@ -7,10 +7,30 @@ import Gateway from 'app/libs/gateway';
 import GatewayAdapters from 'app/libs/gateway-adapters';
 import GatewaySchemas from 'app/libs/gateway-schemas';
 import GatewayActions from 'app/libs/gateway-actions';
+import RestAPI from 'app/libs/rest-api';
 
 const GatewayRegisters = function () {
 	// Register all adapters
 	Gateway.adapter(GatewayAdapters);
+
+	Gateway.requestAPI.default = RestAPI.apiCallAuth.bind(RestAPI);
+	Gateway.requestAPI.authNotRequired = RestAPI.apiCall.bind(RestAPI);
+
+	// APP Configuration
+	Gateway.register({
+		namespace: 'config',
+		actions: [
+			{
+				action: GatewayActions.read,
+				// Note that here is not pathname but URL property
+				// because we are getting the configuration of front-end from
+				// same domain that APP is being served and NOT from the
+				// back-end domain
+				url: 'config.json',
+				requestAPI: 'authNotRequired'
+			}
+		]
+	});
 
 	// User
 	Gateway.register({
@@ -19,7 +39,8 @@ const GatewayRegisters = function () {
 			{
 				action: GatewayActions.login,
 				pathname: '/user/login',
-				schema: GatewaySchemas.userLogin
+				schema: GatewaySchemas.userLogin,
+				requestAPI: 'authNotRequired'
 			}, {
 				action: GatewayActions.logout,
 				placeholder: () => {
@@ -86,26 +107,13 @@ const GatewayRegisters = function () {
 				action: GatewayActions.read,
 				pathname: '/android/{avmId}'
 			}, {
-				action: {
-					name: 'installAPK',
-					method: 'POST'
-				},
+				action: GatewayActions.installAPK,
 				pathname: '/android/{avmId}/apk/{apkId}'
 			}, {
-				action: {
-					name: 'sensor',
-					method: 'POST'
-				},
+				action: GatewayActions.sensor,
 				pathname: '/android/sensors/{sensor}/{avmId}',
 				schema: GatewaySchemas.sensors
-			}// , {
-			// 	action: {
-			// 		name: 'gsm',
-			// 		method: 'POST'
-			// 	},
-			// 	pathname: '/android/sensors/gsm/{action}/{avmId}',
-			// 	schema: GatewaySchemas.gsm
-			// }
+			}
 		]
 	});
 };
