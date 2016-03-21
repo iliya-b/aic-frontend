@@ -183,7 +183,7 @@ const ProjectList = class extends React.Component {
 						<IconButton className="btProjectEnter" title={`Enter ${item.name}`} tooltip="Enter" style={styles.button} onClick={handleClickEnterItem}>
 							<FontIcon className="mdi mdi-arrow-right-bold" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 						</IconButton>
-						<IconButton className="btProjectEdit" title={`Enter ${item.name}`} tooltip="Edit" style={styles.button} onClick={handleClickUpdateItem}>
+						<IconButton className="btProjectEdit" title={`Edit ${item.name}`} tooltip="Edit" style={styles.button} onClick={handleClickUpdateItem}>
 							<FontIcon className="mdi mdi-pencil" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 						</IconButton>
 						<IconButton className="btProjectDelete" title={`Delete ${item.name}`} tooltip="Delete" style={styles.button} onClick={handleClickDeleteItem}>
