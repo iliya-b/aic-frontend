@@ -23,10 +23,9 @@ const ToolbarGSMRoaming = class extends React.Component {
 		};
 		this.handleClick = e => {
 			const payload = {
-				action_type: 'SET_NETWORK_REGISTRATION', // eslint-disable-line camelcase
-				registration: this.state.value
+				type: this.state.value
 			};
-			this.props.onChange(e, payload);
+			this.props.onChange(e, 'registration', payload);
 		};
 	}
 

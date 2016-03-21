@@ -1,13 +1,7 @@
 'use strict';
 
-// React
-const React = require('react');
-
-// Material design
-const mui = require('material-ui');
-const {LinearProgress} = mui;
-
 // Vendor
+const React = require('react');
 const debug = require('debug')('AiC:Component:LiveMachineList');
 
 // APP

@@ -10,38 +10,6 @@ import RestAPI from 'app/libs/rest-api';
 
 const Gateway = {
 
-	actions: {
-		list: {
-			name: 'list',
-			method: 'GET'
-		},
-		create: {
-			name: 'create',
-			method: 'POST'
-		},
-		update: {
-			name: 'update',
-			method: 'PUT'
-		},
-		delete: {
-			name: 'delete',
-			method: 'DELETE'
-		},
-		login: {
-			name: 'login',
-			method: 'POST'
-		},
-		logout: {
-			name: 'logout',
-			method: 'POST'
-		},
-		upload: {
-			name: 'upload',
-			method: 'POST',
-			fileUpload: true
-		}
-	},
-
 	register(options) {
 		debug('register', options);
 		Gateway[options.namespace] = Gateway[options.namespace] || {};
@@ -61,6 +29,7 @@ const Gateway = {
 		debug(options, obj);
 		const requestAdapter = Gateway.adapters[options.namespace][options.action.name] ? Gateway.adapters[options.namespace][options.action.name].request : false;
 		const responseAdapter = Gateway.adapters[options.namespace][options.action.name] ? Gateway.adapters[options.namespace][options.action.name].response : false;
+		const schemaAdapter = Gateway.adapters[options.namespace][options.action.name] ? Gateway.adapters[options.namespace][options.action.name].schema : false;
 		const optionsAPI = {
 			pathname: str(options.pathname).template(obj).s,
 			method: options.action.method
@@ -73,7 +42,7 @@ const Gateway = {
 		if (obj && options.schema) {
 			optionsAPI.data = {
 				data: requestAdapter ? requestAdapter(obj) : obj,
-				schema: options.schema
+				schema: schemaAdapter ? schemaAdapter(options, obj) : options.schema
 			};
 		}
 		debug(optionsAPI);

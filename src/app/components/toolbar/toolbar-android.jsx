@@ -19,7 +19,7 @@ const ToolbarAndroid = class extends React.Component {
 				float: 'left'
 			},
 			separator: {
-				marginLeft: 1
+				marginLeft: 3
 			}
 		};
 		return (

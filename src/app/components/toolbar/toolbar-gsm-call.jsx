@@ -18,10 +18,10 @@ const ToolbarGSMCall = class extends React.Component {
 		};
 		this.handleClick = e => {
 			const payload = {
-				action_type: 'RECEIVE_CALL', // eslint-disable-line camelcase
+				action: 'receive',
 				phone_number: this.number.getValue() // eslint-disable-line camelcase
 			};
-			this.props.onChange(e, payload);
+			this.props.onChange(e, 'call', payload);
 		};
 	}
 

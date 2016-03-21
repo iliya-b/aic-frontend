@@ -23,10 +23,9 @@ const ToolbarGSMNetwork = class extends React.Component {
 		};
 		this.handleClick = e => {
 			const payload = {
-				action_type: 'SET_NETWORK_TYPE', // eslint-disable-line camelcase
-				network: this.state.value // eslint-disable-line camelcase
+				type: this.state.value
 			};
-			this.props.onChange(e, payload);
+			this.props.onChange(e, 'network', payload);
 		};
 	}
 

@@ -16,12 +16,15 @@ const ToolbarGSMSMS = class extends React.Component {
 		this.setRefSMSText = c => {
 			this.smsText = c;
 		};
+		this.setRefPhoneNumber = c => {
+			this.phoneNumber = c;
+		};
 		this.handleClick = e => {
 			const payload = {
-				action_type: 'RECEIVE_SMS', // eslint-disable-line camelcase
-				sms_text: this.smsText.getValue() // eslint-disable-line camelcase
+				phone_number: this.phoneNumber.getValue(), // eslint-disable-line camelcase
+				text: this.smsText.getValue()
 			};
-			this.props.onChange(e, payload);
+			this.props.onChange(e, 'sms', payload);
 		};
 	}
 
@@ -55,7 +58,8 @@ const ToolbarGSMSMS = class extends React.Component {
 			<Paper style={Object.assign(this.props.style || {}, styles.paper)} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-message-text" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<TextField name="fieldLiveGSMSMSText" style={styles.items} ref={this.setRefSMSText} hintText="SMS Text" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<TextField name="fieldLiveGSMSMSPhoneNumber" style={styles.items} ref={this.setRefPhoneNumber} hintText="Phone number" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
+				<TextField name="fieldLiveGSMSMSText" style={styles.items} ref={this.setRefSMSText} hintText="SMS text" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<RaisedButton
 					className="btLiveSensorGSMSMSSend"
 					label="Send"

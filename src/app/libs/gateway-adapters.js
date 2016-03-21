@@ -3,6 +3,9 @@
 // Should avoid to use eslint-disable-line camelcase
 // But in this file is OK since we define the converters from back-end
 
+// Adapters convert the objects retrieved by API to the objects
+// expected by front-end
+
 const GatewayAdapters = {
 	projects: {
 		list: {
@@ -59,6 +62,22 @@ const GatewayAdapters = {
 						ts_created: avm.ts_created // eslint-disable-line camelcase
 					};
 				});
+			}
+		},
+		create: {
+			request: frontendObject => {
+				return {
+					image: frontendObject.variant,
+					project_id: frontendObject.projectId // eslint-disable-line camelcase
+				};
+			}
+		},
+		sensor: {
+			request: frontendObject => {
+				return frontendObject.payload;
+			},
+			schema: (options, frontendObject) => {
+				return options.schema[frontendObject.sensor];
 			}
 		}
 	}

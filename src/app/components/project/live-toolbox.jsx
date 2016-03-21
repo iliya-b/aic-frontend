@@ -133,19 +133,20 @@ const LiveToolbox = class extends React.Component {
 			this.handleClickFirstBar[v] = this.changeActiveSecondToolbar.bind(this, v);
 		});
 		PANEL_GSM_ORDER.forEach(v => {
+			// TODO: fix phone_number
 			if (v === 'gsmAcceptCall') {
-				this.handleClickFirstBar[v] = e => this.handleGSM(e, {action_type: 'ACCEPT_CALL'}); // eslint-disable-line camelcase
+				this.handleClickFirstBar[v] = e => this.handleGSM(e, 'call', {action: 'accept', phone_number: this.props.sensorsValues['gsm/call'].phone_number}); // eslint-disable-line camelcase
 			} else if (v === 'gsmHoldCall') {
-				this.handleClickFirstBar[v] = e => this.handleGSM(e, {action_type: 'HOLD_CALL'}); // eslint-disable-line camelcase
+				this.handleClickFirstBar[v] = e => this.handleGSM(e, 'call', {action: 'hold', phone_number: this.props.sensorsValues['gsm/call'].phone_number}); // eslint-disable-line camelcase
 			} else if (v === 'gsmCancelCall') {
-				this.handleClickFirstBar[v] = e => this.handleGSM(e, {action_type: 'CANCEL_CALL'}); // eslint-disable-line camelcase
+				this.handleClickFirstBar[v] = e => this.handleGSM(e, 'call', {action: 'cancel', phone_number: this.props.sensorsValues['gsm/call'].phone_number}); // eslint-disable-line camelcase
 			} else {
 				this.handleClickFirstBar[v] = this.changeActiveSecondToolbar.bind(this, v);
 			}
 		});
 
 		this.handleAPKs = (e, apkId) => this.props.onInstallAPK(e, apkId);
-		this.handleGSM = (e, payload) => this.props.onChangeSensor('gsm', e, payload);
+		this.handleGSM = (e, action, payload) => this.props.onChangeSensor(`gsm/${action}`, e, payload);
 	}
 
 	changeActiveToolbar(toolbar) {

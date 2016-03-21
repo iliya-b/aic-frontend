@@ -11,9 +11,8 @@ import Paper from 'material-ui/lib/paper';
 const ToolbarGSMSignal = class extends React.Component {
 
 	onChange(e, value) {
-		this.props.onChange(e, {
-			action_type: 'SET_SIGNAL', // eslint-disable-line camelcase
-			signal_strength: parseInt(value, 10) // eslint-disable-line camelcase
+		this.props.onChange(e, 'signal', {
+			strength: parseInt(value, 10) // eslint-disable-line camelcase
 		});
 	}
 

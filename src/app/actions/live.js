@@ -26,9 +26,9 @@ const LiveActions = Reflux.createActions({
 	liveConnect: {children: ['completed', 'failure']},
 	liveStop: {asyncResult: true},
 	setSensor: {asyncResult: true},
-	setSensorBattery: {asyncResult: true},
-	setSensorAccelerometer: {asyncResult: true},
-	setSensorLocation: {asyncResult: true},
+	// setSensorBattery: {asyncResult: true},
+	// setSensorAccelerometer: {asyncResult: true},
+	// setSensorLocation: {asyncResult: true},
 	recordStart: {asyncResult: true},
 	recordStop: {asyncResult: true},
 	screenshot: {asyncResult: true},
@@ -49,7 +49,8 @@ LiveActions.setProjectId.listen(function () {
 
 LiveActions.start.listen(function (variant, projectId) {
 	debug('start called');
-	BackendAPI.liveStart(variant, projectId)
+	Gateway.live.create({variant, projectId})
+	// BackendAPI.liveStart(variant, projectId)
 	.then(res => {
 		debug('start back');
 		debug(arguments);
@@ -63,7 +64,8 @@ LiveActions.start.listen(function (variant, projectId) {
 
 LiveActions.stop.listen(function (avmId) {
 	debug('stop called');
-	BackendAPI.liveStop(avmId)
+	// BackendAPI.liveStop(avmId)
+	Gateway.live.delete({avmId})
 	.then(() => {
 		debug('stop back');
 		debug(arguments);
@@ -105,17 +107,18 @@ LiveActions.loadInfo.listen(function (avmId) {
 	});
 });
 
-LiveActions.liveCheck.listen(function () {
-	const token = '';
-	BackendAPI.liveCheck(token, res => {
-		if (res.hasOwnProperty('token')) {
-			const WebsocketActions = require('app/actions/websocket');
-			WebsocketActions.connect(res.token, 'live');
-		} else {
-			this.failure('It was not possible to check for a live session.');
-		}
-		// this.completed( res.error !== 'not-found' );
-	});
+LiveActions.liveCheck.listen(() => {
+	// const token = '';
+	// Gateway.live.read({avmId})
+	// // BackendAPI.liveCheck(token, res => {
+	// 	if (res.hasOwnProperty('token')) {
+	// 		const WebsocketActions = require('app/actions/websocket');
+	// 		WebsocketActions.connect(res.token, 'live');
+	// 	} else {
+	// 		this.failure('It was not possible to check for a live session.');
+	// 	}
+	// 	// this.completed( res.error !== 'not-found' );
+	// });
 });
 
 // Out of date, now it is done by websocket message
@@ -175,73 +178,85 @@ LiveActions.liveStop.listen(function (avmId) {
 	LiveActions.stopAudioConnection();
 });
 
-LiveActions.setSensorBattery.listen(function (projectId, value) {
-	const token = '';
-	BackendAPI.sensorBattery(token, projectId, value, res => {
-		this.completed(res);
-	});
-});
+// LiveActions.setSensorBattery.listen(function (projectId, value) {
+// 	const token = '';
+// 	BackendAPI.sensorBattery(token, projectId, value, res => {
+// 		this.completed(res);
+// 	});
+// });
 
-LiveActions.setSensorAccelerometer.listen(function (liveId, x, y, z) {
-	BackendAPI.sensorAccelerometer(liveId, x, y, z, res => {
-		this.completed(res);
-	});
-});
+// LiveActions.setSensorAccelerometer.listen(function (liveId, x, y, z) {
+// 	BackendAPI.sensorAccelerometer(liveId, x, y, z, res => {
+// 		this.completed(res);
+// 	});
+// });
 
-LiveActions.setSensorLocation.listen(function (projectId, lat, lon) {
-	const token = '';
-	BackendAPI.sensorLocation(token, projectId, lat, lon, res => {
-		this.completed(res);
-	});
-});
+// LiveActions.setSensorLocation.listen(function (projectId, lat, lon) {
+// 	const token = '';
+// 	BackendAPI.sensorLocation(token, projectId, lat, lon, res => {
+// 		this.completed(res);
+// 	});
+// });
 
 LiveActions.setSensor.listen(function (avmId, sensor, payload) {
-	BackendAPI.setSensor(avmId, sensor, payload, res => {
+	Gateway.live.sensor({avmId, sensor, payload})
+	.then(res => {
 		this.completed(res);
+	}, err => {
+		this.failure(err);
 	});
+	// BackendAPI.setSensor(avmId, sensor, payload, res => {
+	// 	this.completed(res);
+	// });
 });
 
-LiveActions.recordStart.listen(function (projectId) {
-	const token = '';
-	const filename = LiveActions.createVideoName();
-	BackendAPI.recordingStart(token, projectId, filename, res => {
-		res.filename = filename;
-		this.completed(res);
-	});
-});
+// LiveActions.recordStart.listen(function (projectId) {
+// 	const token = '';
+// 	const filename = LiveActions.createVideoName();
+// 	BackendAPI.recordingStart(token, projectId, filename, res => {
+// 		res.filename = filename;
+// 		this.completed(res);
+// 	});
+// });
 
-LiveActions.recordStop.listen(function (projectId, filename) {
-	const token = '';
-	BackendAPI.recordingStop(token, projectId, filename, res => {
-		this.completed(res);
-	});
-});
+// LiveActions.recordStop.listen(function (projectId, filename) {
+// 	const token = '';
+// 	BackendAPI.recordingStop(token, projectId, filename, res => {
+// 		this.completed(res);
+// 	});
+// });
 
-LiveActions.screenshot.listen(function (projectId, filename) {
-	const token = '';
-	// const filename = LiveActions.createImageName();
-	BackendAPI.screenshot(token, projectId, filename, res => {
-		this.completed(res);
-	});
-});
+// LiveActions.screenshot.listen(function (projectId, filename) {
+// 	const token = '';
+// 	// const filename = LiveActions.createImageName();
+// 	BackendAPI.screenshot(token, projectId, filename, res => {
+// 		this.completed(res);
+// 	});
+// });
 
 LiveActions.installAPK.listen((projectId, avmId, apkId) => {
-	BackendAPI.liveInstallAPK(projectId, avmId, apkId, res => {
+	Gateway.live.installAPK({avmId, apkId})
+	.then(res => {
 		this.completed(res);
+	}, err => {
+		this.failure(err);
 	});
+	// BackendAPI.liveInstallAPK(projectId, avmId, apkId, res => {
+	// 	this.completed(res);
+	// });
 });
 
-LiveActions.createFileName = function (beginWith, endWith) {
-	return beginWith + Date.now() + endWith;
-};
+// LiveActions.createFileName = function (beginWith, endWith) {
+// 	return beginWith + Date.now() + endWith;
+// };
 
-LiveActions.createVideoName = function () {
-	return this.createFileName('video', '.mp4');
-};
+// LiveActions.createVideoName = function () {
+// 	return this.createFileName('video', '.mp4');
+// };
 
-LiveActions.createImageName = function () {
-	return this.createFileName('snap', '.bmp');
-};
+// LiveActions.createImageName = function () {
+// 	return this.createFileName('snap', '.bmp');
+// };
 
 window.onscriptsload = function () {
 	// const updateState = function (rfb, state, oldstate, msg) {

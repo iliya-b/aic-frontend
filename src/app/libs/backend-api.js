@@ -1,9 +1,8 @@
-/* global FormData */
 'use strict';
 
 // Vendors
 import sprintf from 'sprintf';
-const debug = require('debug')('AiC:Store:BackendAPI');
+// const debug = require('debug')('AiC:Store:BackendAPI');
 
 // APP
 import RestAPI from 'app/libs/rest-api';
@@ -216,128 +215,120 @@ const BackendAPI = {
 
 	// LIVE //
 
-	// liveList() {
+	// liveStart(variant, projectId) {
+	// 	const data = {
+	// 		image: variant,
+	// 		project_id: projectId // eslint-disable-line camelcase
+	// 	};
 	// 	const options = {
 	// 		pathname: BackendObjects.URLPATH_LIVE,
+	// 		method: 'POST',
+	// 		data: {
+	// 			data,
+	// 			schema: BackendObjects.OBJSCHEMA_LIVE
+	// 		}
+	// 	};
+	// 	return RestAPI.apiCallAuth(options);
+	// },
+
+	// liveStop(liveId) {
+	// 	const options = {
+	// 		pathname: sprintf(BackendObjects.URLPATH_LIVE_MACHINE, liveId),
+	// 		method: 'DELETE'
+	// 	};
+	// 	return RestAPI.apiCallAuth(options);
+	// },
+
+	// liveCheck(liveId) {
+	// 	const options = {
+	// 		pathname: sprintf(BackendObjects.URLPATH_LIVE_MACHINE, liveId),
 	// 		method: 'GET'
 	// 	};
 	// 	return RestAPI.apiCallAuth(options);
 	// },
 
-	liveStart(variant, projectId) {
-		const data = {
-			image: variant,
-			project_id: projectId // eslint-disable-line camelcase
-		};
-		const options = {
-			pathname: BackendObjects.URLPATH_LIVE,
-			method: 'POST',
-			data: {
-				data,
-				schema: BackendObjects.OBJSCHEMA_LIVE
-			}
-		};
-		return RestAPI.apiCallAuth(options);
-	},
-
-	liveStop(liveId) {
-		const options = {
-			pathname: sprintf(BackendObjects.URLPATH_LIVE_MACHINE, liveId),
-			method: 'DELETE'
-		};
-		return RestAPI.apiCallAuth(options);
-	},
-
-	liveCheck(liveId) {
-		const options = {
-			pathname: sprintf(BackendObjects.URLPATH_LIVE_MACHINE, liveId),
-			method: 'GET'
-		};
-		return RestAPI.apiCallAuth(options);
-	},
-
 	// LIVE SENSORS //
 
-	sensor(data, sensor, liveId) {
-		const options = {
-			pathname: sprintf(BackendObjects.URLPATH_LIVE_SENSOR, sensor, liveId),
-			method: 'POST',
-			data
-		};
-		return RestAPI.apiCallAuth(options);
-	},
+	// sensor(data, sensor, liveId) {
+	// 	const options = {
+	// 		pathname: sprintf(BackendObjects.URLPATH_LIVE_SENSOR, sensor, liveId),
+	// 		method: 'POST',
+	// 		data
+	// 	};
+	// 	return RestAPI.apiCallAuth(options);
+	// },
 
-	sensorBattery(_, liveId, value) {
-		// TODO: fix arguments
-		debug(arguments);
-		const data = {
-			// data: {level: parseInt(value, 10) * 500000},
-			data: {
-				level_percent: parseInt(value, 10), // eslint-disable-line camelcase
-				ac_online: 1 // eslint-disable-line camelcase
-			},
-			schema: BackendObjects.OBJSCHEMA_SENSOR_BATTERY
-		};
-		return this.sensor(data, 'battery', liveId);
-	},
+	// sensorBattery(_, liveId, value) {
+	// 	// TODO: fix arguments
+	// 	debug(arguments);
+	// 	const data = {
+	// 		// data: {level: parseInt(value, 10) * 500000},
+	// 		data: {
+	// 			level_percent: parseInt(value, 10), // eslint-disable-line camelcase
+	// 			ac_online: 1 // eslint-disable-line camelcase
+	// 		},
+	// 		schema: BackendObjects.OBJSCHEMA_SENSOR_BATTERY
+	// 	};
+	// 	return this.sensor(data, 'battery', liveId);
+	// },
 
-	sensorAccelerometer(liveId, x, y, z) {
-		debug('sensorAccelerometer', arguments);
-		const data = {
-			data: {x, y, z},
-			schema: BackendObjects.OBJSCHEMA_SENSOR_ACCELEROMETER
-		};
-		return this.sensor(data, 'accelerometer', liveId);
-	},
+	// sensorAccelerometer(liveId, x, y, z) {
+	// 	debug('sensorAccelerometer', arguments);
+	// 	const data = {
+	// 		data: {x, y, z},
+	// 		schema: BackendObjects.OBJSCHEMA_SENSOR_ACCELEROMETER
+	// 	};
+	// 	return this.sensor(data, 'accelerometer', liveId);
+	// },
 
-	sensorLocation(_, liveId, lat, lon) {
-		const data = {
-			data: {latitude: lat, longitude: lon},
-			schema: BackendObjects.OBJSCHEMA_SENSOR_LOCATION
-		};
-		return this.sensor(data, 'gps', liveId);
-	},
+	// sensorLocation(_, liveId, lat, lon) {
+	// 	const data = {
+	// 		data: {latitude: lat, longitude: lon},
+	// 		schema: BackendObjects.OBJSCHEMA_SENSOR_LOCATION
+	// 	};
+	// 	return this.sensor(data, 'gps', liveId);
+	// },
 
-	recording(filename, start, liveId) {
-		const data = {
-			data: {filename, start},
-			schema: BackendObjects.OBJSCHEMA_SENSOR_RECORDING
-		};
-		return this.sensor(data, 'recording', liveId);
-	},
+	// recording(filename, start, liveId) {
+	// 	const data = {
+	// 		data: {filename, start},
+	// 		schema: BackendObjects.OBJSCHEMA_SENSOR_RECORDING
+	// 	};
+	// 	return this.sensor(data, 'recording', liveId);
+	// },
 
-	setSensor(liveId, sensor, payload) {
-		const data = {
-			data: payload,
-			schema: BackendObjects.OBJSCHEMA_SENSOR[sensor]
-		};
-		const options = {
-			pathname: sprintf(BackendObjects.URLPATH_LIVE_SENSOR, sensor, liveId),
-			method: 'POST',
-			data
-		};
-		return RestAPI.apiCallAuth(options);
-	},
+	// setSensor(liveId, sensor, payload) {
+	// 	const data = {
+	// 		data: payload,
+	// 		schema: BackendObjects.OBJSCHEMA_SENSOR[sensor]
+	// 	};
+	// 	const options = {
+	// 		pathname: sprintf(BackendObjects.URLPATH_LIVE_SENSOR, sensor, liveId),
+	// 		method: 'POST',
+	// 		data
+	// 	};
+	// 	return RestAPI.apiCallAuth(options);
+	// },
 
-	recordingStart(filename, liveId) {
-		this.recording(filename, 'true', liveId);
-	},
+	// recordingStart(filename, liveId) {
+	// 	this.recording(filename, 'true', liveId);
+	// },
 
-	recordingStop(filename, liveId) {
-		this.recording(filename, 'false', liveId);
-	},
+	// recordingStop(filename, liveId) {
+	// 	this.recording(filename, 'false', liveId);
+	// },
 
-	screenshot(filename, liveId) {
-		this.recording(filename, 'true', liveId);
-	},
+	// screenshot(filename, liveId) {
+	// 	this.recording(filename, 'true', liveId);
+	// },
 
-	liveInstallAPK(projectId, liveId, apkId) {
-		const options = {
-			pathname: sprintf(BackendObjects.URLPATH_LIVE_INSTALL_APK, liveId, apkId),
-			method: 'POST'
-		};
-		return RestAPI.apiCallAuth(options);
-	},
+	// liveInstallAPK(projectId, liveId, apkId) {
+	// 	const options = {
+	// 		pathname: sprintf(BackendObjects.URLPATH_LIVE_INSTALL_APK, liveId, apkId),
+	// 		method: 'POST'
+	// 	};
+	// 	return RestAPI.apiCallAuth(options);
+	// },
 
 	loadConfig() {
 		const options = {
