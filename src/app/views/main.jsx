@@ -94,7 +94,7 @@ const Main = class extends React.Component {
 								<RaisedButton key={2} linkButton primary href="#/" label="home"/>]
 							) : null}
 						</FullWidthSection>
-						<SessionEndedDialog open={this.state.sessionEndedDialogOpen} onRequestClose={this.handleSessionEndedDialogClose}/>
+						<SessionEndedDialog open={this.state.sessionEndedDialogOpen} onRequestClose={this.handleSessionEndedDialogClose} location={this.props.location}/>
 						<ServerErrorDialog open={this.state.app ? this.state.app.serverError.open : false} onRequestClose={this.handleServerErrorDialogClose}/>
 					</div>
 				</MuiThemeProvider>

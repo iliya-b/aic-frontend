@@ -44,15 +44,23 @@ const AuthStore = Reflux.createStore({
 	// Logout
 	// onLogout(showMessage) {
 	onLogout() {
-		this.state.login.status = 'LOGIN_STATUS_DISCONNECTING';
-		this.updateState();
+		// TODO: this should be solved differently
+		// The problem is that the multiple api calls fired at once,
+		// call logout multiple times
+		if (this.state.login.status !== 'LOGIN_STATUS_DISCONNECTED') {
+			this.state.login.status = 'LOGIN_STATUS_DISCONNECTING';
+			this.updateState();
+		}
 	},
 
 	onLogoutCompleted(showMessage) {
 		debug('onLogoutCompleted', showMessage);
-		this.state.login.showMessage = typeof showMessage === 'undefined' ? true : showMessage;
-		this.state.login.status = 'LOGIN_STATUS_DISCONNECTED';
-		this.updateState();
+		// TODO: this should be solved differently
+		if (this.state.login.status !== 'LOGIN_STATUS_DISCONNECTED') {
+			this.state.login.showMessage = typeof showMessage === 'undefined' ? true : showMessage;
+			this.state.login.status = 'LOGIN_STATUS_DISCONNECTED';
+			this.updateState();
+		}
 	},
 
 	onLogoutFailure(errorMessage) {

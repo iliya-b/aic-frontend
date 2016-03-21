@@ -4,6 +4,7 @@
 import React from 'react';
 import Dialog from 'material-ui/lib/dialog';
 import FlatButton from 'material-ui/lib/flat-button';
+const debug = require('debug')('AiC:Components:Dialog:SessionEndedDialog');
 
 // APP
 import InfoBox from 'app/components/shared/info-box';
@@ -16,7 +17,8 @@ const SessionEndedDialog = class extends React.Component {
 		this.handleClose = e => {
 			e.preventDefault();
 			this.props.onRequestClose();
-			AuthActions.redirectDisconnected(this.context.router);
+			debug('handleClose', this.context.router, this.props.location);
+			AuthActions.redirectDisconnected(this.context.router, this.props.location);
 		};
 	}
 
@@ -39,7 +41,7 @@ const SessionEndedDialog = class extends React.Component {
 
 		return (
 			<Dialog modal title="Session Timeout" actions={loginActions} {...other}>
-				<InfoBox boxType={InfoBox.WARNING} showIcon zDepth={0}>Your session has been ended.</InfoBox>
+				<InfoBox boxType={InfoBox.WARNING} showIcon zDepth={0} styleType={InfoBox.STYLE_XBIG}>Your session has been ended.</InfoBox>
 			</Dialog>
 			);
 	}
@@ -53,6 +55,7 @@ SessionEndedDialog.contextTypes = {
 
 SessionEndedDialog.propTypes = {
 	open: React.PropTypes.bool.isRequired,
+	location: React.PropTypes.object.isRequired,
 	onRequestClose: React.PropTypes.func.isRequired
 };
 
