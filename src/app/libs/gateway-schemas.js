@@ -27,7 +27,7 @@ const GatewaySchemas = {
 		}
 	},
 	sensors: {
-		accelerometer: {
+		'accelerometer': {
 			type: 'object',
 			strict: true,
 			properties: {
@@ -36,7 +36,7 @@ const GatewaySchemas = {
 				z: {type: 'number'}
 			}
 		},
-		battery: {
+		'battery': {
 			type: 'object',
 			strict: true,
 			properties: {
@@ -44,7 +44,7 @@ const GatewaySchemas = {
 				ac_online: {type: 'integer', min: 0, max: 1} // eslint-disable-line camelcase
 			}
 		},
-		gps: {
+		'gps': {
 			type: 'object',
 			strict: true,
 			properties: {
@@ -52,7 +52,7 @@ const GatewaySchemas = {
 				longitude: {type: 'number'}
 			}
 		},
-		gravity: {
+		'gravity': {
 			type: 'object',
 			strict: true,
 			properties: {
@@ -61,21 +61,7 @@ const GatewaySchemas = {
 				z: {type: 'number'}
 			}
 		},
-		// gsm: {
-		// 	type: 'object',
-		// 	strict: true,
-		// 	properties: {
-		// 		action_type: { // eslint-disable-line camelcase
-		// 			enum: ['RECEIVE_CALL', 'ACCEPT_CALL', 'CANCEL_CALL', 'HOLD_CALL', 'RECEIVE_SMS', 'SET_SIGNAL', 'SET_NETWORK_TYPE', 'SET_NETWORK_REGISTRATION']
-		// 		},
-		// 		phone_number: {type: 'string', optional: true}, // eslint-disable-line camelcase
-		// 		sms_text: {type: 'string', optional: true}, // eslint-disable-line camelcase
-		// 		signal_strength: {enum: [0, 1, 2, 3, 4], optional: true}, // eslint-disable-line camelcase
-		// 		network: {enum: ['umts', 'lte', 'gprs', 'gsm', 'hspa', 'edge', 'cdma', 'evdo', 'hsdpa', 'hsupa', 'full'], optional: true},
-		// 		registration: {enum: ['home', 'denied', 'searching', 'roaming', 'none'], optional: true}
-		// 	}
-		// },
-		gyroscope: {
+		'gyroscope': {
 			type: 'object',
 			strict: true,
 			properties: {
@@ -84,14 +70,14 @@ const GatewaySchemas = {
 				roll: {type: 'number'}
 			}
 		},
-		light: {
+		'light': {
 			type: 'object',
 			strict: true,
 			properties: {
 				light: {type: 'number'}
 			}
 		},
-		linear_acc: { // eslint-disable-line camelcase
+		'linear_acc': { // eslint-disable-line camelcase
 			type: 'object',
 			strict: true,
 			properties: {
@@ -100,7 +86,7 @@ const GatewaySchemas = {
 				z: {type: 'number'}
 			}
 		},
-		magnetometer: {
+		'magnetometer': {
 			type: 'object',
 			strict: true,
 			properties: {
@@ -109,7 +95,7 @@ const GatewaySchemas = {
 				z: {type: 'number'}
 			}
 		},
-		orientation: {
+		'orientation': {
 			type: 'object',
 			strict: true,
 			properties: {
@@ -118,14 +104,14 @@ const GatewaySchemas = {
 				roll: {type: 'number'}
 			}
 		},
-		pressure: {
+		'pressure': {
 			type: 'object',
 			strict: true,
 			properties: {
 				pressure: {type: 'number'}
 			}
 		},
-		proximity: {
+		'proximity': {
 			type: 'object',
 			strict: true,
 			properties: {
@@ -133,7 +119,7 @@ const GatewaySchemas = {
 			}
 		},
 		// TODO: senza does not have schema
-		recording: {
+		'recording': {
 			type: 'object',
 			strict: true,
 			properties: {
@@ -141,7 +127,7 @@ const GatewaySchemas = {
 				start: {type: 'integer', min: 0, max: 1}
 			}
 		},
-		relative_humidity: { // eslint-disable-line camelcase
+		'relative_humidity': { // eslint-disable-line camelcase
 			type: 'object',
 			strict: true,
 			properties: {
@@ -150,7 +136,7 @@ const GatewaySchemas = {
 		},
 		// TODO: remove system?
 		// TODO: senza does not have schema
-		system: {
+		'system': {
 			type: 'object',
 			strict: true,
 			properties: {
@@ -159,7 +145,7 @@ const GatewaySchemas = {
 				params: {type: 'string'}
 			}
 		},
-		temperature: {
+		'temperature': {
 			type: 'object',
 			strict: true,
 			properties: {

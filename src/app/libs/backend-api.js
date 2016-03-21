@@ -1,7 +1,7 @@
 'use strict';
 
 // Vendors
-import sprintf from 'sprintf';
+// import sprintf from 'sprintf';
 // const debug = require('debug')('AiC:Store:BackendAPI');
 
 // APP
