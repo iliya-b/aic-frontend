@@ -290,6 +290,7 @@ const LiveSession = class extends React.Component {
 		LiveActions.setProjectId(projectId);
 		LiveActions.loadInfo(avmId);
 		LiveActions.listPackages(avmId);
+		LiveActions.properties(avmId);
 		APKActions.list(projectId);
 	}
 

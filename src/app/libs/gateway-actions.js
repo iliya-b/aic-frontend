@@ -55,6 +55,10 @@ const GatewayActions = {
 	monkeyRunner: {
 		name: 'monkeyRunner',
 		method: 'POST'
+	},
+	properties: {
+		name: 'properties',
+		method: 'GET'
 	}
 };
 

@@ -120,6 +120,9 @@ const GatewayRegisters = function () {
 				action: GatewayActions.monkeyRunner,
 				pathname: '/android/{avmId}/monkey',
 				schema: GatewaySchemas.monkeyRunner
+			}, {
+				action: GatewayActions.properties,
+				pathname: '/android/{avmId}/properties'
 			}
 		]
 	});

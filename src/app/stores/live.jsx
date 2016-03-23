@@ -326,6 +326,24 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
+	// Properties
+	onProperties() {
+		debug('onProperties');
+	},
+
+	onPropertiesCompleted(properties) {
+		debug('onPropertiesCompleted', properties);
+		this.state.live.properties = properties;
+		this.updateState();
+	},
+
+	onPropertiesFailure(errorMessage) {
+		debug('onPropertiesFailure', errorMessage);
+		this.state.live.message = errorMessage;
+		this.state.live.status = 'LIVE_STATUS_PROPERTIES_FAILED';
+		this.updateState();
+	},
+
 	// Methods //
 
 	// Status Box

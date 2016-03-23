@@ -33,7 +33,8 @@ const LiveActions = Reflux.createActions({
 	screenshot: {asyncResult: true},
 	installAPK: {asyncResult: true},
 	listPackages: {asyncResult: true},
-	monkeyRunner: {asyncResult: true}
+	monkeyRunner: {asyncResult: true},
+	properties: {asyncResult: true}
 });
 
 // Listeners for asynchronous Backend API calls
@@ -455,6 +456,15 @@ LiveActions.listPackages.listen(function (avmId) {
 
 LiveActions.monkeyRunner.listen(function (avmId, packages, eventCount, throttle) {
 	Gateway.live.monkeyRunner({avmId, packages, eventCount, throttle})
+	.then(res => {
+		this.completed(res);
+	}, err => {
+		this.failure(err);
+	});
+});
+
+LiveActions.properties.listen(function (avmId) {
+	Gateway.live.properties({avmId})
 	.then(res => {
 		this.completed(res);
 	}, err => {
