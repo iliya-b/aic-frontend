@@ -113,6 +113,13 @@ const GatewayRegisters = function () {
 				action: GatewayActions.sensor,
 				pathname: '/android/sensors/{sensor}/{avmId}',
 				schema: GatewaySchemas.sensors
+			}, {
+				action: GatewayActions.listPackages,
+				pathname: '/android/{avmId}/pm'
+			}, {
+				action: GatewayActions.monkeyRunner,
+				pathname: '/android/{avmId}/monkey',
+				schema: GatewaySchemas.monkeyRunner
 			}
 		]
 	});

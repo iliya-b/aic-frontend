@@ -8,7 +8,7 @@ const Reflux = require('reflux');
 const debug = require('debug')('AiC:Actions:Websocket');
 
 // APP
-const BackendAPI = require('app/libs/backend-api');
+// const BackendAPI = require('app/libs/backend-api');
 const AppUtils = require('app/components/shared/app-utils');
 const GobyActions = {}; // require('app/actions');
 
@@ -45,7 +45,9 @@ WebsocketActions.connect.listen((token, service) => {
 	}
 
 	// Open new connection
-	GobyWebsocket = new SockJS(`${BackendAPI.backendRoot()}/back/sock`);
+	// TODO: if ever used again, the backend should be changed to get from config
+	// GobyWebsocket = new SockJS(`${BackendAPI.backendRoot()}/back/sock`);
+	GobyWebsocket = new SockJS(`/back/sock`);
 
 	GobyWebsocket.gobyService = service;
 	loadedActions[service] = GobyActions[actionServiceName];

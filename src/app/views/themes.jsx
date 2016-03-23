@@ -43,7 +43,7 @@ import MachineCardLive from 'app/components/project/machine-card-live';
 import MachineCard from 'app/components/project/machine-card';
 import LiveToolbox from 'app/components/project/live-toolbox';
 
-import SessionEndedDialog from 'app/components/main/session-ended-dialog';
+import SessionEndedDialog from 'app/components/dialog/dialog-session-ended';
 
 import TableAPK from 'app/components/table/table-apk';
 

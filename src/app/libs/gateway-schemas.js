@@ -191,6 +191,15 @@ const GatewaySchemas = {
 				text: {type: 'string'}
 			}
 		}
+	},
+	monkeyRunner: {
+		type: 'object',
+		strict: true,
+		properties: {
+			packages: {type: 'array'}, // eslint-disable-line camelcase
+			throttle: {type: 'integer', optional: true},
+			event_count: {type: 'integer'} // eslint-disable-line camelcase
+		}
 	}
 };
 

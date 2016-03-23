@@ -89,11 +89,23 @@ toolbars.gsmSignal = require('app/components/toolbar/toolbar-gsm-signal');
 toolbars.gsmNetwork = require('app/components/toolbar/toolbar-gsm-network');
 toolbars.gsmRoaming = require('app/components/toolbar/toolbar-gsm-roaming');
 
+// Monkey Runner panel
+toolbars.monkeyRunner = require('app/components/toolbar/toolbar-monkey-runner');
+
 // Monkey Runner
 // http://developer.android.com/intl/es/tools/help/monkey.html
 // adb shell pm list packages -f
 // adb shell pm list packages -f | grep data
 // adb shell monkey -p com.vonglasow.michael.satstat --throttle 500 -v 10
+//
+// this.handleClickFirstBar.monkeyRunner = e => {
+// 	this.props.onChangeSensor('system', e, {
+// 		uid: '123',
+// 		command: 'shell',
+// 		// params: 'pm list packages -f'
+// 		params: 'monkey --throttle 500 -v 10'
+// 	});
+// };
 
 const LiveToolbox = class extends React.Component {
 
@@ -110,14 +122,7 @@ const LiveToolbox = class extends React.Component {
 			this.handleClickFirstBar[v] = this.changeActiveToolbar.bind(this, v);
 		});
 
-		this.handleClickFirstBar.monkeyRunner = e => {
-			this.props.onChangeSensor('system', e, {
-				uid: '123',
-				command: 'shell',
-				// params: 'pm list packages -f'
-				params: 'monkey --throttle 500 -v 10'
-			});
-		};
+		this.handleClickFirstBar.monkeyRunner = this.changeActiveSecondToolbar.bind(this, 'monkeyRunner');
 
 		this.handleClickFirstBar.terminate = () => {
 			this.props.onClickTerminate();
@@ -145,7 +150,6 @@ const LiveToolbox = class extends React.Component {
 			}
 		});
 
-		this.handleAPKs = (e, apkId) => this.props.onInstallAPK(e, apkId);
 		this.handleGSM = (e, action, payload) => this.props.onChangeSensor(`gsm/${action}`, e, payload);
 	}
 
@@ -203,7 +207,7 @@ const LiveToolbox = class extends React.Component {
 		} else if (PANEL_APKS_ORDER.indexOf(this.state.activeSecondBar) !== -1) { // eslint-disable-line no-negated-condition
 			const props = {
 				apkList: this.props.apkList,
-				onClick: this.handleAPKs
+				onClick: this.props.onInstallAPK
 			};
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
 		} else if (PANEL_GSM_ORDER.indexOf(this.state.activeSecondBar) !== -1) { // eslint-disable-line no-negated-condition
@@ -211,6 +215,14 @@ const LiveToolbox = class extends React.Component {
 				onChange: this.handleGSM,
 				onInputFocus: this.props.onInputFocus,
 				onInputBlur: this.props.onInputBlur
+			};
+			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
+		} else if (this.state.activeSecondBar === 'monkeyRunner') { // eslint-disable-line no-negated-condition
+			const props = {
+				onClick: this.props.onMonkeyRunner,
+				onInputFocus: this.props.onInputFocus,
+				onInputBlur: this.props.onInputBlur,
+				packageList: this.props.packageList
 			};
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
 		} else {
@@ -239,7 +251,9 @@ LiveToolbox.propTypes = {
 	sensorsValues: React.PropTypes.object,
 	onClickTerminate: React.PropTypes.func,
 	onInstallAPK: React.PropTypes.func,
-	apkList: React.PropTypes.array
+	onMonkeyRunner: React.PropTypes.func,
+	apkList: React.PropTypes.array,
+	packageList: React.PropTypes.array
 };
 
 module.exports = LiveToolbox;

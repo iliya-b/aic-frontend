@@ -153,46 +153,65 @@ const ProjectList = class extends React.Component {
 				display: 'inline-block'
 			}
 		};
-		const items = this.state.project.list.map((item, index) => {
-			if (this.state.updating && this.state.updateId === item.id) {
-				const handleClickUpdateSaveItem = this.handleClickUpdateSave.bind(this, index);
-				const handleClickUpdateCloseItem = this.handleClickUpdateClose.bind(this, index);
-				const handleKeyDownUpdateItem = this.handleKeyDownUpdate.bind(this, index);
+
+		let items;
+
+		if (this.state.project.status !== 'listed' && this.state.project.list.length === 0) {
+			items = (
+				<Card style={styles.card}>
+					<CardActions style={styles.cardActions}>
+						<span style={styles.inputProjectName}>Loading projects...</span>
+					</CardActions>
+				</Card>
+			);
+		} else {
+			items = this.state.project.list.map((item, index) => {
+				if (this.state.updating && this.state.updateId === item.id) {
+					const handleClickUpdateSaveItem = this.handleClickUpdateSave.bind(this, index);
+					const handleClickUpdateCloseItem = this.handleClickUpdateClose.bind(this, index);
+					const handleKeyDownUpdateItem = this.handleKeyDownUpdate.bind(this, index);
+					return (
+						<Card key={item.id} style={styles.card}>
+							<CardActions style={styles.cardActions}>
+								<TextField name="fieldEditProjectName" style={styles.inputProjectName} defaultValue={item.name} ref={this.setRefProjectNameUpdate} onKeyDown={handleKeyDownUpdateItem}/>
+								<IconButton className="btProjectUpdateSave" title="Save" tooltip="Save" style={styles.button} onClick={handleClickUpdateSaveItem}>
+									<FontIcon className="mdi mdi-check" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+								</IconButton>
+								<IconButton className="btProjectUpdateClose" title="Cancel" tooltip="Cancel" style={styles.button} onClick={handleClickUpdateCloseItem}>
+									<FontIcon className="mdi mdi-close" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+								</IconButton>
+							</CardActions>
+						</Card>
+					);
+				}
+				const handleClickEnterItem = this.handleClickEnter.bind(this, index);
+				const handleClickDeleteItem = this.handleClickDelete.bind(this, index);
+				const handleClickUpdateItem = this.handleClickUpdate.bind(this, index);
+
 				return (
 					<Card key={item.id} style={styles.card}>
 						<CardActions style={styles.cardActions}>
-							<TextField name="fieldEditProjectName" style={styles.inputProjectName} defaultValue={item.name} ref={this.setRefProjectNameUpdate} onKeyDown={handleKeyDownUpdateItem}/>
-							<IconButton className="btProjectUpdateSave" title="Save" tooltip="Save" style={styles.button} onClick={handleClickUpdateSaveItem}>
-								<FontIcon className="mdi mdi-check" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+							<span style={styles.inputProjectName}>{item.name}</span>
+							<IconButton className="btProjectEnter" title={`Enter ${item.name}`} tooltip="Enter" style={styles.button} onClick={handleClickEnterItem}>
+								<FontIcon className="mdi mdi-arrow-right-bold" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 							</IconButton>
-							<IconButton className="btProjectUpdateClose" title="Cancel" tooltip="Cancel" style={styles.button} onClick={handleClickUpdateCloseItem}>
-								<FontIcon className="mdi mdi-close" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+							<IconButton className="btProjectEdit" title={`Edit ${item.name}`} tooltip="Edit" style={styles.button} onClick={handleClickUpdateItem}>
+								<FontIcon className="mdi mdi-pencil" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+							</IconButton>
+							<IconButton className="btProjectDelete" title={`Delete ${item.name}`} tooltip="Delete" style={styles.button} onClick={handleClickDeleteItem}>
+								<FontIcon className="mdi mdi-delete" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 							</IconButton>
 						</CardActions>
 					</Card>
 				);
-			}
-			const handleClickEnterItem = this.handleClickEnter.bind(this, index);
-			const handleClickDeleteItem = this.handleClickDelete.bind(this, index);
-			const handleClickUpdateItem = this.handleClickUpdate.bind(this, index);
+			});
 
-			return (
-				<Card key={item.id} style={styles.card}>
-					<CardActions style={styles.cardActions}>
-						<span style={styles.inputProjectName}>{item.name}</span>
-						<IconButton className="btProjectEnter" title={`Enter ${item.name}`} tooltip="Enter" style={styles.button} onClick={handleClickEnterItem}>
-							<FontIcon className="mdi mdi-arrow-right-bold" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
-						</IconButton>
-						<IconButton className="btProjectEdit" title={`Edit ${item.name}`} tooltip="Edit" style={styles.button} onClick={handleClickUpdateItem}>
-							<FontIcon className="mdi mdi-pencil" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
-						</IconButton>
-						<IconButton className="btProjectDelete" title={`Delete ${item.name}`} tooltip="Delete" style={styles.button} onClick={handleClickDeleteItem}>
-							<FontIcon className="mdi mdi-delete" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
-						</IconButton>
-					</CardActions>
-				</Card>
+			items = (
+				<ReactCSSTransitionGroup transitionName="showHideTransition" transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
+					{items}
+				</ReactCSSTransitionGroup>
 			);
-		});
+		}
 
 		let newProject;
 
@@ -238,9 +257,7 @@ const ProjectList = class extends React.Component {
 
 		return (
 			<div style={{position: 'initial'}}>
-				<ReactCSSTransitionGroup transitionName="showHideTransition" transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
-					{items}
-				</ReactCSSTransitionGroup>
+				{items}
 				{newProject}
 				<DialogConfirmDelete deleteItemName={deleteName} open={this.state.deleting} onRequestClose={this.handleCloseDialog} onCancel={this.handleCloseDialog} onConfirm={this.handleConfirmDialog}/>
 			</div>

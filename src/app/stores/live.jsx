@@ -59,6 +59,7 @@ const LiveStore = Reflux.createStore({
 	},
 
 	onLoadInfoFailure(errorMessage) {
+		debug('errorMessage', errorMessage);
 		this.state.live.message = errorMessage;
 		this.state.live.status = 'LIVE_STATUS_INITIAL_FAILED';
 		this.updateState();
@@ -272,6 +273,57 @@ const LiveStore = Reflux.createStore({
 
 	onLogMessage(message) {
 		this.addLogMessage(message);
+	},
+
+	// install APK
+	onInstallAPK() {
+		debug('onInstallAPK');
+	},
+
+	onInstallAPKCompleted() {
+		debug('onInstallAPKCompleted');
+		LiveActions.listPackages(this.state.liveInfo.avm_id);
+	},
+
+	onInstallAPKFailure(errorMessage) {
+		debug('onInstallAPKFailure', errorMessage);
+		this.state.live.message = errorMessage;
+		this.state.live.status = 'LIVE_STATUS_INSTALLAPK_FAILED';
+		this.updateState();
+	},
+
+	// List Packages
+	onListPackages() {
+		debug('onListPackages');
+	},
+
+	onListPackagesCompleted(packages) {
+		debug('onListPackagesCompleted', packages);
+		this.state.live.packages = packages;
+		this.updateState();
+	},
+
+	onListPackagesFailure(errorMessage) {
+		debug('onListPackagesFailure', errorMessage);
+		this.state.live.message = errorMessage;
+		this.state.live.status = 'LIVE_STATUS_LISTPACKAGES_FAILED';
+		this.updateState();
+	},
+
+	// Monkey Runner
+	onMoneyRunner() {
+		debug('onMoneyRunner');
+	},
+
+	onMoneyRunnerCompleted() {
+		debug('onMoneyRunnerCompleted');
+	},
+
+	onMoneyRunnerFailure(errorMessage) {
+		debug('onMoneyRunnerFailure', errorMessage);
+		this.state.live.message = errorMessage;
+		this.state.live.status = 'LIVE_STATUS_MONKEYRUNNER_FAILED';
+		this.updateState();
 	},
 
 	// Methods //

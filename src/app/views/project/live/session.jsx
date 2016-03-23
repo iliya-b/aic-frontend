@@ -46,6 +46,9 @@ const LiveSession = class extends React.Component {
 		this.handleAPKs = (e, apkId) => {
 			LiveActions.installAPK(projectId, avmId, apkId);
 		};
+		this.handleMonkeyRunner = (e, packages, eventCount, throttle) => {
+			LiveActions.monkeyRunner(avmId, packages, eventCount, throttle);
+		};
 	}
 
 	render() {
@@ -97,69 +100,6 @@ const LiveSession = class extends React.Component {
 					</div>
 				</div>
 
-				{this.context.appConfig.debug ? (
-					<div>
-						<Paper style={style.paperCenter}>
-
-							<h3>Debug</h3>
-
-							<FlatButton
-								label="Test"
-								title="Test"
-								href="#"
-								primary
-								onTouchTap={this.handleOnLiveActions.test}
-								/>
-
-							<FlatButton
-								label="Search"
-								title="Search"
-								primary
-								onTouchTap={this.handleOnLiveActions.check}
-								/>
-
-							<FlatButton
-								label="Create"
-								title="Create"
-								primary
-								onTouchTap={this.handleOnLiveActions.start}
-								/>
-
-							<FlatButton
-								label="Load"
-								title="Load"
-								primary
-								onTouchTap={this.handleOnLiveActions.load}
-								/>
-
-							<FlatButton
-								label="Connect"
-								title="Connect"
-								primary
-								onTouchTap={this.handleOnLiveActions.connect}
-								/>
-
-							<FlatButton
-								label="Close"
-								title="Close"
-								primary
-								onTouchTap={this.handleOnLiveActions.close}
-								/>
-
-							<FlatButton
-								label="Set State"
-								title="Set State"
-								primary
-								onTouchTap={this.handleOnLiveActions.setState}
-								/>
-
-							<input onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
-
-						</Paper>
-						<br/>
-					</div>
-				) : null}
-
 				{this.state && this.state.live.status === 'LIVE_STATUS_INITIALIZED' ? (
 					<Paper style={style.paperCenter}>
 						<FlatButton
@@ -206,6 +146,9 @@ const LiveSession = class extends React.Component {
 									// APKs
 									onInstallAPK={this.handleAPKs}
 									apkList={this.state.apk.apks}
+									// Monkey Runner
+									onMonkeyRunner={this.handleMonkeyRunner}
+									packageList={this.state.live.packages}
 									/>
 							</div>
 						) : null}
@@ -346,6 +289,7 @@ const LiveSession = class extends React.Component {
 		LiveActions.liveReset();
 		LiveActions.setProjectId(projectId);
 		LiveActions.loadInfo(avmId);
+		LiveActions.listPackages(avmId);
 		APKActions.list(projectId);
 	}
 

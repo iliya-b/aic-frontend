@@ -82,12 +82,43 @@ const GatewayAdapters = {
 				};
 			}
 		},
+		read: {
+			response: res => {
+				return {
+					avm_id: res.avm.avm_id, // eslint-disable-line camelcase
+					avm_owner: res.avm.avm_owner, // eslint-disable-line camelcase
+					image: res.avm.image,
+					avm_novnc_host: res.avm.novnc_host, // eslint-disable-line camelcase
+					avm_novnc_port: res.avm.novnc_port, // eslint-disable-line camelcase
+					project_id: res.avm.project_id, // eslint-disable-line camelcase
+					stack_name: res.avm.stack_name, // eslint-disable-line camelcase
+					avm_status: res.avm.status, // eslint-disable-line camelcase
+					ts_created: res.avm.ts_created // eslint-disable-line camelcase
+				};
+			}
+		},
 		sensor: {
 			request: frontendObject => {
 				return frontendObject.payload;
 			},
 			schema: (options, frontendObject) => {
 				return options.schema[frontendObject.sensor];
+			}
+		},
+		listPackages: {
+			response: res => {
+				return res.packages.filter(packageName => {
+					return !/^com\.android\..*|^com\.aicVM\..*|^com\.example\.android\..*|^android$/.test(packageName);
+				});
+			}
+		},
+		monkeyRunner: {
+			request: frontendObject => {
+				return {
+					packages: frontendObject.packages, // eslint-disable-line camelcase
+					throttle: frontendObject.throttle,
+					event_count: frontendObject.eventCount // eslint-disable-line camelcase
+				};
 			}
 		}
 	}

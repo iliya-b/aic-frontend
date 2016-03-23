@@ -6,7 +6,6 @@ import Reflux from 'reflux';
 const debug = require('debug')('AiC:Live:Actions');
 
 // APP
-import BackendAPI from 'app/libs/backend-api';
 import Gateway from 'app/libs/gateway';
 
 // Actions
@@ -32,7 +31,9 @@ const LiveActions = Reflux.createActions({
 	recordStart: {asyncResult: true},
 	recordStop: {asyncResult: true},
 	screenshot: {asyncResult: true},
-	installAPK: {asyncResult: true}
+	installAPK: {asyncResult: true},
+	listPackages: {asyncResult: true},
+	monkeyRunner: {asyncResult: true}
 });
 
 // Listeners for asynchronous Backend API calls
@@ -89,22 +90,28 @@ LiveActions.stop.listen(function (avmId) {
 
 LiveActions.loadInfo.listen(function (avmId) {
 	debug('load info called');
-	Gateway.live.list()
-	.then(res => {
-		debug('back');
-		if (res instanceof Array) {
-			const avmInfo = res.filter(currentValue => {
-				return currentValue.avm_id === avmId;
-			});
-			if (avmInfo.length) {
-				this.completed(avmInfo[0]);
-			} else {
-				this.failure('It was not possible to find live session.');
-			}
-		} else {
-			this.failure('It was not possible to list live sessions.');
-		}
+	Gateway.live.read({avmId})
+	.then(result => {
+		this.completed(result);
+	}, (err, e1, e2) => {
+		debug('loadInfo err', arguments, err, e1, e2);
+		this.failure(err);
 	});
+	// .then(res => {
+	// 	debug('back');
+	// 	if (res instanceof Array) {
+	// 		const avmInfo = res.filter(currentValue => {
+	// 			return currentValue.avm_id === avmId;
+	// 		});
+	// 		if (avmInfo.length) {
+	// 			this.completed(avmInfo[0]);
+	// 		} else {
+	// 			this.failure('It was not possible to find live session.');
+	// 		}
+	// 	} else {
+	// 		this.failure('It was not possible to list live sessions.');
+	// 	}
+	// });
 });
 
 LiveActions.liveCheck.listen(() => {
@@ -170,9 +177,15 @@ LiveActions.liveStop.listen(function (avmId) {
 	if (window.rfb) {
 		window.rfb.disconnect();
 	}
-	BackendAPI.liveStop(avmId, res => {
-		this.completed(res);
+	Gateway.live.delete({avmId})
+	.then(result => {
+		this.completed(result);
+	}, err => {
+		this.failure(err);
 	});
+	// BackendAPI.liveStop(avmId, res => {
+	// 	this.completed(res);
+	// });
 	// TODO: Call disconnect from noNVC if connected before
 
 	LiveActions.stopAudioConnection();
@@ -234,7 +247,7 @@ LiveActions.setSensor.listen(function (avmId, sensor, payload) {
 // 	});
 // });
 
-LiveActions.installAPK.listen((projectId, avmId, apkId) => {
+LiveActions.installAPK.listen(function (projectId, avmId, apkId) {
 	Gateway.live.installAPK({avmId, apkId})
 	.then(res => {
 		this.completed(res);
@@ -430,5 +443,23 @@ LiveActions.stopAudioConnection = function () {
 		gobyVMAudio.src = '';
 	}
 };
+
+LiveActions.listPackages.listen(function (avmId) {
+	Gateway.live.listPackages({avmId})
+	.then(res => {
+		this.completed(res);
+	}, err => {
+		this.failure(err);
+	});
+});
+
+LiveActions.monkeyRunner.listen(function (avmId, packages, eventCount, throttle) {
+	Gateway.live.monkeyRunner({avmId, packages, eventCount, throttle})
+	.then(res => {
+		this.completed(res);
+	}, err => {
+		this.failure(err);
+	});
+});
 
 module.exports = LiveActions;

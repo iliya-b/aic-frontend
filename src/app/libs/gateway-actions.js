@@ -47,6 +47,14 @@ const GatewayActions = {
 	sensor: {
 		name: 'sensor',
 		method: 'POST'
+	},
+	listPackages: {
+		name: 'listPackages',
+		method: 'GET'
+	},
+	monkeyRunner: {
+		name: 'monkeyRunner',
+		method: 'POST'
 	}
 };
 
