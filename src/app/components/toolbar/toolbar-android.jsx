@@ -20,14 +20,18 @@ const ToolbarAndroid = class extends React.Component {
 			},
 			separator: {
 				marginLeft: 3
+			},
+			icon: {
+				cursor: 'default',
+				float: 'left',
+				margin: '16px 36px 0px -6px',
+				width: 24
 			}
 		};
 		return (
 			<Toolbar style={this.props.style}>
+				<FontIcon style={styles.icon} className="mdi mdi-android" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarGroup firstChild lastChild>
-					<IconButton style={styles.button}>
-						<FontIcon className="mdi mdi-android" color="rgba(0, 0, 0, 0.4)"/>
-					</IconButton>
 					<ToolbarTitle text="Toolbar"/>
 					<ToolbarSeparator style={styles.separator}/>
 					<IconButton className="btLiveSensors" tooltip="Sensors" style={styles.button} onClick={this.props.onClick.sensors}>

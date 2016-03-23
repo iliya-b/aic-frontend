@@ -22,9 +22,10 @@ const ToolbarAPK = class extends React.Component {
 				margin: '0 5px 0 0px'
 			},
 			icon: {
-				marginRight: 10,
 				cursor: 'default',
-				color: 'rgba(0, 0, 0, 0.4)'
+				float: 'left',
+				margin: '16px 36px 0px -6px',
+				width: 25
 			}
 		};
 
@@ -53,8 +54,8 @@ const ToolbarAPK = class extends React.Component {
 
 		return (
 			<Toolbar style={this.props.style}>
+				<FontIcon style={styles.icon} className="mdi mdi-puzzle" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarGroup firstChild lastChild>
-					<FontIcon style={styles.icon} className="mdi mdi-puzzle" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>
 					<ToolbarTitle text="APK Manager" style={styles.title}/>
 					<ToolbarSeparator style={styles.separator}/>
 					{buttons}
