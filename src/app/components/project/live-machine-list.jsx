@@ -27,8 +27,9 @@ const LiveMachineList = class extends React.Component {
 				}
 			}
 			if (this.state.live.avms && this.state.live.avms.length) {
-				avmsRendered = this.state.live.avms.map(currentValue => {
-					return <MachineCardLive className={`cardLiveVM${currentValue.avm_id}`} {...currentValue} key={currentValue.avm_id} actionEnter={this.props.actionEnter} actionStop={this.props.actionStop}/>;
+				avmsRendered = this.state.live.avms.map((currentValue, index) => {
+					currentValue.index = index;
+					return <MachineCardLive className={`cardLiveVM cardLiveVM${index} cardLiveVM${currentValue.avm_id}`} {...currentValue} key={currentValue.avm_id} actionEnter={this.props.actionEnter} actionStop={this.props.actionStop}/>;
 				});
 			} else if (this.state.live.status === 'LIVE_STATUS_LISTED') {
 				avmsRendered = <InfoBox style={{textAlign: 'center'}}>No sessions found. You can start a new session.</InfoBox>;

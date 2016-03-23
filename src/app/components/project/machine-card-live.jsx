@@ -25,11 +25,11 @@ const MachineCardLive = class extends React.Component {
 		const availableButtons = [
 			{
 				action: MachineCard.ACTIONS.ENTER,
-				button: <RaisedButton className="btEnterSession" linkButton primary label="Enter Session" key={MachineCard.ACTIONS.ENTER} onClick={state.actionEnter ? state.actionEnter.bind(null, state.avm_id) : null}/>
+				button: <RaisedButton className={`btEnterSession btEnterSession${state.index} btEnterSession${state.avm_id}`} primary label="Enter session" title={`Enter session ${state.avm_id}`} key={MachineCard.ACTIONS.ENTER} onClick={state.actionEnter ? state.actionEnter.bind(null, state.avm_id) : null}/>
 			},
 			{
 				action: MachineCard.ACTIONS.STOP,
-				button: <RaisedButton className="btStopSession" linkButton primary label="Stop Session" key={MachineCard.ACTIONS.STOP} onClick={state.actionStop ? state.actionStop.bind(null, state.avm_id) : null}/>
+				button: <RaisedButton className={`btStopSession btStopSession${state.index} btStopSession${state.avm_id}`} primary label="Stop session" title={`Stop session ${state.avm_id}`} key={MachineCard.ACTIONS.STOP} onClick={state.actionStop ? state.actionStop.bind(null, state.avm_id) : null}/>
 			}
 		];
 
