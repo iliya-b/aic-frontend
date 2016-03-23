@@ -25,7 +25,7 @@ import ProjectApkManager from 'app/views/project/apk-manager';
 import ProjectLiveWrapper from 'app/views/project/live/wrapper';
 import ProjectLiveSession from 'app/views/project/live/session';
 import ProjectLiveList from 'app/views/project/live/list';
-import ProjectCampaign from 'app/views/project/campaign';
+import ProjectCameraAssets from 'app/views/project/camera-assets';
 
 // Routes
 const AppRoutes = (
@@ -41,7 +41,7 @@ const AppRoutes = (
 						<IndexRoute component={ProjectLiveList}/>
 						<Route path=":androId" component={ProjectLiveSession}/>
 					</Route>
-					<Route path="campaign" component={ProjectCampaign}/>
+					<Route path="camera" component={ProjectCameraAssets}/>
 					<Redirect from="/projects/:projectId" to="apks"/>
 				</Route>
 				<Redirect from="/projects" to="project-list"/>

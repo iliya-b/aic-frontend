@@ -10,7 +10,7 @@ import FontIcon from 'material-ui/lib/font-icon';
 import IconButton from 'material-ui/lib/icon-button';
 
 // APP
-const ToolbarAPK = class extends React.Component {
+const ToolbarFileUpload = class extends React.Component {
 
 	render() {
 		const styles = {
@@ -54,9 +54,9 @@ const ToolbarAPK = class extends React.Component {
 
 		return (
 			<Toolbar style={this.props.style}>
-				<FontIcon style={styles.icon} className="mdi mdi-puzzle" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>
+				<FontIcon style={styles.icon} className={this.props.icon} color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarGroup firstChild lastChild>
-					<ToolbarTitle text="APK Manager" style={styles.title}/>
+					<ToolbarTitle text={this.props.title} style={styles.title}/>
 					<ToolbarSeparator style={styles.separator}/>
 					{buttons}
 				</ToolbarGroup>
@@ -65,19 +65,21 @@ const ToolbarAPK = class extends React.Component {
 	}
 };
 
-ToolbarAPK.contextTypes = {
+ToolbarFileUpload.contextTypes = {
 	muiTheme: React.PropTypes.object,
 	router: React.PropTypes.object
 };
 
-ToolbarAPK.propTypes = {
+ToolbarFileUpload.propTypes = {
 	style: React.PropTypes.object,
 	onClickUploadOpen: React.PropTypes.func,
 	onClickUploadClose: React.PropTypes.func,
 	onClickDeleteFile: React.PropTypes.func,
 	uploadOpenVisible: React.PropTypes.bool,
 	uploadCloseVisible: React.PropTypes.bool,
-	deleteFileVisible: React.PropTypes.bool
+	deleteFileVisible: React.PropTypes.bool,
+	icon: React.PropTypes.string,
+	title: React.PropTypes.string
 };
 
-module.exports = ToolbarAPK;
+module.exports = ToolbarFileUpload;

@@ -56,6 +56,19 @@ const GatewayAdapters = {
 			}
 		}
 	},
+	camera: {
+		list: {
+			response: data => {
+				return data.camera_files.map(file => {
+					return {
+						id: file.camera_file_id,
+						filename: file.camera_filename,
+						status: file.status
+					};
+				});
+			}
+		}
+	},
 	live: {
 		list: {
 			response: data => {

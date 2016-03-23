@@ -9,8 +9,8 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 
 const menuItems = [
 	{path: '', text: 'APK Manager'},
-	{path: 'live', text: 'Live Mode'},
-	{path: 'campaign', text: 'Campaign'}
+	{path: 'camera', text: 'Camera Assets'},
+	{path: 'live', text: 'Live Mode'}
 ];
 
 const ProjectPage = class extends React.Component {

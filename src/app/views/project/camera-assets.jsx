@@ -3,19 +3,19 @@
 // Vendors
 import React from 'react';
 import Paper from 'material-ui/lib/paper';
-const debug = require('debug')('AiC:Views:APKManager');
+const debug = require('debug')('AiC:Views:CameraAssets');
 
 // APP
 import ToolbarFileUpload from 'app/components/toolbar/toolbar-file-upload';
 import TableAPK from 'app/components/table/table-apk';
 import TableProgress from 'app/components/table/table-progress';
 import Dropzone from 'app/components/shared/dropzone';
-import APKActions from 'app/actions/apk';
-import APKStore from 'app/stores/apk';
+import CameraActions from 'app/actions/camera';
+import CameraStore from 'app/stores/camera';
 
 let projectId = null;
 
-const APKManager = class extends React.Component {
+const CameraAssets = class extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -26,17 +26,17 @@ const APKManager = class extends React.Component {
 		this.handleClickUploadOpen = this.toogleDialogUploadAPK.bind(this, true);
 		this.handleClickUploadClose = this.toogleDialogUploadAPK.bind(this, false);
 		this.handleDropFiles = files => {
-			APKActions.upload(projectId, files);
+			CameraActions.upload(projectId, files);
 		};
 		this.handleDeleteSelected = () => {
 			debug('handleDeleteSelected');
 			const apksToDelete = this.state.selectFileIndexes.map(i => {
-				return this.state.apk.apks[i].id;
+				return this.state.camera.files[i].id;
 			});
 			const newState = Object.assign({}, this.state);
 			newState.selectFileIndexes = [];
 			this.setState(newState);
-			APKActions.delete(projectId, apksToDelete);
+			CameraActions.delete(projectId, apksToDelete);
 		};
 		this.handleSelectFiles = this.handleSelectFiles.bind(this);
 		this.handleStateChange = this.handleStateChange.bind(this);
@@ -52,7 +52,7 @@ const APKManager = class extends React.Component {
 		let finalFileIndexes;
 
 		if (fileIndexes === 'all') {
-			finalFileIndexes = this.state.apk.apks.map((v, i) => {
+			finalFileIndexes = this.state.camera.files.map((v, i) => {
 				return i;
 			});
 		} else if (fileIndexes === 'none') {
@@ -69,11 +69,11 @@ const APKManager = class extends React.Component {
 	handleStateChange(newState) {
 		const mergedState = Object.assign({}, this.state, newState);
 		debug('handleStateChange', newState, mergedState);
-		switch (mergedState.apk.status) {
+		switch (mergedState.camera.status) {
 			case 'initCompleted':
 			case 'uploadCompleted':
 			case 'deleteCompleted':
-				APKActions.list(projectId);
+				CameraActions.list(projectId);
 				break;
 			default:
 				break;
@@ -113,22 +113,22 @@ const APKManager = class extends React.Component {
 						<div>You can drop some files here, or click to select files to upload.</div>
 					</Dropzone>
 					<TableProgress
-						list={this.state.apk ? this.state.apk.uploadingApks : []}
+						list={this.state.camera ? this.state.camera.uploadingFiles : []}
 						/>
 				</div>
 			);
 		}
 
 		let table;
-		if (this.state.apk && this.state.apk.apks && this.state.apk.apks.length) {
+		if (this.state.camera && this.state.camera.files && this.state.camera.files.length) {
 			table = (
 				<TableAPK
 					onRowSelection={this.handleSelectFiles}
-					list={this.state.apk.apks}
+					list={this.state.camera.files}
 					selected={this.state.selectFileIndexes}
 					/>
 			);
-		} else if (this.state.apk && this.state.apk.status === 'listCompleted') {
+		} else if (this.state.camera && this.state.camera.status === 'listCompleted') {
 			table = (
 				<Paper style={styles.noAPKs}>
 					No files found.
@@ -145,8 +145,8 @@ const APKManager = class extends React.Component {
 		return (
 			<div>
 				<ToolbarFileUpload
-					title="APK Manager"
-					icon="mdi mdi-puzzle"
+					title="Camera Assets"
+					icon="mdi mdi-camera"
 					uploadOpenVisible={!this.state.dialogUploadAPKOpen}
 					uploadCloseVisible={this.state.dialogUploadAPKOpen}
 					deleteFileVisible={this.state.selectFileIndexes.length > 0}
@@ -162,8 +162,8 @@ const APKManager = class extends React.Component {
 
 	componentDidMount() {
 		projectId = this.props.params.projectId;
-		this.unsubscribe = APKStore.listen(this.handleStateChange);
-		APKActions.initiate();
+		this.unsubscribe = CameraStore.listen(this.handleStateChange);
+		CameraActions.initiate();
 	}
 
 	componentWillUnmount() {
@@ -171,13 +171,13 @@ const APKManager = class extends React.Component {
 	}
 };
 
-APKManager.contextTypes = {
+CameraAssets.contextTypes = {
 	router: React.PropTypes.object,
 	muiTheme: React.PropTypes.object
 };
 
-APKManager.propTypes = {
+CameraAssets.propTypes = {
 	params: React.PropTypes.object
 };
 
-module.exports = APKManager;
+module.exports = CameraAssets;

@@ -89,6 +89,23 @@ const GatewayRegisters = function () {
 		]
 	});
 
+	// Camera
+	Gateway.register({
+		namespace: 'camera',
+		actions: [
+			{
+				action: GatewayActions.list,
+				pathname: '/projects/{projectId}/camera'
+			}, {
+				action: GatewayActions.upload,
+				pathname: '/projects/{projectId}/camera'
+			}, {
+				action: GatewayActions.delete,
+				pathname: '/projects/{projectId}/camera/{cameraFileId}'
+			}
+		]
+	});
+
 	// Live
 	Gateway.register({
 		namespace: 'live',
