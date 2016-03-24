@@ -83,7 +83,7 @@ const LiveList = class extends React.Component {
 					onClickStart={this.handleStartSession}
 					variants={variants}
 					/>
-				<LiveMachineList actionEnter={this._onEnterSession} actionStop={this._onStopSession}/>
+				<LiveMachineList params={this.props.params} actionEnter={this._onEnterSession} actionStop={this._onStopSession}/>
 			</div>
 		);
 	}

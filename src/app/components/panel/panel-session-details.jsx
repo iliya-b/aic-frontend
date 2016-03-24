@@ -128,15 +128,15 @@ const PanelSessionDetails = class extends React.Component {
 				status: {this.props.properties['aicd.battery.status']}
 				<Divider/>
 				<div>
-				<FontIcon style={{margin: '10px 0 10px 10px'}} className="mdi mdi-screen-rotation" color="rgba(0, 0, 0, 0.4)"/>
-				<ToolbarSeparator style={{margin: '5px 10px'}}/>
-				screen rotation: {this.props.properties['aicd.screen_rotation']}
-				<ToolbarSeparator style={{margin: '5px 10px'}}/>
-				x: {this.props.properties['aicd.accelerometer.x']}
-				<ToolbarSeparator style={{margin: '5px 10px'}}/>
-				y: {this.props.properties['aicd.accelerometer.y']}
-				<ToolbarSeparator style={{margin: '5px 10px'}}/>
-				z: {this.props.properties['aicd.accelerometer.z']}
+					<FontIcon style={{margin: '10px 0 10px 10px'}} className="mdi mdi-screen-rotation" color="rgba(0, 0, 0, 0.4)"/>
+					<ToolbarSeparator style={{margin: '5px 10px'}}/>
+					screen rotation: {this.props.properties['aicd.screen_rotation']}
+					<ToolbarSeparator style={{margin: '5px 10px'}}/>
+					x: {this.props.properties['aicd.accelerometer.x']}
+					<ToolbarSeparator style={{margin: '5px 10px'}}/>
+					y: {this.props.properties['aicd.accelerometer.y']}
+					<ToolbarSeparator style={{margin: '5px 10px'}}/>
+					z: {this.props.properties['aicd.accelerometer.z']}
 				</div>
 			</Paper>
 		);

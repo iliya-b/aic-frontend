@@ -9,6 +9,8 @@ const MachineCardLive = require('app/components/project/machine-card-live');
 const InfoBox = require('app/components/shared/info-box');
 const LiveListStore = require('app/stores/live-list');
 
+let projectId;
+
 const LiveMachineList = class extends React.Component {
 
 	constructor(props) {
@@ -19,25 +21,28 @@ const LiveMachineList = class extends React.Component {
 
 	render() {
 		let avmsRendered = '';
-		let loading = '';
-		if (this.state.live) {
-			if (this.state.live.status === 'LIVE_STATUS_LISTING') {
-				if (!this.state.live.hasOwnProperty('avms') || this.state.live.avms.length === 0) {
-					loading = <InfoBox style={{textAlign: 'center'}}>Loading sessions...</InfoBox>;
-				}
-			}
-			if (this.state.live.avms && this.state.live.avms.length) {
-				avmsRendered = this.state.live.avms.map((currentValue, index) => {
-					currentValue.index = index;
-					return <MachineCardLive className={`cardLiveVM cardLiveVM${index} cardLiveVM${currentValue.avm_id}`} {...currentValue} key={currentValue.avm_id} actionEnter={this.props.actionEnter} actionStop={this.props.actionStop}/>;
-				});
-			} else if (this.state.live.status === 'LIVE_STATUS_LISTED') {
-				avmsRendered = <InfoBox style={{textAlign: 'center'}}>No sessions found. You can start a new session.</InfoBox>;
-			}
+		let avmList = [];
+
+		// Filter VMs by projectId
+		if (this.state.live && this.state.live.hasOwnProperty('avms')) {
+			avmList = this.state.live.avms.filter(v => {
+				return v.project_id === projectId;
+			});
+		}
+
+		// List VMs or information about loading and no VMs
+		if (avmList && avmList.length) {
+			avmsRendered = avmList.map((currentValue, index) => {
+				currentValue.index = index;
+				return <MachineCardLive className={`cardLiveVM cardLiveVM${index} cardLiveVM${currentValue.avm_id}`} {...currentValue} key={currentValue.avm_id} actionEnter={this.props.actionEnter} actionStop={this.props.actionStop}/>;
+			});
+		} else if (this.state.live && this.state.live.status === 'LIVE_STATUS_LISTED') {
+			avmsRendered = <InfoBox style={{textAlign: 'center'}}>No sessions found. You can start a new session.</InfoBox>;
+		} else {
+			avmsRendered = <InfoBox style={{textAlign: 'center'}}>Loading sessions...</InfoBox>;
 		}
 
 		return (<div>
-			{loading}
 			{avmsRendered}
 		</div>);
 	}
@@ -50,6 +55,7 @@ const LiveMachineList = class extends React.Component {
 	componentDidMount() {
 		debug('listing to LiveListStore');
 		this.unsubscribe = LiveListStore.listen(this._onStateChange);
+		projectId = this.props.params.projectId;
 	}
 
 	componentWillUnmount() {
@@ -67,7 +73,8 @@ LiveMachineList.contextTypes = {
 
 LiveMachineList.propTypes = {
 	actionEnter: React.PropTypes.func,
-	actionStop: React.PropTypes.func
+	actionStop: React.PropTypes.func,
+	params: React.PropTypes.object
 };
 
 module.exports = LiveMachineList;
