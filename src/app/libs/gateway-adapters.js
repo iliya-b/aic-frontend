@@ -91,7 +91,8 @@ const GatewayAdapters = {
 			request: frontendObject => {
 				return {
 					image: frontendObject.variant,
-					project_id: frontendObject.projectId // eslint-disable-line camelcase
+					project_id: frontendObject.projectId, // eslint-disable-line camelcase
+					android_version: frontendObject.version // eslint-disable-line camelcase
 				};
 			}
 		},

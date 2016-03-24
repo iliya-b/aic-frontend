@@ -49,9 +49,9 @@ LiveActions.setProjectId.listen(function () {
 	});
 });
 
-LiveActions.start.listen(function (variant, projectId) {
+LiveActions.start.listen(function (variant, projectId, version) {
 	debug('start called');
-	Gateway.live.create({variant, projectId})
+	Gateway.live.create({variant, projectId, version})
 	// BackendAPI.liveStart(variant, projectId)
 	.then(res => {
 		debug('start back');

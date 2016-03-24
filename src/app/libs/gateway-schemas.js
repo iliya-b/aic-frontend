@@ -23,7 +23,8 @@ const GatewaySchemas = {
 		type: 'object', strict: true,
 		properties: {
 			image: {type: 'string'},
-			project_id: {type: 'string'} // eslint-disable-line camelcase
+			project_id: {type: 'string'}, // eslint-disable-line camelcase
+			android_version: {enum: ['4', '5', '6']} // eslint-disable-line camelcase
 		}
 	},
 	sensors: {

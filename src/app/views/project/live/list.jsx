@@ -20,7 +20,7 @@ const kitkat = 'kitkat';
 // const kitkat = 'kitkat';
 const lollipop = 'lollipop';
 // const lollipop = 'xxx';
-const variants = [{id: kitkat, name: 'kitkat'}, {id: 'kitkat-phone', name: 'kitkatPhone'}, {id: lollipop, name: 'lollipop'}];
+const variants = [{id: kitkat, name: 'kitkat', version: '4'}, {id: 'kitkat-phone', name: 'kitkatPhone', version: '4'}, {id: lollipop, name: 'lollipop', version: '5'}];
 
 const LiveList = class extends React.Component {
 
@@ -41,7 +41,10 @@ const LiveList = class extends React.Component {
 	// }
 
 	_onStartSession(variant) {
-		LiveActions.start(variant, projectId);
+		const version = variants.reduce((previous, current) => {
+			return previous === null && current.id === variant ? current.version : previous;
+		}, null);
+		LiveActions.start(variant, projectId, version);
 		PollingActions.liveList();
 	}
 
