@@ -22,7 +22,7 @@ const PanelCamera = class extends React.Component {
 		// 	props.onClick(e, this.state.value);
 		// };
 		this.handleClick = e => {
-			this.props.onClick(e, {file_id: this.state.value});
+			this.props.onClick(e, {file_id: this.state.value}); // eslint-disable-line camelcase
 		};
 	}
 
