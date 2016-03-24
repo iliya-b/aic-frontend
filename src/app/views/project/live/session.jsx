@@ -153,6 +153,8 @@ const LiveSession = class extends React.Component {
 									packageList={this.state.live.packages}
 									// Camera
 									cameraList={this.state.camera.files}
+									// Details
+									properties={this.state.live.properties}
 									/>
 							</div>
 						) : null}

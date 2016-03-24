@@ -134,6 +134,11 @@ const GatewayAdapters = {
 					event_count: frontendObject.eventCount // eslint-disable-line camelcase
 				};
 			}
+		},
+		properties: {
+			response: backendObject => {
+				return backendObject.properties;
+			}
 		}
 	}
 };

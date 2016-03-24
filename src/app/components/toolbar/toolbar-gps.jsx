@@ -69,8 +69,8 @@ const ToolbarGPS = class extends React.Component {
 
 	handleClickGPS(e) {
 		const payload = {
-			lat: parseFloat(this.lat.getValue()),
-			lon: parseFloat(this.lon.getValue())
+			latitude: parseFloat(this.lat.getValue()),
+			longitude: parseFloat(this.lon.getValue())
 		};
 		this.props.onChange(e, payload);
 	}

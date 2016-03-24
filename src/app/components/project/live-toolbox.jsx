@@ -230,6 +230,7 @@ const LiveToolbox = class extends React.Component {
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
 		} else if (this.state.activeSecondBar === 'details') { // eslint-disable-line no-negated-condition
 			const props = {
+				properties: this.props.properties
 			};
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
 		} else {
@@ -261,7 +262,8 @@ LiveToolbox.propTypes = {
 	onMonkeyRunner: React.PropTypes.func,
 	apkList: React.PropTypes.array,
 	packageList: React.PropTypes.array,
-	cameraList: React.PropTypes.array
+	cameraList: React.PropTypes.array,
+	properties: React.PropTypes.object
 };
 
 module.exports = LiveToolbox;
