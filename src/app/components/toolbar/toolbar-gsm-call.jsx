@@ -58,8 +58,8 @@ const ToolbarGSMCall = class extends React.Component {
 				<TextField name="fieldLiveGSMPhoneNumber" style={styles.items} ref={this.setRefNumber} hintText="phone number" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<RaisedButton
 					className="btLiveSensorGSMCall"
-					label="Call"
-					title="Call"
+					label="Receive call"
+					title="Receive call"
 					href="#"
 					secondary
 					onClick={this.handleClick}

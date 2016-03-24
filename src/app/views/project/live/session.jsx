@@ -24,8 +24,10 @@ import LogBox from 'app/components/shared/log-box';
 import LogBoxRow from 'app/components/shared/log-box-row';
 import LiveStore from 'app/stores/live';
 import APKStore from 'app/stores/apk';
+import CameraStore from 'app/stores/camera';
 import LiveActions from 'app/actions/live';
 import APKActions from 'app/actions/apk';
+import CameraActions from 'app/actions/camera';
 
 const availableLiveActions = ['test', 'check', 'start', 'load', 'connect', 'close', 'setState', 'check', 'close', 'restart'];
 let avmId;
@@ -149,6 +151,8 @@ const LiveSession = class extends React.Component {
 									// Monkey Runner
 									onMonkeyRunner={this.handleMonkeyRunner}
 									packageList={this.state.live.packages}
+									// Camera
+									cameraList={this.state.camera.files}
 									/>
 							</div>
 						) : null}
@@ -286,12 +290,14 @@ const LiveSession = class extends React.Component {
 		this.unsubscribe = [];
 		this.unsubscribe.push(LiveStore.listen(this._onStateChange));
 		this.unsubscribe.push(APKStore.listen(this._onStateChange));
+		this.unsubscribe.push(CameraStore.listen(this._onStateChange));
 		LiveActions.liveReset();
 		LiveActions.setProjectId(projectId);
 		LiveActions.loadInfo(avmId);
 		LiveActions.listPackages(avmId);
 		LiveActions.properties(avmId);
 		APKActions.list(projectId);
+		CameraActions.list(projectId);
 	}
 
 	componentWillUnmount() {

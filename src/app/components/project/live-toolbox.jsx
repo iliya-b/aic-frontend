@@ -31,12 +31,6 @@ const TOOLBAR_HUMIDITY = 'relative_humidity';
 const TOOLBAR_TEMPERATURE = 'temperature';
 const TOOLBAR_SENSORS_ORDER = [TOOLBAR_GPS, TOOLBAR_BATTERY, TOOLBAR_ACCELEROMETER, TOOLBAR_LIGHT, TOOLBAR_GRAVITY, TOOLBAR_GYROSCOPE, TOOLBAR_LINEARACC, TOOLBAR_MAGNETOMETER, TOOLBAR_ORIENTATION, TOOLBAR_PRESSURE, TOOLBAR_PROXIMITY, TOOLBAR_HUMIDITY, TOOLBAR_TEMPERATURE];
 
-// APKs panels
-const PANEL_APKS_UPLOAD = 'apkUpload';
-const PANEL_APKS_INSTALL = 'apkInstall';
-const PANEL_APKS_UNINSTALL = 'apkUninstall';
-const PANEL_APKS_ORDER = [PANEL_APKS_UPLOAD, PANEL_APKS_INSTALL, PANEL_APKS_UNINSTALL];
-
 // GSM panels
 const PANEL_GSM_CALL = 'gsmCall';
 const PANEL_GSM_ACCEPTCALL = 'gsmAcceptCall';
@@ -57,9 +51,9 @@ toolbars.android = require('app/components/toolbar/toolbar-android');
 
 // Secondary bars
 toolbars.sensors = require('app/components/toolbar/toolbar-sensors');
-toolbars.camera = require('app/components/toolbar/toolbar-camera');
+toolbars.camera = require('app/components/panel/panel-camera');
 toolbars.gsm = require('app/components/toolbar/toolbar-gsm');
-toolbars.apks = require('app/components/toolbar/toolbar-apks');
+toolbars.apks = require('app/components/toolbar/toolbar-apks-install');
 toolbars.error = require('app/components/toolbar/toolbar-error');
 
 // Sensors panels
@@ -76,11 +70,6 @@ toolbars.pressure = require('app/components/toolbar/toolbar-pressure');
 toolbars.proximity = require('app/components/toolbar/toolbar-proximity');
 toolbars.relative_humidity = require('app/components/toolbar/toolbar-humidity'); // eslint-disable-line camelcase
 toolbars.temperature = require('app/components/toolbar/toolbar-temperature');
-
-// APKs panels
-toolbars.apkUpload = require('app/components/toolbar/toolbar-apks-upload');
-toolbars.apkInstall = require('app/components/toolbar/toolbar-apks-install');
-toolbars.apkUninstall = require('app/components/toolbar/toolbar-apks-uninstall');
 
 // GSM panels
 toolbars.gsmCall = require('app/components/toolbar/toolbar-gsm-call');
@@ -123,6 +112,8 @@ const LiveToolbox = class extends React.Component {
 		});
 
 		this.handleClickFirstBar.monkeyRunner = this.changeActiveSecondToolbar.bind(this, 'monkeyRunner');
+		this.handleClickFirstBar.camera = this.changeActiveSecondToolbar.bind(this, 'camera');
+		this.handleClickFirstBar.apks = this.changeActiveSecondToolbar.bind(this, 'apks');
 
 		this.handleClickFirstBar.terminate = () => {
 			this.props.onClickTerminate();
@@ -132,9 +123,6 @@ const LiveToolbox = class extends React.Component {
 		this.handleClickSecondBar = {};
 		this.handleClickSecondBar.android = this.changeActiveToolbar.bind(this, TOOLBAR_ANDROID);
 		TOOLBAR_SENSORS_ORDER.forEach(v => {
-			this.handleClickFirstBar[v] = this.changeActiveSecondToolbar.bind(this, v);
-		});
-		PANEL_APKS_ORDER.forEach(v => {
 			this.handleClickFirstBar[v] = this.changeActiveSecondToolbar.bind(this, v);
 		});
 		PANEL_GSM_ORDER.forEach(v => {
@@ -204,10 +192,17 @@ const LiveToolbox = class extends React.Component {
 			props[this.state.activeSecondBar] = this.props.sensorsValues[this.state.activeSecondBar];
 			debug('currentSecondBar props', props);
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
-		} else if (PANEL_APKS_ORDER.indexOf(this.state.activeSecondBar) !== -1) { // eslint-disable-line no-negated-condition
+		} else if (this.state.activeSecondBar === 'apks') { // eslint-disable-line no-negated-condition
 			const props = {
 				apkList: this.props.apkList,
 				onClick: this.props.onInstallAPK
+			};
+			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
+		} else if (this.state.activeSecondBar === 'camera') { // eslint-disable-line no-negated-condition
+			const onChangeSensorBinded = this.handleChangeSensors.bind(this, this.state.activeSecondBar);
+			const props = {
+				fileList: this.props.cameraList,
+				onClick: onChangeSensorBinded
 			};
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
 		} else if (PANEL_GSM_ORDER.indexOf(this.state.activeSecondBar) !== -1) { // eslint-disable-line no-negated-condition
@@ -253,7 +248,8 @@ LiveToolbox.propTypes = {
 	onInstallAPK: React.PropTypes.func,
 	onMonkeyRunner: React.PropTypes.func,
 	apkList: React.PropTypes.array,
-	packageList: React.PropTypes.array
+	packageList: React.PropTypes.array,
+	cameraList: React.PropTypes.array
 };
 
 module.exports = LiveToolbox;

@@ -10,16 +10,19 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import RaisedButton from 'material-ui/lib/raised-button';
 
 // APP
-const PanelAPKInstall = class extends React.Component {
+const PanelCamera = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {value: this.props.apkList.length ? this.props.apkList[0].id : null};
+		this.state = {value: this.props.fileList.length ? this.props.fileList[0].id : null};
 		this.handleChange = (event, index, value) => {
 			this.setState({value});
 		};
+		// this.handleClick = e => {
+		// 	props.onClick(e, this.state.value);
+		// };
 		this.handleClick = e => {
-			props.onClick(e, this.state.value);
+			this.props.onClick(e, {file_id: this.state.value});
 		};
 	}
 
@@ -51,20 +54,20 @@ const PanelAPKInstall = class extends React.Component {
 		}
 
 		const items = [];
-		this.props.apkList.forEach(apk => {
-			items.push(<MenuItem value={apk.id} key={apk.id} primaryText={apk.filename}/>);
+		this.props.fileList.forEach(file => {
+			items.push(<MenuItem value={file.id} key={file.id} primaryText={file.filename}/>);
 		});
 		return (
 			<Paper style={styles.paper} zDepth={1}>
-				<FontIcon style={styles.icon} className="mdi mdi-puzzle" color="rgba(0, 0, 0, 0.4)"/>
+				<FontIcon style={styles.icon} className="mdi mdi-camera" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<SelectField className="inputLiveAPKInstallFilename" style={styles.items} maxHeight={300} value={this.state.value} onChange={this.handleChange}>
+				<SelectField className="inputLiveCameraFilename" style={styles.items} maxHeight={300} value={this.state.value} onChange={this.handleChange}>
 					{items}
 				</SelectField>
 				<RaisedButton
-					className="btLiveAPKInstallSubmit"
-					label="Install"
-					title="Install"
+					className="btLiveCameraSubmit"
+					label="Send"
+					title="Send"
 					href="#"
 					secondary
 					onClick={this.handleClick}
@@ -75,15 +78,15 @@ const PanelAPKInstall = class extends React.Component {
 	}
 };
 
-PanelAPKInstall.contextTypes = {
+PanelCamera.contextTypes = {
 	muiTheme: React.PropTypes.object,
 	router: React.PropTypes.object
 };
 
-PanelAPKInstall.propTypes = {
+PanelCamera.propTypes = {
 	style: React.PropTypes.object,
 	onClick: React.PropTypes.func,
-	apkList: React.PropTypes.array
+	fileList: React.PropTypes.array
 };
 
-module.exports = PanelAPKInstall;
+module.exports = PanelCamera;

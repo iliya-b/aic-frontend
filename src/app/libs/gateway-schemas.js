@@ -190,6 +190,13 @@ const GatewaySchemas = {
 				phone_number: {type: 'string'}, // eslint-disable-line camelcase
 				text: {type: 'string'}
 			}
+		},
+		'camera': {
+			type: 'object',
+			strict: true,
+			properties: {
+				file_id: {type: 'string'} // eslint-disable-line camelcase
+			}
 		}
 	},
 	monkeyRunner: {

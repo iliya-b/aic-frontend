@@ -36,7 +36,7 @@ const ToolbarGSM = class extends React.Component {
 					</IconButton>
 					<ToolbarTitle text="GSM" style={styles.title}/>
 					<ToolbarSeparator style={styles.separator}/>
-					<IconButton className="btLiveGSMCall" tooltip="Call" style={styles.button} onClick={this.props.onClick.gsmCall}>
+					<IconButton className="btLiveGSMCall" tooltip="Receive call" style={styles.button} onClick={this.props.onClick.gsmCall}>
 						<FontIcon className="mdi mdi-phone" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
 					<IconButton className="btLiveGSMAcceptCall" tooltip="Accept call" style={styles.button} onClick={this.props.onClick.gsmAcceptCall}>
