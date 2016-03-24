@@ -24,6 +24,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ### Removed
 - Indexes files (for now while we don't have [tree shacking](http://www.2ality.com/2015/12/webpack-tree-shaking.html))
+- Audio live (for now while backend does not support it)
 
 ## [0.2.2] - 2016-03-10
 

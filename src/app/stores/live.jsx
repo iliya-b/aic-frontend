@@ -161,10 +161,13 @@ const LiveStore = Reflux.createStore({
 	},
 
 	// Live connect
-	onLiveConnect(vmhost, vmport) {
+	// onLiveConnect(vmhost, vmport) {
+	onLiveConnect() {
 		this.state.live.status = 'LIVE_STATUS_CONNECTING';
 		this.updateState();
-		LiveActions.tryAudioConnection(vmhost, vmport + 1000, () => {});
+		// TODO: should be enabled again one day
+		// audioEnabled === false
+		// LiveActions.tryAudioConnection(vmhost, vmport + 10000, () => {});
 	},
 
 	onLiveConnectCompleted() {
