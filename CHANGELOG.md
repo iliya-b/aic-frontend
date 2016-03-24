@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 - Live GSM calls
 - Live Monkey runner (panda icon)
 - Project management
+- Camera assets management and live camera
 
 ### Changed
 - Update live create to JSON (update on kyaraben API)

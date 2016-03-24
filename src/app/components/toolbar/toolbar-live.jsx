@@ -8,7 +8,7 @@ import ToolbarSeparator from 'material-ui/lib/toolbar/toolbar-separator';
 import ToolbarTitle from 'material-ui/lib/toolbar/toolbar-title';
 import FontIcon from 'material-ui/lib/font-icon';
 import IconButton from 'material-ui/lib/icon-button';
-import slug from 'slug';
+import str from 'string';
 
 // APP
 const icons = {
@@ -58,7 +58,7 @@ const ToolbarAPK = class extends React.Component {
 				});
 				buttons.push(
 					// <img key={i}  style={{height: 30}} src={`/images/android-${v.name}.png`}/>
-					<IconButton className={`btStart${slug(v.name)}`} key={i} tooltip={`Start ${v.name}`} style={styles.button} onClick={handleClickStartVariant}>
+					<IconButton className={`btStart${str(v.name).camelize().s}`} key={i} tooltip={`Start ${v.name}`} style={styles.button} onClick={handleClickStartVariant}>
 						{icon}
 					</IconButton>
 				);

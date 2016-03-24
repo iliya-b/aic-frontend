@@ -7,9 +7,10 @@ import ToolbarGroup from 'material-ui/lib/toolbar/toolbar-group';
 import ToolbarSeparator from 'material-ui/lib/toolbar/toolbar-separator';
 import ToolbarTitle from 'material-ui/lib/toolbar/toolbar-title';
 import FontIcon from 'material-ui/lib/font-icon';
-import IconButton from 'material-ui/lib/icon-button';
 
 // APP
+import iconList from 'app/components/icons/icon-list';
+
 const ToolbarAndroid = class extends React.Component {
 
 	render() {
@@ -28,33 +29,54 @@ const ToolbarAndroid = class extends React.Component {
 				width: 24
 			}
 		};
+
+		const buttons = [
+			{
+				id: 'sensors',
+				tooltip: 'Sensors',
+				fontIcon: 'mdi mdi-map-marker'
+			}, {
+				id: 'camera',
+				tooltip: 'Camera',
+				fontIcon: 'mdi mdi-camera'
+			}, {
+				id: 'gsm',
+				tooltip: 'GSM',
+				fontIcon: 'mdi mdi-phone'
+			}, {
+				id: 'apks',
+				tooltip: 'APKs',
+				fontIcon: 'mdi mdi-puzzle'
+			}, {
+				id: 'monkeyRunner',
+				tooltip: 'Monkey runner',
+				fontIcon: 'mdi mdi-panda'
+			}, {
+				id: 'details',
+				tooltip: 'Session details',
+				fontIcon: 'mdi mdi-information'
+			}, {
+				id: 'terminate',
+				tooltip: 'Terminate session',
+				fontIcon: 'mdi mdi-power'
+			}
+		];
+
+		const renderedButtons = iconList({
+			buttons,
+			style: styles.button,
+			onClick: this.props.onClick,
+			iconClassNamePrefix: 'btLive',
+			selectedId: this.props.secondBar
+		});
+
 		return (
 			<Toolbar style={this.props.style}>
 				<FontIcon style={styles.icon} className="mdi mdi-android" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarGroup firstChild lastChild>
 					<ToolbarTitle text="Toolbar"/>
 					<ToolbarSeparator style={styles.separator}/>
-					<IconButton className="btLiveSensors" tooltip="Sensors" style={styles.button} onClick={this.props.onClick.sensors}>
-						<FontIcon className="mdi mdi-map-marker" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
-					</IconButton>
-					<IconButton className="btLiveCamera" tooltip="Camera" style={styles.button} onClick={this.props.onClick.camera}>
-						<FontIcon className="mdi mdi-camera" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
-					</IconButton>
-					<IconButton className="btLiveGSM" tooltip="GSM" style={styles.button} onClick={this.props.onClick.gsm}>
-						<FontIcon className="mdi mdi-phone" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
-					</IconButton>
-					<IconButton className="btLiveAPKs" tooltip="APKs" style={styles.button} onClick={this.props.onClick.apks}>
-						<FontIcon className="mdi mdi-puzzle" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
-					</IconButton>
-					<IconButton className="btMonkeyRunner" tooltip="Monkey runner" style={styles.button} onClick={this.props.onClick.monkeyRunner}>
-						<FontIcon className="mdi mdi-panda" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
-					</IconButton>
-					<IconButton className="btLiveDetails" tooltip="Session Details" style={styles.button} onClick={this.props.onClick.details}>
-						<FontIcon className="mdi mdi-information" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
-					</IconButton>
-					<IconButton className="btLiveTerminate" tooltip="Terminate Session" style={styles.button} onClick={this.props.onClick.terminate}>
-						<FontIcon className="mdi mdi-power" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
-					</IconButton>
+					{renderedButtons}
 				</ToolbarGroup>
 			</Toolbar>
 		);
@@ -68,7 +90,8 @@ ToolbarAndroid.contextTypes = {
 
 ToolbarAndroid.propTypes = {
 	style: React.PropTypes.object,
-	onClick: React.PropTypes.object
+	onClick: React.PropTypes.object,
+	secondBar: React.PropTypes.string
 };
 
 module.exports = ToolbarAndroid;

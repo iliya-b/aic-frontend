@@ -12,8 +12,9 @@ const TOOLBAR_SENSORS = 'sensors';
 const TOOLBAR_CAMERA = 'camera';
 const TOOLBAR_GSM = 'gsm';
 const TOOLBAR_APKS = 'apks';
+const TOOLBAR_SESSIONDETAILS = 'details';
 const TOOLBAR_MONKEYURUNNER = 'monkeyRunner';
-const TOOLBAR_MAIN_ORDER = [TOOLBAR_SENSORS, TOOLBAR_CAMERA, TOOLBAR_GSM, TOOLBAR_APKS, TOOLBAR_MONKEYURUNNER, TOOLBAR_ANDROID];
+const TOOLBAR_MAIN_ORDER = [TOOLBAR_SENSORS, TOOLBAR_CAMERA, TOOLBAR_GSM, TOOLBAR_APKS, TOOLBAR_SESSIONDETAILS, TOOLBAR_MONKEYURUNNER, TOOLBAR_ANDROID];
 
 // Sensors toolbar
 const TOOLBAR_GPS = 'gps';
@@ -81,6 +82,9 @@ toolbars.gsmRoaming = require('app/components/toolbar/toolbar-gsm-roaming');
 // Monkey Runner panel
 toolbars.monkeyRunner = require('app/components/toolbar/toolbar-monkey-runner');
 
+// Info panel
+toolbars.details = require('app/components/panel/panel-session-details');
+
 // Monkey Runner
 // http://developer.android.com/intl/es/tools/help/monkey.html
 // adb shell pm list packages -f
@@ -114,6 +118,7 @@ const LiveToolbox = class extends React.Component {
 		this.handleClickFirstBar.monkeyRunner = this.changeActiveSecondToolbar.bind(this, 'monkeyRunner');
 		this.handleClickFirstBar.camera = this.changeActiveSecondToolbar.bind(this, 'camera');
 		this.handleClickFirstBar.apks = this.changeActiveSecondToolbar.bind(this, 'apks');
+		this.handleClickFirstBar.details = this.changeActiveSecondToolbar.bind(this, 'details');
 
 		this.handleClickFirstBar.terminate = () => {
 			this.props.onClickTerminate();
@@ -171,7 +176,8 @@ const LiveToolbox = class extends React.Component {
 			debug('could not find main toolbar', this.state.activeBar);
 		} else {
 			const props = {
-				onClick: this.handleClickFirstBar
+				onClick: this.handleClickFirstBar,
+				secondBar: this.state.activeSecondBar
 			};
 			currentBar = React.createElement(toolbars[this.state.activeBar], props);
 		}
@@ -187,7 +193,8 @@ const LiveToolbox = class extends React.Component {
 				style: styles.secondToolbar,
 				onInputFocus: this.props.onInputFocus,
 				onInputBlur: this.props.onInputBlur,
-				onChange: onChangeSensorBinded
+				onChange: onChangeSensorBinded,
+				secondBar: this.state.activeSecondBar
 			};
 			props[this.state.activeSecondBar] = this.props.sensorsValues[this.state.activeSecondBar];
 			debug('currentSecondBar props', props);
@@ -209,7 +216,8 @@ const LiveToolbox = class extends React.Component {
 			const props = {
 				onChange: this.handleGSM,
 				onInputFocus: this.props.onInputFocus,
-				onInputBlur: this.props.onInputBlur
+				onInputBlur: this.props.onInputBlur,
+				secondBar: this.state.activeSecondBar
 			};
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
 		} else if (this.state.activeSecondBar === 'monkeyRunner') { // eslint-disable-line no-negated-condition
@@ -218,6 +226,10 @@ const LiveToolbox = class extends React.Component {
 				onInputFocus: this.props.onInputFocus,
 				onInputBlur: this.props.onInputBlur,
 				packageList: this.props.packageList
+			};
+			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
+		} else if (this.state.activeSecondBar === 'details') { // eslint-disable-line no-negated-condition
+			const props = {
 			};
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
 		} else {
