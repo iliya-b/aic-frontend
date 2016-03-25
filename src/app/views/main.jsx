@@ -95,7 +95,7 @@ const Main = class extends React.Component {
 							) : null}
 						</FullWidthSection>
 						<SessionEndedDialog open={this.state.sessionEndedDialogOpen} onRequestClose={this.handleSessionEndedDialogClose} location={this.props.location}/>
-						<ServerErrorDialog open={this.state.app ? this.state.app.serverError.open : false} onRequestClose={this.handleServerErrorDialogClose}/>
+						<ServerErrorDialog open={this.state.app ? this.state.app.serverError.open : false} onRequestClose={this.handleServerErrorDialogClose} message={this.state.app ? this.state.app.serverError.message : ''}/>
 					</div>
 				</MuiThemeProvider>
 			);

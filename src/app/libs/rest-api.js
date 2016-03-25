@@ -158,9 +158,13 @@ const RestAPI = {
 				resolve(data);
 			})
 			.catch((error, e2) => {
-				debug('request failed 1', error);
+				debug('request failed 1', error, error.message, error.name);
 				debug('request failed 2', e2);
 				debug('arguments', arguments);
+				if (error.message === 'Failed to fetch' && error.name === 'TypeError') {
+					const AppActions = require('app/actions/app');
+					AppActions.displayServerError('Impossible to reach API server. Please contact service administration.');
+				}
 				reject(null, error, error);
 			});
 		});
