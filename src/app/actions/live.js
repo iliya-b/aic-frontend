@@ -34,7 +34,7 @@ const LiveActions = Reflux.createActions({
 	installAPK: {asyncResult: true},
 	listPackages: {asyncResult: true},
 	monkeyRunner: {asyncResult: true},
-	properties: {asyncResult: true}
+	properties: {children: ['completed', 'failure']}
 });
 
 // Listeners for asynchronous Backend API calls
@@ -71,10 +71,12 @@ LiveActions.stop.listen(function (avmId) {
 	.then(() => {
 		debug('stop back');
 		debug(arguments);
+		this.completed();
 	})
-	.catch(() => {
+	.catch(err => {
 		debug('stop back catch');
 		debug(arguments);
+		this.failure(err);
 	});
 	// [undefined, 'nocontent', Object]0: undefined1: 'nocontent'2: Objectabort: (a)always: ()complete: ()done: ()error: ()fail: ()getAllResponseHeaders: ()getResponseHeader: (a)overrideMimeType: (a)pipe: ()progress: ()promise: (a)readyState: 4responseText: 'setRequestHeader: (a,b)state: ()status: 204statusCode: (a)statusText: 'No Content'success: ()then: ()__proto__: Objectcallee: (...)get callee: ThrowTypeError()set callee: ThrowTypeError()caller: (...)get caller: ThrowTypeError()set caller: ThrowTypeError()length: 3Symbol(Symbol.iterator): values()__proto__: Object
 	// [Object, 'error', 'Not Found'] +1ms
@@ -464,7 +466,7 @@ LiveActions.monkeyRunner.listen(function (avmId, packages, eventCount, throttle)
 });
 
 LiveActions.properties.listen(function (avmId) {
-	Gateway.live.properties({avmId})
+	Gateway.live.properties({avmId}, {showError500Dialog: false})
 	.then(res => {
 		this.completed(res);
 	}, err => {

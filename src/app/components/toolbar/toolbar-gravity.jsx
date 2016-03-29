@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import Paper from 'material-ui/lib/paper';
 
 // APP
-import GravityIcon from 'app/components/icons/gravity';
+import GravityIcon from 'app/components/icon/gravity';
 
 const ToolbarGPS = class extends React.Component {
 

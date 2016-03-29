@@ -11,11 +11,7 @@ import IconButton from 'material-ui/lib/icon-button';
 import str from 'string';
 
 // APP
-const icons = {
-	kitkat: require('app/components/icons/kitkat'),
-	kitkatPhone: require('app/components/icons/kitkat-phone'),
-	lollipop: require('app/components/icons/lollipop')
-};
+import * as icons from 'app/components/icon/phone-list';
 
 const ToolbarAPK = class extends React.Component {
 

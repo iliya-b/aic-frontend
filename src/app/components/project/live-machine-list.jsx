@@ -5,9 +5,10 @@ const React = require('react');
 const debug = require('debug')('AiC:Component:LiveMachineList');
 
 // APP
-const MachineCardLive = require('app/components/project/machine-card-live');
+// const MachineCardLive = require('app/components/project/machine-card-live');
 const InfoBox = require('app/components/shared/info-box');
 const LiveListStore = require('app/stores/live-list');
+import CardAndroidSession from 'app/components/card/card-android-session';
 
 let projectId;
 
@@ -33,8 +34,10 @@ const LiveMachineList = class extends React.Component {
 		// List VMs or information about loading and no VMs
 		if (avmList && avmList.length) {
 			avmsRendered = avmList.map((currentValue, index) => {
+				debug('currentValue', currentValue);
 				currentValue.index = index;
-				return <MachineCardLive className={`cardLiveVM cardLiveVM${index} cardLiveVM${currentValue.avm_id}`} {...currentValue} key={currentValue.avm_id} actionEnter={this.props.actionEnter} actionStop={this.props.actionStop}/>;
+				// return <MachineCardLive className={`cardLiveVM cardLiveVM${index} cardLiveVM${currentValue.avm_id}`} {...currentValue} key={currentValue.avm_id} actionEnter={this.props.actionEnter} actionStop={this.props.actionStop}/>;
+				return <CardAndroidSession className={`cardLiveVM cardLiveVM${index} cardLiveVM${currentValue.avm_id}`} {...currentValue} key={currentValue.avm_id} actionEnter={this.props.actionEnter} actionStop={this.props.actionStop}/>;
 			});
 		} else if (this.state.live && this.state.live.status === 'LIVE_STATUS_LISTED') {
 			avmsRendered = <InfoBox style={{textAlign: 'center'}}>No sessions found. You can start a new session.</InfoBox>;

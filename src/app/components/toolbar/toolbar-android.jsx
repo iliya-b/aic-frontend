@@ -9,7 +9,7 @@ import ToolbarTitle from 'material-ui/lib/toolbar/toolbar-title';
 import FontIcon from 'material-ui/lib/font-icon';
 
 // APP
-import iconList from 'app/components/icons/icon-list';
+import iconList from 'app/components/icon/icon-list';
 
 const ToolbarAndroid = class extends React.Component {
 

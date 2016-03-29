@@ -10,8 +10,8 @@ import FontIcon from 'material-ui/lib/font-icon';
 import IconButton from 'material-ui/lib/icon-button';
 
 // APP
-import PhoneAcceptSVG from 'app/components/icons/phone-accept';
-import iconList from 'app/components/icons/icon-list';
+import PhoneAcceptSVG from 'app/components/icon/phone-accept';
+import iconList from 'app/components/icon/icon-list';
 
 const ToolbarGSM = class extends React.Component {
 

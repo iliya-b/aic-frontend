@@ -45,11 +45,13 @@ const RestAPI = {
 	},
 
 	apiCall(options) {
+		debug('apiCall', options);
 		// url, data, cb, headers, method, authRequired, file, cbProgress
 		options.method = (typeof options.method === 'undefined') ? 'POST' : options.method;
 		options.headers = (typeof options.headers === 'undefined') ? {} : options.headers;
 		// TODO: change to signoutOnUnauthorized
 		options.authRequired = (typeof options.authRequired === 'undefined') ? false : options.authRequired;
+		options.showError500Dialog = (typeof options.showError500Dialog === 'undefined') ? true : options.showError500Dialog;
 		if (typeof options.data === 'undefined') {
 			options.data = options.rawData || false;
 		} else {
@@ -77,7 +79,7 @@ const RestAPI = {
 						debug('XHR onload 401');
 						const AuthActions = require('app/actions/auth');
 						AuthActions.logout('Your session has been ended2.');
-					} else if (xhr.status === 500) {
+					} else if (xhr.status === 500 && options.showError500Dialog) {
 						debug('XHR onload 500');
 						const AppActions = require('app/actions/app');
 						AppActions.displayServerError('Something went wrong with the API server. Please contact service administration.');
@@ -140,7 +142,7 @@ const RestAPI = {
 					debug('fetch response', response);
 					const AuthActions = require('app/actions/auth');
 					AuthActions.logout('Your session has been ended2.');
-				} else if (response.status === 500) {
+				} else if (response.status === 500 && options.showError500Dialog) {
 					debug('response.status === 500', response, options.url, myInit);
 					const AppActions = require('app/actions/app');
 					AppActions.displayServerError('Something went wrong with the API server. Please contact service administration.');

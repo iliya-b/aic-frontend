@@ -1,7 +1,8 @@
 'use strict';
 
-// React
+// Vendor
 const React = require('react');
+const debug = require('debug')('AiC:Components:Project:LiveScreen');
 
 // APP
 const LiveStore = require('app/stores/live');
@@ -15,6 +16,7 @@ const LiveScreen = class extends React.Component {
 	}
 
 	render() {
+		debug('render');
 		const style = {
 			iframeHorizontal: {
 				overflow: 'hidden',
@@ -70,7 +72,10 @@ const LiveScreen = class extends React.Component {
 	}
 
 	_onStateChange(state) {
-		this.setState(state);
+		if (!this.state.live) {
+			debug('setting state');
+			this.setState(state);
+		}
 	}
 
 	componentDidMount() {

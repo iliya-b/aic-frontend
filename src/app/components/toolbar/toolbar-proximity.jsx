@@ -8,7 +8,7 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import Paper from 'material-ui/lib/paper';
 
 // APP
-import VoiceIcon from 'app/components/icons/voice';
+import VoiceIcon from 'app/components/icon/voice';
 
 const ToolbarGPS = class extends React.Component {
 

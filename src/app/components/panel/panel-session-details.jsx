@@ -2,15 +2,12 @@
 
 // Vendor
 import React from 'react';
-// import ToolbarSeparator from 'material-ui/lib/toolbar/toolbar-separator';
-// import FontIcon from 'material-ui/lib/font-icon';
-// import Paper from 'material-ui/lib/paper';
-// import Divider from 'material-ui/lib/divider';
+import ToolbarSeparator from 'material-ui/lib/toolbar/toolbar-separator';
+import FontIcon from 'material-ui/lib/font-icon';
+import Paper from 'material-ui/lib/paper';
+import Divider from 'material-ui/lib/divider';
 
 // APP
-import VoiceSVG from 'app/components/icons/voice';
-import GravitySVG from 'app/components/icons/gravity';
-
 const PanelSessionDetails = class extends React.Component {
 
 	render() {
@@ -108,40 +105,40 @@ const PanelSessionDetails = class extends React.Component {
 			styles.paper = Object.assign({}, styles.paper, this.props.style);
 		}
 
-		return null;
+		// return null;
 
-		// return (
-		// 	<Paper style={styles.paper} zDepth={1}>
-		// 		<FontIcon style={{margin: '10px 0 10px 10px'}} className="mdi mdi-information" color="rgba(0, 0, 0, 0.4)"/>
-		// 		<ToolbarSeparator style={{margin: '5px 10px'}}/>
-		// 		<Divider/>
-		// 		<FontIcon style={{margin: '10px 0 10px 10px'}} className="mdi mdi-map-marker" color="rgba(0, 0, 0, 0.4)"/>
-		// 		<ToolbarSeparator style={{margin: '5px 10px'}}/>
-		// 		status: {this.props.properties['aicd.gps.status']}
-		// 		<ToolbarSeparator style={{margin: '5px 10px'}}/>
-		// 		lat: {this.props.properties['aicd.gps.latitude']}
-		// 		<ToolbarSeparator style={{margin: '5px 10px'}}/>
-		// 		long: {this.props.properties['aicd.gps.longitude']}
-		// 		<Divider/>
-		// 		<FontIcon style={{margin: '10px 0 10px 10px'}} className="mdi mdi-battery" color="rgba(0, 0, 0, 0.4)"/>
-		// 		<ToolbarSeparator style={{margin: '5px 10px'}}/>
-		// 		battery level: {parseInt(this.props.properties['aicd.battery.level'], 10) / parseInt(this.props.properties['aicd.battery.full'], 10) * 100}%
-		// 		<ToolbarSeparator style={{margin: '5px 10px'}}/>
-		// 		status: {this.props.properties['aicd.battery.status']}
-		// 		<Divider/>
-		// 		<div>
-		// 			<FontIcon style={{margin: '10px 0 10px 10px'}} className="mdi mdi-screen-rotation" color="rgba(0, 0, 0, 0.4)"/>
-		// 			<ToolbarSeparator style={{margin: '5px 10px'}}/>
-		// 			screen rotation: {this.props.properties['aicd.screen_rotation']}
-		// 			<ToolbarSeparator style={{margin: '5px 10px'}}/>
-		// 			x: {this.props.properties['aicd.accelerometer.x']}
-		// 			<ToolbarSeparator style={{margin: '5px 10px'}}/>
-		// 			y: {this.props.properties['aicd.accelerometer.y']}
-		// 			<ToolbarSeparator style={{margin: '5px 10px'}}/>
-		// 			z: {this.props.properties['aicd.accelerometer.z']}
-		// 		</div>
-		// 	</Paper>
-		// );
+		return (
+			<Paper style={styles.paper} zDepth={1}>
+				<FontIcon style={{margin: '10px 0 10px 10px'}} className="mdi mdi-information" color="rgba(0, 0, 0, 0.4)"/>
+				<ToolbarSeparator style={{margin: '5px 10px'}}/>
+				<Divider/>
+				<FontIcon style={{margin: '10px 0 10px 10px'}} className="mdi mdi-map-marker" color="rgba(0, 0, 0, 0.4)"/>
+				<ToolbarSeparator style={{margin: '5px 10px'}}/>
+				status: {this.props.properties['aicd.gps.status']}
+				<ToolbarSeparator style={{margin: '5px 10px'}}/>
+				lat: {this.props.properties['aicd.gps.latitude']}
+				<ToolbarSeparator style={{margin: '5px 10px'}}/>
+				long: {this.props.properties['aicd.gps.longitude']}
+				<Divider/>
+				<FontIcon style={{margin: '10px 0 10px 10px'}} className="mdi mdi-battery" color="rgba(0, 0, 0, 0.4)"/>
+				<ToolbarSeparator style={{margin: '5px 10px'}}/>
+				battery level: {parseInt(this.props.properties['aicd.battery.level'], 10) / parseInt(this.props.properties['aicd.battery.full'], 10) * 100}%
+				<ToolbarSeparator style={{margin: '5px 10px'}}/>
+				status: {this.props.properties['aicd.battery.status']}
+				<Divider/>
+				<div>
+					<FontIcon style={{margin: '10px 0 10px 10px'}} className="mdi mdi-screen-rotation" color="rgba(0, 0, 0, 0.4)"/>
+					<ToolbarSeparator style={{margin: '5px 10px'}}/>
+					screen rotation: {this.props.properties['aicd.screen_rotation']}
+					<ToolbarSeparator style={{margin: '5px 10px'}}/>
+					x: {this.props.properties['aicd.accelerometer.x']}
+					<ToolbarSeparator style={{margin: '5px 10px'}}/>
+					y: {this.props.properties['aicd.accelerometer.y']}
+					<ToolbarSeparator style={{margin: '5px 10px'}}/>
+					z: {this.props.properties['aicd.accelerometer.z']}
+				</div>
+			</Paper>
+		);
 	}
 };
 

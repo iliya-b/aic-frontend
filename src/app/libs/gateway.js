@@ -36,7 +36,7 @@ const Gateway = {
 		return false;
 	},
 
-	request(options, obj) {
+	request(options, obj, extraOptions) {
 		debug(options, obj);
 		if (options.placeholder) {
 			return options.placeholder();
@@ -44,9 +44,12 @@ const Gateway = {
 		const requestAdapter = this.getAdapter(options.namespace, options.action.name, 'request');
 		const responseAdapter = this.getAdapter(options.namespace, options.action.name, 'response');
 		const schemaAdapter = this.getAdapter(options.namespace, options.action.name, 'schema');
-		const optionsAPI = {
+		let optionsAPI = {
 			method: options.action.method
 		};
+		if (extraOptions) {
+			optionsAPI = Object.assign({}, optionsAPI, extraOptions);
+		}
 		const requestCallerName = options.requestAPI ? options.requestAPI : 'default';
 		if (typeof Gateway.requestAPI[requestCallerName] !== 'function') {
 			throw new Error('Missing or not a function Gateway.requestAPI[', requestCallerName, ']');

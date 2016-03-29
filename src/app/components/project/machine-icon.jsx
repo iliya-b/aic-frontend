@@ -7,8 +7,8 @@ import FontIcon from 'material-ui/lib/font-icon';
 import deepExtend from 'deep-extend';
 
 // APP
-import DroidDevilSVG from 'app/components/icons/droid-devil';
-import FireSVG from 'app/components/icons/fire';
+import DroidDevilSVG from 'app/components/icon/droid-devil';
+import FireSVG from 'app/components/icon/fire';
 
 const MachineIcon = class extends React.Component {
 

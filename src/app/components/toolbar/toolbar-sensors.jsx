@@ -10,9 +10,9 @@ import FontIcon from 'material-ui/lib/font-icon';
 import IconButton from 'material-ui/lib/icon-button';
 
 // APP
-import VoiceSVG from 'app/components/icons/voice';
-import GravitySVG from 'app/components/icons/gravity';
-import iconList from 'app/components/icons/icon-list';
+import VoiceSVG from 'app/components/icon/voice';
+import GravitySVG from 'app/components/icon/gravity';
+import iconList from 'app/components/icon/icon-list';
 
 const ToolbarSensors = class extends React.Component {
 

@@ -1,3 +1,4 @@
+/* global window */
 'use strict';
 
 // Reflux
@@ -9,6 +10,9 @@ const debug = require('debug')('AiC:Live:Store');
 // APP
 const AppUtils = require('app/components/shared/app-utils');
 const LiveActions = require('app/actions/live');
+import APKActions from 'app/actions/apk';
+import CameraActions from 'app/actions/camera';
+import AppActions from 'app/actions/app';
 
 // Store
 const LiveStore = Reflux.createStore({
@@ -30,6 +34,10 @@ const LiveStore = Reflux.createStore({
 	// Set project
 	onSetProjectId(projectId) {
 		this.state.projectId = projectId;
+
+		this.changeBoxes('load', 'enabled', false);
+		this.changeBoxes('create', 'enabled', true);
+
 		this.updateState();
 	},
 
@@ -46,23 +54,55 @@ const LiveStore = Reflux.createStore({
 
 	// Load info
 	onLoadInfo() {
+		if (this.state.live.status === 'LIVE_STATUS_INITIALIZED') {
+			this.state.live.status = 'LIVE_STATUS_CHECKING';
+			this.updateState();
+		}
 		// this.updateState();
 	},
 
 	onLoadInfoCompleted(avmInfo) {
 		// avmInfo.avm_novnc_host
 		// window.GobyAppGlobals.config.backend.host
-		debug('avmInfo');
-		debug(avmInfo);
+		debug('avmInfo', avmInfo);
 		this.state.liveInfo = avmInfo;
-		LiveActions.liveConnect(avmInfo.avm_novnc_host, avmInfo.avm_novnc_port);
+		if (this.state.live.status === 'LIVE_STATUS_CHECKING') {
+			this.state.live.status = 'LIVE_STATUS_CHECK_FOUND';
+			this.updateBoxes();
+			this.state.live.status = 'LIVE_STATUS_STARTING';
+			this.updateBoxes();
+		}
+		if (!this.state.live.liveIsConnect &&
+			avmInfo.avm_status === 'READY') {
+			this.state.live.liveIsConnect = true;
+			// Load properties each x seconds
+			// TODO: should be changed once notification is done?
+			clearInterval(window.intervalTimeoutLoad);
+			clearInterval(window.intervalTimeout);
+			// After ready the docker needs to boot up
+			// TODO: change to state
+			window.intervalTimeout = setInterval(LiveActions.properties, 1000, this.state.liveInfo.avm_id);
+			// L
+			// iveActions.properties(avmId);
+		}
+		this.updateState();
 	},
 
 	onLoadInfoFailure(errorMessage) {
 		debug('errorMessage', errorMessage);
 		this.state.live.message = errorMessage;
-		this.state.live.status = 'LIVE_STATUS_INITIAL_FAILED';
-		this.updateState();
+		// this.state.live.status = 'LIVE_STATUS_INITIAL_FAILED';
+		this.state.live.status = 'LIVE_STATUS_CHECK_FAILED';
+		clearInterval(window.intervalTimeoutLoad);
+		clearInterval(window.intervalTimeout);
+		// this.updateState();
+		debug('not found avm', this);
+		AppActions.notFound();
+	},
+
+	clearTimeouts() {
+		clearInterval(window.intervalTimeoutLoad);
+		clearInterval(window.intervalTimeout);
 	},
 
 	// Load State
@@ -199,6 +239,25 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
+	// Live stop v2
+	onStop() {
+		this.clearTimeouts();
+		this.state.live.status = 'LIVE_STATUS_STOPPING';
+		this.updateState();
+	},
+
+	onStopCompleted() {
+		// this.resetMachine();
+		this.state.live.status = 'LIVE_STATUS_STOPPED';
+		this.updateState();
+	},
+
+	onStopFailed(errorMessage) {
+		this.state.live.status = 'LIVE_STATUS_STOP_FAILED';
+		this.state.live.message = errorMessage;
+		this.updateState();
+	},
+
 	// Live sensors
 
 	onSetSensor(avmId, sensor, payload) {
@@ -298,6 +357,7 @@ const LiveStore = Reflux.createStore({
 	// List Packages
 	onListPackages() {
 		debug('onListPackages');
+		this.state.live.listPackages = true;
 	},
 
 	onListPackagesCompleted(packages) {
@@ -307,7 +367,6 @@ const LiveStore = Reflux.createStore({
 	},
 
 	onListPackagesFailure(errorMessage) {
-		debug('onListPackagesFailure', errorMessage);
 		this.state.live.message = errorMessage;
 		this.state.live.status = 'LIVE_STATUS_LISTPACKAGES_FAILED';
 		this.updateState();
@@ -336,15 +395,50 @@ const LiveStore = Reflux.createStore({
 
 	onPropertiesCompleted(properties) {
 		debug('onPropertiesCompleted', properties);
+
+		debug('onPropertiesCompleted value', properties["dev.bootcomplete"] === "1");
+		debug('onPropertiesCompleted value', !this.state.live.listPackages && properties["dev.bootcomplete"] === "1");
+		debug('onPropertiesCompleted value', !this.state.live.bootInit && (properties["init.svc.bootanim"] === "1" || properties["dev.bootcomplete"] === "1"));
+
+		// TODO: should be changed to machine state
+		// boot completed
+		if (!this.state.live.listPackages &&
+			properties["dev.bootcomplete"] === "1") {
+			debug('onPropertiesCompleted listPackages');
+			LiveActions.listPackages(this.state.liveInfo.avm_id);
+		}
+
+		// docker finished (not available) boot initiate
+		if (!this.state.live.bootInit &&
+			(properties["init.svc.bootanim"] === "running" || properties["dev.bootcomplete"] === "1")) {
+			this.state.live.status = 'LIVE_STATUS_STARTED';
+			this.updateBoxes();
+			debug('onPropertiesCompleted boot initiate');
+			this.state.live.bootInit = true;
+			LiveActions.liveConnect(this.state.liveInfo.avm_novnc_host, this.state.liveInfo.avm_novnc_port);
+			APKActions.list(this.state.projectId);
+			CameraActions.list(this.state.projectId);
+		}
+
 		this.state.live.properties = properties;
 		this.updateState();
 	},
 
 	onPropertiesFailure(errorMessage) {
-		debug('onPropertiesFailure', errorMessage);
-		this.state.live.message = errorMessage;
-		this.state.live.status = 'LIVE_STATUS_PROPERTIES_FAILED';
-		this.updateState();
+		// debug('onPropertiesFailure', errorMessage);
+		// this.state.live.message = errorMessage;
+		// this.state.live.status = 'LIVE_STATUS_PROPERTIES_FAILED';
+		// this.updateState();
+		this.state.live.propertiesFailureCount = this.state.live.propertiesFailureCount || 0;
+		this.state.live.propertiesFailureCount += 1;
+		debug('onPropertiesFailure', errorMessage, this.state.live.propertiesFailureCount);
+		if (this.state.live.propertiesFailureCount >= 30) {
+			// TODO: errorMessage should contain message
+			this.state.live.message = 'It was not possible to reach the Android machine.';
+			// this.state.live.status = 'LIVE_STATUS_LISTPACKAGES_FAILED';
+			this.state.live.status = 'LIVE_STATUS_START_FAILED';
+			this.updateState();
+		}
 	},
 
 	// Methods //
@@ -403,6 +497,10 @@ const LiveStore = Reflux.createStore({
 		this.state.live.logBox.unshift({time: AppUtils.getDate(), message});
 	},
 
+	// TODO: change this to a state machine
+	// http://stackoverflow.com/questions/13262392/javascript-event-state-machine
+	// https://github.com/jakesgordon/javascript-state-machine
+	// http://machina-js.org/
 	statusUpdating: {
 		LIVE_STATUS_INITIATING: {typeName: '', newStatus: ''},
 		LIVE_STATUS_INITIALIZED: {typeName: '', newStatus: ''},
@@ -444,11 +542,15 @@ const LiveStore = Reflux.createStore({
 		return set.x === this.state.live.rotationSets[rotation].x && set.y === this.state.live.rotationSets[rotation].y && set.z === this.state.live.rotationSets[rotation].z;
 	},
 
+	updateBoxes() {
+		const actualStatus = this.statusUpdating[this.state.live.status];
+		this.changeBoxes(actualStatus.typeName, 'status', actualStatus.newStatus);
+	},
+
 	// State update
 
 	updateState() {
-		const actualStatus = this.statusUpdating[this.state.live.status];
-		this.changeBoxes(actualStatus.typeName, 'status', actualStatus.newStatus);
+		this.updateBoxes();
 		this.trigger(this.state);
 	}
 

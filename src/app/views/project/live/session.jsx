@@ -9,7 +9,6 @@ const mui = require('material-ui');
 const {Spacing} = mui.Styles;
 const {
 	Paper,
-	FlatButton,
 	CircularProgress
 } = mui;
 
@@ -20,18 +19,17 @@ const debug = require('debug')('AiC:Views:Project:Live:Session');
 import AreaStatus from 'app/components/project/area-status';
 import LiveScreen from 'app/components/project/live-screen';
 import LiveToolbox from 'app/components/project/live-toolbox';
-import LogBox from 'app/components/shared/log-box';
-import LogBoxRow from 'app/components/shared/log-box-row';
+// import LogBox from 'app/components/shared/log-box';
+// import LogBoxRow from 'app/components/shared/log-box-row';
 import LiveStore from 'app/stores/live';
 import APKStore from 'app/stores/apk';
 import CameraStore from 'app/stores/camera';
 import LiveActions from 'app/actions/live';
-import APKActions from 'app/actions/apk';
-import CameraActions from 'app/actions/camera';
 
 const availableLiveActions = ['test', 'check', 'start', 'load', 'connect', 'close', 'setState', 'check', 'close', 'restart'];
 let avmId;
 let projectId;
+
 const LiveSession = class extends React.Component {
 
 	constructor(props) {
@@ -54,6 +52,7 @@ const LiveSession = class extends React.Component {
 	}
 
 	render() {
+		debug('render');
 		const style = {
 			paperCenter: {
 				textAlign: 'center',
@@ -82,36 +81,25 @@ const LiveSession = class extends React.Component {
 			}
 		};
 
-		const logBoxRows = null;
+		// const logBoxRows = null;
 
-		if (this.state && this.state.live) {
-			this.state.live.logBox.map((v, i) => {
-				return <LogBoxRow key={i} time={v.time}>{v.message}</LogBoxRow>;
-			});
-		}
+		// if (this.state && this.state.live) {
+		// 	this.state.live.logBox.map((v, i) => {
+		// 		return <LogBoxRow key={i} time={v.time}>{v.message}</LogBoxRow>;
+		// 	});
+		// }
+		// <div style={{width: 547}}>
+		// 				<LogBox>
+		// 				{logBoxRows}
+		// 				</LogBox>
+		// 			</div>
 
 		return (
 			<div>
 
 				<div style={style.infoArea}>
-					<AreaStatus typeName="live"/><br/>
-					<div style={{width: 547}}>
-						<LogBox>
-						{logBoxRows}
-						</LogBox>
-					</div>
+					<AreaStatus typeName="live"/>
 				</div>
-
-				{this.state && this.state.live.status === 'LIVE_STATUS_INITIALIZED' ? (
-					<Paper style={style.paperCenter}>
-						<FlatButton
-							label="Start New Live Session"
-							title="Start New Live Session"
-							primary
-							onTouchTap={this.handleOnLiveActions.check}
-							/>
-					</Paper>
-				) : null}
 
 				{this.state && this.state.live.status.substr(-6) === 'FAILED' ? (
 					<Paper style={style.paperCenter}>
@@ -147,12 +135,12 @@ const LiveSession = class extends React.Component {
 									sensorsValues={this.state.live.sensors}
 									// APKs
 									onInstallAPK={this.handleAPKs}
-									apkList={this.state.apk.apks}
+									apkList={this.state.apk ? this.state.apk.apks : []}
 									// Monkey Runner
 									onMonkeyRunner={this.handleMonkeyRunner}
 									packageList={this.state.live.packages}
 									// Camera
-									cameraList={this.state.camera.files}
+									cameraList={this.state.camera ? this.state.camera.files : []}
 									// Details
 									properties={this.state.live.properties}
 									/>
@@ -166,13 +154,6 @@ const LiveSession = class extends React.Component {
 					<Paper style={style.paperCenter}>
 
 						<p>Your live session was sucessfully stopped.</p>
-
-						<FlatButton
-							label="Start New Live Session"
-							title="Start New Live Session"
-							primary
-							onTouchTap={this.handleOnLiveActions.restart}
-							/>
 
 					</Paper>
 				) : null}
@@ -283,9 +264,6 @@ const LiveSession = class extends React.Component {
 	}
 
 	componentDidMount() {
-		// debug('componentDidMount');
-		// const projectId = AppUtils.getProjectIdFromRouter(this.context.router);
-		// const avmId = AppUtils.getAVMIdFromRouter(this.context.router);
 		debug('this.props.params', this.props.params);
 		projectId = this.props.params.projectId;
 		avmId = this.props.params.androId;
@@ -295,14 +273,13 @@ const LiveSession = class extends React.Component {
 		this.unsubscribe.push(CameraStore.listen(this._onStateChange));
 		LiveActions.liveReset();
 		LiveActions.setProjectId(projectId);
-		LiveActions.loadInfo(avmId);
-		LiveActions.listPackages(avmId);
-		LiveActions.properties(avmId);
-		APKActions.list(projectId);
-		CameraActions.list(projectId);
+		// LiveActions.loadInfo(avmId);
+		window.intervalTimeoutLoad = setInterval(LiveActions.loadInfo, 1000, avmId);
 	}
 
 	componentWillUnmount() {
+		clearInterval(window.intervalTimeoutLoad);
+		clearInterval(window.intervalTimeout);
 		this.handleOnInputFocus();
 		// Subscribe and unsubscribe because we don't want to use the mixins
 		this.unsubscribe.map(v => v());
