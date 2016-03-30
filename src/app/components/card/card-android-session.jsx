@@ -97,28 +97,28 @@ const CardAndroidSession = props => {
 	return (
 		<Card className={props.className} style={{width: 400, display: 'inline-block', margin: '10px'}}>
 			<Avatar style={styles.avatar} icon={<MachineIcon style={{margin: '0 0 0 2px'}} status={MachineIconStates[props.avm_status]}/>}/>
-			<CardTitle title={props.avm_id}/>
+			<CardTitle className={`spLiveVMTitle spLiveVMTitle${props.index} spLiveVMTitle${props.avm_id}`} title={props.avm_id}/>
 			<CardText style={{paddingTop: 0}}>
 
 				<IconButton style={styles.iconInfo} tooltip="owner">
 					<FontIcon className="mdi mdi-account" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>
 				</IconButton>
-				<span style={styles.textInfo}>{props.avm_owner}</span><br/>
+				<span style={styles.textInfo} className={`spLiveVMOwner spLiveVMOwner${props.index} spLiveVMOwner${props.avm_id}`}>{props.avm_owner}</span><br/>
 
 				<IconButton style={styles.iconInfo} tooltip="status">
 					<FontIcon className="mdi mdi-information-outline" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>
 				</IconButton>
-				<span style={styles.textInfo}>{props.avm_status}</span><br/>
+				<span style={styles.textInfo} className={`spLiveVMStatus spLiveVMStatus${props.index} spLiveVMStatus${props.avm_id}`}>{props.avm_status}</span><br/>
 
 				<IconButton style={styles.iconInfo} tooltip="machine type">
 					{icon}
 				</IconButton>
-				<span style={styles.textInfo}>{props.image}</span><br/>
+				<span style={styles.textInfo} className={`spLiveVMMachineType spLiveVMMachineType${props.index} spLiveVMMachineType${props.avm_id}`}>{props.image}</span><br/>
 
 				<IconButton style={styles.iconInfo} tooltip="creation time">
 					<FontIcon className="mdi mdi-clock" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>
 				</IconButton>
-				<span style={styles.textInfo}>{localCreationTime}</span>
+				<span style={styles.textInfo} className={`spLiveVMCreationTime spLiveVMCreationTime${props.index} spLiveVMCreationTime${props.avm_id}`}>{localCreationTime}</span>
 
 			</CardText>
 			<Divider/>
