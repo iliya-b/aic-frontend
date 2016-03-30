@@ -96,7 +96,7 @@ const infos = [
 		fields: [
 			{
 				label: 'azimuth',
-				value: properties => properties['aicd.gyroscope.azymuth']
+				value: properties => properties['aicd.gyroscope.azimuth']
 			}, {
 				label: 'pitch',
 				value: properties => properties['aicd.gyroscope.pitch']
@@ -209,7 +209,7 @@ const PanelSessionDetails = class extends React.Component {
 		const styles = {
 			paper: {
 			},
-			icon: {margin: '10px 0 10px 10px'},
+			icon: {margin: '10px 0 10px 10px', verticalAlign: 'bottom'},
 			separator: {margin: '5px 10px'},
 			label: {
 				position: 'absolute',
@@ -224,7 +224,7 @@ const PanelSessionDetails = class extends React.Component {
 				color: this.context.muiTheme.palette.primary1Color
 				// WebkitUserSelect: none;
 			},
-			field: {padding: '0 10px', minWidth: 100, display: 'inline-block'},
+			field: {padding: '0 10px', minWidth: 100, display: 'inline-block', marginBottom: 5},
 			value: {color: 'rgba(0, 0, 0, 0.5)'}
 		};
 
