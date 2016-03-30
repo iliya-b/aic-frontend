@@ -243,9 +243,10 @@ const PanelSessionDetails = class extends React.Component {
 				color: this.context.muiTheme.palette.primary1Color
 				// WebkitUserSelect: none;
 			},
-			field: {padding: '0 10px', minWidth: 100, display: 'inline-block', marginBottom: 5},
+			field: {minWidth: 100, display: 'inline-block', lineHeight: '20px', margin: '0', padding: '10px 9px'},
 			value: {color: 'rgba(0, 0, 0, 0.5)'},
 			insetBlock: {margin: '-42px 0 0 48px'},
+			insetBlockAPK: {margin: '-42px 0 0 55px'},
 			infoBlock: {clear: 'both'}
 		};
 
@@ -261,7 +262,7 @@ const PanelSessionDetails = class extends React.Component {
 			const fieldRendered = info.fields ? info.fields.map((field, index) => {
 				const idCamel = str(field.label).capitalize().camelize().s;
 				return (
-					<span style={styles.field} key={index}>
+					<span className="sp1ABC" style={styles.field} key={index}>
 						<label className={`lbLiveInfo${infoCamel}${idCamel}`} style={styles.label}>{field.label}</label>
 						<span className={`spLiveInfo${infoCamel}${idCamel}`} style={styles.value}>{field.value(this.props.properties)}</span>
 					</span>
@@ -286,7 +287,7 @@ const PanelSessionDetails = class extends React.Component {
 		const apkListRendered = this.props.apkList ? this.props.apkList.map((apk, index) => {
 			const apkCamel = str(apk).capitalize().camelize().s;
 			return (
-				<span style={styles.field} key={index}>
+				<span className="sp1ABC" style={styles.field} key={index}>
 					<label className={`lbLiveInfoAPK lbLiveInfoAPK${index} lbLiveInfoAPK${apkCamel}`} style={styles.label}>package name</label>
 					<span className={`spLiveInfoAPK spLiveInfoAPK${index} spLiveInfoAPK${apkCamel}`} style={styles.value}>{apk}</span>
 				</span>
@@ -296,7 +297,7 @@ const PanelSessionDetails = class extends React.Component {
 		const avmInfoRendered = this.props.avmInfo ? avmInfoOrder.map((field, index) => {
 			const idCamel = str(field.label).capitalize().camelize().s;
 			return (
-				<span style={styles.field} key={index}>
+				<span className="sp1ABC" style={styles.field} key={index}>
 					<label className={`lbLiveInfo${idCamel}`} style={styles.label}>{field.label}</label>
 					<span className={`spLiveInfo${idCamel}`} style={styles.value}>{field.value(this.props.avmInfo)}</span>
 				</span>
@@ -326,7 +327,7 @@ const PanelSessionDetails = class extends React.Component {
 						<FontIcon style={styles.icon} className="mdi mdi-puzzle" color="rgba(0, 0, 0, 0.4)"/>
 					</IconButton>
 					<ToolbarSeparator style={styles.separator}/>
-					<div style={styles.insetBlock}>
+					<div style={styles.insetBlockAPK}>
 					{apkListRendered}
 					</div>
 				</div>
