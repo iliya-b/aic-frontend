@@ -1,0 +1,65 @@
+'use strict';
+
+// Vendor
+const React = require('react');
+const debug = require('debug')('AiC:Components:Panel:PanelSessionScreen');
+
+// APP
+const PanelSessionScreen = class extends React.Component {
+	render() {
+		debug('render');
+
+		const style = {
+			iframeHorizontal: {
+				overflow: 'hidden',
+				width: '800px',
+				height: '600px'
+			},
+			iframeVertical: {
+				overflow: 'hidden',
+				width: '600px',
+				height: '800px'
+			},
+			audio: {
+				paddingTop: 20,
+				textAlign: 'center'
+			}
+		};
+
+		style.iframeRotation = this.props.rotation === "0" ? style.iframeHorizontal : style.iframeVertical;
+
+		const audioEnabled = false;
+
+		return (
+			<div>
+				<div style={style.iframeRotation}>
+					<canvas id="noVNC_canvas">
+							Canvas not supported.
+					</canvas>
+				</div>
+				{audioEnabled ? (
+					<div style={style.audio}>
+						<audio id="gobyVMAudio" controls>
+							Your browser does not support the <code>audio</code> element.
+						</audio>
+					</div>
+				)	: null}
+			</div>
+		);
+	}
+
+	shouldComponentUpdate(nextProps) {
+		return nextProps.rotation !== this.props.rotation;
+	}
+};
+
+PanelSessionScreen.contextTypes = {
+	muiTheme: React.PropTypes.object,
+	router: React.PropTypes.object
+};
+
+PanelSessionScreen.propTypes = {
+	rotation: React.PropTypes.string
+};
+
+module.exports = PanelSessionScreen;

@@ -13,14 +13,12 @@ import ToolbarLive from 'app/components/toolbar/toolbar-live';
 
 let projectId;
 
-// const kitkat = 'R3_CRB01-00-20160222-141328';
-// const kitkat = 'R3_CRB01-00-20160223-154224';
-// const kitkat = 'opengl';
-const kitkat = 'kitkat';
-// const kitkat = 'kitkat';
-const lollipop = 'lollipop';
-// const lollipop = 'xxx';
-const variants = [{id: kitkat, name: 'kitkat', version: '4'}, {id: 'kitkat-phone', name: 'kitkatPhone', version: '4'}, {id: lollipop, name: 'lollipop', version: '5'}];
+const variants = [
+	{id: 'kitkat-tablet', name: 'kitkatTablet', version: '4'},
+	{id: 'kitkat-phone', name: 'kitkatPhone', version: '4'},
+	{id: 'lollipop-tablet', name: 'lollipopTablet', version: '5'},
+	{id: 'lollipop-phone', name: 'lollipopPhone', version: '5'}
+];
 
 const LiveList = class extends React.Component {
 

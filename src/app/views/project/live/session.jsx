@@ -17,7 +17,7 @@ const debug = require('debug')('AiC:Views:Project:Live:Session');
 
 // APP
 import AreaStatus from 'app/components/project/area-status';
-import LiveScreen from 'app/components/project/live-screen';
+import PanelSessionScreen from 'app/components/panel/panel-session-screen';
 import LiveToolbox from 'app/components/project/live-toolbox';
 // import LogBox from 'app/components/shared/log-box';
 // import LogBoxRow from 'app/components/shared/log-box-row';
@@ -120,7 +120,7 @@ const LiveSession = class extends React.Component {
 							</div>
 						) : null}
 
-						<LiveScreen/>
+						<PanelSessionScreen rotation={this.state.live.properties ? this.state.live.properties['aicd.screen_rotation'] : 0}/>
 
 						{this.state.live.status === 'LIVE_STATUS_CONNECTED' ? (
 							<div>
