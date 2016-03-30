@@ -325,6 +325,7 @@ const ThemesPage = class extends React.Component {
 		const avmInfo2 = {avm_id: "xxx1", avm_novnc_host: "10.50.0.86", avm_novnc_port: 19623, avm_owner: "karine", avm_status: "DELETING", image: "kitkat", index: 1, project_id: "0602b27748484b249244ab471a9142d7", stack_name: "karine-cfaamg4e", ts_created: "2016-03-29T12:25:10.687575"}; // eslint-disable-line camelcase
 		const avmInfo3 = {avm_id: "yyy2", avm_novnc_host: "10.50.0.86", avm_novnc_port: 19623, avm_owner: "karine", avm_status: "READY", image: "lollipop", index: 1, project_id: "0602b27748484b249244ab471a9142d7", stack_name: "karine-cfaamg4e", ts_created: "2016-03-29T12:25:10.687575"}; // eslint-disable-line camelcase
 
+
 		return (
 			<div>
 				<ClearFix>
@@ -336,7 +337,7 @@ const ThemesPage = class extends React.Component {
 					<h2>Info</h2>
 
 					<div style={{width: 847}}>
-						<PanelSessionDetails properties={vmproperties}/>
+						<PanelSessionDetails avmInfo={avmInfo1} apkList={apkList} properties={vmproperties}/>
 					</div>
 
 					<h2>Icons</h2>

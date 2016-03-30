@@ -5,7 +5,7 @@ import React from 'react';
 import ToolbarSeparator from 'material-ui/lib/toolbar/toolbar-separator';
 import FontIcon from 'material-ui/lib/font-icon';
 import Paper from 'material-ui/lib/paper';
-import Divider from 'material-ui/lib/divider';
+import IconButton from 'material-ui/lib/icon-button';
 import str from 'string';
 
 // APP
@@ -203,14 +203,33 @@ const infos = [
 	}
 ];
 
+const avmInfoOrder = [
+	{
+		label: 'id',
+		value: info => info.avm_id
+	}, {
+		label: 'owner',
+		value: info => info.avm_owner
+	}, {
+		label: 'status',
+		value: info => info.avm_status
+	}, {
+		label: 'machine type',
+		value: info => info.image
+	}, {
+		label: 'creation time',
+		value: info => (new Date(info.ts_created)).toLocaleString()
+	}
+];
+
 const PanelSessionDetails = class extends React.Component {
 
 	render() {
 		const styles = {
 			paper: {
 			},
-			icon: {margin: '10px 0 10px 10px', verticalAlign: 'bottom'},
-			separator: {margin: '5px 10px'},
+			icon: {margin: '10px 0 10px 10px', verticalAlign: 'bottom', cursor: 'auto'},
+			separator: {margin: '0 10px 12px -2px', height: 25},
 			label: {
 				position: 'absolute',
 				// line-height: 22px;
@@ -225,7 +244,9 @@ const PanelSessionDetails = class extends React.Component {
 				// WebkitUserSelect: none;
 			},
 			field: {padding: '0 10px', minWidth: 100, display: 'inline-block', marginBottom: 5},
-			value: {color: 'rgba(0, 0, 0, 0.5)'}
+			value: {color: 'rgba(0, 0, 0, 0.5)'},
+			insetBlock: {margin: '-42px 0 0 48px'},
+			infoBlock: {clear: 'both'}
 		};
 
 		// TODO: should check all other panels for the style presence
@@ -236,12 +257,13 @@ const PanelSessionDetails = class extends React.Component {
 		const iconColor = 'rgba(0, 0, 0, 0.4)';
 		const iconHoverColor = 'rgba(0, 0, 0, 0.4)';
 		const infoRendered = infos.map(info => {
+			const infoCamel = str(info.tooltip).capitalize().camelize().s;
 			const fieldRendered = info.fields ? info.fields.map((field, index) => {
 				const idCamel = str(field.label).capitalize().camelize().s;
 				return (
 					<span style={styles.field} key={index}>
-						<label className={`lbLiveInfo${idCamel}`} style={styles.label}>{field.label}</label>
-						<span className={`spLiveInfo${idCamel}`} style={styles.value}>{field.value(this.props.properties)}</span>
+						<label className={`lbLiveInfo${infoCamel}${idCamel}`} style={styles.label}>{field.label}</label>
+						<span className={`spLiveInfo${infoCamel}${idCamel}`} style={styles.value}>{field.value(this.props.properties)}</span>
 					</span>
 				);
 			}) : null;
@@ -252,19 +274,62 @@ const PanelSessionDetails = class extends React.Component {
 				icon = React.createElement(info.svgIcon, {style: styles.icon, color: iconColor, hoverColor: iconHoverColor});
 			}
 			return (
-				<div key={info.id} className={`divLiveInfo${str(info.tooltip).camelize().s}`} >
-					{icon}
+				<div key={info.id} className={`divLiveInfo${infoCamel}`}>
+					<IconButton tooltip={info.tooltip}>
+						{icon}
+					</IconButton>
 					{fieldRendered}
 				</div>
 			);
 		});
 
+		const apkListRendered = this.props.apkList ? this.props.apkList.map((apk, index) => {
+			const apkCamel = str(apk).capitalize().camelize().s;
+			return (
+				<span style={styles.field} key={index}>
+					<label className={`lbLiveInfoAPK lbLiveInfoAPK${index} lbLiveInfoAPK${apkCamel}`} style={styles.label}>package name</label>
+					<span className={`spLiveInfoAPK spLiveInfoAPK${index} spLiveInfoAPK${apkCamel}`} style={styles.value}>{apk}</span>
+				</span>
+			);
+		}) : null;
+
+		const avmInfoRendered = this.props.avmInfo ? avmInfoOrder.map((field, index) => {
+			const idCamel = str(field.label).capitalize().camelize().s;
+			return (
+				<span style={styles.field} key={index}>
+					<label className={`lbLiveInfo${idCamel}`} style={styles.label}>{field.label}</label>
+					<span className={`spLiveInfo${idCamel}`} style={styles.value}>{field.value(this.props.avmInfo)}</span>
+				</span>
+			);
+		}) : null;
+
 		return (
 			<Paper style={styles.paper} zDepth={1}>
-				<FontIcon style={styles.icon} className="mdi mdi-information" color="rgba(0, 0, 0, 0.4)"/>
-				<ToolbarSeparator style={styles.separator}/>
-				<Divider/>
-				{infoRendered}
+				<div style={styles.infoBlock}>
+					<IconButton tooltip="machine information">
+						<FontIcon style={styles.icon} className="mdi mdi-information" color="rgba(0, 0, 0, 0.4)"/>
+					</IconButton>
+					<ToolbarSeparator style={styles.separator}/>
+					{avmInfoRendered}
+				</div>
+				<div style={styles.infoBlock}>
+					<IconButton tooltip="sensors">
+						<FontIcon style={styles.icon} className="mdi mdi-map-marker" color="rgba(0, 0, 0, 0.4)"/>
+					</IconButton>
+					<ToolbarSeparator style={styles.separator}/>
+					<div style={styles.insetBlock}>
+					{infoRendered}
+					</div>
+				</div>
+				<div style={styles.infoBlock}>
+					<IconButton tooltip="installed APKs">
+						<FontIcon style={styles.icon} className="mdi mdi-puzzle" color="rgba(0, 0, 0, 0.4)"/>
+					</IconButton>
+					<ToolbarSeparator style={styles.separator}/>
+					<div style={styles.insetBlock}>
+					{apkListRendered}
+					</div>
+				</div>
 			</Paper>
 		);
 	}
@@ -277,7 +342,9 @@ PanelSessionDetails.contextTypes = {
 
 PanelSessionDetails.propTypes = {
 	style: React.PropTypes.object,
-	properties: React.PropTypes.object
+	properties: React.PropTypes.object,
+	apkList: React.PropTypes.array,
+	avmInfo: React.PropTypes.object
 };
 
 module.exports = PanelSessionDetails;

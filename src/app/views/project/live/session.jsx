@@ -143,6 +143,7 @@ const LiveSession = class extends React.Component {
 									cameraList={this.state.camera ? this.state.camera.files : []}
 									// Details
 									properties={this.state.live.properties}
+									avmInfo={this.state.liveInfo}
 									/>
 							</div>
 						) : null}
