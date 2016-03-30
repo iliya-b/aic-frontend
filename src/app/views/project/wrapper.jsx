@@ -54,6 +54,7 @@ const ProjectWrapper = class extends AuthRequired {
 		return (
 			<div>
 				<AppBar
+					className="appBarMain"
 					title={this.state.title}
 					zDepth={0}
 					iconElementLeft={iconLeft}

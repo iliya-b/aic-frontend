@@ -65,7 +65,7 @@ const ToolbarAPK = class extends React.Component {
 			<Toolbar style={this.props.style}>
 				<FontIcon style={styles.icon} className="mdi mdi-android" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarGroup firstChild lastChild>
-					<ToolbarTitle text="Live sessions" style={styles.title}/>
+					<ToolbarTitle className="txtLiveTitle" text="Live sessions" style={styles.title}/>
 					<ToolbarSeparator style={styles.separator}/>
 					{buttons}
 				</ToolbarGroup>
