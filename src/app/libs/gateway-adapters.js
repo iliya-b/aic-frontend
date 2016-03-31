@@ -122,7 +122,7 @@ const GatewayAdapters = {
 		listPackages: {
 			response: res => {
 				return res.packages.filter(packageName => {
-					return !/^com\.android\..*|^com\.aicVM\..*|^com\.example\.android\..*|^android$/.test(packageName);
+					return !/^jp.co.omronsoft.openwnn|^com.svox.pico|^com\.android\..*|^com\.aicVM\..*|^com\.example\.android\..*|^android$/.test(packageName);
 				});
 			}
 		},
