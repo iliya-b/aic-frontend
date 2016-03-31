@@ -159,6 +159,7 @@ const LiveToolbox = class extends React.Component {
 	}
 
 	render() {
+		debug('render');
 		const styles = {
 			secondToolbar: {
 				marginLeft: 0,

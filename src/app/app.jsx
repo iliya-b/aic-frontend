@@ -18,6 +18,9 @@ import gatewayRegisters from 'app/libs/gateway-registers';
 	// Needed to enable debugging on browser
 	window.GobyAppGlobals.Debugger = require('debug');
 
+	// Debugging React
+	// window.Perf = require('react-addons-perf');
+
 	// Tap
 	const injectTapEventPlugin = require('react-tap-event-plugin');
 	// Needed for onTouchTap

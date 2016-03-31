@@ -170,6 +170,13 @@ const LiveSession = class extends React.Component {
 		// }
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		// return nextProps.rotation !== this.props.rotation;
+		debug('shouldComponentUpdate', nextProps, nextState, (nextState && nextState.live && this.state && this.state.live) ? nextState.live.status !== this.state.live.status : true);
+		// return (nextState && nextState.live && this.state && this.state.live) ? nextState.live.status !== this.state.live.status : true;
+		return true;
+	}
+
 	handleOnLiveAction(actionName) {
 		// debug(arguments);
 		switch (actionName) {
