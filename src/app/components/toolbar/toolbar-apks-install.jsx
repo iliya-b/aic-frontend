@@ -43,6 +43,11 @@ const PanelAPKInstall = class extends React.Component {
 				float: 'left',
 				marginTop: 10,
 				marginLeft: 15
+			},
+			labelStyle: {
+				textOverflow: 'ellipsis',
+				whiteSpace: 'nowrap',
+				overflow: 'hidden'
 			}
 		};
 		// TODO: should check all other panels for the style presence
@@ -58,7 +63,7 @@ const PanelAPKInstall = class extends React.Component {
 			<Paper style={styles.paper} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-puzzle" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<SelectField className="inputLiveAPKInstallFilename" style={styles.items} maxHeight={300} value={this.state.value} onChange={this.handleChange}>
+				<SelectField className="inputLiveAPKInstallFilename" style={styles.items} labelStyle={styles.labelStyle} maxHeight={300} value={this.state.value} onChange={this.handleChange}>
 					{items}
 				</SelectField>
 				<RaisedButton
