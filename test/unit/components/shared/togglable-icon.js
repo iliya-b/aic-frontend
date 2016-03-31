@@ -21,3 +21,7 @@ test('bar', async t => {
 
 	t.is(await bar, 'bar');
 });
+
+// References
+// https://github.com/Swizec/react-testing-example/blob/master/src/__tests__/RandomPicker-test.jsx
+// https://www.toptal.com/react/how-react-components-make-ui-testing-easy
