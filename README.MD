@@ -69,23 +69,21 @@ Known Bugs
 * Tables: can not unselect all ([open issue](https://github.com/callemall/material-ui/issues/3074) on the Table component of material-ui)
 * Tables: header separator bugs on DOM change (to debug)
 * Reflux unsubscribe method is broken, so users will get React messages like this: `Warning: setState(...): Can only update a mounted or mounting component. This usually means you called setState() on an unmounted component. This is a no-op. Please check the code for the undefined component.`
+* VM white screen is a chrome bug [ref1](https://bugs.chromium.org/p/chromium/issues/detail?id=588434) [ref2](http://stackoverflow.com/questions/36114379/chrome-canvas-bug-on-mac-os-x-when-switching-spaces)
 
 TODO List
 =========
 
-* ~~Change noVNC from git submodule to a npm module~~ :white_check_mark:
 * ~~Update all code to xo default style~~ :white_check_mark:
-* Clean up gulp tasks (simplified version can be found in other R&D projects)
-	* Replace browserify by webpack with [tree shaking](http://www.2ality.com/2015/12/webpack-tree-shaking.html) then add again the indexes files
 * Update readme (config.json, how to run tests, etc...)
-* When new version is available put back to npm the nyc package ([instead of the fork with --extension](https://github.com/bcoe/nyc/pull/163))
-* Apply [this](https://gist.github.com/tomazzaman/790bc607eb7ca3fd347f) integration testing (just a check if the app is working)
-* Write all the unit tests for all the components (the POC is for a single component and does nothing).
-* ~~Write/adapt features~~ (transfered to aic_features project) :x:
-* Try other browsers for behavior testing
-* ~~Configure backend so the tests can pass~~ :white_check_mark:
-* ~~Update node packages (a lot of work since everything will be broken by that)~~ :white_check_mark:
-* Use ReactTestUtils on unit tests
+* Tests
+	* ~~Configure backend so the tests can pass~~ :white_check_mark:
+	* ~~Write/adapt features~~ (transfered to aic_features project) :x:
+	* Write all the unit tests for all the components (the POC is for a single component and does nothing).
+	* Use ReactTestUtils on unit tests
+	* Create react-router mink
+	* Try other browsers for behavior testing
+	* Apply [this](https://gist.github.com/tomazzaman/790bc607eb7ca3fd347f) integration testing (just a check if the app is working)
 * Auth Todos
 	* ~~disconnect user when token is invalid in any backend request~~ :white_check_mark:
 	* true logout (now is just application sided not server sided)
@@ -93,7 +91,20 @@ TODO List
 * Routing
 	* ~~Not found route~~ :white_check_mark:
 	* ~~Next Path broken (regression)~~ :white_check_mark:
-* Missing on the backend
-  * Live
-      * Get initial VM state to set the frontend sensors (for example battery slides should be relative to the vm battery)
-      * Audio port
+* Live
+  * Get initial VM state to set the frontend sensors (for example battery slides should be relative to the vm battery)
+  * Audio port
+  * Callbacks from async calls should check id (for example previous live calls can trigger current live session)
+  * Implement machine state
+* React
+	* props => {} functions do not check propTypes
+* Build
+	* Try to light up the build, npm cache?
+	* Clean up gulp tasks (simplified version can be found in other R&D projects)
+	* Replace browserify by webpack with [tree shaking](http://www.2ality.com/2015/12/webpack-tree-shaking.html) then add again the indexes files
+* Packages
+	* ~~Change noVNC from git submodule to a npm module~~ :white_check_mark:
+	* ~~Update node packages (a lot of work since everything will be broken by that)~~ :white_check_mark:
+	* When new version is available put back to npm the nyc package ([instead of the fork with --extension](https://github.com/bcoe/nyc/pull/163))
+* Backend API
+	* Extract API lib to external package

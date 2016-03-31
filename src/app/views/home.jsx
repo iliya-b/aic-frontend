@@ -16,7 +16,11 @@ const Home = class extends AuthPage {
 
 	constructor(props) {
 		super(props);
-		this.handleLoginOpen = this.handleLoginOpen.bind(this);
+		// this.handleLoginOpen = this.handleLoginOpen.bind(this);
+		this.handleLoginOpen = () => {
+			this.setState({loginDialogOpen: true});
+			// e.preventDefault();
+		};
 		this.handleLoginClose = this.handleLoginClose.bind(this);
 		this.state = {
 			loginDialogOpen: false
@@ -81,9 +85,7 @@ const Home = class extends AuthPage {
 					<RaisedButton
 						label="Login"
 						title="Login"
-						href="#"
 						onClick={this.handleLoginOpen}
-						linkButton
 						style={styles.buttonStyle}
 						primary
 						/>
@@ -92,11 +94,9 @@ const Home = class extends AuthPage {
 			</FullWidthSection>
 		);
 	}
+	// 						href="#"
+	//					linkButton
 
-	handleLoginOpen(e) {
-		e.preventDefault();
-		this.setState({loginDialogOpen: true});
-	}
 
 	handleLoginClose(e) {
 		e.preventDefault();

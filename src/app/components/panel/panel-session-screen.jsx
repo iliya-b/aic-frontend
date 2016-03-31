@@ -18,7 +18,8 @@ const PanelSessionScreen = class extends React.Component {
 			iframeVertical: {
 				overflow: 'hidden',
 				width: '600px',
-				height: '800px'
+				height: '800px',
+				margin: 'auto'
 			},
 			audio: {
 				paddingTop: 20,

@@ -60,7 +60,8 @@ const PanelMonkeyRunner = class extends React.Component {
 			labelStyle: {
 				textOverflow: 'ellipsis',
 				whiteSpace: 'nowrap',
-				overflow: 'hidden'
+				overflow: 'hidden',
+				height: 56
 			}
 		};
 		// TODO: should check all other panels for the style presence

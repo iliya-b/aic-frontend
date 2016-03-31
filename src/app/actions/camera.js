@@ -39,10 +39,10 @@ CameraActions.upload.listen(function (projectId, files) {
 	});
 });
 
-CameraActions.delete.listen(function (projectId, apkIdList) {
+CameraActions.delete.listen(function (projectId, cameraFileList) {
 	Promise.all(
-		apkIdList.map(apkId => {
-			return Gateway.camera.delete({projectId, apkId});
+		cameraFileList.map(cameraFileId => {
+			return Gateway.camera.delete({projectId, cameraFileId});
 		})
 	)
 	.then(() => {
