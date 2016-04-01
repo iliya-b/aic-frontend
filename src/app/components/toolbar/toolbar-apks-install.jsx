@@ -10,6 +10,7 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import RaisedButton from 'material-ui/lib/raised-button';
 
 // APP
+import ListItemStatus from 'app/components/list/list-item-status';
 const PanelAPKInstall = class extends React.Component {
 
 	constructor(props) {
@@ -33,7 +34,7 @@ const PanelAPKInstall = class extends React.Component {
 				float: 'left'
 			},
 			paper: {
-				height: 56
+				minHeight: 56
 			},
 			icon: {
 				margin: '15px 10px 0 10px',
@@ -57,9 +58,33 @@ const PanelAPKInstall = class extends React.Component {
 		}
 
 		const items = [];
+		const filenames = {};
 		this.props.apkList.forEach(apk => {
 			items.push(<MenuItem value={apk.id} key={apk.id} primaryText={apk.filename}/>);
+			filenames[apk.id] = apk.filename;
 		});
+
+		let apkInstalledRendered = null;
+		const iconStatusMapping = {
+			ERROR: 'ERROR',
+			INSTALLING: 'LOADING',
+			SUCCESS: 'SUCCESS'
+		};
+
+		if (this.props.apkInstalled) {
+			const apkInstalledFiltered = this.props.apkInstalled
+				.filter(apk => {
+					return apk.endTime ? (Date.now() - apk.endTime) < 30000 : true;
+				})
+				.map(apk => ({
+					id: apk.refId,
+					icon: iconStatusMapping[apk.status],
+					label: filenames[apk.apkId]
+				}));
+
+			apkInstalledRendered = <ListItemStatus style={{clear: 'both', display: 'block', marginLeft: 48}} items={apkInstalledFiltered}/>;
+		}
+
 		return (
 			<Paper style={styles.paper} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-puzzle" color="rgba(0, 0, 0, 0.4)"/>
@@ -71,11 +96,12 @@ const PanelAPKInstall = class extends React.Component {
 					className="btLiveAPKInstallSubmit"
 					label="Install"
 					title="Install"
-					href="#"
 					secondary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}
 					/>
+				<br/>
+				{apkInstalledRendered}
 			</Paper>
 		);
 	}
@@ -89,7 +115,8 @@ PanelAPKInstall.contextTypes = {
 PanelAPKInstall.propTypes = {
 	style: React.PropTypes.object,
 	onClick: React.PropTypes.func,
-	apkList: React.PropTypes.array
+	apkList: React.PropTypes.array,
+	apkInstalled: React.PropTypes.array
 };
 
 module.exports = PanelAPKInstall;

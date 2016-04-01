@@ -203,7 +203,8 @@ const LiveToolbox = class extends React.Component {
 		} else if (this.state.activeSecondBar === 'apks') { // eslint-disable-line no-negated-condition
 			const props = {
 				apkList: this.props.apkList,
-				onClick: this.props.onInstallAPK
+				onClick: this.props.onInstallAPK,
+				apkInstalled: this.props.apkInstalled
 			};
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
 		} else if (this.state.activeSecondBar === 'camera') { // eslint-disable-line no-negated-condition
@@ -267,7 +268,8 @@ LiveToolbox.propTypes = {
 	packageList: React.PropTypes.array,
 	cameraList: React.PropTypes.array,
 	properties: React.PropTypes.object,
-	avmInfo: React.PropTypes.object
+	avmInfo: React.PropTypes.object,
+	apkInstalled: React.PropTypes.array
 };
 
 module.exports = LiveToolbox;

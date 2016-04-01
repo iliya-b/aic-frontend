@@ -338,17 +338,40 @@ const LiveStore = Reflux.createStore({
 	},
 
 	// install APK
-	onInstallAPK() {
+	onInstallAPK(projectId, avmId, apkId, refId) {
 		debug('onInstallAPK');
+		this.state.live.installedAPKs = this.state.live.installedAPKs || [];
+		this.state.live.installedAPKs.push({
+			refId,
+			apkId,
+			status: 'INSTALLING',
+			startTime: Date.now()
+		});
+		this.updateState();
 	},
 
-	onInstallAPKCompleted() {
+	onInstallAPKCompleted(response, projectId, avmId, apkId, refId) {
 		debug('onInstallAPKCompleted');
 		LiveActions.listPackages(this.state.liveInfo.avm_id);
+		const index = this.state.live.installedAPKs.reduce((found, apk, index) => {
+			return apk.refId === refId ? index : found;
+		}, -1);
+		if (index !== -1) {
+			this.state.live.installedAPKs[index].endTime = Date.now();
+			this.state.live.installedAPKs[index].status = 'SUCCESS';
+		}
+		this.updateState();
 	},
 
-	onInstallAPKFailure(errorMessage) {
+	onInstallAPKFailed(errorMessage, projectId, avmId, apkId, refId) {
 		debug('onInstallAPKFailure', errorMessage);
+		const index = this.state.live.installedAPKs.reduce((found, apk, index) => {
+			return apk.refId === refId ? index : found;
+		}, -1);
+		if (index !== -1) {
+			this.state.live.installedAPKs[index].endTime = Date.now();
+			this.state.live.installedAPKs[index].status = 'ERROR';
+		}
 		this.state.live.message = errorMessage;
 		this.state.live.status = 'LIVE_STATUS_INSTALLAPK_FAILED';
 		this.updateState();

@@ -44,7 +44,8 @@ const LiveSession = class extends React.Component {
 		this.handleChangeRotation = this.handleChangeRotation.bind(this);
 		this.handleChangeSensor = this.handleChangeSensor.bind(this);
 		this.handleAPKs = (e, apkId) => {
-			LiveActions.installAPK(projectId, avmId, apkId);
+			const refId = `${projectId}-${avmId}-${apkId}-${Date.now()}`;
+			LiveActions.installAPK(projectId, avmId, apkId, refId);
 		};
 		this.handleMonkeyRunner = (e, packages, eventCount, throttle) => {
 			LiveActions.monkeyRunner(avmId, packages, eventCount, throttle);
@@ -136,6 +137,7 @@ const LiveSession = class extends React.Component {
 									// APKs
 									onInstallAPK={this.handleAPKs}
 									apkList={this.state.apk ? this.state.apk.apks : []}
+									apkInstalled={this.state.live.installedAPKs ? this.state.live.installedAPKs : []}
 									// Monkey Runner
 									onMonkeyRunner={this.handleMonkeyRunner}
 									packageList={this.state.live.packages}

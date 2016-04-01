@@ -250,12 +250,12 @@ LiveActions.setSensor.listen(function (avmId, sensor, payload) {
 // 	});
 // });
 
-LiveActions.installAPK.listen(function (projectId, avmId, apkId) {
+LiveActions.installAPK.listen(function (projectId, avmId, apkId, refId) {
 	Gateway.live.installAPK({avmId, apkId})
 	.then(res => {
-		this.completed(res);
+		this.completed(res, projectId, avmId, apkId, refId);
 	}, err => {
-		this.failure(err);
+		this.failed(err, projectId, avmId, apkId, refId);
 	});
 	// BackendAPI.liveInstallAPK(projectId, avmId, apkId, res => {
 	// 	this.completed(res);
