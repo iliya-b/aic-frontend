@@ -343,8 +343,10 @@ const ThemesPage = class extends React.Component {
 
 					<h2>Icons</h2>
 
-					{IconPhoneList.kitkat()}
-					{IconPhoneList.lollipop()}
+					{IconPhoneList.kitkatTablet()}
+					{IconPhoneList.kitkatPhone()}
+					{IconPhoneList.lollipopTablet()}
+					{IconPhoneList.lollipopPhone()}
 
 					<h2>VM Card</h2>
 

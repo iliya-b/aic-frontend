@@ -130,13 +130,13 @@ const APKManager = class extends React.Component {
 			);
 		} else if (this.state.apk && this.state.apk.status === 'listCompleted') {
 			table = (
-				<Paper style={styles.noAPKs}>
+				<Paper className="txtAPKManagerListInfo" style={styles.noAPKs}>
 					No files found.
 				</Paper>
 			);
 		} else {
 			table = (
-				<Paper style={styles.noAPKs}>
+				<Paper className="txtAPKManagerListInfo" style={styles.noAPKs}>
 					Loading files...
 				</Paper>
 			);

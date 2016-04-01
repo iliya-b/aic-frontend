@@ -54,7 +54,7 @@ const LoginDialog = class extends React.Component {
 				/>
 		];
 
-		const errorBox = this.state && this.state.login && this.state.login.status === 'LOGIN_STATUS_CONNECT_FAILED' ? <div style={{color: this.context.muiTheme.palette.errorColor}}>{this.state.login.message}</div> : null;
+		const errorBox = this.state && this.state.login && this.state.login.status === 'LOGIN_STATUS_CONNECT_FAILED' ? <div className="txtDialogLoginError" style={{color: this.context.muiTheme.palette.errorColor}}>{this.state.login.message}</div> : null;
 
 		return (
 			<Dialog title="Login" actions={loginActions} open={this.props.open}>

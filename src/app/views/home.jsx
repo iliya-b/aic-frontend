@@ -94,9 +94,6 @@ const Home = class extends AuthPage {
 			</FullWidthSection>
 		);
 	}
-	// 						href="#"
-	//					linkButton
-
 
 	handleLoginClose(e) {
 		e.preventDefault();

@@ -84,20 +84,29 @@ TODO List
 	* Create react-router mink
 	* Try other browsers for behavior testing
 	* Apply [this](https://gist.github.com/tomazzaman/790bc607eb7ca3fd347f) integration testing (just a check if the app is working)
+	* Theme test should be in another app (probably do it with the webpack change)
 * Auth Todos
 	* ~~disconnect user when token is invalid in any backend request~~ :white_check_mark:
 	* true logout (now is just application sided not server sided)
 	* replace localstorage by another storage?
+	* Auth classes need some cleaning
+	* Fix 1st load of app when token exists but invalid
 * Routing
 	* ~~Not found route~~ :white_check_mark:
 	* ~~Next Path broken (regression)~~ :white_check_mark:
+	* Views have router.push(pathname), probably needs to be changed, so if one changes pathname there is no need to revisit all views.
 * Live
   * Get initial VM state to set the frontend sensors (for example battery slides should be relative to the vm battery)
   * Audio port
   * Callbacks from async calls should check id (for example previous live calls can trigger current live session)
   * Implement machine state
+  * Activate GSM functions only on phone images
+  * Activate GSM accept/hold/cancel if there is a current call
+  * Limit the extensions allowed on the upload of camera assets
+  * Add security/validation on the fields of frontend
 * React
 	* props => {} functions do not check propTypes
+	* reorganize components into stateless components and containers
 * Build
 	* Try to light up the build, npm cache?
 	* Clean up gulp tasks (simplified version can be found in other R&D projects)
@@ -106,5 +115,8 @@ TODO List
 	* ~~Change noVNC from git submodule to a npm module~~ :white_check_mark:
 	* ~~Update node packages (a lot of work since everything will be broken by that)~~ :white_check_mark:
 	* When new version is available put back to npm the nyc package ([instead of the fork with --extension](https://github.com/bcoe/nyc/pull/163))
-* Backend API
 	* Extract API lib to external package
+* Backend API
+	* valid response type (application/json for example)
+	* create api user preferences
+	* revisit the list vms API, should the filter by project done by frontend?

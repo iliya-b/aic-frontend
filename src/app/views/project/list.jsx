@@ -9,6 +9,7 @@ import IconButton from 'material-ui/lib/icon-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 import TextField from 'material-ui/lib/text-field';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import str from 'string';
 const debug = require('debug')('AiC:Views:Project:List');
 
 // APP
@@ -187,11 +188,12 @@ const ProjectList = class extends React.Component {
 				const handleClickEnterItem = this.handleClickEnter.bind(this, index);
 				const handleClickDeleteItem = this.handleClickDelete.bind(this, index);
 				const handleClickUpdateItem = this.handleClickUpdate.bind(this, index);
+				const projectNameCamel = str(item.name).capitalize().camelize().s;
 
 				return (
 					<Card key={item.id} style={styles.card}>
 						<CardActions style={styles.cardActions}>
-							<span style={styles.inputProjectName}>{item.name}</span>
+							<span className={`txtProjectName txtProjectName${index} txtProjectName${projectNameCamel}`} style={styles.inputProjectName}>{item.name}</span>
 							<IconButton className="btProjectEnter" title={`Enter ${item.name}`} tooltip="Enter" style={styles.button} onClick={handleClickEnterItem}>
 								<FontIcon className="mdi mdi-arrow-right-bold" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 							</IconButton>
@@ -243,7 +245,6 @@ const ProjectList = class extends React.Component {
 						<RaisedButton
 							label="New project"
 							title="New project"
-							linkButton
 							primary
 							style={styles.newProject}
 							icon={<FontIcon className="mdi mdi-plus"/>}
