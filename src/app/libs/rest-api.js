@@ -3,7 +3,6 @@
 
 // Vendors
 const url = require('url');
-const sprintf = require('sprintf');
 const debug = require('debug')('AiC:Libs:RestAPI');
 
 // APP
@@ -175,7 +174,7 @@ const RestAPI = {
 	apiCallAuth(options) {
 		const AuthActions = require('app/actions/auth');
 		options.headers = options.headers ? options.headers : {};
-		options.headers.Authorization = sprintf(' Bearer %s', AuthActions.getToken());
+		options.headers.Authorization = ` Bearer ${AuthActions.getToken()}`;
 		options.authRequired = true;
 		return this.apiCall(options);
 	}
