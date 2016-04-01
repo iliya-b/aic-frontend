@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ## [Unreleased]
 
+## [0.2.3]
+
 ### Added
 - Live GSM calls
 - Live Monkey runner (panda icon)
