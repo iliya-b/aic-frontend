@@ -270,7 +270,8 @@ LiveToolbox.propTypes = {
 	cameraList: React.PropTypes.array,
 	properties: React.PropTypes.object,
 	avmInfo: React.PropTypes.object,
-	apkInstalled: React.PropTypes.array
+	apkInstalled: React.PropTypes.array,
+	monkeyCalls: React.PropTypes.array
 };
 
 module.exports = LiveToolbox;
