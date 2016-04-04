@@ -7,7 +7,7 @@ const debug = require('debug')('AiC:Views:CameraAssets');
 
 // APP
 import ToolbarFileUpload from 'app/components/toolbar/toolbar-file-upload';
-import TableAPK from 'app/components/table/table-apk';
+import TableFiles from 'app/components/table/table-files';
 import TableProgress from 'app/components/table/table-progress';
 import Dropzone from 'app/components/shared/dropzone';
 import CameraActions from 'app/actions/camera';
@@ -122,10 +122,11 @@ const CameraAssets = class extends React.Component {
 		let table;
 		if (this.state.camera && this.state.camera.files && this.state.camera.files.length) {
 			table = (
-				<TableAPK
+				<TableFiles
 					onRowSelection={this.handleSelectFiles}
 					list={this.state.camera.files}
 					selected={this.state.selectFileIndexes}
+					type="CameraAssets"
 					/>
 			);
 		} else if (this.state.camera && this.state.camera.status === 'listCompleted') {

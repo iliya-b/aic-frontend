@@ -7,7 +7,7 @@ const debug = require('debug')('AiC:Views:APKManager');
 
 // APP
 import ToolbarFileUpload from 'app/components/toolbar/toolbar-file-upload';
-import TableAPK from 'app/components/table/table-apk';
+import TableFiles from 'app/components/table/table-files';
 import TableProgress from 'app/components/table/table-progress';
 import Dropzone from 'app/components/shared/dropzone';
 import APKActions from 'app/actions/apk';
@@ -122,10 +122,11 @@ const APKManager = class extends React.Component {
 		let table;
 		if (this.state.apk && this.state.apk.apks && this.state.apk.apks.length) {
 			table = (
-				<TableAPK
+				<TableFiles
 					onRowSelection={this.handleSelectFiles}
 					list={this.state.apk.apks}
 					selected={this.state.selectFileIndexes}
+					type="APKs"
 					/>
 			);
 		} else if (this.state.apk && this.state.apk.status === 'listCompleted') {
