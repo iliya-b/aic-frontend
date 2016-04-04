@@ -227,7 +227,8 @@ const LiveToolbox = class extends React.Component {
 				onClick: this.props.onMonkeyRunner,
 				onInputFocus: this.props.onInputFocus,
 				onInputBlur: this.props.onInputBlur,
-				packageList: this.props.packageList
+				packageList: this.props.packageList,
+				monkeyCalls: this.props.monkeyCalls
 			};
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
 		} else if (this.state.activeSecondBar === 'details') { // eslint-disable-line no-negated-condition

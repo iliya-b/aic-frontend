@@ -456,12 +456,12 @@ LiveActions.listPackages.listen(function (avmId) {
 	});
 });
 
-LiveActions.monkeyRunner.listen(function (avmId, packages, eventCount, throttle) {
+LiveActions.monkeyRunner.listen(function (avmId, packages, eventCount, throttle, refId) {
 	Gateway.live.monkeyRunner({avmId, packages, eventCount, throttle})
 	.then(res => {
-		this.completed(res);
+		this.completed(res, avmId, packages, eventCount, throttle, refId);
 	}, err => {
-		this.failure(err);
+		this.failed(err, avmId, packages, eventCount, throttle, refId);
 	});
 });
 

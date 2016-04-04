@@ -12,6 +12,7 @@ import TextField from 'material-ui/lib/text-field';
 const debug = require('debug')('AiC:Components:Toolbar:PanelMonkeyRunner');
 
 // APP
+import ListItemStatus from 'app/components/list/list-item-status';
 const PanelMonkeyRunner = class extends React.Component {
 
 	constructor(props) {
@@ -46,7 +47,7 @@ const PanelMonkeyRunner = class extends React.Component {
 				width: 150
 			},
 			paper: {
-				height: 56
+				minHeight: 56
 			},
 			icon: {
 				margin: '15px 10px 0 10px',
@@ -73,6 +74,22 @@ const PanelMonkeyRunner = class extends React.Component {
 		this.props.packageList.forEach((packageName, index) => {
 			items.push(<MenuItem value={packageName} key={index} primaryText={packageName}/>);
 		});
+
+		let monkeyCallsRendered = null;
+		if (this.props.monkeyCalls) {
+			const monkeyCallsFiltered = this.props.monkeyCalls
+				.filter(mcall => {
+					return mcall.endTime ? (Date.now() - mcall.endTime) < 30000 : true;
+				})
+				.map(mcall => ({
+					id: mcall.id,
+					icon: mcall.status,
+					label: mcall.label
+				}));
+
+			monkeyCallsRendered = <ListItemStatus style={{clear: 'both', display: 'block', marginLeft: 48}} items={monkeyCallsFiltered}/>;
+		}
+
 		return (
 			<Paper style={styles.paper} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-panda" color="rgba(0, 0, 0, 0.4)"/>
@@ -91,6 +108,8 @@ const PanelMonkeyRunner = class extends React.Component {
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}
 					/>
+				<br/>
+				{monkeyCallsRendered}
 			</Paper>
 		);
 	}
@@ -106,7 +125,8 @@ PanelMonkeyRunner.propTypes = {
 	onClick: React.PropTypes.func,
 	packageList: React.PropTypes.array,
 	onInputFocus: React.PropTypes.func,
-	onInputBlur: React.PropTypes.func
+	onInputBlur: React.PropTypes.func,
+	monkeyCalls: React.PropTypes.array
 };
 
 module.exports = PanelMonkeyRunner;

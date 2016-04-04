@@ -396,16 +396,38 @@ const LiveStore = Reflux.createStore({
 	},
 
 	// Monkey Runner
-	onMoneyRunner() {
+	onMoneyRunner(avmId, packages, eventCount, throttle, refId) {
 		debug('onMoneyRunner');
+		this.state.live.monkeyCalls = this.state.live.monkeyCalls || [];
+		this.state.live.monkeyCalls.push({
+			id: refId,
+			status: 'LOADING',
+			startTime: Date.now()
+		});
+		this.updateState();
 	},
 
-	onMoneyRunnerCompleted() {
+	onMoneyRunnerCompleted(response, avmId, packages, eventCount, throttle, refId) {
 		debug('onMoneyRunnerCompleted');
+		const index = this.state.live.monkeyCalls.reduce((found, mcall, index) => {
+			return mcall.id === refId ? index : found;
+		}, -1);
+		if (index !== -1) {
+			this.state.live.monkeyCalls[index].endTime = Date.now();
+			this.state.live.monkeyCalls[index].status = 'SUCCESS';
+		}
+		this.updateState();
 	},
 
-	onMoneyRunnerFailure(errorMessage) {
+	onMoneyRunnerFailure(errorMessage, avmId, packages, eventCount, throttle, refId) {
 		debug('onMoneyRunnerFailure', errorMessage);
+		const index = this.state.live.monkeyCalls.reduce((found, mcall, index) => {
+			return mcall.id === refId ? index : found;
+		}, -1);
+		if (index !== -1) {
+			this.state.live.monkeyCalls[index].endTime = Date.now();
+			this.state.live.monkeyCalls[index].status = 'ERROR';
+		}
 		this.state.live.message = errorMessage;
 		this.state.live.status = 'LIVE_STATUS_MONKEYRUNNER_FAILED';
 		this.updateState();

@@ -48,7 +48,8 @@ const LiveSession = class extends React.Component {
 			LiveActions.installAPK(projectId, avmId, apkId, refId);
 		};
 		this.handleMonkeyRunner = (e, packages, eventCount, throttle) => {
-			LiveActions.monkeyRunner(avmId, packages, eventCount, throttle);
+			const refId = `${avmId}-${packages.join('-')}-${eventCount}-${throttle}-${Date.now()}`;
+			LiveActions.monkeyRunner(avmId, packages, eventCount, throttle, refId);
 		};
 	}
 
@@ -141,6 +142,7 @@ const LiveSession = class extends React.Component {
 									// Monkey Runner
 									onMonkeyRunner={this.handleMonkeyRunner}
 									packageList={this.state.live.packages}
+									monkeyCalls={this.state.live.monkeyCalls ? this.state.live.monkeyCalls : []}
 									// Camera
 									cameraList={this.state.camera ? this.state.camera.files : []}
 									// Details
