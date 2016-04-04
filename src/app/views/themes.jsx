@@ -45,7 +45,7 @@ import LiveToolbox from 'app/components/project/live-toolbox';
 
 import SessionEndedDialog from 'app/components/dialog/dialog-session-ended';
 
-import TableAPK from 'app/components/table/table-apk';
+import TableFiles from 'app/components/table/table-files';
 
 import AppUtils from 'app/components/shared/app-utils';
 import InfoBox from 'app/components/shared/info-box';
@@ -370,7 +370,7 @@ const ThemesPage = class extends React.Component {
 						</ClearFix>
 
 						<ClearFix style={{width: 800, padding: 20}}>
-							<TableAPK list={apkList}/>
+							<TableFiles list={apkList}/>
 						</ClearFix>
 
 						<ClearFix style={{width: 800, padding: 20}}>
