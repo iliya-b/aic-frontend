@@ -6,6 +6,7 @@ import Spacing from 'material-ui/lib/styles/spacing';
 import * as Colors from 'material-ui/lib/styles/colors';
 import Menu from 'material-ui/lib/menus/menu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
+const debug = require('debug')('AiC:Views:Project:Page');
 
 const menuItems = [
 	{path: '', text: 'APK Manager'},
@@ -13,19 +14,31 @@ const menuItems = [
 	{path: 'live', text: 'Live Mode'}
 ];
 
+let projectId;
+
 const ProjectPage = class extends React.Component {
+
+	constructor(props) {
+		super(props);
+		projectId = this.props.params.projectId;
+	}
+
+	composePath(partialPath) {
+		return `/projects/${projectId}/${partialPath}`;
+	}
 
 	_onItemClick(index, e) {
 		// debug(arguments);
 		e.preventDefault();
-		const {projectId} = this.props.params;
-		this.context.router.push(`/projects/${projectId}/${menuItems[index].path}`);
+		this.context.router.push(this.composePath(menuItems[index].path));
 	}
 
 	_getSelectedIndex() {
 		for (let i = menuItems.length - 1; i >= 0; i--) {
 			const currentItem = menuItems[i];
-			if (currentItem.path && this.context.router.isActive({pathname: currentItem.path})) {
+			const composedPath = this.composePath(currentItem.path);
+			debug('composedPath', composedPath);
+			if (this.context.router.isActive({pathname: composedPath})) {
 				return i;
 			}
 		}
@@ -55,7 +68,8 @@ const ProjectPage = class extends React.Component {
 				minHeight: '90vh'
 			},
 			menuItemSelected: {
-				color: this.context.muiTheme.palette.accent1Color
+				// color: this.context.muiTheme.palette.accent1Color
+				backgroundColor: 'rgba(0, 0, 0, 0.0980392)'
 			}
 		};
 
@@ -64,6 +78,8 @@ const ProjectPage = class extends React.Component {
 
 	render() {
 		const styles = this.getStyles();
+		const selectedPageIndex = this._getSelectedIndex();
+		debug('selectedPageIndex', selectedPageIndex);
 		const menusItems = menuItems.map(function (item, index) {
 			const handleOnClickMenuItem = this._onItemClick.bind(this, index);
 			return (<MenuItem
@@ -73,7 +89,7 @@ const ProjectPage = class extends React.Component {
 				onClick={handleOnClickMenuItem}
 				title={item.text}
 				href="#"
-				style={this._getSelectedIndex() === index ? styles.menuItemSelected : null}
+				style={selectedPageIndex === index ? styles.menuItemSelected : null}
 				/>);
 		}, this);
 		// const menusItems = menuItems.map(function (item, index) {

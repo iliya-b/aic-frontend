@@ -4,6 +4,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ## [Unreleased]
 
+### Added
+- Feedback for apk install and monkey runner on live
+
+### Fixed
+- Fix project internal selected menu indication
+
 ## [0.2.3]
 
 ### Added
