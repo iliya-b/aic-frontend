@@ -5,7 +5,7 @@
 const Reflux = require('reflux');
 
 // Vendor
-const debug = require('debug')('AiC:Live:Store');
+const debug = require('debug')('AiC:Stores:Live');
 
 // APP
 const AppUtils = require('app/components/shared/app-utils');
@@ -396,18 +396,19 @@ const LiveStore = Reflux.createStore({
 	},
 
 	// Monkey Runner
-	onMoneyRunner(avmId, packages, eventCount, throttle, refId) {
+	onMonkeyRunner(avmId, packages, eventCount, throttle, refId) {
 		debug('onMoneyRunner');
 		this.state.live.monkeyCalls = this.state.live.monkeyCalls || [];
 		this.state.live.monkeyCalls.push({
 			id: refId,
 			status: 'LOADING',
-			startTime: Date.now()
+			startTime: Date.now(),
+			label: `${packages.join(' ')} (${eventCount}x-${throttle}ms)`
 		});
 		this.updateState();
 	},
 
-	onMoneyRunnerCompleted(response, avmId, packages, eventCount, throttle, refId) {
+	onMonkeyRunnerCompleted(response, avmId, packages, eventCount, throttle, refId) {
 		debug('onMoneyRunnerCompleted');
 		const index = this.state.live.monkeyCalls.reduce((found, mcall, index) => {
 			return mcall.id === refId ? index : found;
@@ -419,7 +420,7 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onMoneyRunnerFailure(errorMessage, avmId, packages, eventCount, throttle, refId) {
+	onMonkeyRunnerFailure(errorMessage, avmId, packages, eventCount, throttle, refId) {
 		debug('onMoneyRunnerFailure', errorMessage);
 		const index = this.state.live.monkeyCalls.reduce((found, mcall, index) => {
 			return mcall.id === refId ? index : found;
