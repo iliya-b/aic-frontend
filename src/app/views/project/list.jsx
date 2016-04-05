@@ -118,6 +118,7 @@ const ProjectList = class extends React.Component {
 		};
 	}
 
+	// TODO: move to a lib
 	moveCaretToEnd(el) {
 		if (typeof el.selectionStart === 'number') {
 			debug('selectionStart');

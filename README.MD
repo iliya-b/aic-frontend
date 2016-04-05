@@ -85,6 +85,7 @@ TODO List
 	* Try other browsers for behavior testing
 	* Apply [this](https://gist.github.com/tomazzaman/790bc607eb7ca3fd347f) integration testing (just a check if the app is working)
 	* Theme test should be in another app (probably do it with the webpack change)
+	* Continuously deployment for dev env with [stridercd](http://alexfernandez.github.io/2016/stridercd.html) ?
 * Auth Todos
 	* ~~disconnect user when token is invalid in any backend request~~ :white_check_mark:
 	* true logout (now is just application sided not server sided)

@@ -10,7 +10,7 @@ before_script:
 
 test_integration:
   script:
-    - npm install -g phantomjs
+    - npm install -g phantomjs-prebuilt
     - phantomjs -w &
     - sleep 1
     - git clone git@git.rnd.alterway.fr:aic-documentation/aic_features.git
