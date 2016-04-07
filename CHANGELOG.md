@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ## [Unreleased]
 
+## [0.2.4]
+
 ### Added
 - Feedback for apk install and monkey runner on live
 
