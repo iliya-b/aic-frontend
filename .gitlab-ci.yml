@@ -1,6 +1,7 @@
 image: node:onbuild
 
 before_script:
+  - npm config set loglevel warn
   - npm install --unsafe-perm
   - npm run build
 
@@ -21,10 +22,14 @@ test_integration:
   artifacts:
     paths:
     - ${AIC_SCREENSHOT_PATH}
+  except:
+    - tags
 
 test_coverage:
   script:
     - npm run coverage
+  except:
+    - tags
 
 release-job:
   script:
