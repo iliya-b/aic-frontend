@@ -2,14 +2,14 @@ image: node:onbuild
 
 before_script:
   - npm install --unsafe-perm
-  - npm run create-conf-from-env
   - npm run build
-  - mv config.json ./build/
-  - npm install -g http-server
-  - http-server ./build -p 9080 &
 
 test_integration:
   script:
+    - npm run create-conf-from-env
+    - mv config.json ./build/
+    - npm install -g http-server
+    - http-server ./build -p 9080 &
     - npm install -g phantomjs-prebuilt
     - phantomjs -w &
     - sleep 1
@@ -25,3 +25,12 @@ test_integration:
 test_coverage:
   script:
     - npm run coverage
+
+release-job:
+  script:
+    - echo "release"
+  artifacts:
+    paths:
+    - build
+  only:
+    - tags
