@@ -287,7 +287,7 @@ window.onscriptsload = function () {
 	};
 	try {
 		LiveActions.logMessage('Creating noVNC client.');
-		window.rfb = new RFB({target: $D('noVNC_canvas'), onUpdateState: updateState});
+		window.rfb = new RFB({target: $D('noVNC_canvas'), encrypt: true, onUpdateState: updateState});
 	} catch (exc) {
 		window.AiClive.completed = true;
 		LiveActions.logMessage('Unable to create noVNC client.');
@@ -299,7 +299,7 @@ window.onscriptsload = function () {
 LiveActions.tryWebsocket = function () {
 	try {
 		LiveActions.logMessage('Connecting to VNC session.');
-		window.AiClive.socket = new WebSocket(`ws://${window.AiClive.host}:${window.AiClive.port}/${window.AiClive.path}`, 'base64');
+		window.AiClive.socket = new WebSocket(`wss://${window.AiClive.host}:${window.AiClive.port}/${window.AiClive.path}`, 'base64');
 		window.AiClive.socket.onerror = function () {
 			debug('socket test on error');
 			debug(arguments);
