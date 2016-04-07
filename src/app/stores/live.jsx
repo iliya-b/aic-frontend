@@ -461,7 +461,7 @@ const LiveStore = Reflux.createStore({
 			this.updateBoxes();
 			debug('onPropertiesCompleted boot initiate');
 			this.state.live.bootInit = true;
-			LiveActions.liveConnect(this.state.liveInfo.avm_novnc_host, this.state.liveInfo.avm_novnc_port);
+			LiveActions.liveConnect(this.state.liveInfo.avm_novnc_host, this.state.liveInfo.avm_novnc_port, this.state.liveInfo.avm_id);
 			APKActions.list(this.state.projectId);
 			CameraActions.list(this.state.projectId);
 		}

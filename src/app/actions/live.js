@@ -153,10 +153,10 @@ LiveActions.liveCheck.listen(() => {
 //   });
 // });
 
-LiveActions.liveConnect.listen(function (vmhost, vmport) {
+LiveActions.liveConnect.listen(function (vmhost, vmport, avmId) {
 	// TODO: audio vmport must be informed
 
-	LiveActions.tryConnection(vmhost, vmport, res => {
+	LiveActions.tryConnection(vmhost, vmport, avmId, res => {
 		if (res.success) {
 			this.completed();
 			// LiveActions.tryAudioConnection( vmhost, vmport+1000, res => {
@@ -299,7 +299,7 @@ window.onscriptsload = function () {
 LiveActions.tryWebsocket = function () {
 	try {
 		LiveActions.logMessage('Connecting to VNC session.');
-		window.AiClive.socket = new WebSocket(`ws://${window.AiClive.host}:${window.AiClive.port}`, 'base64');
+		window.AiClive.socket = new WebSocket(`ws://${window.AiClive.host}:${window.AiClive.port}/${window.AiClive.path}`, 'base64');
 		window.AiClive.socket.onerror = function () {
 			debug('socket test on error');
 			debug(arguments);
@@ -331,15 +331,18 @@ LiveActions.tryWebsocket = function () {
 	}
 };
 
-LiveActions.tryConnection = function (vmhost, vmport) {
+LiveActions.tryConnection = function (vmhost, vmport, amvId) {
 	// This is noVNC dependent
 	window.INCLUDE_URI = '/noVNC/';
 	// FIXME: probably not the best way to set global var.
+	const AuthActions = require('app/actions/auth');
+	const token = ` Bearer ${AuthActions.getToken()}`;
 	window.AiClive = {
-		host: vmhost,
-		port: vmport,
+		host: window.GobyAppGlobals.config.backend.host,
+		port: window.GobyAppGlobals.config.backend.port,
 		password: '',
-		path: 'websockify',
+		// path: `android/${amvId}/screen`,
+		path: `android/${amvId}/screen?token=${token}`,
 		socket: null,
 		// first try instantly, second on +2s, third on +4s... +6
 		maxTries: 3,
@@ -348,6 +351,19 @@ LiveActions.tryConnection = function (vmhost, vmport) {
 		completed: false,
 		timeoutcb: null
 	};
+	// window.AiClive = {
+	// 	host: vmhost,
+	// 	port: vmport,
+	// 	password: '',
+	// 	path: 'websockify',
+	// 	socket: null,
+	// 	// first try instantly, second on +2s, third on +4s... +6
+	// 	maxTries: 3,
+	// 	errorCount: 0,
+	// 	timeout: 15000,
+	// 	completed: false,
+	// 	timeoutcb: null
+	// };
 
 	LiveActions.logMessage('Loading noVNC utils.');
 	// Load supporting scripts
