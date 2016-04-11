@@ -115,7 +115,7 @@ TODO List
 * Packages
 	* ~~Change noVNC from git submodule to a npm module~~ :white_check_mark:
 	* ~~Update node packages (a lot of work since everything will be broken by that)~~ :white_check_mark:
-	* When new version is available put back to npm the nyc package ([instead of the fork with --extension](https://github.com/bcoe/nyc/pull/163))
+	* ~~When new version is available put back to npm the nyc package ([instead of the fork with --extension](https://github.com/bcoe/nyc/pull/163))~~ :white_check_mark:
 	* Extract API lib to external package
 * Backend API
 	* valid response type (application/json for example)

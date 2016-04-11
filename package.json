@@ -84,7 +84,7 @@
     "ava": "^0.13.0",
     "eslint-config-xo-react": "^0.5.0",
     "eslint-plugin-react": "^4.2.3",
-    "nyc": "git+https://github.com/lloydcotten/nyc.git",
+    "nyc": "^6.4.0",
     "react-addons-perf": "^0.14.8",
     "tap-nyan": "0.0.2",
     "xo": "^0.13.0"
