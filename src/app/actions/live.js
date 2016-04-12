@@ -283,6 +283,7 @@ window.onscriptsload = function () {
 			window.AiClive.completed = true;
 			LiveActions.logMessage('noVNC utils loaded.');
 			LiveActions.liveConnect.completed();
+			LiveActions.tryAudioConnection(null, null, () => {});
 		}
 	};
 	try {
@@ -343,6 +344,7 @@ LiveActions.tryConnection = function (vmhost, vmport, amvId) {
 		password: '',
 		// path: `android/${amvId}/screen`,
 		path: `android/${amvId}/screen?token=${token}`,
+		audioPath: `android/${amvId}/audio?token=${token}`,
 		socket: null,
 		// first try instantly, second on +2s, third on +4s... +6
 		maxTries: 3,
@@ -439,15 +441,16 @@ LiveActions.tryAudioConnection = function (audiohost, audioport, cb) {
 				break;
 		}
 	}, false);
-	// gobyVMAudio.addEventListener('canplay', function(ev) {
-	//   debug('audio canplay:', arguments);
-	//   if( gobyVMAudio.duration == 0 || gobyVMAudio.paused ){
-	//     debug('audio canplay not pause');
-	//     gobyVMAudio.play();
-	//   }
-	// }, false);
+	gobyVMAudio.addEventListener('canplay', function () {
+		debug('audio canplay:', arguments);
+		if (gobyVMAudio.duration === 0 || gobyVMAudio.paused) {
+			debug('audio canplay not pause');
+			gobyVMAudio.play();
+		}
+	}, false);
 	// FIXME: put url parser
-	const audioURL = `http://${audiohost}:${audioport}/test.webm?uid=${Date.now()}`;
+	// const audioURL = `http://${audiohost}:${audioport}/test.webm?uid=${Date.now()}`;
+	const audioURL = `https://${window.AiClive.host}:${window.AiClive.port}/${window.AiClive.audioPath}&uid=${Date.now()}`;
 	debug('setting audio url', audioURL);
 	gobyVMAudio.src = audioURL;
 	gobyVMAudio.play();

@@ -29,8 +29,6 @@ const PanelSessionScreen = class extends React.Component {
 
 		style.iframeRotation = this.props.rotation === "0" ? style.iframeHorizontal : style.iframeVertical;
 
-		const audioEnabled = false;
-
 		return (
 			<div>
 				<div style={style.iframeRotation}>
@@ -38,13 +36,11 @@ const PanelSessionScreen = class extends React.Component {
 							Canvas not supported.
 					</canvas>
 				</div>
-				{audioEnabled ? (
-					<div style={style.audio}>
-						<audio id="gobyVMAudio" controls>
-							Your browser does not support the <code>audio</code> element.
-						</audio>
-					</div>
-				)	: null}
+				<div style={style.audio}>
+					<audio id="gobyVMAudio" controls>
+						Your browser does not support the <code>audio</code> element.
+					</audio>
+				</div>
 			</div>
 		);
 	}

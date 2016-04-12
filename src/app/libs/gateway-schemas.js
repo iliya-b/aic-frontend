@@ -24,7 +24,18 @@ const GatewaySchemas = {
 		properties: {
 			image: {type: 'string'},
 			project_id: {type: 'string'}, // eslint-disable-line camelcase
-			android_version: {enum: ['4', '5', '6']} // eslint-disable-line camelcase
+			android_version: {enum: ['4', '5', '6']}, // eslint-disable-line camelcase
+			width: {type: 'integer', optional: true},
+			height: {type: 'integer', optional: true},
+			dpi: {type: 'integer', optional: true},
+			enable_sensors: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
+			enable_battery: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
+			enable_gps: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
+			enable_camera: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
+			enable_record: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
+			enable_adb: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
+			enable_audio: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
+			enable_gsm: {type: 'integer', min: 0, max: 1, optional: true} // eslint-disable-line camelcase
 		}
 	},
 	sensors: {

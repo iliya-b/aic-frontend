@@ -92,7 +92,15 @@ const GatewayAdapters = {
 				return {
 					image: frontendObject.variant,
 					project_id: frontendObject.projectId, // eslint-disable-line camelcase
-					android_version: frontendObject.version // eslint-disable-line camelcase
+					android_version: frontendObject.version, // eslint-disable-line camelcase
+					enable_audio: 1, // eslint-disable-line camelcase
+					// enable_gsm: 0, // eslint-disable-line camelcase
+					// enable_sensors: 0, // eslint-disable-line camelcase
+					// enable_adb: 0, // eslint-disable-line camelcase
+					// enable_gps: 0, // eslint-disable-line camelcase
+					// enable_camera: 0, // eslint-disable-line camelcase
+					width: 800,
+					height: 600
 				};
 			}
 		},
