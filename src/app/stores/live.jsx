@@ -452,7 +452,8 @@ const LiveStore = Reflux.createStore({
 			properties["dev.bootcomplete"] === "1") {
 			debug('onPropertiesCompleted listPackages');
 			LiveActions.listPackages(this.state.liveInfo.avm_id);
-			this.clearTimeouts();
+			// Only clearTimeouts when debugging to not have span on logs
+			// this.clearTimeouts();
 		}
 
 		// docker finished (not available) boot initiate
