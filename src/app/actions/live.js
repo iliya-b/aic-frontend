@@ -369,13 +369,10 @@ LiveActions.tryConnection = function (vmhost, vmport, amvId) {
 
 	LiveActions.logMessage('Loading noVNC utils.');
 	// Load supporting scripts
-	// Util.load_scripts(['webutil.js', 'base64.js', 'websock.js', 'des.js',
-	//                    'keysymdef.js', 'keyboard.js', 'input.js', 'display.js',
-	//                    'rfb.js', 'keysym.js']);
-
+	// noVNC@v5.0.1
 	Util.load_scripts(['webutil.js', 'base64.js', 'websock.js', 'des.js',
 										'keysymdef.js', 'keyboard.js', 'input.js', 'display.js',
-										'inflator.js', 'rfb.js', 'keysym.js']);
+										'jsunzip.js', 'rfb.js', 'keysym.js']);
 	// When finished will call onscriptsload
 	setTimeout(() => {
 		if (!window.AiClive.completed) {
