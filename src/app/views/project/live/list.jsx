@@ -15,7 +15,7 @@ let projectId;
 
 const variants = [
 	{id: 'kitkat-tablet', name: 'kitkatTablet', version: '4'},
-	{id: 'kitkat-phone', name: 'kitkatPhone', version: '4'}//,
+	{id: 'kitkat-phone', name: 'kitkatPhone', version: '4'} // ,
 	// {id: 'kitkat-phone-audio', name: 'kitkatPhoneAudio', version: '4'},
 	// {id: 'lollipop-tablet', name: 'lollipopTablet', version: '5'},
 	// {id: 'lollipop-phone', name: 'lollipopPhone', version: '5'}
