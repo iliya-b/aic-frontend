@@ -1,5 +1,5 @@
 import test from 'ava';
-import TogglableIcon from '../../../../src/app/components/shared/togglable-icon.jsx';
+import TogglableIcon from 'app/components/shared/togglable-icon';
 // import ReactTestUtils from 'react-addons-test-utils';
 import React from 'react';
 // import ReactDOMServer from 'react-dom/server';
@@ -11,7 +11,7 @@ test('Render TogglableIcon component', t => {
 
 	// t.same(rendered, '<span class="form__error">Error message</span>');
 
-	console.log(component);
+	// console.log(component);
 
 	t.pass();
 });
