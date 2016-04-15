@@ -3,9 +3,9 @@
 // Vendor
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import IconButton from 'material-ui/lib/icon-button';
-import Badge from 'material-ui/lib/badge';
-import FontIcon from 'material-ui/lib/font-icon';
+import IconButton from 'material-ui/IconButton';
+import Badge from 'material-ui/Badge';
+import FontIcon from 'material-ui/FontIcon';
 
 // APP
 const ListItemsStatus = class extends React.Component {

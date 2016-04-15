@@ -4,9 +4,9 @@
 
 // Vendor
 import React from 'react';
-import * as Colors from 'material-ui/lib/styles/colors';
-import RaisedButton from 'material-ui/lib/raised-button';
-import MuiThemeProvider from 'material-ui/lib/MuiThemeProvider';
+import * as Colors from 'material-ui/styles/colors';
+import RaisedButton from 'material-ui/RaisedButton';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 const debug = require('debug')('AiC:Views:Home');
 
 // APP
@@ -90,8 +90,8 @@ const Main = class extends React.Component {
 							<p style={styles.p}>COPYRIGHT © AiC</p>
 
 							{this.state.config.debug ? ([
-								<RaisedButton key={1} linkButton label="Test Theme" title="Test Theme" primary href="#/theme-test"/>,
-								<RaisedButton key={2} linkButton primary href="#/" label="home"/>]
+								<RaisedButton key={1} linkButton label="Test Theme" title="Test Theme" secondary href="#/theme-test"/>,
+								<RaisedButton key={2} linkButton secondary href="#/" label="home"/>]
 							) : null}
 						</FullWidthSection>
 						<SessionEndedDialog open={this.state.sessionEndedDialogOpen} onRequestClose={this.handleSessionEndedDialogClose} location={this.props.location}/>

@@ -2,8 +2,8 @@
 
 // Vendor
 import React from 'react';
-import Typography from 'material-ui/lib/styles/typography';
-import RaisedButton from 'material-ui/lib/raised-button';
+import Typography from 'material-ui/styles/typography';
+import RaisedButton from 'material-ui/RaisedButton';
 // const debug = require('debug')('AiC:Views:Home');
 
 // APP
@@ -87,7 +87,7 @@ const Home = class extends AuthPage {
 						title="Login"
 						onClick={this.handleLoginOpen}
 						style={styles.buttonStyle}
-						primary
+						secondary
 						/>
 					<LoginDialog open={this.state.loginDialogOpen} onRequestClose={this.handleLoginClose} location={this.props.location}/>
 				</div>

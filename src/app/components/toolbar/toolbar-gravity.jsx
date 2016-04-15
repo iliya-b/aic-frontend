@@ -2,11 +2,11 @@
 
 // Vendor
 import React from 'react';
-import ToolbarSeparator from 'material-ui/lib/toolbar/toolbar-separator';
-// import ToolbarTitle from 'material-ui/lib/toolbar/toolbar-title';
-import TextField from 'material-ui/lib/text-field';
-import RaisedButton from 'material-ui/lib/raised-button';
-import Paper from 'material-ui/lib/paper';
+import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
+// import ToolbarTitle from 'material-ui/Toolbar/ToolbarTitle';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import Paper from 'material-ui/Paper';
 
 // APP
 import GravityIcon from 'app/components/icon/gravity';

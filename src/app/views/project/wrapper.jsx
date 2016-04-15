@@ -2,12 +2,12 @@
 
 // Vendor
 import React from 'react';
-import AppBar from 'material-ui/lib/app-bar';
-import IconButton from 'material-ui/lib/icon-button';
-import FontIcon from 'material-ui/lib/font-icon';
+import AppBar from 'material-ui/AppBar';
+import IconButton from 'material-ui/IconButton';
+import FontIcon from 'material-ui/FontIcon';
 // const debug = require('debug')('AiC:Views:ProjectWrapper');
-// import IconMenu from 'material-ui/lib/menus/icon-menu';
-// import MenuItem from 'material-ui/lib/menus/menu-item';
+// import IconMenu from 'material-ui/IconMenu';
+// import MenuItem from 'material-ui/MenuItem';
 
 // APP
 import AuthActions from 'app/actions/auth';

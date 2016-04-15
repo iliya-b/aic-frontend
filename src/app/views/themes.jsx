@@ -5,7 +5,7 @@ const React = require('react');
 
 // Material UI
 const mui = require('material-ui');
-const {Spacing} = mui.Styles;
+const {Spacing} = require('material-ui/styles');
 
 const {
 	Checkbox,
@@ -27,10 +27,10 @@ const {
 	FontIcon
 } = mui;
 
-const Menu = require('material-ui/lib/menus/menu');
-const MenuItem = require('material-ui/lib/menus/menu-item');
+const Menu = require('material-ui/Menu');
+const MenuItem = require('material-ui/MenuItem');
 
-const Typography = mui.Styles.Typography;
+const {Typography} = require('material-ui/styles');
 // const ThemeManager = new mui.Styles.ThemeManager();
 
 // Vendors

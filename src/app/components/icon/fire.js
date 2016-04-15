@@ -2,7 +2,7 @@
 
 // Vendor
 import React from 'react';
-import SvgIcon from 'material-ui/lib/svg-icon';
+import SvgIcon from 'material-ui/SvgIcon';
 
 // APP
 module.exports = props => (

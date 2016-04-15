@@ -37,8 +37,8 @@ module.exports = {
 		src: ['./node_modules/noVNC/include/base.css', './node_modules/noVNC/include/*.js'],
 		dest: `${dest}/noVNC/`
 	}, {
-		src: './node_modules/mdi/css/materialdesignicons.min.css',
-		dest: `${dest}/css`
+		src: './node_modules/mdi/css/materialdesignicons.min.css*',
+		dest: `${dest}/css/`
 	}, {
 		src: './node_modules/mdi/fonts/**',
 		dest: `${dest}/fonts`

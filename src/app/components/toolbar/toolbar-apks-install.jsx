@@ -2,12 +2,12 @@
 
 // Vendor
 import React from 'react';
-import ToolbarSeparator from 'material-ui/lib/toolbar/toolbar-separator';
-import FontIcon from 'material-ui/lib/font-icon';
-import Paper from 'material-ui/lib/paper';
-import SelectField from 'material-ui/lib/SelectField';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import RaisedButton from 'material-ui/lib/raised-button';
+import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
+import FontIcon from 'material-ui/FontIcon';
+import Paper from 'material-ui/Paper';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import RaisedButton from 'material-ui/RaisedButton';
 
 // APP
 import ListItemStatus from 'app/components/list/list-item-status';

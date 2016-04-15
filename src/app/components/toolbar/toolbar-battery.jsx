@@ -2,10 +2,10 @@
 
 // Vendor
 import React from 'react';
-import ToolbarSeparator from 'material-ui/lib/toolbar/toolbar-separator';
-import FontIcon from 'material-ui/lib/font-icon';
-import Slider from 'material-ui/lib/slider';
-import Paper from 'material-ui/lib/paper';
+import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
+import FontIcon from 'material-ui/FontIcon';
+import Slider from 'material-ui/Slider';
+import Paper from 'material-ui/Paper';
 
 // APP
 const ToolbarBattery = class extends React.Component {

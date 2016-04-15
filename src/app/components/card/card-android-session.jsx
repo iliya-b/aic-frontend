@@ -2,15 +2,15 @@
 
 // Vendor
 import React from 'react';
-import Card from 'material-ui/lib/card/card';
-import CardActions from 'material-ui/lib/card/card-actions';
-// import CardMedia from 'material-ui/lib/card/card-media';
-import CardTitle from 'material-ui/lib/card/card-title';
-import FontIcon from 'material-ui/lib/font-icon';
-import IconButton from 'material-ui/lib/icon-button';
-import CardText from 'material-ui/lib/card/card-text';
-import Divider from 'material-ui/lib/divider';
-import Avatar from 'material-ui/lib/avatar';
+import Card from 'material-ui/Card/Card';
+import CardActions from 'material-ui/Card/CardActions';
+// import CardMedia from 'material-ui/Card/CardMedia';
+import CardTitle from 'material-ui/Card/CardTitle';
+import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
+import CardText from 'material-ui/Card/CardText';
+import Divider from 'material-ui/Divider';
+import Avatar from 'material-ui/Avatar';
 import str from 'string';
 // const debug = require('debug')('AiC:Components:Card:CardAndroidSession');
 

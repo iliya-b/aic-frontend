@@ -1,8 +1,8 @@
 'use strict';
 
 // Vendors
-import Spacing from 'material-ui/lib/styles/spacing';
-import getMuiTheme from 'material-ui/lib/styles/getMuiTheme';
+import Spacing from 'material-ui/styles/spacing';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 // APP
 import AppPalette from 'app/configs/app-palette';

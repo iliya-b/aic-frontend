@@ -2,11 +2,10 @@
 
 // Vendor
 const React = require('react');
-const mui = require('material-ui');
 const {
 	Spacing,
 	Colors
-} = mui.Styles;
+} = require('material-ui/styles');
 // const debug = require('debug')('AiC:Components:LogBoxRow');
 
 // const { Spacing } = mui.Styles;

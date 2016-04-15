@@ -2,7 +2,7 @@
 
 // Vendor
 import React from 'react';
-import Paper from 'material-ui/lib/paper';
+import Paper from 'material-ui/Paper';
 
 // APP
 import MachineIcon from 'app/components/project/machine-icon';

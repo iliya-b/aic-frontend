@@ -2,8 +2,8 @@
 
 // Vendor
 import React from 'react';
-import FontIcon from 'material-ui/lib/font-icon';
-import IconButton from 'material-ui/lib/icon-button';
+import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
 import str from 'string';
 
 // APP

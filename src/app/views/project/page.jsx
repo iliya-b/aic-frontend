@@ -2,10 +2,10 @@
 
 // Vendors
 import React from 'react';
-import Spacing from 'material-ui/lib/styles/spacing';
-import * as Colors from 'material-ui/lib/styles/colors';
-import Menu from 'material-ui/lib/menus/menu';
-import MenuItem from 'material-ui/lib/menus/menu-item';
+import Spacing from 'material-ui/styles/spacing';
+import * as Colors from 'material-ui/styles/colors';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
 const debug = require('debug')('AiC:Views:Project:Page');
 
 const menuItems = [

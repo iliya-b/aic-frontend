@@ -2,13 +2,13 @@
 
 // Vendor
 import React from 'react';
-import ToolbarSeparator from 'material-ui/lib/toolbar/toolbar-separator';
-import FontIcon from 'material-ui/lib/font-icon';
-import Paper from 'material-ui/lib/paper';
-import SelectField from 'material-ui/lib/SelectField';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import RaisedButton from 'material-ui/lib/raised-button';
-import TextField from 'material-ui/lib/text-field';
+import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
+import FontIcon from 'material-ui/FontIcon';
+import Paper from 'material-ui/Paper';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 const debug = require('debug')('AiC:Components:Toolbar:PanelMonkeyRunner');
 
 // APP

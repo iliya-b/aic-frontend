@@ -2,9 +2,9 @@
 
 // Vendor
 import React from 'react';
-import ToolbarSeparator from 'material-ui/lib/toolbar/toolbar-separator';
-import FontIcon from 'material-ui/lib/font-icon';
-import Paper from 'material-ui/lib/paper';
+import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
+import FontIcon from 'material-ui/FontIcon';
+import Paper from 'material-ui/Paper';
 import TogglableIcon from 'app/components/shared/togglable-icon';
 
 // APP

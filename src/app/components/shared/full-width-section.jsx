@@ -1,9 +1,12 @@
 'use strict';
 
 import React from 'react';
-import ClearFix from 'material-ui/lib/clearfix';
-import {desktopGutter} from 'material-ui/lib/styles/spacing';
-import {StyleResizable} from 'material-ui/lib/mixins';
+import ClearFix from 'material-ui/internal/ClearFix';
+import Spacing from 'material-ui/styles/spacing';
+import StyleResizable from 'material-ui/utils/styleResizable';
+
+// TODO: check why {desktopGutter} from spacing does not work
+const desktopGutter = Spacing.desktopGutter;
 
 const FullWidthSection = React.createClass({
 

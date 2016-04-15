@@ -2,7 +2,7 @@
 
 // Vendor
 import React from 'react';
-import FontIcon from 'material-ui/lib/font-icon';
+import FontIcon from 'material-ui/FontIcon';
 // TODO: remove deepExtend, we don't need it, Object.assign is sufficient for our needs
 import deepExtend from 'deep-extend';
 

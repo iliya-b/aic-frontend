@@ -2,11 +2,11 @@
 
 // Vendor
 import React from 'react';
-import Table from 'material-ui/lib/table/table';
-import TableRow from 'material-ui/lib/table/table-row';
-import TableRowColumn from 'material-ui/lib/table/table-row-column';
-import TableBody from 'material-ui/lib/table/table-body';
-import LinearProgress from 'material-ui/lib/linear-progress';
+import Table from 'material-ui/Table/Table';
+import TableRow from 'material-ui/Table/TableRow';
+import TableRowColumn from 'material-ui/Table/TableRowColumn';
+import TableBody from 'material-ui/Table/TableBody';
+import LinearProgress from 'material-ui/LinearProgress';
 
 // APP
 const TableProgress = class extends React.Component {
