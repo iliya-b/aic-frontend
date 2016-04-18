@@ -12,7 +12,7 @@ test('Render CardAndroidSession component', t => {
 	// t.same(rendered, '<span class="form__error">Error message</span>');
 
 	// console.log(component);
-	t.is(typeof component, 'Object');
+	t.is(typeof component, 'object');
 
 	t.pass();
 });
