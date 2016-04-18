@@ -89,6 +89,9 @@
     "tap-nyan": "0.0.2",
     "xo": "^0.13.0"
   },
+  "config": {
+    "loglevel": "warn"
+  },
   "xo": {
     "esnext": true,
     "extends": [

@@ -12,7 +12,7 @@ test_integration:
     - npm install -g http-server
     - http-server ./build -p 9080 &
     - npm install -g phantomjs-prebuilt
-    - phantomjs -w &
+    - phantomjs --ssl-protocol=any --ignore-ssl-errors=true --web-security=false -w &
     - sleep 1
     - git clone git@git.rnd.alterway.fr:aic-documentation/aic_features.git
     - cd aic_features
