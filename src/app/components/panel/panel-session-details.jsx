@@ -243,10 +243,10 @@ const PanelSessionDetails = class extends React.Component {
 				color: this.context.muiTheme.palette.primary1Color
 				// WebkitUserSelect: none;
 			},
-			field: {minWidth: 100, display: 'inline-block', lineHeight: '20px', margin: '0', padding: '10px 9px'},
+			field: {minWidth: 100, display: 'inline-block', lineHeight: '20px', margin: 0, padding: '10px 9px'},
 			value: {color: 'rgba(0, 0, 0, 0.5)'},
 			insetBlock: {margin: '-42px 0 0 48px'},
-			insetBlockAPK: {margin: '-42px 0 0 55px'},
+			insetBlockAPK: {margin: '-42px 0 0 55px', minHeight: 40},
 			infoBlock: {clear: 'both'}
 		};
 

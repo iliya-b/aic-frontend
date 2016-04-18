@@ -72,7 +72,7 @@ const ToolbarGSMRoaming = class extends React.Component {
 					label="Submit"
 					title="Submit"
 					href="#"
-					secondary
+					primary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}
 					/>

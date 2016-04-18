@@ -226,14 +226,14 @@ const ProjectList = class extends React.Component {
 						<RaisedButton
 							label="Save"
 							title="Save"
-							primary
+							secondary
 							style={styles.newProject}
 							onClick={this.handleClickSaveProject}
 							/>
 						<RaisedButton
 							label="Cancel"
 							title="Cancel"
-							primary
+							secondary
 							style={styles.newProject}
 							onClick={this.handleClickCancelProject}
 							/>
@@ -246,7 +246,7 @@ const ProjectList = class extends React.Component {
 						<RaisedButton
 							label="New project"
 							title="New project"
-							primary
+							secondary
 							style={styles.newProject}
 							icon={<FontIcon className="mdi mdi-plus"/>}
 							onClick={this.handleClickNewProject}

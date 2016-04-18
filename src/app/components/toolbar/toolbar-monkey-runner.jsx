@@ -104,7 +104,7 @@ const PanelMonkeyRunner = class extends React.Component {
 					label="Run"
 					title="Run"
 					href="#"
-					secondary
+					primary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}
 					/>

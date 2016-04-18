@@ -106,7 +106,7 @@ const ProjectPage = class extends React.Component {
 		return (
 			<div style={styles.root}>
 				<div style={{width: 100}}>
-					<Menu style={styles.menu} zDepth={0}>
+					<Menu style={styles.menu}>
 						{menusItems}
 					</Menu>
 				</div>

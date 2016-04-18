@@ -96,7 +96,7 @@ const PanelAPKInstall = class extends React.Component {
 					className="btLiveAPKInstallSubmit"
 					label="Install"
 					title="Install"
-					secondary
+					primary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}
 					/>

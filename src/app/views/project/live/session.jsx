@@ -1,18 +1,11 @@
 /* global window */
 'use strict';
 
-// React
-const React = require('react');
-
-// Material design
-const mui = require('material-ui');
-const {Spacing} = require('material-ui/styles');
-const {
-	Paper,
-	CircularProgress
-} = mui;
-
 // Vendors
+import React from 'react';
+import Paper from 'material-ui/Paper';
+import CircularProgress from 'material-ui/CircularProgress';
+import Spacing from 'material-ui/styles/spacing';
 const debug = require('debug')('AiC:Views:Project:Live:Session');
 
 // APP

@@ -21,16 +21,17 @@ const ToolbarAPK = class extends React.Component {
 
 	render() {
 		const styles = {
+			toolbar: {
+				justifyContent: 'initial'
+			},
 			button: {
-				marginTop: 5,
-				float: 'left'
+				marginTop: 5
 			},
 			separator: {
 				margin: '0 5px 0 0px'
 			},
 			icon: {
 				cursor: 'default',
-				float: 'left',
 				margin: '16px 36px 0px -6px',
 				width: 24
 			},
@@ -62,7 +63,7 @@ const ToolbarAPK = class extends React.Component {
 		}
 
 		return (
-			<Toolbar style={this.props.style}>
+			<Toolbar style={Object.assign(this.props.style || {}, styles.toolbar)}>
 				<FontIcon style={styles.icon} className="mdi mdi-android" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarGroup firstChild lastChild>
 					<ToolbarTitle className="txtLiveTitle" text="Live sessions" style={styles.title}/>

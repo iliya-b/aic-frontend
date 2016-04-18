@@ -69,7 +69,7 @@ const PanelCamera = class extends React.Component {
 					label="Send"
 					title="Send"
 					href="#"
-					secondary
+					primary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}
 					/>

@@ -61,7 +61,7 @@ const ToolbarGSMCall = class extends React.Component {
 					label="Receive call"
 					title="Receive call"
 					href="#"
-					secondary
+					primary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}
 					/>
