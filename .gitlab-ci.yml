@@ -19,6 +19,10 @@ test_integration:
     - npm install --unsafe-perm
     - echo ${AIC_SCREENSHOT_PATH}
     - AIC_FRONTEND_HOST=http://localhost:9080/ ./run-tests.sh
+  cache:
+    paths:
+      - node_modules
+      - aic_features/node_modules
   artifacts:
     paths:
     - ${AIC_SCREENSHOT_PATH}
@@ -28,6 +32,9 @@ test_integration:
 test_coverage:
   script:
     - npm run coverage
+  cache:
+    paths:
+      - node_modules
   except:
     - tags
 
