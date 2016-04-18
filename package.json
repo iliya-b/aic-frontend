@@ -59,7 +59,7 @@
     "gulp-notify": "^2.2.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-util": "^3.0.7",
-    "material-ui": "0.15.0-alpha.2",
+    "material-ui": "0.15.0-beta.1",
     "mdi": "^1.5.54",
     "noVNC": "git+https://github.com/kanaka/noVNC.git#v0.5.1",
     "pretty-hrtime": "^1.0.2",
@@ -81,6 +81,7 @@
   },
   "devDependencies": {
     "ava": "^0.14.0",
+    "eslint": "^2.8.0",
     "eslint-config-xo-react": "^0.5.0",
     "eslint-plugin-react": "^4.3.0",
     "nyc": "^6.4.0",
