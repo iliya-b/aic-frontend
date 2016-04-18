@@ -9,10 +9,10 @@ test_integration:
   script:
     - npm run create-conf-from-env
     - mv config.json ./build/
-    - npm install -g http-server
-    - http-server ./build -p 9080 &
-    - npm install -g phantomjs-prebuilt
-    - phantomjs --ssl-protocol=any --ignore-ssl-errors=true --web-security=false -w &
+    - npm install http-server
+    - ./node_modules/.bin/http-server ./build -p 9080 &
+    - npm install phantomjs-prebuilt
+    - ./node_modules/.bin/phantomjs --ssl-protocol=any --ignore-ssl-errors=true --web-security=false -w &
     - sleep 1
     - git clone git@git.rnd.alterway.fr:aic-documentation/aic_features.git
     - cd aic_features
@@ -22,7 +22,6 @@ test_integration:
   cache:
     paths:
       - node_modules
-      - aic_features/node_modules
   artifacts:
     paths:
     - ${AIC_SCREENSHOT_PATH}
