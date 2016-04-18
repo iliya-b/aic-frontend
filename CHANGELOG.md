@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ## [Unreleased]
 
+## [0.3.0]
+
 ### Added
 - Secure connection with wss for websockets and https for backend.
 - Live connects to gateway for the vm screen (vm docker reverse proxy).
