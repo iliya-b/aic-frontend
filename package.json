@@ -19,23 +19,6 @@
     "no-console": "echo \"Verifying for console usage. Please use debug package instead.\" && ! grep -rnw 'src' -e \"console\" && echo \"Yes! No console.something being used! Good Job!\"",
     "no-todos": "echo \"Verifying for TODOs.\" && ! grep -rnw 'src' -e \"TODO\" && echo \"Yes! No TODOs to do! Good Job!\""
   },
-  "browserify": {
-    "extension": [
-      ".jsx"
-    ],
-    "transform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            "stage-0",
-            "es2015",
-            "react"
-          ]
-        }
-      ]
-    ]
-  },
   "author": "Karine Pires",
   "dependencies": {
     "attr-accept": "^1.0.3",
@@ -47,7 +30,7 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "babelify": "^7.2.0",
-    "browser-sync": "^2.12.2",
+    "browser-sync": "^2.12.3",
     "browserify": "^13.0.0",
     "debug": "^2.2.0",
     "deep-extend": "^0.4.1",
@@ -68,7 +51,7 @@
     "react-addons-css-transition-group": "^15.0.1",
     "react-dom": "^15.0.1",
     "react-dropzone": "^3.4.0",
-    "react-router": "^2.1.1",
+    "react-router": "^2.2.4",
     "react-tap-event-plugin": "1.0.0",
     "reflux": "^0.4.1",
     "require-dir": "^0.3.0",
@@ -82,8 +65,8 @@
   "devDependencies": {
     "ava": "^0.14.0",
     "eslint": "^2.8.0",
-    "eslint-config-xo-react": "^0.5.0",
-    "eslint-plugin-react": "^4.3.0",
+    "eslint-config-xo-react": "^0.6.0",
+    "eslint-plugin-react": "^5.0.1",
     "nyc": "^6.4.0",
     "react-addons-perf": "^15.0.1",
     "tap-nyan": "0.0.2",
@@ -91,6 +74,23 @@
   },
   "config": {
     "loglevel": "warn"
+  },
+  "browserify": {
+    "extension": [
+      ".jsx"
+    ],
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "stage-0",
+            "es2015",
+            "react"
+          ]
+        }
+      ]
+    ]
   },
   "xo": {
     "esnext": true,
@@ -102,10 +102,6 @@
     ]
   },
   "ava": {
-    "files": [
-      "!./test/local-phantom.js",
-      "./test/unit/**/*.js"
-    ],
     "failFast": true,
     "verbose": true,
     "require": "babel-core/register"

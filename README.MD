@@ -98,13 +98,13 @@ TODO List
 	* Views have router.push(pathname), probably needs to be changed, so if one changes pathname there is no need to revisit all views.
 * Live
   * Get initial VM state to set the frontend sensors (for example battery slides should be relative to the vm battery)
-  * Audio port
+  * ~~Audio port~~ :white_check_mark:
   * Callbacks from async calls should check id (for example previous live calls can trigger current live session)
   * Implement machine state
   * Activate GSM functions only on phone images
   * Activate GSM accept/hold/cancel if there is a current call
   * Limit the extensions allowed on the upload of camera assets
-  * Add security/validation on the fields of frontend
+  * Add validation on the fields of frontend
 * React
 	* props => {} functions do not check propTypes
 	* reorganize components into stateless components and containers

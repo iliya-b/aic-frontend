@@ -4,6 +4,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ## [Unreleased]
 
+### Changed
+- Update packages, passing to react@v15.
+
+### Fixed
+- Fix all material-ui paths, buttons colors and toolbars alignments.
+
 ## [0.3.0]
 
 ### Added
@@ -13,41 +19,41 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 ## [0.2.4]
 
 ### Added
-- Feedback for apk install and monkey runner on live
+- Feedback for apk install and monkey runner on live.
 
 ### Fixed
-- Fix project internal selected menu indication
+- Fix project internal selected menu indication.
 
 ## [0.2.3]
 
 ### Added
-- Live GSM calls
-- Live Monkey runner (panda icon)
-- Project management
-- Camera assets management and live camera
+- Live GSM calls.
+- Live Monkey runner (panda icon).
+- Project management.
+- Camera assets management and live camera.
 
 ### Changed
-- Update live create to JSON (update on kyaraben API)
-- Update Backend API, separate into rest-api and gateway*
-- Update APK Manager now shows upload progress
+- Update live create to JSON (update on kyaraben API).
+- Update Backend API, separate into rest-api and gateway*.
+- Update APK Manager now shows upload progress.
 
 ### Fixed
-- Fix live rotation
-- Fix next path on logout/redirection
-- Fix home redirection when already logged
-- Fix when changed battery value on live
+- Fix live rotation.
+- Fix next path on logout/redirection.
+- Fix home redirection when already logged.
+- Fix when changed battery value on live.
 - Fix VM list machine status (deleting and error where without icons).
 
 ### Removed
-- Indexes files (for now while we don't have [tree shacking](http://www.2ality.com/2015/12/webpack-tree-shaking.html))
-- Audio live (for now while backend does not support it)
+- Indexes files (for now while we don't have [tree shacking](http://www.2ality.com/2015/12/webpack-tree-shaking.html)).
+- Audio live (for now while backend does not support it).
 
 ## [0.2.2] - 2016-03-10
 
 ### Added
 - Live VM sensors: gps, battery, accelerometer, light, gravity, gyroscope, linear_acc, magnetometer, orientation, pressure, proximity, relative_humidity, temperature.
-- Live install APK
-- APK Manager: list, upload and delete APKs
+- Live install APK.
+- APK Manager: list, upload and delete APKs.
 - Server error dialog appears when any request to back-end API returns 500.
 
 ### Changed
