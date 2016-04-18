@@ -9,10 +9,10 @@
 
 const browserify = require('browserify');
 const watchify = require('watchify');
-const bundleLogger = require('../util/bundleLogger');
 const gulp = require('gulp');
-const handleErrors = require('../util/handleErrors');
 const source = require('vinyl-source-stream');
+const bundleLogger = require('../util/bundleLogger');
+const handleErrors = require('../util/handleErrors');
 const config = require('../config').browserify;
 
 gulp.task('browserify', callback => {

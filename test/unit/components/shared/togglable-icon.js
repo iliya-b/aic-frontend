@@ -13,6 +13,8 @@ test('Render TogglableIcon component', t => {
 
 	// console.log(component);
 
+	t.is(typeof component, 'Object');
+
 	t.pass();
 });
 

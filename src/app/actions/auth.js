@@ -2,8 +2,8 @@
 'use strict';
 
 // Vendor
-import Reflux from 'reflux';
 import url from 'url';
+import Reflux from 'reflux';
 const debug = require('debug')('AiC:Auth:Actions');
 
 // APP
