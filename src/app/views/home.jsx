@@ -55,7 +55,7 @@ const Home = class extends AuthPage {
 				fontSize: '20px',
 				lineHeight: '28px',
 				marginBottom: '13px',
-				letterSpacing: '0'
+				letterSpacing: '0px'
 			},
 			nowrap: {
 				whiteSpace: 'nowrap'

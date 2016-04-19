@@ -6,9 +6,10 @@ require('babel-polyfill');
 // Vendor
 import ReactDOM from 'react-dom';
 import str from 'string';
+import Reflux from 'reflux';
+import refluxPromise from 'reflux-promise';
 
 // APP
-import AppRoutes from 'app/configs/app-routes';
 import gatewayRegisters from 'app/libs/gateway-registers';
 
 (function () {
@@ -37,10 +38,19 @@ import gatewayRegisters from 'app/libs/gateway-registers';
 		window.Promise = require('promise-polyfill');
 	}
 
+	// Uses the user agent's Promise implementation
+	Reflux.use(refluxPromise(window.Promise));
+
 	// Gateway/Backend
 	gatewayRegisters();
 	str.TMPL_OPEN = '{';
 	str.TMPL_CLOSE = '}';
+
+	// refluxPromise needs to be before the routes import
+	// and if AppRoutes is done on the begging of the file
+	// browserify will solve it before anything else is executed
+	// even when the refluxPromise is before the import
+	const AppRoutes = require('app/configs/app-routes');
 
 	// Router
 	ReactDOM.render(AppRoutes, document.getElementById('gobyApp'));

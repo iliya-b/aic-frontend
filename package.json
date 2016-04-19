@@ -54,6 +54,8 @@
     "react-router": "^2.2.4",
     "react-tap-event-plugin": "1.0.0",
     "reflux": "^0.4.1",
+    "reflux-core": "^0.3.0",
+    "reflux-promise": "^1.0.4",
     "require-dir": "^0.3.0",
     "sanitize-html": "^1.11.4",
     "schema-inspector": "^1.6.4",

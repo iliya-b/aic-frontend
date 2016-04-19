@@ -9,7 +9,7 @@ test_integration:
     - npm run create-conf-from-env
     - mv config.json ./build/
     - ./node_modules/.bin/http-server ./build -p 9080 &
-    - ./node_modules/.bin/phantomjs --ssl-protocol=any --ignore-ssl-errors=true --web-security=false -w &
+    - ./node_modules/.bin/phantomjs --ignore-ssl-errors=true -w &
     - sleep 1
     - git clone git@git.rnd.alterway.fr:aic-documentation/aic_features.git
     - cd aic_features

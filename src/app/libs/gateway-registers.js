@@ -81,10 +81,12 @@ const GatewayRegisters = function () {
 				pathname: '/projects/{projectId}/apk'
 			}, {
 				action: GatewayActions.upload,
-				pathname: '/projects/{projectId}/apk'
+				pathname: '/projects/{projectId}/apk',
+				allowMany: true
 			}, {
 				action: GatewayActions.delete,
-				pathname: '/projects/{projectId}/apk/{apkId}'
+				pathname: '/projects/{projectId}/apk/{apkId}',
+				allowMany: true
 			}
 		]
 	});

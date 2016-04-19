@@ -26,17 +26,20 @@ const APKManager = class extends React.Component {
 		this.handleClickUploadOpen = this.toogleDialogUploadAPK.bind(this, true);
 		this.handleClickUploadClose = this.toogleDialogUploadAPK.bind(this, false);
 		this.handleDropFiles = files => {
-			APKActions.upload(projectId, files);
+			const filesArray = files.map(file => {
+				return {projectId, file, progress: event => APKActions.uploadProgress(file, event)};
+			});
+			APKActions.upload(filesArray);
 		};
 		this.handleDeleteSelected = () => {
 			debug('handleDeleteSelected');
 			const apksToDelete = this.state.selectFileIndexes.map(i => {
-				return this.state.apk.apks[i].id;
+				return {projectId, apkId: this.state.apk.apks[i].id};
 			});
 			const newState = Object.assign({}, this.state);
 			newState.selectFileIndexes = [];
 			this.setState(newState);
-			APKActions.delete(projectId, apksToDelete);
+			APKActions.delete(apksToDelete);
 		};
 		this.handleSelectFiles = this.handleSelectFiles.bind(this);
 		this.handleStateChange = this.handleStateChange.bind(this);
@@ -73,7 +76,7 @@ const APKManager = class extends React.Component {
 			case 'initCompleted':
 			case 'uploadCompleted':
 			case 'deleteCompleted':
-				APKActions.list(projectId);
+				APKActions.list({projectId});
 				break;
 			default:
 				break;

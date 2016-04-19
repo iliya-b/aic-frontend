@@ -18,39 +18,55 @@ const APKActions = Reflux.createActions({
 });
 
 // Listeners for asynchronous Backend API calls
-APKActions.list.listen(function (projectId) {
-	Gateway.apks.list({projectId})
-	.then(res => {
-		this.completed(res);
-	});
-});
+APKActions.list.listenAndPromise(Gateway.apks.list);
 
-APKActions.upload.listen(function (projectId, files) {
-	Promise.all(
-		files.map(file => {
-			return Gateway.apks.upload({projectId, file, progress: event => APKActions.uploadProgress(file, event)});
-		})
-	)
-	.then(() => {
-		this.completed(files);
-	})
-	.catch(err => {
-		this.failure(err);
-	});
-});
+APKActions.upload.listenAndPromise(Gateway.apks.uploadMany);
 
-APKActions.delete.listen(function (projectId, apkIdList) {
-	Promise.all(
-		apkIdList.map(apkId => {
-			return Gateway.apks.delete({projectId, apkId});
-		})
-	)
-	.then(() => {
-		this.completed();
-	})
-	.catch(err => {
-		this.failure(err);
-	});
-});
+APKActions.delete.listenAndPromise(Gateway.apks.deleteMany);
+
+// const apiPromise = function (args1, args2, args3) {
+// 	console.warn('apiPromise', arguments);
+// 	console.warn('apiPromise', args1);
+// 	console.warn('apiPromise', args2);
+// 	console.warn('apiPromise', args3);
+// 	console.warn('apiPromise', this);
+// };
+
+// console.warn('APKActions', APKActions);
+
+// APKActions.list.listen(function (projectId) {
+// 	Gateway.apks.list({projectId})
+// 	.then(res => {
+// 		this.completed(res);
+// 	});
+// });
+
+// APKActions.upload.listen(function (projectId, files) {
+// 	Promise.all(
+// 		files.map(file => {
+// 			return Gateway.apks.upload({projectId, file, progress: event => APKActions.uploadProgress(file, event)});
+// 		})
+// 	)
+// 	.then(() => {
+// 		this.completed(files);
+// 	})
+// 	.catch(err => {
+// 		this.failure(err);
+// 	});
+// });
+
+// APKActions.delete.listen(function (projectId, apkIdList) {
+// 	Promise.all(
+// 		apkIdList.map(apkId => {
+// 			return Gateway.apks.delete({projectId, apkId});
+// 		})
+// 	)
+// 	.then(() => {
+// 		this.completed();
+// 	})
+// 	.catch(err => {
+// 		this.failure(err);
+// 	});
+// });
 
 module.exports = APKActions;

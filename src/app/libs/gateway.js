@@ -19,6 +19,9 @@ const Gateway = {
 				throw new Error('Duplicated action on Gateway namespace. ', action.action.name, 'already exists in', options.namespace);
 			}
 			Gateway[options.namespace][action.action.name] = Gateway.request.bind(Gateway, action);
+			if (action.hasOwnProperty('allowMany') && action.allowMany) {
+				Gateway[options.namespace][`${action.action.name}Many`] = Gateway.many.bind(Gateway, action);
+			}
 		});
 	},
 
@@ -34,6 +37,17 @@ const Gateway = {
 			return Gateway.adapters[namespace][action][type];
 		}
 		return false;
+	},
+
+	many(options, objArray, extraOptions) {
+		// return request(options, obj, extraOptions);
+		return Promise.all(
+			objArray.map(obj => {
+				return Gateway[options.namespace][options.action.name](obj, extraOptions);
+			}))
+		.then(values => {
+			return {response: values, request: objArray};
+		});
 	},
 
 	request(options, obj, extraOptions) {
