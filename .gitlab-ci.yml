@@ -1,7 +1,6 @@
 image: node:onbuild
 
 before_script:
-  - npm config set loglevel warn
   - npm install --unsafe-perm
   - npm run build
 
@@ -9,13 +8,12 @@ test_integration:
   script:
     - npm run create-conf-from-env
     - mv config.json ./build/
-    - npm install http-server
     - ./node_modules/.bin/http-server ./build -p 9080 &
-    - npm install phantomjs-prebuilt
     - ./node_modules/.bin/phantomjs --ssl-protocol=any --ignore-ssl-errors=true --web-security=false -w &
     - sleep 1
     - git clone git@git.rnd.alterway.fr:aic-documentation/aic_features.git
     - cd aic_features
+    - ln -s ../node_modules/
     - npm install --unsafe-perm
     - echo ${AIC_SCREENSHOT_PATH}
     - AIC_FRONTEND_HOST=http://localhost:9080/ ./run-tests.sh
