@@ -67,7 +67,7 @@ Known Bugs
 ==========
 
 * Tables: can not unselect all ([open issue](https://github.com/callemall/material-ui/issues/3074) on the Table component of material-ui)
-* Tables: header separator bugs on DOM change (to debug)
+* Tables: header separator bugs on DOM change ([open issue](https://github.com/callemall/material-ui/issues/3957))
 * Reflux unsubscribe method is broken, so users will get React messages like this: `Warning: setState(...): Can only update a mounted or mounting component. This usually means you called setState() on an unmounted component. This is a no-op. Please check the code for the undefined component.`
 * VM white screen is a chrome bug [ref1](https://bugs.chromium.org/p/chromium/issues/detail?id=588434) [ref2](http://stackoverflow.com/questions/36114379/chrome-canvas-bug-on-mac-os-x-when-switching-spaces)
 
