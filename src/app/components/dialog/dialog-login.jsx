@@ -137,8 +137,9 @@ const LoginDialog = class extends React.Component {
 			debug('this.context.route', this.context.route);
 			debug('this.context.location', this.context.location);
 			AuthActions.redirectConnected(this.context.router, this.props.location);
+		} else {
+			this.setState(newState);
 		}
-		this.setState(newState);
 	}
 
 	componentWillReceiveProps(nextProps) {
