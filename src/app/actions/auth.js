@@ -13,36 +13,59 @@ import Gateway from 'app/libs/gateway';
 
 // Actions
 const AuthActions = Reflux.createActions({
-	login: {children: ['completed', 'failure']},
-	logout: {children: ['completed', 'failure']},
-	check: {children: ['completed', 'failure']}
+	login: {asyncResult: true},
+	logout: {asyncResult: true}
 });
 
 // Listeners for asynchronous Backend API calls
-AuthActions.login.listen(function (login, pass) {
-	Gateway.user.login({login, pass})
-	// BackendAPI.userLogin(login, pass)
-	.then(result => {
-		debug('then auth login');
-		debug(arguments);
-		if (result.hasOwnProperty('status') &&
-			(result.status === 400 || result.status === 401)) {
-			debug('arguments', arguments);
-			this.failure(`It was not possible to login. Authentication server response was an error. Error: ${result.statusText}`);
-		} else if (result.hasOwnProperty('token')) {
-			localStorage.token = result.token;
-			this.completed();
-		} else {
-			debug('arguments', arguments);
-			this.failure('It was not possible to login. Unknown authentication server response.');
-		}
-	})
-	.catch(err => {
-		debug('catch auth login');
-		debug(arguments, err);
-		this.failure('It was not possible to login. Please verify that your credentials are correct.');
-	});
-});
+AuthActions.login.listenAndPromise(Gateway.user.login);
+AuthActions.logout.listenAndPromise(Gateway.user.logout);
+
+// AuthActions.login.listen(function (login, pass) {
+// 	Gateway.user.login({login, pass})
+// 	// BackendAPI.userLogin(login, pass)
+// 	.then(result => {
+// 		debug('then auth login');
+// 		debug(arguments);
+// 		if (result.hasOwnProperty('status') &&
+// 			(result.status === 400 || result.status === 401)) {
+// 			debug('arguments', arguments);
+// 			this.failure(`It was not possible to login. Authentication server response was an error. Error: ${result.statusText}`);
+// 		} else if (result.hasOwnProperty('token')) {
+// 			localStorage.token = result.token;
+// 			this.completed();
+// 		} else {
+// 			debug('arguments', arguments);
+// 			this.failure('It was not possible to login. Unknown authentication server response.');
+// 		}
+// 	})
+// 	.catch(err => {
+// 		debug('catch auth login');
+// 		debug(arguments, err);
+// 		this.failure('It was not possible to login. Please verify that your credentials are correct.');
+// 	});
+// });
+
+// AuthActions.logout.listen(function (showMessage) {
+// 	Gateway.user.logout()
+// 	// BackendAPI.userLogout()
+// 	.then(result => {
+// 		localStorage.token = '';
+// 		// TODO:  Fix the logout result,
+// 		//        for now we have 500 (Internal Server Error)
+// 		debug('logout', result);
+// 		this.completed(showMessage);
+// 		// if (result.hasOwnProperty('status') &&
+// 		//    (result.status === 400 || result.status === 401 )){
+// 		//   this.failure('It was not possible to login. Error: ' + result.statusText);
+// 		// }else if (result.hasOwnProperty('X-Auth-Token')){
+// 		//   localStorage.token = result['X-Auth-Token'];
+// 		//   this.completed();
+// 		// }else{
+// 		//   this.failure('It was not possible to login.');
+// 		// }
+// 	});
+// });
 
 // AuthActions.check.listen(function () {
 //   debug('AuthActions.check.listen');
@@ -166,26 +189,5 @@ AuthActions.loadContextIfEmpty = function (loginContext) {
 	// 		});
 	// 	});
 };
-
-AuthActions.logout.listen(function (showMessage) {
-	Gateway.user.logout()
-	// BackendAPI.userLogout()
-	.then(result => {
-		localStorage.token = '';
-		// TODO:  Fix the logout result,
-		//        for now we have 500 (Internal Server Error)
-		debug('logout', result);
-		this.completed(showMessage);
-		// if (result.hasOwnProperty('status') &&
-		//    (result.status === 400 || result.status === 401 )){
-		//   this.failure('It was not possible to login. Error: ' + result.statusText);
-		// }else if (result.hasOwnProperty('X-Auth-Token')){
-		//   localStorage.token = result['X-Auth-Token'];
-		//   this.completed();
-		// }else{
-		//   this.failure('It was not possible to login.');
-		// }
-	});
-});
 
 module.exports = AuthActions;

@@ -120,7 +120,7 @@ const LoginDialog = class extends React.Component {
 		if (this.validFields(AppUtils.extend(this.state, {fieldsChanged: ['loginEmail', 'loginPassword']}))) {
 			const email = this.loginEmail.getValue();
 			const pass = this.loginPassword.getValue();
-			AuthActions.login(email, pass);
+			AuthActions.login({login: email, pass});
 		}
 	}
 
