@@ -36,17 +36,17 @@ const CameraStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onUpload(projectId, files) {
-		debug('onUpload', arguments, projectId, files);
-		files.map(file => this.updateUploading(file.name, 0));
+	onUpload(filesArray) {
+		debug('onUpload', arguments, filesArray);
+		filesArray.forEach(file => this.updateUploading(file.file.name, 0));
 		this.updateState();
 	},
 
-	onUploadCompleted(files) {
-		debug('onUploadCompleted', files);
+	onUploadCompleted(result) {
+		debug('onUploadCompleted', result);
 		this.state.camera.status = 'uploadCompleted';
-		files.forEach(file => {
-			this.removeUploading(file.name);
+		result.request.forEach(file => {
+			this.removeUploading(file.file.name);
 		});
 		this.updateState();
 	},
@@ -57,8 +57,8 @@ const CameraStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onDeleteCompleted(data) {
-		debug('onDeleteCompleted', data);
+	onDeleteCompleted(result) {
+		debug('onDeleteCompleted', result);
 		this.state.camera.status = 'deleteCompleted';
 		this.updateState();
 	},

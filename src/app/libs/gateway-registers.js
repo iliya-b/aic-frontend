@@ -102,10 +102,12 @@ const GatewayRegisters = function () {
 				pathname: '/projects/{projectId}/camera'
 			}, {
 				action: GatewayActions.upload,
-				pathname: '/projects/{projectId}/camera'
+				pathname: '/projects/{projectId}/camera',
+				allowMany: true
 			}, {
 				action: GatewayActions.delete,
-				pathname: '/projects/{projectId}/camera/{cameraFileId}'
+				pathname: '/projects/{projectId}/camera/{cameraFileId}',
+				allowMany: true
 			}
 		]
 	});

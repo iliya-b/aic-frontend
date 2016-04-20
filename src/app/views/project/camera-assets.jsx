@@ -26,17 +26,20 @@ const CameraAssets = class extends React.Component {
 		this.handleClickUploadOpen = this.toogleDialogUploadAPK.bind(this, true);
 		this.handleClickUploadClose = this.toogleDialogUploadAPK.bind(this, false);
 		this.handleDropFiles = files => {
-			CameraActions.upload(projectId, files);
+			const filesArray = files.map(file => {
+				return {projectId, file, progress: event => CameraActions.uploadProgress(file, event)};
+			});
+			CameraActions.upload(filesArray);
 		};
 		this.handleDeleteSelected = () => {
 			debug('handleDeleteSelected');
-			const apksToDelete = this.state.selectFileIndexes.map(i => {
-				return this.state.camera.files[i].id;
+			const filesToDelete = this.state.selectFileIndexes.map(i => {
+				return {projectId, cameraFileId: this.state.camera.files[i].id};
 			});
 			const newState = Object.assign({}, this.state);
 			newState.selectFileIndexes = [];
 			this.setState(newState);
-			CameraActions.delete(projectId, apksToDelete);
+			CameraActions.delete(filesToDelete);
 		};
 		this.handleSelectFiles = this.handleSelectFiles.bind(this);
 		this.handleStateChange = this.handleStateChange.bind(this);
@@ -73,7 +76,7 @@ const CameraAssets = class extends React.Component {
 			case 'initCompleted':
 			case 'uploadCompleted':
 			case 'deleteCompleted':
-				CameraActions.list(projectId);
+				CameraActions.list({projectId});
 				break;
 			default:
 				break;

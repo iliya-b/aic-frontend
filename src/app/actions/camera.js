@@ -18,39 +18,43 @@ const CameraActions = Reflux.createActions({
 });
 
 // Listeners for asynchronous Backend API calls
-CameraActions.list.listen(function (projectId) {
-	Gateway.camera.list({projectId})
-	.then(res => {
-		this.completed(res);
-	});
-});
+CameraActions.list.listenAndPromise(Gateway.camera.list);
+CameraActions.upload.listenAndPromise(Gateway.camera.uploadMany);
+CameraActions.delete.listenAndPromise(Gateway.camera.deleteMany);
 
-CameraActions.upload.listen(function (projectId, files) {
-	Promise.all(
-		files.map(file => {
-			return Gateway.camera.upload({projectId, file, progress: event => CameraActions.uploadProgress(file, event)});
-		})
-	)
-	.then(() => {
-		this.completed(files);
-	})
-	.catch(err => {
-		this.failure(err);
-	});
-});
+// CameraActions.list.listen(function (projectId) {
+// 	Gateway.camera.list({projectId})
+// 	.then(res => {
+// 		this.completed(res);
+// 	});
+// });
 
-CameraActions.delete.listen(function (projectId, cameraFileList) {
-	Promise.all(
-		cameraFileList.map(cameraFileId => {
-			return Gateway.camera.delete({projectId, cameraFileId});
-		})
-	)
-	.then(() => {
-		this.completed();
-	})
-	.catch(err => {
-		this.failure(err);
-	});
-});
+// CameraActions.upload.listen(function (projectId, files) {
+// 	Promise.all(
+// 		files.map(file => {
+// 			return Gateway.camera.upload({projectId, file, progress: event => CameraActions.uploadProgress(file, event)});
+// 		})
+// 	)
+// 	.then(() => {
+// 		this.completed(files);
+// 	})
+// 	.catch(err => {
+// 		this.failure(err);
+// 	});
+// });
+
+// CameraActions.delete.listen(function (projectId, cameraFileList) {
+// 	Promise.all(
+// 		cameraFileList.map(cameraFileId => {
+// 			return Gateway.camera.delete({projectId, cameraFileId});
+// 		})
+// 	)
+// 	.then(() => {
+// 		this.completed();
+// 	})
+// 	.catch(err => {
+// 		this.failure(err);
+// 	});
+// });
 
 module.exports = CameraActions;
