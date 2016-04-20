@@ -35,8 +35,8 @@ const AppConfigStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onLoadFailure(error) {
-		debug('onLoadFailure', error);
+	onLoadFailed(error) {
+		debug('onLoadFailed', error);
 		this.state.config.isLoaded = true;
 		this.state.config.hasErrors = true;
 		this.state.config.error = error;

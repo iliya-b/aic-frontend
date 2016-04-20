@@ -2,29 +2,30 @@
 
 // Vendor
 import Reflux from 'reflux';
-const debug = require('debug')('AiC:Actions:AppConfig');
+// const debug = require('debug')('AiC:Actions:AppConfig');
 
 // APP
 import Gateway from 'app/libs/gateway';
 
 // Actions
 const AppConfigActions = Reflux.createActions({
-	load: {children: ['completed', 'failure']}
+	load: {asyncResult: true}
 });
 
 // Listeners for asynchronous calls
-AppConfigActions.load.listen(() => {
-	Gateway.config.read()
-	// BackendAPI.loadConfig()
-	.then(data => {
-		debug('load.listen then', arguments);
-		AppConfigActions.load.completed(data);
-	})
-	.catch((data, textStatus, errorThrown) => {
-		debug('load.listen catch', arguments);
-		AppConfigActions.load.failure(errorThrown);
-	});
-});
+AppConfigActions.load.listenAndPromise(Gateway.config.read);
+// AppConfigActions.load.listen(() => {
+// 	Gateway.config.read()
+// 	// BackendAPI.loadConfig()
+// 	.then(data => {
+// 		debug('load.listen then', arguments);
+// 		AppConfigActions.load.completed(data);
+// 	})
+// 	.catch((data, textStatus, errorThrown) => {
+// 		debug('load.listen catch', arguments);
+// 		AppConfigActions.load.failure(errorThrown);
+// 	});
+// });
 
 // AppConfigActions.loadConfigPromise = false;
 

@@ -13,6 +13,8 @@ const GatewayRegisters = function () {
 	// Register all adapters
 	Gateway.adapter(GatewayAdapters);
 
+	// Register request api to be used
+	// default is used by all calls that are not otherwise specified
 	Gateway.requestAPI.default = RestAPI.apiCallAuth.bind(RestAPI);
 	Gateway.requestAPI.authNotRequired = RestAPI.apiCall.bind(RestAPI);
 
