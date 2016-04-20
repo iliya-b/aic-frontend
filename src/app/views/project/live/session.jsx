@@ -115,7 +115,7 @@ const LiveSession = class extends React.Component {
 							</div>
 						) : null}
 
-						<PanelSessionScreen rotation={this.state.live.properties ? this.state.live.properties['aicd.screen_rotation'] : 0}/>
+						<PanelSessionScreen rotation={this.state.live.properties ? this.state.live.properties['aicd.screen_rotation'] : "0"}/>
 
 						{this.state.live.status === 'LIVE_STATUS_CONNECTED' ? (
 							<div>
