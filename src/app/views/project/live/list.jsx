@@ -37,7 +37,7 @@ const LiveList = class extends React.Component {
 			const version = variants.reduce((previous, current) => {
 				return previous === null && current.id === variant ? current.version : previous;
 			}, null);
-			LiveActions.start(variant, projectId, version);
+			LiveActions.start({variant, projectId, version});
 			PollingActions.start('liveList');
 		};
 
@@ -47,7 +47,7 @@ const LiveList = class extends React.Component {
 		};
 
 		this.onStopSession = avmId => {
-			LiveActions.stop(avmId);
+			LiveActions.stop({avmId});
 			PollingActions.start('liveList');
 		};
 

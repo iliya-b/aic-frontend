@@ -13,6 +13,7 @@ const LiveActions = require('app/actions/live');
 import APKActions from 'app/actions/apk';
 import CameraActions from 'app/actions/camera';
 import AppActions from 'app/actions/app';
+import PollingActions from 'app/actions/polling';
 
 // Store
 const LiveStore = Reflux.createStore({
@@ -46,7 +47,7 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onSetProjectIdFailure(errorMessage) {
+	onSetProjectIdFailed(errorMessage) {
 		this.state.live.message = errorMessage;
 		this.state.live.status = 'LIVE_STATUS_INITIAL_FAILED';
 		this.updateState();
@@ -77,32 +78,33 @@ const LiveStore = Reflux.createStore({
 			this.state.live.liveIsConnect = true;
 			// Load properties each x seconds
 			// TODO: should be changed once notification is done?
-			clearInterval(window.intervalTimeoutLoad);
-			clearInterval(window.intervalTimeout);
+			this.clearTimeouts();
 			// After ready the docker needs to boot up
 			// TODO: change to state
-			window.intervalTimeout = setInterval(LiveActions.properties, 1000, this.state.liveInfo.avm_id);
+			// window.intervalTimeout = setInterval(LiveActions.properties, 1000, {avmId: this.state.liveInfo.avm_id}, {showError500Dialog: false});
+			PollingActions.start('liveProperties', {avmId: this.state.liveInfo.avm_id}, {showError500Dialog: false});
 			// L
 			// iveActions.properties(avmId);
 		}
 		this.updateState();
 	},
 
-	onLoadInfoFailure(errorMessage) {
+	onLoadInfoFailed(errorMessage) {
 		debug('errorMessage', errorMessage);
 		this.state.live.message = errorMessage;
 		// this.state.live.status = 'LIVE_STATUS_INITIAL_FAILED';
 		this.state.live.status = 'LIVE_STATUS_CHECK_FAILED';
-		clearInterval(window.intervalTimeoutLoad);
-		clearInterval(window.intervalTimeout);
+		this.clearTimeouts();
 		// this.updateState();
 		debug('not found avm', this);
 		AppActions.notFound();
 	},
 
 	clearTimeouts() {
-		clearInterval(window.intervalTimeoutLoad);
-		clearInterval(window.intervalTimeout);
+		// clearInterval(window.intervalTimeoutLoad);
+		// clearInterval(window.intervalTimeout);
+		PollingActions.stop('liveLoadInfo');
+		PollingActions.stop('liveProperties');
 	},
 
 	// Load State
@@ -133,7 +135,7 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onStartFailure(errorMessage) {
+	onStartFailed(errorMessage) {
 		this.state.live.status = 'LIVE_STATUS_VMSTART_FAILED';
 		this.state.live.message = errorMessage;
 		this.updateState();
@@ -154,7 +156,7 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onLiveCheckFailure(errorMessage) {
+	onLiveCheckFailed(errorMessage) {
 		this.state.live.status = 'LIVE_STATUS_CHECK_FAILED';
 		this.state.live.message = errorMessage;
 		this.updateState();
@@ -175,7 +177,7 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onLiveStartFailure(errorMessage) {
+	onLiveStartFailed(errorMessage) {
 		this.state.live.status = 'LIVE_STATUS_START_FAILED';
 		this.state.live.message = errorMessage;
 		this.updateState();
@@ -196,7 +198,7 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onLiveConnectFailure(errorMessage) {
+	onLiveConnectFailed(errorMessage) {
 		this.state.live.status = 'LIVE_STATUS_CONNECT_FAILED';
 		this.state.live.message = errorMessage;
 		this.updateState();
@@ -302,10 +304,10 @@ const LiveStore = Reflux.createStore({
 		} else if (messageParsed.hasOwnProperty('error')) {
 			switch (this.state.live.status) {
 				case 'LIVE_STATUS_CHECKING':
-					LiveActions.liveCheck.failure(messageParsed.error);
+					LiveActions.liveCheck.failed(messageParsed.error);
 					break;
 				case 'LIVE_STATUS_STARTING':
-					LiveActions.liveStart.failure(messageParsed.error);
+					LiveActions.liveStart.failed(messageParsed.error);
 					break;
 				default:
 					// TODO: error
@@ -333,7 +335,7 @@ const LiveStore = Reflux.createStore({
 
 	onInstallAPKCompleted(response, projectId, avmId, apkId, refId) {
 		debug('onInstallAPKCompleted');
-		LiveActions.listPackages(this.state.liveInfo.avm_id);
+		LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
 		const index = this.state.live.installedAPKs.reduce((found, apk, index) => {
 			return apk.refId === refId ? index : found;
 		}, -1);
@@ -370,7 +372,7 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onListPackagesFailure(errorMessage) {
+	onListPackagesFailed(errorMessage) {
 		this.state.live.message = errorMessage;
 		this.state.live.status = 'LIVE_STATUS_LISTPACKAGES_FAILED';
 		this.updateState();
@@ -401,7 +403,7 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onMonkeyRunnerFailure(errorMessage, avmId, packages, eventCount, throttle, refId) {
+	onMonkeyRunnerFailed(errorMessage, avmId, packages, eventCount, throttle, refId) {
 		debug('onMoneyRunnerFailure', errorMessage);
 		const index = this.state.live.monkeyCalls.reduce((found, mcall, index) => {
 			return mcall.id === refId ? index : found;
@@ -432,7 +434,7 @@ const LiveStore = Reflux.createStore({
 		if (!this.state.live.listPackages &&
 			properties["dev.bootcomplete"] === "1") {
 			debug('onPropertiesCompleted listPackages');
-			LiveActions.listPackages(this.state.liveInfo.avm_id);
+			LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
 			// Only clearTimeouts when debugging to not have span on logs
 			// this.clearTimeouts();
 		}
@@ -453,7 +455,7 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onPropertiesFailure(errorMessage) {
+	onPropertiesFailed(errorMessage) {
 		// debug('onPropertiesFailure', errorMessage);
 		// this.state.live.message = errorMessage;
 		// this.state.live.status = 'LIVE_STATUS_PROPERTIES_FAILED';
@@ -467,6 +469,7 @@ const LiveStore = Reflux.createStore({
 			// this.state.live.status = 'LIVE_STATUS_LISTPACKAGES_FAILED';
 			this.state.live.status = 'LIVE_STATUS_START_FAILED';
 			this.updateState();
+			PollingActions.stop('liveProperties');
 		}
 	},
 

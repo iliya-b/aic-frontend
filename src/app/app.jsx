@@ -11,6 +11,7 @@ import refluxPromise from 'reflux-promise';
 
 // APP
 import gatewayRegisters from 'app/libs/gateway-registers';
+import PollingActions from 'app/actions/polling';
 
 (function () {
 	// Needed for configuration
@@ -18,6 +19,9 @@ import gatewayRegisters from 'app/libs/gateway-registers';
 
 	// Needed to enable debugging on browser
 	window.GobyAppGlobals.Debugger = require('debug');
+
+	// Enable stop polling by browser console
+	window.GobyAppGlobals.PollingActions = PollingActions;
 
 	// Debugging React
 	// window.Perf = require('react-addons-perf');

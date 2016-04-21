@@ -10,151 +10,58 @@ import Gateway from 'app/libs/gateway';
 
 // Actions
 const LiveActions = Reflux.createActions({
-	setProjectId: {children: ['completed', 'failure']},
+
+	list: {asyncResult: true},
+	stop: {asyncResult: true},
+	start: {asyncResult: true},
+	listPackages: {asyncResult: true},
+	properties: {asyncResult: true},
+	clearTimeouts: {},
+	loadInfo: {asyncResult: true},
+
+	setProjectId: {asyncResult: true},
 	loadState: {},
-	loadInfo: {children: ['completed', 'failure']},
+
 	setState: {},
 	liveReset: {},
 	setDelayedRotation: {},
 	socketMessage: {},
 	logMessage: {},
-	start: {children: ['completed', 'failure']},
-	stop: {children: ['completed', 'failure']},
-	liveCheck: {children: ['completed', 'failure']},
-	liveStart: {children: ['completed', 'failure']},
-	liveConnect: {children: ['completed', 'failure']},
+	liveConnect: {asyncResult: true},
 	liveStop: {asyncResult: true},
 	setSensor: {asyncResult: true},
-	// setSensorBattery: {asyncResult: true},
-	// setSensorAccelerometer: {asyncResult: true},
-	// setSensorLocation: {asyncResult: true},
-	recordStart: {asyncResult: true},
-	recordStop: {asyncResult: true},
-	screenshot: {asyncResult: true},
 	installAPK: {asyncResult: true},
-	listPackages: {asyncResult: true},
-	monkeyRunner: {asyncResult: true},
-	properties: {children: ['completed', 'failure']},
-	list: {asyncResult: true}
+	monkeyRunner: {asyncResult: true}
 });
 
 // Listeners for asynchronous Backend API calls
 
 LiveActions.list.listenAndPromise(Gateway.live.list);
+LiveActions.stop.listenAndPromise(Gateway.live.delete);
+LiveActions.start.listenAndPromise(Gateway.live.create);
+LiveActions.listPackages.listenAndPromise(Gateway.live.listPackages);
+LiveActions.properties.listenAndPromise(Gateway.live.properties);
+LiveActions.loadInfo.listenAndPromise(Gateway.live.read);
+
+LiveActions.monkeyRunner.listen(function (avmId, packages, eventCount, throttle, refId) {
+	Gateway.live.monkeyRunner({avmId, packages, eventCount, throttle})
+	.then(res => {
+		this.completed(res, avmId, packages, eventCount, throttle, refId);
+	}, err => {
+		this.failed(err, avmId, packages, eventCount, throttle, refId);
+	});
+});
 
 LiveActions.setProjectId.listen(function () {
 	LiveActions.tryLoadNoVNC(res => {
 		if (res.success) {
 			this.completed();
 		} else {
-			this.failure(res.errorMessage);
+			this.failed(res.errorMessage);
 		}
 	});
 });
 
-LiveActions.start.listen(function (variant, projectId, version) {
-	debug('start called');
-	Gateway.live.create({variant, projectId, version})
-	// BackendAPI.liveStart(variant, projectId)
-	.then(res => {
-		debug('start back');
-		debug(arguments);
-		if (res.hasOwnProperty('avm_id')) {
-			this.completed(res);
-		} else {
-			this.failure('It was not possible to start live session.');
-		}
-	});
-});
-
-LiveActions.stop.listen(function (avmId) {
-	debug('stop called');
-	// BackendAPI.liveStop(avmId)
-	Gateway.live.delete({avmId})
-	.then(() => {
-		debug('stop back');
-		debug(arguments);
-		this.completed();
-	})
-	.catch(err => {
-		debug('stop back catch');
-		debug(arguments);
-		this.failure(err);
-	});
-	// [undefined, 'nocontent', Object]0: undefined1: 'nocontent'2: Objectabort: (a)always: ()complete: ()done: ()error: ()fail: ()getAllResponseHeaders: ()getResponseHeader: (a)overrideMimeType: (a)pipe: ()progress: ()promise: (a)readyState: 4responseText: 'setRequestHeader: (a,b)state: ()status: 204statusCode: (a)statusText: 'No Content'success: ()then: ()__proto__: Objectcallee: (...)get callee: ThrowTypeError()set callee: ThrowTypeError()caller: (...)get caller: ThrowTypeError()set caller: ThrowTypeError()length: 3Symbol(Symbol.iterator): values()__proto__: Object
-	// [Object, 'error', 'Not Found'] +1ms
-	// .then(res => {
-	//   debug('stop back');
-	//   debug(res);
-	//   if (res.hasOwnProperty('avm_id')) {
-	//     this.completed(res);
-	//   } else {
-	//     this.failure('It was not possible to stop live session.');
-	//   }
-	// });
-});
-
-LiveActions.loadInfo.listen(function (avmId) {
-	debug('load info called');
-	Gateway.live.read({avmId})
-	.then(result => {
-		this.completed(result);
-	}, (err, e1, e2) => {
-		debug('loadInfo err', arguments, err, e1, e2);
-		this.failure(err);
-	});
-	// .then(res => {
-	// 	debug('back');
-	// 	if (res instanceof Array) {
-	// 		const avmInfo = res.filter(currentValue => {
-	// 			return currentValue.avm_id === avmId;
-	// 		});
-	// 		if (avmInfo.length) {
-	// 			this.completed(avmInfo[0]);
-	// 		} else {
-	// 			this.failure('It was not possible to find live session.');
-	// 		}
-	// 	} else {
-	// 		this.failure('It was not possible to list live sessions.');
-	// 	}
-	// });
-});
-
-LiveActions.liveCheck.listen(() => {
-	// const token = '';
-	// Gateway.live.read({avmId})
-	// // BackendAPI.liveCheck(token, res => {
-	// 	if (res.hasOwnProperty('token')) {
-	// 		const WebsocketActions = require('app/actions/websocket');
-	// 		WebsocketActions.connect(res.token, 'live');
-	// 	} else {
-	// 		this.failure('It was not possible to check for a live session.');
-	// 	}
-	// 	// this.completed( res.error !== 'not-found' );
-	// });
-});
-
-// Out of date, now it is done by websocket message
-// BUT it should be reversed when websocket turn to be only notification
-// LiveActions.liveStart.listen(function () {
-//   const token = '';
-//   BackendAPI.liveStart(token, res => {
-//     debug(res);
-//     if (res.hasOwnProperty('responseJSON') ) {
-//       res = res.responseJSON;
-//     }
-//     debug(res);
-//     if (res.hasOwnProperty('vncip') && res.hasOwnProperty('vncport') ) {
-//       this.completed( res.vncip, res.vncport );
-//     }else{
-//       if ( res.hasOwnProperty('error') && res.error.hasOwnProperty('message')  ) {
-//         this.failure( res.error.message );
-//       }else{
-//         this.failure( 'Error on the create session request.' );
-//       }
-//     }
-//   });
-// });
 
 LiveActions.liveConnect.listen(function (vmhost, vmport, avmId) {
 	// TODO: audio vmport must be informed
@@ -172,7 +79,7 @@ LiveActions.liveConnect.listen(function (vmhost, vmport, avmId) {
 			//   return false;
 			// } );
 		} else {
-			this.failure(res.errorMessage);
+			this.failed(res.errorMessage);
 		}
 	});
 });
@@ -187,7 +94,7 @@ LiveActions.liveStop.listen(function (avmId) {
 	.then(result => {
 		this.completed(result);
 	}, err => {
-		this.failure(err);
+		this.failed(err);
 	});
 	// BackendAPI.liveStop(avmId, res => {
 	// 	this.completed(res);
@@ -197,61 +104,17 @@ LiveActions.liveStop.listen(function (avmId) {
 	LiveActions.stopAudioConnection();
 });
 
-// LiveActions.setSensorBattery.listen(function (projectId, value) {
-// 	const token = '';
-// 	BackendAPI.sensorBattery(token, projectId, value, res => {
-// 		this.completed(res);
-// 	});
-// });
-
-// LiveActions.setSensorAccelerometer.listen(function (liveId, x, y, z) {
-// 	BackendAPI.sensorAccelerometer(liveId, x, y, z, res => {
-// 		this.completed(res);
-// 	});
-// });
-
-// LiveActions.setSensorLocation.listen(function (projectId, lat, lon) {
-// 	const token = '';
-// 	BackendAPI.sensorLocation(token, projectId, lat, lon, res => {
-// 		this.completed(res);
-// 	});
-// });
-
 LiveActions.setSensor.listen(function (avmId, sensor, payload) {
 	Gateway.live.sensor({avmId, sensor, payload})
 	.then(res => {
 		this.completed(res);
 	}, err => {
-		this.failure(err);
+		this.failed(err);
 	});
 	// BackendAPI.setSensor(avmId, sensor, payload, res => {
 	// 	this.completed(res);
 	// });
 });
-
-// LiveActions.recordStart.listen(function (projectId) {
-// 	const token = '';
-// 	const filename = LiveActions.createVideoName();
-// 	BackendAPI.recordingStart(token, projectId, filename, res => {
-// 		res.filename = filename;
-// 		this.completed(res);
-// 	});
-// });
-
-// LiveActions.recordStop.listen(function (projectId, filename) {
-// 	const token = '';
-// 	BackendAPI.recordingStop(token, projectId, filename, res => {
-// 		this.completed(res);
-// 	});
-// });
-
-// LiveActions.screenshot.listen(function (projectId, filename) {
-// 	const token = '';
-// 	// const filename = LiveActions.createImageName();
-// 	BackendAPI.screenshot(token, projectId, filename, res => {
-// 		this.completed(res);
-// 	});
-// });
 
 LiveActions.installAPK.listen(function (projectId, avmId, apkId, refId) {
 	Gateway.live.installAPK({avmId, apkId})
@@ -264,18 +127,6 @@ LiveActions.installAPK.listen(function (projectId, avmId, apkId, refId) {
 	// 	this.completed(res);
 	// });
 });
-
-// LiveActions.createFileName = function (beginWith, endWith) {
-// 	return beginWith + Date.now() + endWith;
-// };
-
-// LiveActions.createVideoName = function () {
-// 	return this.createFileName('video', '.mp4');
-// };
-
-// LiveActions.createImageName = function () {
-// 	return this.createFileName('snap', '.bmp');
-// };
 
 window.onscriptsload = function () {
 	// const updateState = function (rfb, state, oldstate, msg) {
@@ -295,7 +146,7 @@ window.onscriptsload = function () {
 	} catch (exc) {
 		window.AiClive.completed = true;
 		LiveActions.logMessage('Unable to create noVNC client.');
-		LiveActions.liveConnect.failure(`Unable to create noVNC client (${exc}).`);
+		LiveActions.liveConnect.failed(`Unable to create noVNC client (${exc}).`);
 	}
 	LiveActions.tryWebsocket();
 };
@@ -311,7 +162,7 @@ LiveActions.tryWebsocket = function () {
 			if (window.AiClive.errorCount >= window.AiClive.maxTries) {
 				window.AiClive.completed = true;
 				LiveActions.logMessage('Unable to connect session (websockify error).');
-				LiveActions.liveConnect.failure('Unable to connect session (websockify error).');
+				LiveActions.liveConnect.failed('Unable to connect session (websockify error).');
 			} else {
 				window.AiClive.errorCount += 1;
 				setTimeout(() => {
@@ -381,7 +232,7 @@ LiveActions.tryConnection = function (vmhost, vmport, amvId) {
 		if (!window.AiClive.completed) {
 			window.AiClive.completed = true;
 			LiveActions.logMessage('noVNC utils load failed.');
-			LiveActions.liveConnect.failure('Unable to connect session (timeout error).');
+			LiveActions.liveConnect.failed('Unable to connect session (timeout error).');
 		}
 	}, window.AiClive.timeout);
 };
@@ -465,32 +316,5 @@ LiveActions.stopAudioConnection = function () {
 		gobyVMAudio.src = '';
 	}
 };
-
-LiveActions.listPackages.listen(function (avmId) {
-	Gateway.live.listPackages({avmId})
-	.then(res => {
-		this.completed(res);
-	}, err => {
-		this.failure(err);
-	});
-});
-
-LiveActions.monkeyRunner.listen(function (avmId, packages, eventCount, throttle, refId) {
-	Gateway.live.monkeyRunner({avmId, packages, eventCount, throttle})
-	.then(res => {
-		this.completed(res, avmId, packages, eventCount, throttle, refId);
-	}, err => {
-		this.failed(err, avmId, packages, eventCount, throttle, refId);
-	});
-});
-
-LiveActions.properties.listen(function (avmId) {
-	Gateway.live.properties({avmId}, {showError500Dialog: false})
-	.then(res => {
-		this.completed(res);
-	}, err => {
-		this.failure(err);
-	});
-});
 
 module.exports = LiveActions;

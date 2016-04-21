@@ -6,7 +6,8 @@ import Reflux from 'reflux';
 // Actions
 const PollingActions = Reflux.createActions({
 	start: {},
-	stop: {}
+	stop: {},
+	stopAll: {}
 });
 
 module.exports = PollingActions;

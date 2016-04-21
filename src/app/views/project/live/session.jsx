@@ -12,14 +12,12 @@ const debug = require('debug')('AiC:Views:Project:Live:Session');
 import AreaStatus from 'app/components/project/area-status';
 import PanelSessionScreen from 'app/components/panel/panel-session-screen';
 import LiveToolbox from 'app/components/project/live-toolbox';
-// import LogBox from 'app/components/shared/log-box';
-// import LogBoxRow from 'app/components/shared/log-box-row';
 import LiveStore from 'app/stores/live';
 import APKStore from 'app/stores/apk';
 import CameraStore from 'app/stores/camera';
 import LiveActions from 'app/actions/live';
+import PollingActions from 'app/actions/polling';
 
-const availableLiveActions = ['test', 'check', 'start', 'load', 'connect', 'close', 'setState', 'check', 'close', 'restart'];
 let avmId;
 let projectId;
 
@@ -28,13 +26,9 @@ const LiveSession = class extends React.Component {
 	constructor(props) {
 		super(props);
 		this._onStateChange = this._onStateChange.bind(this);
-		this.handleOnLiveActions = {};
-		availableLiveActions.forEach(actionName => {
-			this.handleOnLiveActions[actionName] = this.handleOnLiveAction.bind(this, actionName);
-		});
-		this.handleBatteryChange = this.handleBatteryChange.bind(this);
-		this.handleClickGPS = this.handleClickGPS.bind(this);
-		this.handleChangeRotation = this.handleChangeRotation.bind(this);
+		// this.handleBatteryChange = this.handleBatteryChange.bind(this);
+		// this.handleClickGPS = this.handleClickGPS.bind(this);
+		// this.handleChangeRotation = this.handleChangeRotation.bind(this);
 		this.handleChangeSensor = this.handleChangeSensor.bind(this);
 		this.handleAPKs = (e, apkId) => {
 			const refId = `${projectId}-${avmId}-${apkId}-${Date.now()}`;
@@ -75,19 +69,6 @@ const LiveSession = class extends React.Component {
 				paddingBottom: `${Spacing.desktopGutter}px`
 			}
 		};
-
-		// const logBoxRows = null;
-
-		// if (this.state && this.state.live) {
-		// 	this.state.live.logBox.map((v, i) => {
-		// 		return <LogBoxRow key={i} time={v.time}>{v.message}</LogBoxRow>;
-		// 	});
-		// }
-		// <div style={{width: 547}}>
-		// 				<LogBox>
-		// 				{logBoxRows}
-		// 				</LogBox>
-		// 			</div>
 
 		return (
 			<div>
@@ -162,9 +143,6 @@ const LiveSession = class extends React.Component {
 
 	_onStateChange(state) {
 		this.setState(state);
-		// if(state.live.status === 'LIVE_STATUS_INITIALIZED'){
-			// LiveActions.liveCheck();
-		// }
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -174,48 +152,48 @@ const LiveSession = class extends React.Component {
 		return true;
 	}
 
-	handleOnLiveAction(actionName) {
-		// debug(arguments);
-		switch (actionName) {
-			case 'test':
-				debug(arguments);
-				break;
-			case 'check':
-				LiveActions.liveCheck();
-				break;
-			case 'start':
-				LiveActions.liveStart();
-				break;
-			case 'restart':
-				LiveActions.liveReset();
-				LiveActions.liveCheck();
-				break;
-			case 'connect':
-				LiveActions.liveConnect(this.state.live.screen.ip, this.state.live.screen.port);
-				break;
-			case 'close':
-				LiveActions.liveStop(this.state.live.screen.port);
-				break;
-			case 'setState': {
-				if (!this.context.appConfig.debug) {
-					return;
-				}
-				const newState = this.state;
-				newState.live.status = 'LIVE_STATUS_CONNECTING';
-				newState.live.screen.ip = '10.2.0.156';
-				newState.live.screen.port = '5909';
-				newState.live.audio = {};
-				newState.live.audio.ip = '10.2.0.156';
-				newState.live.audio.port = '6909';
-				newState.live.screen.rotation = 'horizontal';
-				newState.live.delayedRotation = 'horizontal';
-				LiveActions.setState(newState);
-				break;
-			}
-			default:
-				break;
-		}
-	}
+	// handleOnLiveAction(actionName) {
+	// 	// debug(arguments);
+	// 	switch (actionName) {
+	// 		case 'test':
+	// 			debug(arguments);
+	// 			break;
+	// 		case 'check':
+	// 			LiveActions.liveCheck();
+	// 			break;
+	// 		case 'start':
+	// 			LiveActions.liveStart();
+	// 			break;
+	// 		case 'restart':
+	// 			LiveActions.liveReset();
+	// 			LiveActions.liveCheck();
+	// 			break;
+	// 		case 'connect':
+	// 			LiveActions.liveConnect(this.state.live.screen.ip, this.state.live.screen.port);
+	// 			break;
+	// 		case 'close':
+	// 			LiveActions.liveStop(this.state.live.screen.port);
+	// 			break;
+	// 		case 'setState': {
+	// 			if (!this.context.appConfig.debug) {
+	// 				return;
+	// 			}
+	// 			const newState = this.state;
+	// 			newState.live.status = 'LIVE_STATUS_CONNECTING';
+	// 			newState.live.screen.ip = '10.2.0.156';
+	// 			newState.live.screen.port = '5909';
+	// 			newState.live.audio = {};
+	// 			newState.live.audio.ip = '10.2.0.156';
+	// 			newState.live.audio.port = '6909';
+	// 			newState.live.screen.rotation = 'horizontal';
+	// 			newState.live.delayedRotation = 'horizontal';
+	// 			LiveActions.setState(newState);
+	// 			break;
+	// 		}
+	// 		default:
+	// 			break;
+	// 	}
+	// }
 
 	handleOnInputFocus() {
 		debug('focus');
@@ -265,7 +243,7 @@ const LiveSession = class extends React.Component {
 	}
 
 	handleStopVM() {
-		LiveActions.stop(avmId);
+		LiveActions.stop({avmId});
 	}
 
 	componentDidMount() {
@@ -279,12 +257,12 @@ const LiveSession = class extends React.Component {
 		LiveActions.liveReset();
 		LiveActions.setProjectId(projectId);
 		// LiveActions.loadInfo(avmId);
-		window.intervalTimeoutLoad = setInterval(LiveActions.loadInfo, 1000, avmId);
+		// window.intervalTimeoutLoad = setInterval(LiveActions.loadInfo, 1000, avmId);
+		PollingActions.start('liveLoadInfo', {avmId});
 	}
 
 	componentWillUnmount() {
-		clearInterval(window.intervalTimeoutLoad);
-		clearInterval(window.intervalTimeout);
+		LiveActions.clearTimeouts();
 		this.handleOnInputFocus();
 		// Subscribe and unsubscribe because we don't want to use the mixins
 		this.unsubscribe.map(v => v());

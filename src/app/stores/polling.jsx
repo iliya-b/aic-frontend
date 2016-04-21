@@ -26,11 +26,19 @@ const verifyResponse = {
 		return res.reduce((previous, avm) => {
 			return previous ? previous : (onGoingStatus.indexOf(avm.avm_status) !== -1);
 		}, false);
+	},
+	liveProperties: () => {
+		return true;
+	},
+	liveLoadInfo: () => {
+		return true;
 	}
 };
 
 const actionTypes = {
-	liveList: LiveActions.list
+	liveList: LiveActions.list,
+	liveProperties: LiveActions.properties,
+	liveLoadInfo: LiveActions.loadInfo
 };
 
 // Store
@@ -47,38 +55,51 @@ const PollingStore = Reflux.createStore({
 
 	// Actions //
 
-	onStart(type) {
-		this.state.polling[type] = this.state.polling[type] || {timeout: false};
-		debug('start', type);
+	onStart(actionType, actionPayload, actionExtraOptions) {
+		this.state.polling[actionType] = this.state.polling[actionType] || {timeout: false};
+		debug('start', actionType, actionPayload, actionExtraOptions);
+		debug('startargs', arguments);
 
-		this.onStop(type);
+		this.onStop(actionType);
 
-		actionTypes[type]()
+		actionTypes[actionType](actionPayload, actionExtraOptions)
 		.then(res => {
 			debug('is list finished?', res);
-			if (verifyResponse[type](res)) {
-				this.scheduleRetry(type);
+			if (verifyResponse[actionType](res)) {
+				this.scheduleRetry(actionType, actionPayload, actionExtraOptions);
 			}
 		}, res => {
 			debug('is list finished with error?', res);
+			if (verifyResponse[actionType](res)) {
+				this.scheduleRetry(actionType, actionPayload, actionExtraOptions);
+			}
 		});
 	},
 
-	onStop(type) {
-		if (this.state.polling[type] && this.state.polling[type].timeout) {
-			clearTimeout(this.state.polling[type].timeout);
-			this.state.polling[type].timeout = false;
+	onStop(actionType) {
+		if (this.state.polling[actionType] && this.state.polling[actionType].timeout) {
+			clearTimeout(this.state.polling[actionType].timeout);
+			this.state.polling[actionType].timeout = false;
 		}
 	},
 
-	scheduleRetry(type) {
-		debug('scheduleRetry on type', type);
-		if (this.state.polling[type] && this.state.polling[type].timeout !== false) {
-			debug('scheduleRetry on type', type, 'already scheduled', this.state.polling);
+	onStopAll() {
+		const actionTypes = Object.keys(this.state.polling);
+		actionTypes.forEach(actionType => {
+			this.onStop(actionType);
+		});
+	},
+
+	// Methods
+
+	scheduleRetry(actionType, actionPayload, actionExtraOptions) {
+		debug('scheduleRetry on actionType', actionType);
+		if (this.state.polling[actionType] && this.state.polling[actionType].timeout !== false) {
+			debug('scheduleRetry on actionType', actionType, 'already scheduled', this.state.polling);
 			return;
 		}
 		const timing = 1000;
-		this.state.polling[type].timeout = setTimeout(PollingActions.start, timing, type);
+		this.state.polling[actionType].timeout = setTimeout(PollingActions.start, timing, actionType, actionPayload, actionExtraOptions);
 	},
 
 	// State update
