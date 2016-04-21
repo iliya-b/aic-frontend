@@ -122,25 +122,6 @@ const LiveStore = Reflux.createStore({
 	},
 
 	// Live list
-	onList() {
-		debug('onlist');
-		this.state.live.status = 'LIVE_STATUS_LISTING';
-		this.updateState();
-	},
-
-	onListCompleted(avms) {
-		this.state.live.avms = avms;
-		this.state.live.status = 'LIVE_STATUS_LISTED';
-		this.updateState();
-	},
-
-	onListFailure(errorMessage) {
-		this.state.live.status = 'LIVE_STATUS_LIST_FAILED';
-		this.state.live.message = errorMessage;
-		this.updateState();
-	},
-
-	// Live list
 	onStart() {
 		this.state.live.status = 'LIVE_STATUS_VMSTARTING';
 		this.updateState();
@@ -487,6 +468,27 @@ const LiveStore = Reflux.createStore({
 			this.state.live.status = 'LIVE_STATUS_START_FAILED';
 			this.updateState();
 		}
+	},
+
+	// Live list
+	onList() {
+		debug('onList');
+		this.state.live.status = 'LIVE_STATUS_LISTING';
+		this.updateState();
+	},
+
+	onListCompleted(avms) {
+		debug('onListCompleted', avms);
+		this.state.live.avms = avms;
+		this.state.live.status = 'LIVE_STATUS_LISTED';
+		this.updateState();
+	},
+
+	onListFailed(errorMessage) {
+		debug('onListFailed');
+		this.state.live.status = 'LIVE_STATUS_LIST_FAILED';
+		this.state.live.message = errorMessage;
+		this.updateState();
 	},
 
 	// Methods //

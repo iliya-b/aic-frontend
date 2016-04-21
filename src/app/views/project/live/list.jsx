@@ -16,7 +16,6 @@ let projectId;
 const variants = [
 	{id: 'kitkat-tablet', name: 'kitkatTablet', version: '4'},
 	{id: 'kitkat-phone', name: 'kitkatPhone', version: '4'} // ,
-	// {id: 'kitkat-phone-audio', name: 'kitkatPhoneAudio', version: '4'},
 	// {id: 'lollipop-tablet', name: 'lollipopTablet', version: '5'},
 	// {id: 'lollipop-phone', name: 'lollipopPhone', version: '5'}
 ];
@@ -25,92 +24,70 @@ const LiveList = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this._onStateChange = this._onStateChange.bind(this);
-		this._onStartSession = this._onStartSession.bind(this);
-		this._onEnterSession = this._onEnterSession.bind(this);
-		this._onStopSession = this._onStopSession.bind(this);
-		this.handleStartSession = this._onStartSession.bind(this);
+
+		this.handleStateChange = newState => {
+			debug('changing state', this.state.live ? this.state.live.status : '', newState);
+			if (newState.live.status === 'LIVE_STATUS_INITIALIZED') {
+				PollingActions.start('liveList');
+			}
+			this.setState(newState);
+		};
+
+		this.handleStartSession = variant => {
+			const version = variants.reduce((previous, current) => {
+				return previous === null && current.id === variant ? current.version : previous;
+			}, null);
+			LiveActions.start(variant, projectId, version);
+			PollingActions.start('liveList');
+		};
+
+		this.onEnterSession = avmId => {
+			debug('enter session', arguments);
+			this.context.router.push(`/projects/${projectId}/live/${avmId}`);
+		};
+
+		this.onStopSession = avmId => {
+			LiveActions.stop(avmId);
+			PollingActions.start('liveList');
+		};
+
 		this.state = {};
 	}
 
-	// _onItemTap(index, e) {
-	//   // e.preventDefault();
-	//   this.context.router.transitionTo('live-session', { projectId: 'fooproject',
-	//                                                      androId: 'test'} );
-	// }
-
-	_onStartSession(variant) {
-		const version = variants.reduce((previous, current) => {
-			return previous === null && current.id === variant ? current.version : previous;
-		}, null);
-		LiveActions.start(variant, projectId, version);
-		PollingActions.liveList();
-	}
-
-	_onEnterSession(avmId) {
-		debug('enter session', arguments);
-		this.context.router.push(`/projects/${projectId}/live/${avmId}`);
-		// this.context.router.transitionTo('live-session', {
-		// 	projectId,
-		// 	androId: avmId
-		// });
-	}
-
-	_onStopSession(avmId) {
-		LiveActions.stop(avmId);
-		PollingActions.liveList();
-	}
-
 	render() {
-		// const startButtons = variants.map(variant => {
-		// 	const handleClick = this._onStartSession.bind(this, variant.id);
-		// 	return (
-		// 		<RaisedButton
-		// 			key={variant.id}
-		// 			linkButton
-		// 			primary
-		// 			label={`Start new session ${variant.name}`}
-		// 			title={`Start new session ${variant.name}`}
-		// 			className={`btStartSession${AppUtils.capitalize(variant.name)}`}
-		// 			onClick={handleClick}
-		// 			/>
-		// 	);
-		// });
+		const isListLoading = !(this.state.live && this.state.live.status === 'LIVE_STATUS_LISTED');
+		let avmList = [];
+
+		// Filter VMs by projectId
+		if (this.state.live && this.state.live.hasOwnProperty('avms')) {
+			avmList = this.state.live.avms.filter(v => {
+				return v.project_id === projectId;
+			});
+		}
+
 		return (
 			<div>
 				<ToolbarLive
 					onClickStart={this.handleStartSession}
 					variants={variants}
 					/>
-				<LiveMachineList params={this.props.params} actionEnter={this._onEnterSession} actionStop={this._onStopSession}/>
+				<LiveMachineList avmList={avmList} isListLoading={isListLoading} actionEnter={this.onEnterSession} actionStop={this.onStopSession}/>
 			</div>
 		);
 	}
 
-	_onStateChange(state) {
-		debug('changing state', this.state.live ? this.state.live.status : '', state);
-		// if (state.live.status === 'LIVE_STATUS_VMSTARTED' && state.live.avm.avm_id) {
-		//   // this._onEnterSession(state.live.avm.avm_id);
-		//   LiveListActions.list();
-		// }
-		if (state.live.status === 'LIVE_STATUS_INITIALIZED') {
-			PollingActions.liveList();
-		}
-		this.setState(state);
-	}
-
 	componentDidMount() {
-		// projectId = AppUtils.getProjectIdFromRouter(this.context.router);
 		debug('this.props', this.props);
 		debug('this.context.router', this.context.router);
 		projectId = this.props.params.projectId;
-		this.unsubscribe = LiveStore.listen(this._onStateChange);
+		this.unsubscribe = LiveStore.listen(this.handleStateChange);
 		LiveActions.setProjectId(projectId);
 	}
 
 	componentWillUnmount() {
 		// Subscribe and unsubscribe because we don't want to use the mixins
 		this.unsubscribe();
+		PollingActions.stop('liveList');
 	}
 
 };

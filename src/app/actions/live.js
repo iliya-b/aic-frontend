@@ -34,10 +34,13 @@ const LiveActions = Reflux.createActions({
 	installAPK: {asyncResult: true},
 	listPackages: {asyncResult: true},
 	monkeyRunner: {asyncResult: true},
-	properties: {children: ['completed', 'failure']}
+	properties: {children: ['completed', 'failure']},
+	list: {asyncResult: true}
 });
 
 // Listeners for asynchronous Backend API calls
+
+LiveActions.list.listenAndPromise(Gateway.live.list);
 
 LiveActions.setProjectId.listen(function () {
 	LiveActions.tryLoadNoVNC(res => {

@@ -7,65 +7,29 @@ const debug = require('debug')('AiC:Component:LiveMachineList');
 // APP
 // const MachineCardLive = require('app/components/project/machine-card-live');
 const InfoBox = require('app/components/shared/info-box');
-const LiveListStore = require('app/stores/live-list');
 import CardAndroidSession from 'app/components/card/card-android-session';
 
-let projectId;
-
 const LiveMachineList = class extends React.Component {
-
-	constructor(props) {
-		super(props);
-		this._onStateChange = this._onStateChange.bind(this);
-		this.state = {};
-	}
-
 	render() {
 		let avmsRendered = '';
-		let avmList = [];
-
-		// Filter VMs by projectId
-		if (this.state.live && this.state.live.hasOwnProperty('avms')) {
-			avmList = this.state.live.avms.filter(v => {
-				return v.project_id === projectId;
-			});
-		}
 
 		// List VMs or information about loading and no VMs
-		if (avmList && avmList.length) {
-			avmsRendered = avmList.map((currentValue, index) => {
+		if (this.props.avmList && this.props.avmList.length) {
+			avmsRendered = this.props.avmList.map((currentValue, index) => {
 				debug('currentValue', currentValue);
 				currentValue.index = index;
-				// return <MachineCardLive className={`cardLiveVM cardLiveVM${index} cardLiveVM${currentValue.avm_id}`} {...currentValue} key={currentValue.avm_id} actionEnter={this.props.actionEnter} actionStop={this.props.actionStop}/>;
 				return <CardAndroidSession className={`cardLiveVM cardLiveVM${index} cardLiveVM${currentValue.avm_id}`} {...currentValue} key={currentValue.avm_id} actionEnter={this.props.actionEnter} actionStop={this.props.actionStop}/>;
 			});
-		} else if (this.state.live && this.state.live.status === 'LIVE_STATUS_LISTED') {
-			avmsRendered = <InfoBox style={{textAlign: 'center'}}>No sessions found. You can start a new session.</InfoBox>;
-		} else {
+		} else if (this.props.isListLoading) {
 			avmsRendered = <InfoBox style={{textAlign: 'center'}}>Loading sessions...</InfoBox>;
+		} else {
+			avmsRendered = <InfoBox style={{textAlign: 'center'}}>No sessions found. You can start a new session.</InfoBox>;
 		}
 
 		return (<div>
 			{avmsRendered}
 		</div>);
 	}
-
-	_onStateChange(state) {
-		debug('changing state', state);
-		this.setState(state);
-	}
-
-	componentDidMount() {
-		debug('listing to LiveListStore');
-		this.unsubscribe = LiveListStore.listen(this._onStateChange);
-		projectId = this.props.params.projectId;
-	}
-
-	componentWillUnmount() {
-		// Subscribe and unsubscribe because we don't want to use the mixins
-		this.unsubscribe();
-	}
-
 };
 
 LiveMachineList.contextTypes = {
@@ -77,7 +41,8 @@ LiveMachineList.contextTypes = {
 LiveMachineList.propTypes = {
 	actionEnter: React.PropTypes.func,
 	actionStop: React.PropTypes.func,
-	params: React.PropTypes.object
+	avmList: React.PropTypes.array,
+	isListLoading: React.PropTypes.bool
 };
 
 module.exports = LiveMachineList;
