@@ -57,10 +57,14 @@ const PollingStore = Reflux.createStore({
 
 	onStart(actionType, actionPayload, actionExtraOptions) {
 		this.state.polling[actionType] = this.state.polling[actionType] || {timeout: false};
+		this.state.polling[actionType].shouldStop = false;
 		debug('start', actionType, actionPayload, actionExtraOptions);
 		debug('startargs', arguments);
 
-		this.onStop(actionType);
+		// this.onStop(actionType);
+		clearTimeout(this.state.polling[actionType].timeout);
+		this.state.polling[actionType].timeout = false;
+		// if stop is called here it bugs everything :(
 
 		actionTypes[actionType](actionPayload, actionExtraOptions)
 		.then(res => {
@@ -77,9 +81,13 @@ const PollingStore = Reflux.createStore({
 	},
 
 	onStop(actionType) {
+		debug('onStop', actionType, this.state.polling[actionType]);
+		// console.error('onStop');
 		if (this.state.polling[actionType] && this.state.polling[actionType].timeout) {
+			debug('stopping', this.state.polling);
 			clearTimeout(this.state.polling[actionType].timeout);
 			this.state.polling[actionType].timeout = false;
+			this.state.polling[actionType].shouldStop = true;
 		}
 	},
 
@@ -93,9 +101,13 @@ const PollingStore = Reflux.createStore({
 	// Methods
 
 	scheduleRetry(actionType, actionPayload, actionExtraOptions) {
-		debug('scheduleRetry on actionType', actionType);
+		debug('scheduleRetry on actionType', actionType, this.state.polling[actionType]);
 		if (this.state.polling[actionType] && this.state.polling[actionType].timeout !== false) {
 			debug('scheduleRetry on actionType', actionType, 'already scheduled', this.state.polling);
+			return;
+		}
+		if (this.state.polling[actionType].shouldStop) {
+			debug('scheduleRetry on actionType', actionType, 'but it should stop', this.state.polling);
 			return;
 		}
 		const timing = 1000;

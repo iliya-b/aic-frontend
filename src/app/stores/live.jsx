@@ -478,6 +478,7 @@ const LiveStore = Reflux.createStore({
 
 		this.state.live.properties = properties;
 		this.updateState();
+		// PollingActions.stop('liveProperties');
 	},
 
 	onPropertiesFailed(errorMessage) {
