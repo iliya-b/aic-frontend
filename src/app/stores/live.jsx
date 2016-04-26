@@ -188,6 +188,7 @@ const LiveStore = Reflux.createStore({
 		debug(arguments);
 		this.state.live.status = 'LIVE_STATUS_CONNECTING';
 		this.updateState();
+		LiveActions.liveConnectAudio(this.state.liveInfo.avm_id);
 		// TODO: should be enabled again one day
 		// audioEnabled === false
 		// LiveActions.tryAudioConnection(vmhost, vmport + 10000, () => {});
@@ -478,7 +479,7 @@ const LiveStore = Reflux.createStore({
 
 		this.state.live.properties = properties;
 		this.updateState();
-		// PollingActions.stop('liveProperties');
+		PollingActions.stop('liveProperties');
 	},
 
 	onPropertiesFailed(errorMessage) {
