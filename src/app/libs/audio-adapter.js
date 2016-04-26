@@ -9,11 +9,15 @@ const AudioAdapter = {
 	loadURL: (audioElement, audioURL) => {
 		AudioState.element = audioElement;
 		return new Promise((resolve, reject) => {
+			setTimeout(() => {
+				reject('audio could not connect');
+			}, 15000);
 			audioElement.addEventListener('canplay', function () {
 				debug('audio canplay:', arguments);
 				if (audioElement.duration === 0 || audioElement.paused) {
 					debug('audio canplay not pause');
 					audioElement.play();
+					resolve();
 				}
 			}, false);
 			// FIXME: put url parser
