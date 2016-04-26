@@ -15,7 +15,10 @@ let projectId;
 
 const variants = [
 	{id: 'kitkat-tablet', name: 'kitkatTablet', version: '4'},
-	{id: 'kitkat-phone', name: 'kitkatPhone', version: '4'} // ,
+	{id: 'kitkat-phone', name: 'kitkatPhone', version: '4'},
+	{id: 'kp-build-378', name: 'kp-build-378', version: '4'},
+	{id: 'kp-build-381', name: 'kp-build-381', version: '5'},
+	{id: 'kp-build-387', name: 'kp-build-387', version: '5'}
 	// {id: 'lollipop-tablet', name: 'lollipopTablet', version: '5'},
 	// {id: 'lollipop-phone', name: 'lollipopPhone', version: '5'}
 ];
@@ -47,7 +50,7 @@ const LiveList = class extends React.Component {
 		};
 
 		this.onStopSession = avmId => {
-			LiveActions.stop({avmId});
+			LiveActions.stop({avmId}, {includeRequest: true});
 			PollingActions.start('liveList');
 		};
 

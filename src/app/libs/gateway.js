@@ -39,6 +39,13 @@ const Gateway = {
 		return false;
 	},
 
+	/**
+	 * [many description]
+	 * @param  {[type]} options      [description]
+	 * @param  {[type]} objArray     [description]
+	 * @param  {[type]} extraOptions [description]
+	 * @return {[type]}              [description]
+	 */
 	many(options, objArray, extraOptions) {
 		// return request(options, obj, extraOptions);
 		return Promise.all(
@@ -46,7 +53,10 @@ const Gateway = {
 				return Gateway[options.namespace][options.action.name](obj, extraOptions);
 			}))
 		.then(values => {
-			return {response: values, request: objArray};
+			if (options.includeRequest || extraOptions.includeRequest) {
+				return {response: values, request: objArray};
+			}
+			return values;
 		});
 	},
 
@@ -59,7 +69,8 @@ const Gateway = {
 		const responseAdapter = this.getAdapter(options.namespace, options.action.name, 'response');
 		const schemaAdapter = this.getAdapter(options.namespace, options.action.name, 'schema');
 		let optionsAPI = {
-			method: options.action.method
+			method: options.action.method,
+			requestObj: obj
 		};
 		if (extraOptions) {
 			optionsAPI = Object.assign({}, optionsAPI, extraOptions);

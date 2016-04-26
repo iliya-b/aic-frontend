@@ -52,9 +52,9 @@ const RestAPI = {
 		options.authRequired = (typeof options.authRequired === 'undefined') ? false : options.authRequired;
 		options.showError500Dialog = (typeof options.showError500Dialog === 'undefined') ? true : options.showError500Dialog;
 		if (typeof options.data === 'undefined') {
-			options.data = options.rawData || false;
+			options.body = options.rawData || false;
 		} else {
-			options.data = JSON.stringify(SanitizeObject.sanitizeData(options.data));
+			options.body = JSON.stringify(SanitizeObject.sanitizeData(options.data));
 		}
 
 		if (options.pathname) {
@@ -73,7 +73,13 @@ const RestAPI = {
 				xhr.onload = () => {
 					debug('XHR onload', xhr, xhr.status, xhr.responseText);
 					if (xhr.status >= 200 && xhr.status < 300) {
-						resolve(parseJSONXHR(xhr));
+						let result = {};
+						if (options.includeRequest) {
+							result = {request: options.requestObj, response: parseJSONXHR(xhr)};
+						} else {
+							result = parseJSONXHR(xhr);
+						}
+						resolve(result);
 					} else if (xhr.status === 401 && options.authRequired) {
 						debug('XHR onload 401');
 						const AuthActions = require('app/actions/auth');
@@ -89,11 +95,25 @@ const RestAPI = {
 				};
 				xhr.onerror = () => {
 					debug('XHR onerror', xhr, xhr.status, xhr.responseText);
-					reject(null, 'error XHR onerror');
+					const error = 'error XHR onerror';
+					let result = {};
+					if (options.includeRequest) {
+						result = {request: options.requestObj, error};
+					} else {
+						result = error;
+					}
+					reject(result);
 				};
 				xhr.onabort = () => {
 					debug('XHR onabort', xhr, xhr.status, xhr.responseText);
-					reject(null, 'aborted');
+					const error = 'XHR aborted';
+					let result = {};
+					if (options.includeRequest) {
+						result = {request: options.requestObj, error};
+					} else {
+						result = error;
+					}
+					reject(result);
 				};
 				xhr.upload.onprogress = function (event) {
 					debug('XHR onprogress', event);
@@ -124,8 +144,8 @@ const RestAPI = {
 			cache: 'default'
 		};
 
-		if (options.data) {
-			myInit.body = options.data;
+		if (options.body) {
+			myInit.body = options.body;
 		}
 
 		return new Promise((resolve, reject) => {
@@ -156,7 +176,13 @@ const RestAPI = {
 			.then(data => {
 				debug('return ajax', arguments, data);
 				debug('request succeeded with JSON response', data);
-				resolve(data);
+				let result = {};
+				if (options.includeRequest) {
+					result = {request: options.requestObj, response: data};
+				} else {
+					result = data;
+				}
+				resolve(result);
 			})
 			.catch((error, e2) => {
 				debug('request failed 1', error, error.message, error.name);
@@ -166,7 +192,13 @@ const RestAPI = {
 					const AppActions = require('app/actions/app');
 					AppActions.displayServerError('Impossible to reach API server. Please contact service administration.');
 				}
-				reject(null, error, error);
+				let result = {};
+				if (options.includeRequest) {
+					result = {request: options.requestObj, error};
+				} else {
+					result = error;
+				}
+				reject(result);
 			});
 		});
 	},

@@ -29,7 +29,7 @@ const CameraAssets = class extends React.Component {
 			const filesArray = files.map(file => {
 				return {projectId, file, progress: event => CameraActions.uploadProgress(file, event)};
 			});
-			CameraActions.upload(filesArray);
+			CameraActions.upload(filesArray, {includeRequest: true});
 		};
 		this.handleDeleteSelected = () => {
 			debug('handleDeleteSelected');
@@ -39,7 +39,7 @@ const CameraAssets = class extends React.Component {
 			const newState = Object.assign({}, this.state);
 			newState.selectFileIndexes = [];
 			this.setState(newState);
-			CameraActions.delete(filesToDelete);
+			CameraActions.delete(filesToDelete, {includeRequest: true});
 		};
 		this.handleSelectFiles = this.handleSelectFiles.bind(this);
 		this.handleStateChange = this.handleStateChange.bind(this);

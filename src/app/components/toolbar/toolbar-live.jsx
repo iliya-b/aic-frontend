@@ -13,7 +13,7 @@ import str from 'string';
 // APP
 import * as icons from 'app/components/icon/phone-list';
 
-const ToolbarAPK = class extends React.Component {
+const ToolbarLive = class extends React.Component {
 
 	handleClickStart(variantID) {
 		this.props.onClickStart(variantID);
@@ -49,10 +49,10 @@ const ToolbarAPK = class extends React.Component {
 		if (this.props.variants.length) {
 			this.props.variants.forEach((v, i) => {
 				const handleClickStartVariant = this.handleClickStart.bind(this, v.id);
-				const icon = icons[v.name]({
+				const icon = icons[v.name] ? icons[v.name]({
 					color: 'rgba(0, 0, 0, 0.4)',
 					hoverColor: 'rgba(0, 0, 0, 0.87)'
-				});
+				}) : <FontIcon className="mdi mdi-help" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>;
 				buttons.push(
 					// <img key={i}  style={{height: 30}} src={`/images/android-${v.name}.png`}/>
 					<IconButton className={`btStart${str(v.name).camelize().s}`} key={i} tooltip={`Start ${v.name}`} style={styles.button} onClick={handleClickStartVariant}>
@@ -75,15 +75,15 @@ const ToolbarAPK = class extends React.Component {
 	}
 };
 
-ToolbarAPK.contextTypes = {
+ToolbarLive.contextTypes = {
 	muiTheme: React.PropTypes.object,
 	router: React.PropTypes.object
 };
 
-ToolbarAPK.propTypes = {
+ToolbarLive.propTypes = {
 	style: React.PropTypes.object,
 	onClickStart: React.PropTypes.func,
 	variants: React.PropTypes.array
 };
 
-module.exports = ToolbarAPK;
+module.exports = ToolbarLive;

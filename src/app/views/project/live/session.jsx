@@ -29,14 +29,18 @@ const LiveSession = class extends React.Component {
 		// this.handleBatteryChange = this.handleBatteryChange.bind(this);
 		// this.handleClickGPS = this.handleClickGPS.bind(this);
 		// this.handleChangeRotation = this.handleChangeRotation.bind(this);
-		this.handleChangeSensor = this.handleChangeSensor.bind(this);
+		this.handleChangeSensor = (sensor, e, payload) => {
+			debug('handleChangeSensor', arguments);
+			debug('handleChangeSensor', e, sensor, payload);
+			LiveActions.setSensor({avmId, sensor, payload});
+		};
 		this.handleAPKs = (e, apkId) => {
 			const refId = `${projectId}-${avmId}-${apkId}-${Date.now()}`;
-			LiveActions.installAPK(projectId, avmId, apkId, refId);
+			LiveActions.installAPK({projectId, avmId, apkId, refId}, {includeRequest: true});
 		};
 		this.handleMonkeyRunner = (e, packages, eventCount, throttle) => {
 			const refId = `${avmId}-${packages.join('-')}-${eventCount}-${throttle}-${Date.now()}`;
-			LiveActions.monkeyRunner(avmId, packages, eventCount, throttle, refId);
+			LiveActions.monkeyRunner({avmId, packages, eventCount, throttle, refId}, {includeRequest: true});
 		};
 	}
 
@@ -213,40 +217,38 @@ const LiveSession = class extends React.Component {
 		window.rfb.get_mouse().set_focused(true);
 	}
 
-	handleChangeSensor(sensor, e, payload) {
-		debug('handleChangeSensor', arguments);
-		debug('handleChangeSensor', e, sensor, payload);
-		LiveActions.setSensor(avmId, sensor, payload);
-	}
+	// handleBatteryChange(e, value) {
+	// 	e.preventDefault();
+	// 	LiveActions.setSensorBattery(avmId, value);
+	// }
 
-	handleBatteryChange(e, value) {
-		e.preventDefault();
-		LiveActions.setSensorBattery(avmId, value);
-	}
+	// handleChangeRotation(e) {
+	// 	e.preventDefault();
+	// 	const newRotationName = this.state.live.rotationSets[this.state.live.screen.rotation].next;
+	// 	const newRotationValue = this.state.live.rotationSets[newRotationName];
+	// 	LiveActions.setSensorAccelerometer(avmId, newRotationValue.x, newRotationValue.y, newRotationValue.z, newRotationName);
 
-	handleChangeRotation(e) {
-		e.preventDefault();
-		const newRotationName = this.state.live.rotationSets[this.state.live.screen.rotation].next;
-		const newRotationValue = this.state.live.rotationSets[newRotationName];
-		LiveActions.setSensorAccelerometer(avmId, newRotationValue.x, newRotationValue.y, newRotationValue.z, newRotationName);
+	// 	setTimeout(() => {
+	// 		LiveActions.setDelayedRotation();
+	// 	}, 1500);
+	// }
 
-		setTimeout(() => {
-			LiveActions.setDelayedRotation();
-		}, 1500);
-	}
-
-	handleClickGPS(e, lat, lon) {
-		// e.preventDefault();
-		// const lat = parseFloat(this.lat.getValue());
-		// const lon = parseFloat(this.lon.getValue());
-		LiveActions.setSensorLocation(avmId, lat, lon);
-	}
+	// handleClickGPS(e, lat, lon) {
+	// 	// e.preventDefault();
+	// 	// const lat = parseFloat(this.lat.getValue());
+	// 	// const lon = parseFloat(this.lon.getValue());
+	// 	LiveActions.setSensorLocation(avmId, lat, lon);
+	// }
 
 	handleStopVM() {
-		LiveActions.stop({avmId});
+		this.handleOnInputFocus();
+		LiveActions.disconnectScreen();
+		LiveActions.disconnectAudio();
+		LiveActions.stop({avmId}, {includeRequest: true});
 	}
 
 	componentDidMount() {
+		debug('componentDidMount');
 		debug('this.props.params', this.props.params);
 		projectId = this.props.params.projectId;
 		avmId = this.props.params.androId;
@@ -262,8 +264,11 @@ const LiveSession = class extends React.Component {
 	}
 
 	componentWillUnmount() {
+		debug('componentWillUnmount');
 		LiveActions.clearTimeouts();
 		this.handleOnInputFocus();
+		LiveActions.disconnectScreen();
+		LiveActions.disconnectAudio();
 		// Subscribe and unsubscribe because we don't want to use the mixins
 		this.unsubscribe.map(v => v());
 	}

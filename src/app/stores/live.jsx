@@ -1,4 +1,3 @@
-/* global window */
 'use strict';
 
 // Reflux
@@ -78,13 +77,12 @@ const LiveStore = Reflux.createStore({
 			this.state.live.liveIsConnect = true;
 			// Load properties each x seconds
 			// TODO: should be changed once notification is done?
-			this.clearTimeouts();
+			this.onClearTimeouts();
 			// After ready the docker needs to boot up
 			// TODO: change to state
 			// window.intervalTimeout = setInterval(LiveActions.properties, 1000, {avmId: this.state.liveInfo.avm_id}, {showError500Dialog: false});
+			// LiveActions.properties({avmId: this.state.liveInfo.avm_id}, {showError500Dialog: false});
 			PollingActions.start('liveProperties', {avmId: this.state.liveInfo.avm_id}, {showError500Dialog: false});
-			// L
-			// iveActions.properties(avmId);
 		}
 		this.updateState();
 	},
@@ -94,13 +92,13 @@ const LiveStore = Reflux.createStore({
 		this.state.live.message = errorMessage;
 		// this.state.live.status = 'LIVE_STATUS_INITIAL_FAILED';
 		this.state.live.status = 'LIVE_STATUS_CHECK_FAILED';
-		this.clearTimeouts();
+		this.onClearTimeouts();
 		// this.updateState();
 		debug('not found avm', this);
 		AppActions.notFound();
 	},
 
-	clearTimeouts() {
+	onClearTimeouts() {
 		// clearInterval(window.intervalTimeoutLoad);
 		// clearInterval(window.intervalTimeout);
 		PollingActions.stop('liveLoadInfo');
@@ -186,6 +184,8 @@ const LiveStore = Reflux.createStore({
 	// Live connect
 	// onLiveConnect(vmhost, vmport) {
 	onLiveConnect() {
+		debug('onLiveConnect');
+		debug(arguments);
 		this.state.live.status = 'LIVE_STATUS_CONNECTING';
 		this.updateState();
 		// TODO: should be enabled again one day
@@ -194,11 +194,16 @@ const LiveStore = Reflux.createStore({
 	},
 
 	onLiveConnectCompleted() {
+		debug('onLiveConnectCompleted');
+		debug(arguments);
 		this.state.live.status = 'LIVE_STATUS_CONNECTED';
 		this.updateState();
 	},
 
 	onLiveConnectFailed(errorMessage) {
+		debug('onLiveConnectFailed');
+		debug(errorMessage);
+		debug(arguments);
 		this.state.live.status = 'LIVE_STATUS_CONNECT_FAILED';
 		this.state.live.message = errorMessage;
 		this.updateState();
@@ -223,21 +228,34 @@ const LiveStore = Reflux.createStore({
 	},
 
 	// Live stop v2
-	onStop() {
-		this.clearTimeouts();
+	onStop(request) {
+		debug('onStop', request);
+		if (request.avmId !== this.state.liveInfo.avm_id) {
+			debug('onStop', 'request for another vm');
+			return;
+		}
+		this.onClearTimeouts();
 		this.state.live.status = 'LIVE_STATUS_STOPPING';
 		this.updateState();
 	},
 
-	onStopCompleted() {
+	onStopCompleted(response) {
 		// this.resetMachine();
+		if (response.request.avmId !== this.state.liveInfo.avm_id) {
+			debug('onStopCompleted', 'request for another vm');
+			return;
+		}
 		this.state.live.status = 'LIVE_STATUS_STOPPED';
 		this.updateState();
 	},
 
-	onStopFailed(errorMessage) {
+	onStopFailed(response) {
+		if (response.request.avmId !== this.state.liveInfo.avm_id) {
+			debug('onStopCompleted', 'request for another vm');
+			return;
+		}
 		this.state.live.status = 'LIVE_STATUS_STOP_FAILED';
-		this.state.live.message = errorMessage;
+		this.state.live.message = response.error;
 		this.updateState();
 	},
 
@@ -320,46 +338,6 @@ const LiveStore = Reflux.createStore({
 		this.addLogMessage(message);
 	},
 
-	// install APK
-	onInstallAPK(projectId, avmId, apkId, refId) {
-		debug('onInstallAPK');
-		this.state.live.installedAPKs = this.state.live.installedAPKs || [];
-		this.state.live.installedAPKs.push({
-			refId,
-			apkId,
-			status: 'INSTALLING',
-			startTime: Date.now()
-		});
-		this.updateState();
-	},
-
-	onInstallAPKCompleted(response, projectId, avmId, apkId, refId) {
-		debug('onInstallAPKCompleted');
-		LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
-		const index = this.state.live.installedAPKs.reduce((found, apk, index) => {
-			return apk.refId === refId ? index : found;
-		}, -1);
-		if (index !== -1) {
-			this.state.live.installedAPKs[index].endTime = Date.now();
-			this.state.live.installedAPKs[index].status = 'SUCCESS';
-		}
-		this.updateState();
-	},
-
-	onInstallAPKFailed(errorMessage, projectId, avmId, apkId, refId) {
-		debug('onInstallAPKFailure', errorMessage);
-		const index = this.state.live.installedAPKs.reduce((found, apk, index) => {
-			return apk.refId === refId ? index : found;
-		}, -1);
-		if (index !== -1) {
-			this.state.live.installedAPKs[index].endTime = Date.now();
-			this.state.live.installedAPKs[index].status = 'ERROR';
-		}
-		this.state.live.message = errorMessage;
-		this.state.live.status = 'LIVE_STATUS_INSTALLAPK_FAILED';
-		this.updateState();
-	},
-
 	// List Packages
 	onListPackages() {
 		debug('onListPackages');
@@ -378,8 +356,52 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
+	// install APK
+	onInstallAPK(request) {
+		debug('onInstallAPK');
+		const {apkId, refId} = request;
+		this.state.live.installedAPKs = this.state.live.installedAPKs || [];
+		this.state.live.installedAPKs.push({
+			refId,
+			apkId,
+			status: 'INSTALLING',
+			startTime: Date.now()
+		});
+		this.updateState();
+	},
+
+	onInstallAPKCompleted(response) {
+		debug('onInstallAPKCompleted');
+		const refId = response.request.refId;
+		LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
+		const index = this.state.live.installedAPKs.reduce((found, apk, index) => {
+			return apk.refId === refId ? index : found;
+		}, -1);
+		if (index !== -1) {
+			this.state.live.installedAPKs[index].endTime = Date.now();
+			this.state.live.installedAPKs[index].status = 'SUCCESS';
+		}
+		this.updateState();
+	},
+
+	onInstallAPKFailed(response) {
+		debug('onInstallAPKFailure', response);
+		const refId = response.request.refId;
+		const index = this.state.live.installedAPKs.reduce((found, apk, index) => {
+			return apk.refId === refId ? index : found;
+		}, -1);
+		if (index !== -1) {
+			this.state.live.installedAPKs[index].endTime = Date.now();
+			this.state.live.installedAPKs[index].status = 'ERROR';
+		}
+		this.state.live.message = response.error;
+		this.state.live.status = 'LIVE_STATUS_INSTALLAPK_FAILED';
+		this.updateState();
+	},
+
 	// Monkey Runner
-	onMonkeyRunner(avmId, packages, eventCount, throttle, refId) {
+	onMonkeyRunner(request) {
+		const {packages, eventCount, throttle, refId} = request;
 		debug('onMoneyRunner');
 		this.state.live.monkeyCalls = this.state.live.monkeyCalls || [];
 		this.state.live.monkeyCalls.push({
@@ -391,8 +413,9 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onMonkeyRunnerCompleted(response, avmId, packages, eventCount, throttle, refId) {
-		debug('onMoneyRunnerCompleted');
+	onMonkeyRunnerCompleted(response) {
+		debug('onMoneyRunnerCompleted', response);
+		const refId = response.request.refId;
 		const index = this.state.live.monkeyCalls.reduce((found, mcall, index) => {
 			return mcall.id === refId ? index : found;
 		}, -1);
@@ -403,8 +426,9 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onMonkeyRunnerFailed(errorMessage, avmId, packages, eventCount, throttle, refId) {
-		debug('onMoneyRunnerFailure', errorMessage);
+	onMonkeyRunnerFailed(response) {
+		debug('onMoneyRunnerFailure', response.error);
+		const refId = response.request.refId;
 		const index = this.state.live.monkeyCalls.reduce((found, mcall, index) => {
 			return mcall.id === refId ? index : found;
 		}, -1);
@@ -412,7 +436,7 @@ const LiveStore = Reflux.createStore({
 			this.state.live.monkeyCalls[index].endTime = Date.now();
 			this.state.live.monkeyCalls[index].status = 'ERROR';
 		}
-		this.state.live.message = errorMessage;
+		this.state.live.message = response.error;
 		this.state.live.status = 'LIVE_STATUS_MONKEYRUNNER_FAILED';
 		this.updateState();
 	},
@@ -436,19 +460,20 @@ const LiveStore = Reflux.createStore({
 			debug('onPropertiesCompleted listPackages');
 			LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
 			// Only clearTimeouts when debugging to not have span on logs
-			// this.clearTimeouts();
+			// this.onClearTimeouts();
 		}
 
 		// docker finished (not available) boot initiate
 		if (!this.state.live.bootInit &&
 			(properties["init.svc.bootanim"] === "running" || properties["dev.bootcomplete"] === "1")) {
+		// if (!this.state.live.bootInit) {
 			this.state.live.status = 'LIVE_STATUS_STARTED';
 			this.updateBoxes();
 			debug('onPropertiesCompleted boot initiate');
 			this.state.live.bootInit = true;
-			LiveActions.liveConnect(this.state.liveInfo.avm_novnc_host, this.state.liveInfo.avm_novnc_port, this.state.liveInfo.avm_id);
+			LiveActions.liveConnect(this.state.liveInfo.avm_id);
 			APKActions.list({projectId: this.state.projectId});
-			CameraActions.list(this.state.projectId);
+			CameraActions.list({projectId: this.state.projectId});
 		}
 
 		this.state.live.properties = properties;
@@ -456,6 +481,7 @@ const LiveStore = Reflux.createStore({
 	},
 
 	onPropertiesFailed(errorMessage) {
+		// this.onPropertiesCompleted({'dev.bootcomplete': '0'});
 		// debug('onPropertiesFailure', errorMessage);
 		// this.state.live.message = errorMessage;
 		// this.state.live.status = 'LIVE_STATUS_PROPERTIES_FAILED';

@@ -1,4 +1,4 @@
-/* global window, RFB, $D, WebSocket, Util, $, document */
+/* global window, RFB, $D, WebSocket, Util, document */
 'use strict';
 
 // Vendor
@@ -7,6 +7,7 @@ const debug = require('debug')('AiC:Live:Actions');
 
 // APP
 import Gateway from 'app/libs/gateway';
+import NoVNCAdapter from 'app/libs/novnc-adapter';
 
 // Actions
 const LiveActions = Reflux.createActions({
@@ -18,126 +19,61 @@ const LiveActions = Reflux.createActions({
 	properties: {asyncResult: true},
 	clearTimeouts: {},
 	loadInfo: {asyncResult: true},
+	monkeyRunner: {asyncResult: true},
+	setSensor: {asyncResult: true},
+	installAPK: {asyncResult: true},
 
 	setProjectId: {asyncResult: true},
 	loadState: {},
-
 	setState: {},
 	liveReset: {},
-	setDelayedRotation: {},
-	socketMessage: {},
+	// setDelayedRotation: {},
+	// socketMessage: {},
 	logMessage: {},
 	liveConnect: {asyncResult: true},
-	liveStop: {asyncResult: true},
-	setSensor: {asyncResult: true},
-	installAPK: {asyncResult: true},
-	monkeyRunner: {asyncResult: true}
+
+	// noVNC related
+	noVNCLoadUtil: {asyncResult: true},
+	noVNCLoadScripts: {asyncResult: true},
+	noVNCCreateRFB: {asyncResult: true},
+	noVNCConnect: {asyncResult: true},
+	noVNCDisconnect: {asyncResult: true}
+
+	// audio related
 });
 
 // Listeners for asynchronous Backend API calls
 
+// Backend related
 LiveActions.list.listenAndPromise(Gateway.live.list);
 LiveActions.stop.listenAndPromise(Gateway.live.delete);
 LiveActions.start.listenAndPromise(Gateway.live.create);
 LiveActions.listPackages.listenAndPromise(Gateway.live.listPackages);
 LiveActions.properties.listenAndPromise(Gateway.live.properties);
 LiveActions.loadInfo.listenAndPromise(Gateway.live.read);
+LiveActions.monkeyRunner.listenAndPromise(Gateway.live.monkeyRunner);
+LiveActions.setSensor.listenAndPromise(Gateway.live.sensor);
+LiveActions.installAPK.listenAndPromise(Gateway.live.installAPK);
 
-LiveActions.monkeyRunner.listen(function (avmId, packages, eventCount, throttle, refId) {
-	Gateway.live.monkeyRunner({avmId, packages, eventCount, throttle})
-	.then(res => {
-		this.completed(res, avmId, packages, eventCount, throttle, refId);
-	}, err => {
-		this.failed(err, avmId, packages, eventCount, throttle, refId);
-	});
-});
+// noVNC related
+LiveActions.setProjectId.listenAndPromise(NoVNCAdapter.tryLoadNoVNC);
 
-LiveActions.setProjectId.listen(function () {
-	LiveActions.tryLoadNoVNC(res => {
-		if (res.success) {
-			this.completed();
-		} else {
-			this.failed(res.errorMessage);
-		}
-	});
-});
-
-
-LiveActions.liveConnect.listen(function (vmhost, vmport, avmId) {
-	// TODO: audio vmport must be informed
-
-	LiveActions.tryConnection(vmhost, vmport, avmId, res => {
-		if (res.success) {
-			this.completed();
-			// LiveActions.tryAudioConnection( vmhost, vmport+1000, res => {
-			//   // TODO: Promise all
-			//   if (res.success) {
-			//     this.completed();
-			//   }else{
-			//     this.failure(res.errorMessage);
-			//   }
-			//   return false;
-			// } );
-		} else {
-			this.failed(res.errorMessage);
-		}
-	});
-});
-
-LiveActions.liveStop.listen(function (avmId) {
-	const WebsocketActions = require('app/actions/websocket');
-	WebsocketActions.close();
-	if (window.rfb) {
-		window.rfb.disconnect();
-	}
-	Gateway.live.delete({avmId})
-	.then(result => {
-		this.completed(result);
-	}, err => {
-		this.failed(err);
-	});
-	// BackendAPI.liveStop(avmId, res => {
-	// 	this.completed(res);
-	// });
-	// TODO: Call disconnect from noNVC if connected before
-
-	LiveActions.stopAudioConnection();
-});
-
-LiveActions.setSensor.listen(function (avmId, sensor, payload) {
-	Gateway.live.sensor({avmId, sensor, payload})
-	.then(res => {
-		this.completed(res);
-	}, err => {
-		this.failed(err);
-	});
-	// BackendAPI.setSensor(avmId, sensor, payload, res => {
-	// 	this.completed(res);
-	// });
-});
-
-LiveActions.installAPK.listen(function (projectId, avmId, apkId, refId) {
-	Gateway.live.installAPK({avmId, apkId})
-	.then(res => {
-		this.completed(res, projectId, avmId, apkId, refId);
-	}, err => {
-		this.failed(err, projectId, avmId, apkId, refId);
-	});
-	// BackendAPI.liveInstallAPK(projectId, avmId, apkId, res => {
-	// 	this.completed(res);
-	// });
-});
-
-window.onscriptsload = function () {
+// Called when load_scripts is finished
+window.onscriptsload = () => {
+	debug('onscriptsload');
 	// const updateState = function (rfb, state, oldstate, msg) {
-	const updateState = function (rfb, state) {
+	const updateState = function (rfb, state, oldstate) {
 		debug('rfb updateState');
 		debug(arguments);
 		if (state === 'normal') {
 			window.AiClive.completed = true;
 			LiveActions.logMessage('noVNC utils loaded.');
-			LiveActions.liveConnect.completed();
+			window.AiClive.resolve();
 			LiveActions.tryAudioConnection(null, null, () => {});
+		}
+		if (state === 'disconnected' && oldstate === 'failed') {
+			debug('rfb disconnected, trying to reconnect');
+			// window.rfb.connect(window.AiClive.host, window.AiClive.port, window.AiClive.password, window.AiClive.path);
 		}
 	};
 	try {
@@ -146,10 +82,58 @@ window.onscriptsload = function () {
 	} catch (exc) {
 		window.AiClive.completed = true;
 		LiveActions.logMessage('Unable to create noVNC client.');
-		LiveActions.liveConnect.failed(`Unable to create noVNC client (${exc}).`);
+		window.AiClive.reject(`Unable to create noVNC client (${exc}).`);
 	}
 	LiveActions.tryWebsocket();
+	// NoVNC suddens disconnect https://github.com/kanaka/noVNC/issues/567
 };
+
+const tryConnection = amvId => {
+	return new Promise((resolve, reject) => {
+		debug('tryConnection');
+		// This is noVNC dependent
+		window.INCLUDE_URI = '/noVNC/';
+		// FIXME: probably not the best way to set global var.
+		const AuthActions = require('app/actions/auth');
+		const token = ` Bearer ${AuthActions.getToken()}`;
+		window.AiClive = {
+			host: window.GobyAppGlobals.config.backend.host,
+			port: window.GobyAppGlobals.config.backend.port,
+			password: '',
+			path: `android/${amvId}/screen?token=${token}`,
+			audioPath: `android/${amvId}/audio?token=${token}`,
+			socket: null,
+			// first try instantly, second on +2s, third on +4s... +6
+			maxTries: 3,
+			errorCount: 0,
+			timeout: 15000,
+			completed: false,
+			timeoutcb: null,
+			resolve,
+			reject
+		};
+
+		// Load noVNC supporting scripts
+		// noVNC@v5.0.1
+		Util.load_scripts(['webutil.js', 'base64.js', 'websock.js', 'des.js',
+											'keysymdef.js', 'keyboard.js', 'input.js', 'display.js',
+											'jsunzip.js', 'rfb.js', 'keysym.js']);
+
+		// Set timeout in case it load_scripts never finishes
+		setTimeout(a => {
+			debug('tryConnection setTimeout');
+			debug('tryConnection setTimeout reject', reject);
+			debug('tryConnection setTimeout a', a);
+			if (!window.AiClive.completed) {
+				window.AiClive.completed = true;
+				LiveActions.logMessage('noVNC utils load failed.');
+				reject('Unable to connect session (timeout error).');
+			}
+		}, window.AiClive.timeout, reject);
+	});
+};
+
+LiveActions.liveConnect.listenAndPromise(tryConnection);
 
 LiveActions.tryWebsocket = function () {
 	try {
@@ -184,75 +168,6 @@ LiveActions.tryWebsocket = function () {
 	} catch (exc) {
 		// ignore errors
 	}
-};
-
-LiveActions.tryConnection = function (vmhost, vmport, amvId) {
-	// This is noVNC dependent
-	window.INCLUDE_URI = '/noVNC/';
-	// FIXME: probably not the best way to set global var.
-	const AuthActions = require('app/actions/auth');
-	const token = ` Bearer ${AuthActions.getToken()}`;
-	window.AiClive = {
-		host: window.GobyAppGlobals.config.backend.host,
-		port: window.GobyAppGlobals.config.backend.port,
-		password: '',
-		// path: `android/${amvId}/screen`,
-		path: `android/${amvId}/screen?token=${token}`,
-		audioPath: `android/${amvId}/audio?token=${token}`,
-		socket: null,
-		// first try instantly, second on +2s, third on +4s... +6
-		maxTries: 3,
-		errorCount: 0,
-		timeout: 15000,
-		completed: false,
-		timeoutcb: null
-	};
-	// window.AiClive = {
-	// 	host: vmhost,
-	// 	port: vmport,
-	// 	password: '',
-	// 	path: 'websockify',
-	// 	socket: null,
-	// 	// first try instantly, second on +2s, third on +4s... +6
-	// 	maxTries: 3,
-	// 	errorCount: 0,
-	// 	timeout: 15000,
-	// 	completed: false,
-	// 	timeoutcb: null
-	// };
-
-	LiveActions.logMessage('Loading noVNC utils.');
-	// Load supporting scripts
-	// noVNC@v5.0.1
-	Util.load_scripts(['webutil.js', 'base64.js', 'websock.js', 'des.js',
-										'keysymdef.js', 'keyboard.js', 'input.js', 'display.js',
-										'jsunzip.js', 'rfb.js', 'keysym.js']);
-	// When finished will call onscriptsload
-	setTimeout(() => {
-		if (!window.AiClive.completed) {
-			window.AiClive.completed = true;
-			LiveActions.logMessage('noVNC utils load failed.');
-			LiveActions.liveConnect.failed('Unable to connect session (timeout error).');
-		}
-	}, window.AiClive.timeout);
-};
-
-LiveActions.tryLoadNoVNC = function (cb) {
-	LiveActions.logMessage('Loading noVNC core.');
-	$.getScript('/noVNC/util.js')
-	.done(() => {
-		if (typeof Util === 'undefined') {
-			LiveActions.logMessage('noVNC core load failed.');
-			cb({success: false, errorMessage: 'Failed to set noVNC core.'});
-		} else {
-			LiveActions.logMessage('noVNC core loaded.');
-			cb({success: true});
-		}
-	})
-	.fail(() => {
-		LiveActions.logMessage('noVNC core load failed.');
-		cb({success: false, errorMessage: 'Failed to load noVNC core.'});
-	});
 };
 
 LiveActions.tryAudioConnection = function (audiohost, audioport, cb) {
@@ -308,13 +223,33 @@ LiveActions.tryAudioConnection = function (audiohost, audioport, cb) {
 	cb({success: true, errorMessage: ''});
 };
 
-LiveActions.stopAudioConnection = function () {
+// LiveActions.stopAudioConnection = function () {
+// 	const gobyVMAudio = document.getElementById('gobyVMAudio');
+// 	debug(gobyVMAudio);
+// 	if (gobyVMAudio) {
+// 		gobyVMAudio.pause();
+// 		gobyVMAudio.src = '';
+// 	}
+// };
+
+LiveActions.disconnectScreen = function () {
+	debug('disconnectScreen');
+	if (!window.rfb) {
+		return;
+	}
+	window.rfb.disconnect();
+};
+
+LiveActions.disconnectAudio = function () {
+	debug('disconnectAudio');
 	const gobyVMAudio = document.getElementById('gobyVMAudio');
 	debug(gobyVMAudio);
-	if (gobyVMAudio) {
+	if (gobyVMAudio && !gobyVMAudio.paused) {
 		gobyVMAudio.pause();
-		gobyVMAudio.src = '';
+		// gobyVMAudio.src = '';
 	}
+	// live.js:240 Uncaught (in promise) DOMException: The play() request was interrupted by a new load request.
+	// https://bugs.chromium.org/p/chromium/issues/detail?id=593273
 };
 
 module.exports = LiveActions;

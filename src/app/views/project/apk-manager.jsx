@@ -29,7 +29,7 @@ const APKManager = class extends React.Component {
 			const filesArray = files.map(file => {
 				return {projectId, file, progress: event => APKActions.uploadProgress(file, event)};
 			});
-			APKActions.upload(filesArray);
+			APKActions.upload(filesArray, {includeRequest: true});
 		};
 		this.handleDeleteSelected = () => {
 			debug('handleDeleteSelected');
@@ -39,7 +39,7 @@ const APKManager = class extends React.Component {
 			const newState = Object.assign({}, this.state);
 			newState.selectFileIndexes = [];
 			this.setState(newState);
-			APKActions.delete(apksToDelete);
+			APKActions.delete(apksToDelete, {includeRequest: true});
 		};
 		this.handleSelectFiles = this.handleSelectFiles.bind(this);
 		this.handleStateChange = this.handleStateChange.bind(this);
