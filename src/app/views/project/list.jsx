@@ -51,7 +51,7 @@ const ProjectList = class extends React.Component {
 		};
 
 		this.handleConfirmDialog = () => {
-			ProjectActions.delete(this.state.project.list[this.state.deleteIndex].id);
+			ProjectActions.delete({id: this.state.project.list[this.state.deleteIndex].id});
 			this.setState({deleting: false});
 		};
 
@@ -60,7 +60,7 @@ const ProjectList = class extends React.Component {
 		};
 
 		this.handleClickSaveProject = () => {
-			ProjectActions.create(this.projectName.getValue());
+			ProjectActions.create({name: this.projectName.getValue()});
 			this.setState({adding: false});
 		};
 
@@ -80,7 +80,7 @@ const ProjectList = class extends React.Component {
 
 		this.handleClickUpdateSave = (index, e) => {
 			e.preventDefault();
-			ProjectActions.update(this.state.updateId, this.projectNameUpdate.getValue());
+			ProjectActions.update({id: this.state.updateId, name: this.projectNameUpdate.getValue()});
 			this.setState({updating: false, updateId: null});
 		};
 
