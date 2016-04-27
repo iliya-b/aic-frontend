@@ -1,4 +1,3 @@
-/* global window */
 'use strict';
 
 // Vendors
@@ -17,6 +16,7 @@ import APKStore from 'app/stores/apk';
 import CameraStore from 'app/stores/camera';
 import LiveActions from 'app/actions/live';
 import PollingActions from 'app/actions/polling';
+import NoVNCAdapter from 'app/libs/novnc-adapter';
 
 let avmId;
 let projectId;
@@ -200,21 +200,11 @@ const LiveSession = class extends React.Component {
 	// }
 
 	handleOnInputFocus() {
-		debug('focus');
-		if (!window.rfb) {
-			return;
-		}
-		debug('rfb exists?');
-		window.rfb.get_keyboard().set_focused(false);
-		window.rfb.get_mouse().set_focused(false);
+		NoVNCAdapter.focus();
 	}
 
 	handleOnInputBlur() {
-		if (!window.rfb) {
-			return;
-		}
-		window.rfb.get_keyboard().set_focused(true);
-		window.rfb.get_mouse().set_focused(true);
+		NoVNCAdapter.blur();
 	}
 
 	// handleBatteryChange(e, value) {

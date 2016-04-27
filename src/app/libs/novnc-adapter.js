@@ -93,6 +93,24 @@ const NoVNCAdapter = {
 			return;
 		}
 		noVNCState.rfb.disconnect();
+	},
+
+	focus() {
+		debug('focus');
+		if (!noVNCState.rfb) {
+			return;
+		}
+		debug('rfb exists?');
+		noVNCState.rfb.get_keyboard().set_focused(false);
+		noVNCState.rfb.get_mouse().set_focused(false);
+	},
+
+	blur() {
+		if (!noVNCState.rfb) {
+			return;
+		}
+		noVNCState.rfb.get_keyboard().set_focused(true);
+		noVNCState.rfb.get_mouse().set_focused(true);
 	}
 
 };
