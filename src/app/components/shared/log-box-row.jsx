@@ -1,23 +1,11 @@
 'use strict';
 
 // Vendor
-const React = require('react');
-const {
-	Spacing,
-	Colors
-} = require('material-ui/styles');
-// const debug = require('debug')('AiC:Components:LogBoxRow');
+import React from 'react';
+import Spacing from 'material-ui/styles/spacing';
+import * as Colors from 'material-ui/styles/colors';
 
-// const { Spacing } = mui.Styles;
-// const {
-//   Paper,
-//   Table,
-//   TableHeader,
-//   TableHeaderColumn,
-//   TableBody,
-//   TableRow,
-//   TableRowColumn } = mui;
-
+// APP
 const LogBoxRow = class extends React.Component {
 	render() {
 		const style = {
@@ -47,6 +35,10 @@ const LogBoxRow = class extends React.Component {
 
 LogBoxRow.contextTypes = {
 	muiTheme: React.PropTypes.object
+};
+
+LogBoxRow.defaultProps = {
+	style: {}
 };
 
 LogBoxRow.propTypes = {

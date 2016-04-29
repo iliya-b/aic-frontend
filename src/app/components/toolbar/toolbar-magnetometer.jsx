@@ -85,6 +85,10 @@ ToolbarMagnetometer.contextTypes = {
 	router: React.PropTypes.object
 };
 
+ToolbarMagnetometer.defaultProps = {
+	style: {}
+};
+
 ToolbarMagnetometer.propTypes = {
 	style: React.PropTypes.object,
 	onChange: React.PropTypes.func,

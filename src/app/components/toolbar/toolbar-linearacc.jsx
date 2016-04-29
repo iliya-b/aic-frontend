@@ -86,6 +86,10 @@ ToolbarLinearAcceleration.contextTypes = {
 	router: React.PropTypes.object
 };
 
+ToolbarLinearAcceleration.defaultProps = {
+	style: {}
+};
+
 ToolbarLinearAcceleration.propTypes = {
 	style: React.PropTypes.object,
 	onChange: React.PropTypes.func,

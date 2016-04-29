@@ -85,6 +85,10 @@ ToolbarGyroscope.contextTypes = {
 	router: React.PropTypes.object
 };
 
+ToolbarGyroscope.defaultProps = {
+	style: {}
+};
+
 ToolbarGyroscope.propTypes = {
 	onChange: React.PropTypes.func,
 	style: React.PropTypes.object,

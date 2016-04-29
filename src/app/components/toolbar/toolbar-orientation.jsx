@@ -85,6 +85,10 @@ ToolbarOrientation.contextTypes = {
 	router: React.PropTypes.object
 };
 
+ToolbarOrientation.defaultProps = {
+	style: {}
+};
+
 ToolbarOrientation.propTypes = {
 	onChange: React.PropTypes.func,
 	style: React.PropTypes.object,

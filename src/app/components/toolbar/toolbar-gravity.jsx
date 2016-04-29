@@ -11,7 +11,7 @@ import Paper from 'material-ui/Paper';
 // APP
 import GravityIcon from 'app/components/icon/gravity';
 
-const ToolbarGPS = class extends React.Component {
+const ToolbarGravity = class extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -82,16 +82,20 @@ const ToolbarGPS = class extends React.Component {
 	}
 };
 
-ToolbarGPS.contextTypes = {
+ToolbarGravity.contextTypes = {
 	muiTheme: React.PropTypes.object,
 	router: React.PropTypes.object
 };
 
-ToolbarGPS.propTypes = {
+ToolbarGravity.defaultProps = {
+	style: {}
+};
+
+ToolbarGravity.propTypes = {
 	style: React.PropTypes.object,
 	onChange: React.PropTypes.func,
 	onInputFocus: React.PropTypes.func,
 	onInputBlur: React.PropTypes.func
 };
 
-module.exports = ToolbarGPS;
+module.exports = ToolbarGravity;

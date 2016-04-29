@@ -10,7 +10,7 @@ import Paper from 'material-ui/Paper';
 // APP
 import VoiceIcon from 'app/components/icon/voice';
 
-const ToolbarGPS = class extends React.Component {
+const ToolbarProximity = class extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -70,16 +70,20 @@ const ToolbarGPS = class extends React.Component {
 	}
 };
 
-ToolbarGPS.contextTypes = {
+ToolbarProximity.contextTypes = {
 	muiTheme: React.PropTypes.object,
 	router: React.PropTypes.object
 };
 
-ToolbarGPS.propTypes = {
+ToolbarProximity.defaultProps = {
+	style: {}
+};
+
+ToolbarProximity.propTypes = {
 	style: React.PropTypes.object,
 	onChange: React.PropTypes.func,
 	onInputFocus: React.PropTypes.func,
 	onInputBlur: React.PropTypes.func
 };
 
-module.exports = ToolbarGPS;
+module.exports = ToolbarProximity;

@@ -128,7 +128,7 @@ ToolbarSensors.contextTypes = {
 ToolbarSensors.propTypes = {
 	style: React.PropTypes.object,
 	secondBar: React.PropTypes.string,
-	onClick: React.PropTypes.object,
+	onClick: React.PropTypes.object.isRequired,
 	onClickBack: React.PropTypes.func
 };
 

@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 
 // APP
-const ToolbarGPS = class extends React.Component {
+const ToolbarHumidity = class extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -69,16 +69,20 @@ const ToolbarGPS = class extends React.Component {
 	}
 };
 
-ToolbarGPS.contextTypes = {
+ToolbarHumidity.contextTypes = {
 	muiTheme: React.PropTypes.object,
 	router: React.PropTypes.object
 };
 
-ToolbarGPS.propTypes = {
+ToolbarHumidity.defaultProps = {
+	style: {}
+};
+
+ToolbarHumidity.propTypes = {
 	style: React.PropTypes.object,
 	onChange: React.PropTypes.func,
 	onInputFocus: React.PropTypes.func,
 	onInputBlur: React.PropTypes.func
 };
 
-module.exports = ToolbarGPS;
+module.exports = ToolbarHumidity;

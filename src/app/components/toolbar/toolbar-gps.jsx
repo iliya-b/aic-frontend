@@ -81,6 +81,10 @@ ToolbarGPS.contextTypes = {
 	router: React.PropTypes.object
 };
 
+ToolbarGPS.defaultProps = {
+	style: {}
+};
+
 ToolbarGPS.propTypes = {
 	onClickBack: React.PropTypes.func,
 	style: React.PropTypes.object,

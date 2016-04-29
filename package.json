@@ -66,6 +66,7 @@
   },
   "devDependencies": {
     "ava": "^0.14.0",
+    "enzyme": "^2.2.0",
     "eslint": "^2.8.0",
     "eslint-config-xo-react": "^0.6.0",
     "eslint-plugin-react": "^5.0.1",
@@ -73,6 +74,7 @@
     "nyc": "^6.4.0",
     "phantomjs-prebuilt": "^2.1.7",
     "react-addons-perf": "^15.0.1",
+    "react-addons-test-utils": "^15.0.1",
     "tap-nyan": "0.0.2",
     "xo": "^0.14.0"
   },
@@ -108,7 +110,11 @@
   "ava": {
     "failFast": true,
     "verbose": true,
-    "require": "babel-core/register"
+    "require": "babel-core/register",
+    "files": [
+      "test/**/*.js",
+      "!test/unit/utils/*.js"
+    ]
   },
   "nyc": {
     "extensions": [

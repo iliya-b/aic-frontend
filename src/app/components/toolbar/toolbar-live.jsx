@@ -83,7 +83,7 @@ ToolbarLive.contextTypes = {
 ToolbarLive.propTypes = {
 	style: React.PropTypes.object,
 	onClickStart: React.PropTypes.func,
-	variants: React.PropTypes.array
+	variants: React.PropTypes.array.isRequired
 };
 
 module.exports = ToolbarLive;

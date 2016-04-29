@@ -28,8 +28,7 @@ const LiveActions = Reflux.createActions({
 	loadState: {},
 	setState: {},
 	liveReset: {},
-	// setDelayedRotation: {},
-	// socketMessage: {},
+
 	logMessage: {},
 	liveConnect: {asyncResult: true},
 	liveConnectAudio: {asyncResult: true}

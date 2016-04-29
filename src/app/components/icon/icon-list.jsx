@@ -26,7 +26,12 @@ const IconList = props => (
 );
 
 IconList.propTypes = {
-	buttons: React.PropTypes.array,
+	buttons: React.PropTypes.arrayOf(React.PropTypes.shape({
+		id: React.PropTypes.string,
+		tooltip: React.PropTypes.string,
+		fontIcon: React.PropTypes.string, // or svgIcon
+		svgIcon: React.PropTypes.string // or fontIcon
+	})).isRequired,
 	selectedId: React.PropTypes.string,
 	onClick: React.PropTypes.object,
 	iconClassNamePrefix: React.PropTypes.string,

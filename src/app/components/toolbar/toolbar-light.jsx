@@ -8,7 +8,7 @@ import Slider from 'material-ui/Slider';
 import Paper from 'material-ui/Paper';
 
 // APP
-const ToolbarBattery = class extends React.Component {
+const ToolbarLight = class extends React.Component {
 
 	onChange(e, value) {
 		this.props.onChange(e, {light: value});
@@ -43,15 +43,19 @@ const ToolbarBattery = class extends React.Component {
 	}
 };
 
-ToolbarBattery.contextTypes = {
+ToolbarLight.contextTypes = {
 	muiTheme: React.PropTypes.object,
 	router: React.PropTypes.object
 };
 
-ToolbarBattery.propTypes = {
+ToolbarLight.defaultProps = {
+	style: {}
+};
+
+ToolbarLight.propTypes = {
 	onClickBack: React.PropTypes.func,
 	style: React.PropTypes.object,
 	onChange: React.PropTypes.func
 };
 
-module.exports = ToolbarBattery;
+module.exports = ToolbarLight;

@@ -115,8 +115,16 @@ PanelAPKInstall.contextTypes = {
 PanelAPKInstall.propTypes = {
 	style: React.PropTypes.object,
 	onClick: React.PropTypes.func,
-	apkList: React.PropTypes.array,
-	apkInstalled: React.PropTypes.array
+	apkList: React.PropTypes.arrayOf(React.PropTypes.shape({
+		filename: React.PropTypes.string,
+		id: React.PropTypes.string
+	})).isRequired,
+	apkInstalled: React.PropTypes.arrayOf(React.PropTypes.shape({
+		endTime: React.PropTypes.object,
+		refId: React.PropTypes.string,
+		status: React.PropTypes.string,
+		apkId: React.PropTypes.string
+	}))
 };
 
 module.exports = PanelAPKInstall;

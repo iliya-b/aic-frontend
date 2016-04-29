@@ -48,6 +48,10 @@ ToolbarBattery.contextTypes = {
 	router: React.PropTypes.object
 };
 
+ToolbarBattery.defaultProps = {
+	style: {}
+};
+
 ToolbarBattery.propTypes = {
 	onClickBack: React.PropTypes.func,
 	style: React.PropTypes.object,

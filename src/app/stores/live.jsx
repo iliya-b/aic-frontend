@@ -1,14 +1,12 @@
 'use strict';
 
-// Reflux
-const Reflux = require('reflux');
-
 // Vendor
+import Reflux from 'reflux';
 const debug = require('debug')('AiC:Stores:Live');
 
 // APP
-const AppUtils = require('app/components/shared/app-utils');
-const LiveActions = require('app/actions/live');
+import AppUtils from 'app/components/shared/app-utils';
+import LiveActions from 'app/actions/live';
 import APKActions from 'app/actions/apk';
 import CameraActions from 'app/actions/camera';
 import AppActions from 'app/actions/app';
@@ -139,47 +137,47 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	// Live check
-	onLiveCheck() {
-		this.addLogMessage('Searching session.');
-		this.state.live.status = 'LIVE_STATUS_CHECKING';
-		this.updateState();
-	},
+	// // Live check
+	// onLiveCheck() {
+	// 	this.addLogMessage('Searching session.');
+	// 	this.state.live.status = 'LIVE_STATUS_CHECKING';
+	// 	this.updateState();
+	// },
 
-	onLiveCheckCompleted(sessionFound) {
-		this.state.live.sessionFound = sessionFound;
-		this.state.live.status = sessionFound ? 'LIVE_STATUS_CHECK_FOUND' : 'LIVE_STATUS_CHECK_NOTFOUND';
-		this.changeBoxes('load', 'enabled', sessionFound);
-		this.changeBoxes('create', 'enabled', !sessionFound);
-		this.updateState();
-	},
+	// onLiveCheckCompleted(sessionFound) {
+	// 	this.state.live.sessionFound = sessionFound;
+	// 	this.state.live.status = sessionFound ? 'LIVE_STATUS_CHECK_FOUND' : 'LIVE_STATUS_CHECK_NOTFOUND';
+	// 	this.changeBoxes('load', 'enabled', sessionFound);
+	// 	this.changeBoxes('create', 'enabled', !sessionFound);
+	// 	this.updateState();
+	// },
 
-	onLiveCheckFailed(errorMessage) {
-		this.state.live.status = 'LIVE_STATUS_CHECK_FAILED';
-		this.state.live.message = errorMessage;
-		this.updateState();
-	},
+	// onLiveCheckFailed(errorMessage) {
+	// 	this.state.live.status = 'LIVE_STATUS_CHECK_FAILED';
+	// 	this.state.live.message = errorMessage;
+	// 	this.updateState();
+	// },
 
-	// Live start
-	onLiveStart() {
-		this.state.live.status = 'LIVE_STATUS_STARTING';
-		this.updateState();
-	},
+	// // Live start
+	// onLiveStart() {
+	// 	this.state.live.status = 'LIVE_STATUS_STARTING';
+	// 	this.updateState();
+	// },
 
-	onLiveStartCompleted(screenIP, screenPort) {
-		this.state.live.screen.ip = screenIP;
-		this.state.live.screen.port = screenPort;
-		this.state.live.screen.rotation = 'horizontal';
-		this.state.live.delayedRotation = 'horizontal';
-		this.state.live.status = 'LIVE_STATUS_STARTED';
-		this.updateState();
-	},
+	// onLiveStartCompleted(screenIP, screenPort) {
+	// 	this.state.live.screen.ip = screenIP;
+	// 	this.state.live.screen.port = screenPort;
+	// 	this.state.live.screen.rotation = 'horizontal';
+	// 	this.state.live.delayedRotation = 'horizontal';
+	// 	this.state.live.status = 'LIVE_STATUS_STARTED';
+	// 	this.updateState();
+	// },
 
-	onLiveStartFailed(errorMessage) {
-		this.state.live.status = 'LIVE_STATUS_START_FAILED';
-		this.state.live.message = errorMessage;
-		this.updateState();
-	},
+	// onLiveStartFailed(errorMessage) {
+	// 	this.state.live.status = 'LIVE_STATUS_START_FAILED';
+	// 	this.state.live.message = errorMessage;
+	// 	this.updateState();
+	// },
 
 	// Live connect
 	// onLiveConnect(vmhost, vmport) {
@@ -210,23 +208,23 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	// Live stop
-	onLiveStop() {
-		this.state.live.status = 'LIVE_STATUS_STOPPING';
-		this.updateState();
-	},
+	// // Live stop
+	// onLiveStop() {
+	// 	this.state.live.status = 'LIVE_STATUS_STOPPING';
+	// 	this.updateState();
+	// },
 
-	onLiveStopCompleted() {
-		this.resetMachine();
-		this.state.live.status = 'LIVE_STATUS_STOPPED';
-		this.updateState();
-	},
+	// onLiveStopCompleted() {
+	// 	this.resetMachine();
+	// 	this.state.live.status = 'LIVE_STATUS_STOPPED';
+	// 	this.updateState();
+	// },
 
-	onLiveStopFailed(errorMessage) {
-		this.state.live.status = 'LIVE_STATUS_STOP_FAILED';
-		this.state.live.message = errorMessage;
-		this.updateState();
-	},
+	// onLiveStopFailed(errorMessage) {
+	// 	this.state.live.status = 'LIVE_STATUS_STOP_FAILED';
+	// 	this.state.live.message = errorMessage;
+	// 	this.updateState();
+	// },
 
 	// Live stop v2
 	onStop(request) {
@@ -270,70 +268,70 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onSetSensorBattery(projectId, value) {
-		this.state.live.battery = value;
-	},
+	// onSetSensorBattery(projectId, value) {
+	// 	this.state.live.battery = value;
+	// },
 
-	onSetSensorAccelerometer(projectId, x, y, z, newRotationName) {
-		this.state.live.screen.rotation = newRotationName;
-		this.updateState();
-	},
+	// onSetSensorAccelerometer(projectId, x, y, z, newRotationName) {
+	// 	this.state.live.screen.rotation = newRotationName;
+	// 	this.updateState();
+	// },
 
-	onSetDelayedRotation() {
-		this.state.live.delayedRotation = this.state.live.screen.rotation;
-		this.updateState();
-	},
+	// onSetDelayedRotation() {
+	// 	this.state.live.delayedRotation = this.state.live.screen.rotation;
+	// 	this.updateState();
+	// },
 
-	onRecordStart() {
-		this.state.live.recording = true;
-		this.updateState();
-	},
+	// onRecordStart() {
+	// 	this.state.live.recording = true;
+	// 	this.updateState();
+	// },
 
-	onRecordStartCompleted(filename) {
-		this.state.live.recording = true;
-		this.state.live.recordingFileName = filename;
-		this.updateState();
-	},
+	// onRecordStartCompleted(filename) {
+	// 	this.state.live.recording = true;
+	// 	this.state.live.recordingFileName = filename;
+	// 	this.updateState();
+	// },
 
-	onRecordStop() {
-		this.state.live.recording = false;
-		this.updateState();
-	},
+	// onRecordStop() {
+	// 	this.state.live.recording = false;
+	// 	this.updateState();
+	// },
 
-	// Socket Message
-	onSocketMessage(message) {
-		const messageParsed = JSON.parse(message.data);
-		debug('onSocketMessage', messageParsed);
-		if (messageParsed.hasOwnProperty('message')) {
-			this.addLogMessage(messageParsed.message);
-			switch (messageParsed.message) {
-				case 'Stack retrieval or creation finished':
-					LiveActions.liveCheck.completed(false);
-					LiveActions.liveStart();
-					break;
-				case 'Docker created and ready.':
-					debug('docker created');
-					LiveActions.liveStart.completed(messageParsed.data.vncip, messageParsed.data.vncport);
-					LiveActions.liveConnect(messageParsed.data.vncip, messageParsed.data.vncport);
-					break;
-				default:
-					// TODO: error
-					break;
-			}
-		} else if (messageParsed.hasOwnProperty('error')) {
-			switch (this.state.live.status) {
-				case 'LIVE_STATUS_CHECKING':
-					LiveActions.liveCheck.failed(messageParsed.error);
-					break;
-				case 'LIVE_STATUS_STARTING':
-					LiveActions.liveStart.failed(messageParsed.error);
-					break;
-				default:
-					// TODO: error
-					break;
-			}
-		}
-	},
+	// // Socket Message
+	// onSocketMessage(message) {
+	// 	const messageParsed = JSON.parse(message.data);
+	// 	debug('onSocketMessage', messageParsed);
+	// 	if (messageParsed.hasOwnProperty('message')) {
+	// 		this.addLogMessage(messageParsed.message);
+	// 		switch (messageParsed.message) {
+	// 			case 'Stack retrieval or creation finished':
+	// 				LiveActions.liveCheck.completed(false);
+	// 				LiveActions.liveStart();
+	// 				break;
+	// 			case 'Docker created and ready.':
+	// 				debug('docker created');
+	// 				LiveActions.liveStart.completed(messageParsed.data.vncip, messageParsed.data.vncport);
+	// 				LiveActions.liveConnect(messageParsed.data.vncip, messageParsed.data.vncport);
+	// 				break;
+	// 			default:
+	// 				// TODO: error
+	// 				break;
+	// 		}
+	// 	} else if (messageParsed.hasOwnProperty('error')) {
+	// 		switch (this.state.live.status) {
+	// 			case 'LIVE_STATUS_CHECKING':
+	// 				LiveActions.liveCheck.failed(messageParsed.error);
+	// 				break;
+	// 			case 'LIVE_STATUS_STARTING':
+	// 				LiveActions.liveStart.failed(messageParsed.error);
+	// 				break;
+	// 			default:
+	// 				// TODO: error
+	// 				break;
+	// 		}
+	// 	}
+	// },
 
 	onLogMessage(message) {
 		this.addLogMessage(message);

@@ -98,6 +98,10 @@ ToolbarAccelerometer.contextTypes = {
 	router: React.PropTypes.object
 };
 
+ToolbarAccelerometer.defaultProps = {
+	style: {}
+};
+
 ToolbarAccelerometer.propTypes = {
 	onClickBack: React.PropTypes.func,
 	style: React.PropTypes.object,

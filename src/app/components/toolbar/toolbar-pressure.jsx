@@ -74,6 +74,10 @@ ToolbarPressure.contextTypes = {
 	router: React.PropTypes.object
 };
 
+ToolbarPressure.defaultProps = {
+	style: {}
+};
+
 ToolbarPressure.propTypes = {
 	style: React.PropTypes.object,
 	onChange: React.PropTypes.func,

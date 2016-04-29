@@ -81,7 +81,7 @@ ToolbarFileUpload.propTypes = {
 	uploadCloseVisible: React.PropTypes.bool,
 	deleteFileVisible: React.PropTypes.bool,
 	icon: React.PropTypes.string,
-	title: React.PropTypes.string
+	title: React.PropTypes.string.isRequired
 };
 
 module.exports = ToolbarFileUpload;

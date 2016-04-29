@@ -123,7 +123,7 @@ PanelMonkeyRunner.contextTypes = {
 PanelMonkeyRunner.propTypes = {
 	style: React.PropTypes.object,
 	onClick: React.PropTypes.func,
-	packageList: React.PropTypes.array,
+	packageList: React.PropTypes.array.isRequired,
 	onInputFocus: React.PropTypes.func,
 	onInputBlur: React.PropTypes.func,
 	monkeyCalls: React.PropTypes.array

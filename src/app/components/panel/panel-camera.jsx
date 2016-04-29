@@ -86,7 +86,10 @@ PanelCamera.contextTypes = {
 PanelCamera.propTypes = {
 	style: React.PropTypes.object,
 	onClick: React.PropTypes.func,
-	fileList: React.PropTypes.array
+	fileList: React.PropTypes.arrayOf(React.PropTypes.shape({
+		filename: React.PropTypes.string,
+		id: React.PropTypes.string
+	})).isRequired
 };
 
 module.exports = PanelCamera;
