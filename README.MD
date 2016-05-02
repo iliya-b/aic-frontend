@@ -81,7 +81,7 @@ TODO List
 	* ~~Configure backend so the tests can pass~~ :white_check_mark:
 	* ~~Write/adapt features~~ (transfered to aic_features project) :x:
 	* Write all the unit tests for all the components (the POC is for a single component and does nothing).
-	* Use ReactTestUtils on unit tests
+	* ~~Use ReactTestUtils on unit tests~~ :white_check_mark:
 	* Create react-router mink
 	* Try other browsers for behavior testing
 	* Apply [this](https://gist.github.com/tomazzaman/790bc607eb7ca3fd347f) integration testing (just a check if the app is working)
@@ -106,10 +106,10 @@ TODO List
   * Activate GSM functions only on phone images
   * Activate GSM accept/hold/cancel if there is a current call
   * Limit the extensions allowed on the upload of camera assets
-  * Add validation on the fields of frontend
+  * Add validation on the fields of frontend (started with formsy package)
 * React
-	* props => {} functions do not check propTypes
-	* reorganize components into stateless components and containers
+	* props => {} functions do not check propTypes, in fact it does [Stateless Functions](https://facebook.github.io/react/docs/reusable-components.html#stateless-functions), needs more testing
+	* reorganize components into stateless components and containers (started with unit tests)
 * Build
 	* Try to light up the build, npm cache?
 	* Clean up gulp tasks (simplified version can be found in other R&D projects)
