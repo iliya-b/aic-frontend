@@ -24,16 +24,6 @@ APKActions.upload.listenAndPromise(Gateway.apks.uploadMany);
 
 APKActions.delete.listenAndPromise(Gateway.apks.deleteMany);
 
-// const apiPromise = function (args1, args2, args3) {
-// 	console.warn('apiPromise', arguments);
-// 	console.warn('apiPromise', args1);
-// 	console.warn('apiPromise', args2);
-// 	console.warn('apiPromise', args3);
-// 	console.warn('apiPromise', this);
-// };
-
-// console.warn('APKActions', APKActions);
-
 // APKActions.list.listen(function (projectId) {
 // 	Gateway.apks.list({projectId})
 // 	.then(res => {

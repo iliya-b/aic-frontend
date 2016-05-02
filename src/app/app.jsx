@@ -20,7 +20,7 @@ import PollingActions from 'app/actions/polling';
 	// Needed to enable debugging on browser
 	window.GobyAppGlobals.Debugger = require('debug');
 
-	// Enable stop polling by browser console
+	// Enable stop polling on browser
 	window.GobyAppGlobals.PollingActions = PollingActions;
 
 	// Debugging React

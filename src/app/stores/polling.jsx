@@ -82,7 +82,6 @@ const PollingStore = Reflux.createStore({
 
 	onStop(actionType) {
 		debug('onStop', actionType, this.state.polling[actionType]);
-		// console.error('onStop');
 		if (this.state.polling[actionType] && this.state.polling[actionType].timeout) {
 			debug('stopping', this.state.polling);
 			clearTimeout(this.state.polling[actionType].timeout);
