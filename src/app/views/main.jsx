@@ -94,7 +94,7 @@ const Main = class extends React.Component {
 								<RaisedButton key={2} linkButton secondary href="#/" label="home"/>]
 							) : null}
 						</FullWidthSection>
-						<SessionEndedDialog open={this.state.sessionEndedDialogOpen} onRequestClose={this.handleSessionEndedDialogClose} location={this.props.location}/>
+						<SessionEndedDialog open={this.state.sessionEndedDialogOpen} onRequestClose={this.handleSessionEndedDialogClose}/>
 						<ServerErrorDialog open={this.state.app ? this.state.app.serverError.open : false} onRequestClose={this.handleServerErrorDialogClose} message={this.state.app ? this.state.app.serverError.message : ''}/>
 					</div>
 				</MuiThemeProvider>
@@ -118,6 +118,8 @@ const Main = class extends React.Component {
 	}
 
 	handleSessionEndedDialogClose() {
+		debug('handleSessionEndedDialogClose', this.context.router, this.props.location);
+		AuthActions.redirectDisconnected(this.context.router, this.props.location);
 		this.setState({sessionEndedDialogOpen: false});
 	}
 

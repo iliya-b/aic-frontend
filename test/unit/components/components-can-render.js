@@ -9,7 +9,7 @@ const componentsReq = {
 	DialogConfirmDelete: require('app/components/dialog/dialog-confirm-delete'),
 	DialogLogin: require('app/components/dialog/dialog-login'),
 	DialogServerError: require('app/components/dialog/dialog-server-error'),
-	// DialogSessionEnded: require('app/components/dialog/dialog-session-ended'), // Require Auth
+	DialogSessionEnded: require('app/components/dialog/dialog-session-ended'),
 	// Icon
 	IconDroidDevil: require('app/components/icon/droid-devil'),
 	IconFileCancel: require('app/components/icon/file-cancel'),
@@ -99,6 +99,7 @@ const componentsProps = {
 	DialogConfirmDelete: {open: true, onRequestClose: () => {},	onCancel: () => {},	onConfirm: () => {}},
 	DialogLogin: {open: true},
 	DialogServerError: {open: true, onRequestClose: () => {}},
+	DialogSessionEnded: {open: true, onRequestClose: () => {}},
 	// IconIconList: {buttons: [{id: 'a', tooltip: '', fontIcon: 'help'}], onClick: {a: () => {}}},
 	PanelCamera: {fileList: []},
 	PanelSessionDetails: {properties: {}},

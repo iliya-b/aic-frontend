@@ -8,17 +8,15 @@ const debug = require('debug')('AiC:Components:Dialog:SessionEndedDialog');
 
 // APP
 import InfoBox from 'app/components/shared/info-box';
-import AuthActions from 'app/actions/auth';
 
 const SessionEndedDialog = class extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.handleClose = e => {
+			debug('handleClose');
 			e.preventDefault();
 			this.props.onRequestClose();
-			debug('handleClose', this.context.router, this.props.location);
-			AuthActions.redirectDisconnected(this.context.router, this.props.location);
 		};
 	}
 
@@ -55,7 +53,6 @@ SessionEndedDialog.contextTypes = {
 
 SessionEndedDialog.propTypes = {
 	open: React.PropTypes.bool.isRequired,
-	location: React.PropTypes.object.isRequired,
 	onRequestClose: React.PropTypes.func.isRequired
 };
 
