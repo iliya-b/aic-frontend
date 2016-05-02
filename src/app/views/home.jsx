@@ -4,26 +4,48 @@
 import React from 'react';
 import Typography from 'material-ui/styles/typography';
 import RaisedButton from 'material-ui/RaisedButton';
-// const debug = require('debug')('AiC:Views:Home');
+const debug = require('debug')('AiC:Views:Home');
 
 // APP
 import FullWidthSection from 'app/components/shared/full-width-section';
 import LoginDialog from 'app/components/dialog/dialog-login';
 import AuthPage from 'app/components/shared/auth-page';
+import AuthStore from 'app/stores/auth';
+import AuthActions from 'app/actions/auth';
 
 const Home = class extends AuthPage {
 // const Home = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		// this.handleLoginOpen = this.handleLoginOpen.bind(this);
 		this.handleLoginOpen = () => {
-			this.setState({loginDialogOpen: true});
-			// e.preventDefault();
+			this.setState({loginDialogOpen: true, loginErrorMessage: ''});
 		};
-		this.handleLoginClose = this.handleLoginClose.bind(this);
+		this.handleLoginClose = e => {
+			e.preventDefault();
+			this.setState({loginDialogOpen: false});
+		};
+		this.handleLoginSubmit = data => {
+			AuthActions.login(data);
+		};
+		this.handleStateChange = newState => {
+			debug('handleStateChange newState', newState);
+			// TODO: this should be in the store not in the view
+			if (newState.login.status === 'LOGIN_STATUS_CONNECTED') {
+				debug('this.context.router', this.context.router);
+				debug('this.props.location', this.props.location);
+				debug('this.context.route', this.context.route);
+				debug('this.context.location', this.context.location);
+				AuthActions.redirectConnected(this.context.router, this.props.location);
+			} else {
+				const loginError = newState.login && newState.login.status === 'LOGIN_STATUS_CONNECT_FAILED' ? newState.login.message : '';
+				const extraNewState = Object.assign({}, newState, {loginErrorMessage: loginError});
+				this.setState(extraNewState);
+			}
+		};
 		this.state = {
-			loginDialogOpen: false
+			loginDialogOpen: false,
+			loginErrorMessage: ''
 		};
 	}
 
@@ -89,19 +111,31 @@ const Home = class extends AuthPage {
 						style={styles.buttonStyle}
 						secondary
 						/>
-					<LoginDialog open={this.state.loginDialogOpen} onRequestClose={this.handleLoginClose} location={this.props.location}/>
+					<LoginDialog
+						open={this.state.loginDialogOpen}
+						onRequestClose={this.handleLoginClose}
+						onLoginSubmit={this.handleLoginSubmit}
+						location={this.props.location}
+						error={this.state.loginErrorMessage}
+						formDisabled={this.state && this.state.login && this.state.login.status === 'LOGIN_STATUS_CONNECTING'}
+						/>
 				</div>
 			</FullWidthSection>
 		);
 	}
 
-	handleLoginClose(e) {
-		e.preventDefault();
-		this.setState({loginDialogOpen: false});
-	}
-
 	willTransitionTo() {
 		super.willTransitionTo();
+	}
+
+	componentDidMount() {
+		this.unsubscribe = AuthStore.listen(this.handleStateChange);
+		AuthStore.init();
+	}
+
+	componentWillUnmount() {
+		this.unsubscribe();
+		debug('unsubscribe');
 	}
 
 };

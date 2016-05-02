@@ -31,24 +31,32 @@ const AuthStore = Reflux.createStore({
 	// onLoginCompleted(message) {
 	onLoginCompleted(result) {
 		debug('then auth login');
-		debug(arguments);
-		if (result.hasOwnProperty('status') &&
+		debug('arguments', arguments);
+		debug('result.status', result.status, `---${result.status}---`, result.status === 401, result.hasOwnProperty('status'), 'status' in result);
+		if ('status' in result &&
 			(result.status === 400 || result.status === 401)) {
-			debug('arguments', arguments);
-			this.onLoginFailed(`It was not possible to login. Authentication server response was an error. Error: ${result.statusText}`);
+			debug('400 || 401');
+			this.onLoginFailedMessage(`It was not possible to login. Authentication server response was an error. Error: ${result.statusText}`);
 		} else if (result.hasOwnProperty('token')) {
+			debug('valid token');
 			localStorage.token = result.token;
 			this.state.login.status = 'LOGIN_STATUS_CONNECTED';
 			this.updateState();
 		} else {
-			debug('arguments', arguments);
-			this.onLoginFailed('It was not possible to login. Unknown authentication server response.');
+			debug('unknown response');
+			this.onLoginFailedMessage('It was not possible to login. Unknown authentication server response.');
 		}
 		// this.state.login.status = 'LOGIN_STATUS_CONNECTED';
 		// this.updateState();
 	},
 
-	onLoginFailed(errorMessage) {
+	onLoginFailed(result) {
+		debug('onLoginFailed result', arguments);
+		debug('result.response', result.response);
+		this.onLoginCompleted(result.response);
+	},
+
+	onLoginFailedMessage(errorMessage) {
 		this.state.login.message = errorMessage;
 		this.state.login.status = 'LOGIN_STATUS_CONNECT_FAILED';
 		this.updateState();

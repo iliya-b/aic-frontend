@@ -1,36 +1,69 @@
 'use strict';
 
 // Vendor
-const React = require('react');
-const {
-	Dialog,
-	TextField,
-	FlatButton
-} = require('material-ui');
+import React from 'react';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import Formsy from 'formsy-react';
 const debug = require('debug')('AiC:Component:Home:LoginDialog');
 
 // APP
-const AuthStore = require('app/stores/auth');
-const AuthActions = require('app/actions/auth');
-const AppUtils = require('app/components/shared/app-utils');
+import FormsyTextField from 'app/components/form/formsy-text-field';
 
 const LoginDialog = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
-		this.handleLoginCancel = this.handleLoginCancel.bind(this);
-		this.handleStateChange = this.handleStateChange.bind(this);
-		this.handleKeyDown = this.handleKeyDown.bind(this);
-		this.validFields = this.validFields.bind(this);
-		this.handleFieldChanges = {};
-		this.handleFieldChanges.loginEmail = this.handleFieldChange.bind(this, 'loginEmail');
-		this.handleFieldChanges.loginPassword = this.handleFieldChange.bind(this, 'loginPassword');
 		this.refLoginPassword = c => {
 			this.loginPassword = c;
 		};
 		this.refLoginEmail = c => {
 			this.loginEmail = c;
+		};
+		this.refForm = c => {
+			this.form = c;
+		};
+
+		this.handleKeyDown = e => {
+			if (e.keyCode === 13) {
+				e.preventDefault();
+				this.handleLoginClick(e);
+			}
+		};
+
+		// Buttons handlers
+		this.handleLoginClick = () => {
+			this.form.submit();
+		};
+		this.handleLoginCancel = e => {
+			e.preventDefault();
+			this.props.onRequestClose(e);
+		};
+
+		// Form handlers
+		this.handleFormSubmit = e => {
+			debug('handleLoginSubmit state.canSubmit', this.state.canSubmit);
+			debug('handleLoginSubmit e', e);
+			// e.preventDefault();
+			if (this.state.canSubmit) {
+				const email = this.loginEmail.getValue();
+				const pass = this.loginPassword.getValue();
+				this.props.onLoginSubmit({login: email, pass});
+			}
+		};
+		this.handleFormValid = () => {
+			this.setState({
+				canSubmit: true
+			});
+		};
+		this.handleFormInvalid = () => {
+			this.setState({
+				canSubmit: false
+			});
+		};
+
+		this.state = {
+			canSubmit: false
 		};
 	}
 
@@ -49,116 +82,47 @@ const LoginDialog = class extends React.Component {
 				label="Submit"
 				title="Submit"
 				primary
-				onTouchTap={this.handleLoginSubmit}
+				onTouchTap={this.handleLoginClick}
+				disabled={this.props.formDisabled}
 				className="btLoginSubmit"
 				/>
 		];
 
-		const errorBox = this.state && this.state.login && this.state.login.status === 'LOGIN_STATUS_CONNECT_FAILED' ? <div className="txtDialogLoginError" style={{color: this.context.muiTheme.palette.errorColor}}>{this.state.login.message}</div> : null;
-
+		const errorBox = this.props.error ? <div className="txtDialogLoginError" style={{color: this.context.muiTheme.palette.errorColor}}>{this.props.error}</div> : null;
 		return (
 			<Dialog title="Login" actions={loginActions} open={this.props.open}>
-				{this.state && this.state.login ?
-					<form onSubmit={this.handleLoginSubmit}>
-						{errorBox}
-						<TextField
-							name="fieldLogin"
-							className="loginEmail"
-							onKeyDown={this.handleKeyDown}
-							ref={this.refLoginEmail}
-							onChange={this.handleFieldChanges.loginEmail}
-							errorText={this.state.hasOwnProperty('loginEmailError') ? this.state.loginEmailError : ''}
-							floatingLabelText="login"
-							disabled={this.state.login.status === 'LOGIN_STATUS_CONNECTING'}
-							/><br/>
-						<TextField
-							name="fieldPassword"
-							className="loginPassword"
-							onKeyDown={this.handleKeyDown}
-							ref={this.refLoginPassword}
-							onChange={this.handleFieldChanges.loginPassword}
-							errorText={this.state.hasOwnProperty('loginPasswordError') ? this.state.loginPasswordError : ''}
-							type="password"
-							floatingLabelText="password"
-							disabled={this.state.login.status === 'LOGIN_STATUS_CONNECTING'}
-							/>
-					</form> : null}
+				<Formsy.Form
+					onValid={this.handleFormValid}
+					onInvalid={this.handleFormInvalid}
+					onSubmit={this.handleFormSubmit}
+					ref={this.refForm}
+					disabled={this.props.formDisabled}
+					>
+					{errorBox}
+					<FormsyTextField
+						name="fieldLogin"
+						className="loginEmail"
+						onKeyDown={this.handleKeyDown}
+						ref={this.refLoginEmail}
+						floatingLabelText="login"
+						requiredError="This field is required"
+						required
+						/><br/>
+					<FormsyTextField
+						name="fieldPassword"
+						className="loginPassword"
+						onKeyDown={this.handleKeyDown}
+						ref={this.refLoginPassword}
+						type="password"
+						floatingLabelText="password"
+						requiredError="This field is required"
+						required
+						/>
+				</Formsy.Form>
 				<br/>
 			</Dialog>
 			);
 	}
-
-	handleFieldChange(ref) {
-		const fieldsChanged = this.state.fieldsChanged ? this.state.fieldsChanged : [];
-		fieldsChanged.push(ref);
-		this.validFields(AppUtils.extend(this.state, {fieldsChanged}));
-	}
-
-	validFields(newState) {
-		// debug('newState');
-		// debug(newState);
-		const fieldAreValid = ['loginEmail', 'loginPassword'].reduce((previous, item) => {
-			if (newState.fieldsChanged && newState.fieldsChanged.indexOf(item) > -1) {
-				newState[`${item}Error`] = AppUtils.fieldIsRequired(previous[1][item]);
-			}
-			return [previous[0] && !AppUtils.isEmpty(previous[1][item].getValue()), previous[1]];
-		}, [true, this]);
-		this.setState(newState);
-		return fieldAreValid[0];
-	}
-
-	handleKeyDown(e) {
-		// debug('handleKeyDown e', e);
-		if (e.keyCode === 13) {
-			e.preventDefault();
-			this.handleLoginSubmit(e);
-		}
-	}
-
-	handleLoginSubmit(e) {
-		e.preventDefault();
-		if (this.validFields(AppUtils.extend(this.state, {fieldsChanged: ['loginEmail', 'loginPassword']}))) {
-			const email = this.loginEmail.getValue();
-			const pass = this.loginPassword.getValue();
-			AuthActions.login({login: email, pass});
-		}
-	}
-
-	handleLoginCancel(e) {
-		e.preventDefault();
-		this.props.onRequestClose(e);
-	}
-
-	handleStateChange(newState) {
-		// TODO: this should be in the store not in the view
-		if (newState.login.status === 'LOGIN_STATUS_CONNECTED') {
-			debug('this.context.router', this.context.router);
-			debug('this.props.location', this.props.location);
-			debug('this.context.route', this.context.route);
-			debug('this.context.location', this.context.location);
-			AuthActions.redirectConnected(this.context.router, this.props.location);
-		} else {
-			this.setState(newState);
-		}
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (this.props.open !== nextProps.open && nextProps.open) {
-			// onShow
-			this.setState({fieldsChanged: [], loginEmailError: '', loginPasswordError: ''});
-		}
-	}
-
-	componentDidMount() {
-		this.unsubscribe = AuthStore.listen(this.handleStateChange);
-		AuthStore.init();
-	}
-
-	componentWillUnmount() {
-		this.unsubscribe();
-		debug('unsubscribe');
-	}
-
 };
 
 LoginDialog.contextTypes = {
@@ -169,7 +133,10 @@ LoginDialog.contextTypes = {
 LoginDialog.propTypes = {
 	location: React.PropTypes.object,
 	open: React.PropTypes.bool,
-	onRequestClose: React.PropTypes.func
+	onRequestClose: React.PropTypes.func,
+	onLoginSubmit: React.PropTypes.func,
+	error: React.PropTypes.string,
+	formDisabled: React.PropTypes.bool
 };
 
 module.exports = LoginDialog;

@@ -7,7 +7,7 @@ import React from 'react';
 import * as Colors from 'material-ui/styles/colors';
 import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-const debug = require('debug')('AiC:Views:Home');
+const debug = require('debug')('AiC:Views:Main');
 
 // APP
 import AppTheme from 'app/configs/app-theme';

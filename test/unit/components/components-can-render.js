@@ -7,7 +7,7 @@ const componentsReq = {
 	CardAndroidSession: require('app/components/card/card-android-session'),
 	// Dialog
 	DialogConfirmDelete: require('app/components/dialog/dialog-confirm-delete'),
-	// DialogLogin: require('app/components/dialog/dialog-login'), // Require Auth
+	DialogLogin: require('app/components/dialog/dialog-login'),
 	DialogServerError: require('app/components/dialog/dialog-server-error'),
 	// DialogSessionEnded: require('app/components/dialog/dialog-session-ended'), // Require Auth
 	// Icon
@@ -97,6 +97,7 @@ test.before(() => {
 const componentsProps = {
 	CardAndroidSession: {image: 'kitkat-phone'},
 	DialogConfirmDelete: {open: true, onRequestClose: () => {},	onCancel: () => {},	onConfirm: () => {}},
+	DialogLogin: {open: true},
 	DialogServerError: {open: true, onRequestClose: () => {}},
 	// IconIconList: {buttons: [{id: 'a', tooltip: '', fontIcon: 'help'}], onClick: {a: () => {}}},
 	PanelCamera: {fileList: []},
