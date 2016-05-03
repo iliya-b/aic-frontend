@@ -26,8 +26,9 @@ test_integration:
   except:
     - tags
 
-test_coverage:
+test_unit:
   script:
+    - npm run xo
     - npm run coverage
   cache:
     paths:

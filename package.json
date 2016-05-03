@@ -7,14 +7,14 @@
     "url": "git@git.android-in-cloud.com:aic_vm/front-end-app.git"
   },
   "scripts": {
-    "test": "npm run test-unit",
-    "check-code-style": "xo",
+    "test": "NODE_PATH=./src ava --tap | tap-nyan",
     "xo": "xo",
-    "test-unit": "NODE_PATH=./src ava --tap | tap-nyan",
-    "test-unit-full": "NODE_PATH=./src ava",
-    "coverage": "nyc --extension .jsx npm run test-unit && nyc report --reporter=lcov",
-    "start": "gulp watch",
-    "build": "gulp build",
+    "test-verbose": "NODE_PATH=./src ava",
+    "coverage": "nyc --extension .jsx npm run test && nyc report --reporter=lcov",
+    "oldstart": "gulp watch",
+    "oldbuild": "gulp build",
+    "start": "webpack-dev-server --history-api-fallback --progress --color --port 3000",
+    "build": "webpack --progress --color",
     "create-conf-from-env": "gulp create-conf-from-env",
     "no-console": "echo \"Verifying for console usage. Please use debug package instead.\" && ! grep -rnw 'src' -e \"console\" && echo \"Yes! No console.something being used! Good Job!\"",
     "no-todos": "echo \"Verifying for TODOs.\" && ! grep -rnw 'src' -e \"TODO\" && echo \"Yes! No TODOs to do! Good Job!\""
@@ -25,6 +25,7 @@
     "babel": "^6.5.2",
     "babel-core": "^6.7.6",
     "babel-eslint": "^6.0.2",
+    "babel-loader": "^6.2.4",
     "babel-polyfill": "^6.7.4",
     "babel-preset-es2015": "^6.6.0",
     "babel-preset-react": "^6.5.0",
@@ -63,7 +64,8 @@
     "string": "^3.3.1",
     "underscore": "^1.8.3",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.7.0"
+    "watchify": "^3.7.0",
+    "webpack-dev-server": "^2.0.0-beta"
   },
   "devDependencies": {
     "ava": "^0.14.0",
