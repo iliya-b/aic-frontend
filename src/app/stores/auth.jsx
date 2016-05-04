@@ -53,7 +53,7 @@ const AuthStore = Reflux.createStore({
 	onLoginFailed(result) {
 		debug('onLoginFailed result', arguments);
 		debug('result.response', result.response);
-		this.onLoginCompleted(result.response);
+		this.onLoginFailedMessage('It was not possible to login. Please verify that your credentials are correct.');
 	},
 
 	onLoginFailedMessage(errorMessage) {
