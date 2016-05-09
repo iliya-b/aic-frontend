@@ -13,21 +13,24 @@
     "coverage": "nyc --extension .jsx npm run test && nyc report --reporter=lcov",
     "oldstart": "gulp watch",
     "oldbuild": "gulp build",
-    "start": "webpack-dev-server --history-api-fallback --progress --color --port 3000",
-    "build": "webpack --progress --color",
+    "start": "webpack-dev-server --content-base ./build/ --history-api-fallback --progress --port 9080 --hot --inline",
+    "build": "webpack --progress",
     "create-conf-from-env": "gulp create-conf-from-env",
     "no-console": "echo \"Verifying for console usage. Please use debug package instead.\" && ! grep -rnw 'src' -e \"console\" && echo \"Yes! No console.something being used! Good Job!\"",
-    "no-todos": "echo \"Verifying for TODOs.\" && ! grep -rnw 'src' -e \"TODO\" && echo \"Yes! No TODOs to do! Good Job!\""
+    "no-todos": "echo \"Verifying for TODOs.\" && ! grep -rnw 'src' -e \"TODO\" && echo \"Yes! No TODOs to do! Good Job!\"",
+    "babel-helpers": "babel-external-helpers > build/babel-helpers.js"
   },
   "author": "Karine Pires",
   "dependencies": {
     "attr-accept": "^1.0.3",
     "babel": "^6.5.2",
+    "babel-cli": "^6.8.0",
     "babel-core": "^6.7.6",
     "babel-eslint": "^6.0.2",
     "babel-loader": "^6.2.4",
-    "babel-polyfill": "^6.7.4",
+    "babel-polyfill": "^6.8.0",
     "babel-preset-es2015": "^6.6.0",
+    "babel-preset-es2015-native-modules": "^6.6.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "babelify": "^7.2.0",
@@ -65,7 +68,7 @@
     "underscore": "^1.8.3",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0",
-    "webpack-dev-server": "^2.0.0-beta"
+    "webpack": "^2.1.0-beta.7"
   },
   "devDependencies": {
     "ava": "^0.14.0",
@@ -79,27 +82,11 @@
     "react-addons-perf": "^15.0.1",
     "react-addons-test-utils": "^15.0.1",
     "tap-nyan": "0.0.2",
-    "xo": "^0.14.0"
+    "xo": "^0.14.0",
+    "webpack-dev-server": "^2.0.0-beta"
   },
   "config": {
     "loglevel": "warn"
-  },
-  "browserify": {
-    "extension": [
-      ".jsx"
-    ],
-    "transform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            "stage-0",
-            "es2015",
-            "react"
-          ]
-        }
-      ]
-    ]
   },
   "xo": {
     "esnext": true,
@@ -127,7 +114,7 @@
   "babel": {
     "presets": [
       "react",
-      "es2015",
+      "es2015-native-modules",
       "stage-0"
     ],
     "sourceMaps": "both"

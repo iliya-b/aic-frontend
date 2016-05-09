@@ -1,17 +1,26 @@
 const path = require('path');
-// const webpack = require('webpack');
+const webpack = require('webpack');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProd = nodeEnv === 'production';
 
+// Always on plugins
+const pluginList = [
+	new webpack.DefinePlugin({
+		'process.env': {NODE_ENV: JSON.stringify(nodeEnv)}
+	})
+];
+
+// Plugins only for production
+if (isProd) {
+	pluginList.push(new webpack.optimize.UglifyJsPlugin());
+	pluginList.push(new webpack.optimize.DedupePlugin());
+}
+
 module.exports = {
-	devtool: isProd ? 'hidden-source-map' : 'cheap-eval-source-map',
+	devtool: isProd ? false : 'cheap-eval-source-map',
 	context: path.join(__dirname, './src/app'),
 	entry: './app.jsx',
-	// entry: {
-		// js: './app.jsx',
-		// vendor: ['react']
-	// },
 	output: {
 		path: path.join(__dirname, './build'),
 		filename: 'app.js'
@@ -22,7 +31,6 @@ module.exports = {
 				test: /\.(js|jsx)$/,
 				exclude: /node_modules/,
 				loaders: [
-					// 'react-hot',
 					'babel-loader'
 				]
 			}
@@ -34,32 +42,6 @@ module.exports = {
 			path.resolve('./src'),
 			'node_modules'
 		]
-	}//,
-	// plugins: [
-	// 	new webpack.optimize.CommonsChunkPlugin({
-	// 		name: 'vendor',
-	// 		minChunks: Infinity,
-	// 		filename: 'vendor.bundle.js'
-	// 	}),
-	// 	new webpack.LoaderOptionsPlugin({
-	// 		minimize: true,
-	// 		debug: false
-	// 	}),
-	// 	new webpack.optimize.UglifyJsPlugin({
-	// 		compress: {
-	// 			warnings: false
-	// 		},
-	// 		output: {
-	// 			comments: false
-	// 		},
-	// 		sourceMap: false
-	// 	}),
-	// 	new webpack.DefinePlugin({
-	// 		'process.env': {NODE_ENV: JSON.stringify(nodeEnv)}
-	// 	})
-	// ],
-	// devServer: {
-	// 	contentBase: './client'
-	// 	// hot: true
-	// }
+	},
+	plugins: pluginList
 };

@@ -1,7 +1,9 @@
 /* global window, document */
 'use strict';
 
-require('babel-polyfill');
+// require('babel-polyfill');
+// import 'babel-core/polyfill';
+// import 'babel-polyfill';
 
 // Vendor
 import ReactDOM from 'react-dom';
@@ -58,4 +60,12 @@ import PollingActions from 'app/actions/polling';
 
 	// Router
 	ReactDOM.render(AppRoutes, document.getElementById('gobyApp'));
+
+	// Testing source maps
+	// try {
+	// 	const a = {};
+	// 	a.debug();
+	// } catch (ex) {
+	// 	console.log(ex.stack);
+	// }
 })();
