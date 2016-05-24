@@ -48,8 +48,8 @@ const GatewayAdapters = {
 			response: data => {
 				return data.apks.map(apk => {
 					return {
-						id: apk.apk_id,
-						filename: apk.apk_filename,
+						id: apk.file_id,
+						filename: apk.filename,
 						status: apk.status
 					};
 				});
