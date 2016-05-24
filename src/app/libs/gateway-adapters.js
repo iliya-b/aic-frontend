@@ -61,8 +61,8 @@ const GatewayAdapters = {
 			response: data => {
 				return data.camera_files.map(file => {
 					return {
-						id: file.camera_file_id,
-						filename: file.camera_filename,
+						id: file.file_id,
+						filename: file.filename,
 						status: file.status
 					};
 				});
