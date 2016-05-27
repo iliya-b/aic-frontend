@@ -1,5 +1,6 @@
-build
-node_modules
+/build
+/build.tgz
+/node_modules
 lib
 config.json
 .nyc_output
