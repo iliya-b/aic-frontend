@@ -12,7 +12,6 @@ import AudioAdapter from 'app/libs/audio-adapter';
 
 // Actions
 const LiveActions = Reflux.createActions({
-
 	list: {asyncResult: true},
 	stop: {asyncResult: true},
 	start: {asyncResult: true},
@@ -54,13 +53,17 @@ LiveActions.liveConnect.listenAndPromise(avmId => {
 	const token = ` Bearer ${AuthActions.getToken()}`;
 	const host = window.GobyAppGlobals.config.backend.host;
 	const port = window.GobyAppGlobals.config.backend.port;
-	const password = '';
 	const path = `android/${avmId}/screen?token=${token}`;
-	return new Promise((resolve, reject) => {
-		const promises = [NoVNCAdapter.loadScripts, NoVNCAdapter.createRFB, NoVNCAdapter.connect.bind(NoVNCAdapter, host, port, password, path)];
-		promises.reduce((pPrevious, pCurrent) => {
-			return pPrevious.then(pCurrent);
-		}, Promise.resolve()).then(resolve, reject);
+	let password = '';
+
+	return Gateway.live.totp({avmId}).then(totp => {
+		password = totp.totp;
+		return new Promise((resolve, reject) => {
+			const promises = [NoVNCAdapter.loadScripts, NoVNCAdapter.createRFB, NoVNCAdapter.connect.bind(NoVNCAdapter, host, port, password, path)];
+			promises.reduce((pPrevious, pCurrent) => {
+				return pPrevious.then(pCurrent);
+			}, Promise.resolve()).then(resolve, reject);
+		});
 	});
 });
 

@@ -146,6 +146,9 @@ const GatewayRegisters = function () {
 			}, {
 				action: GatewayActions.properties,
 				pathname: '/android/{avmId}/properties'
+			}, {
+				action: GatewayActions.totp,
+				pathname: '/android/{avmId}/totp'
 			}
 		]
 	});

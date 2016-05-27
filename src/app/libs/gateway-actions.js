@@ -59,6 +59,10 @@ const GatewayActions = {
 	properties: {
 		name: 'properties',
 		method: 'GET'
+	},
+	totp: {
+		name: 'totp',
+		method: 'GET'
 	}
 };
 

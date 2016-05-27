@@ -14,11 +14,13 @@
     "oldstart": "gulp watch",
     "oldbuild": "gulp build",
     "start": "webpack-dev-server --content-base ./build/ --history-api-fallback --progress --port 9080 --hot --inline",
-    "build": "webpack --progress",
+    "webpack-build": "webpack --progress",
+    "copy-static": "cp -R src/www/* build/",
+    "babel-helpers": "babel-external-helpers > build/babel-helpers.js",
+    "build": "npm run babel-helpers && npm run copy-static && npm run webpack-build",
     "create-conf-from-env": "gulp create-conf-from-env",
     "no-console": "echo \"Verifying for console usage. Please use debug package instead.\" && ! grep -rnw 'src' -e \"console\" && echo \"Yes! No console.something being used! Good Job!\"",
-    "no-todos": "echo \"Verifying for TODOs.\" && ! grep -rnw 'src' -e \"TODO\" && echo \"Yes! No TODOs to do! Good Job!\"",
-    "babel-helpers": "babel-external-helpers > build/babel-helpers.js"
+    "no-todos": "echo \"Verifying for TODOs.\" && ! grep -rnw 'src' -e \"TODO\" && echo \"Yes! No TODOs to do! Good Job!\""
   },
   "author": "Karine Pires",
   "dependencies": {
