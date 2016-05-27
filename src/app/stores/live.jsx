@@ -204,7 +204,7 @@ const LiveStore = Reflux.createStore({
 		debug(errorMessage);
 		debug(arguments);
 		this.state.live.status = 'LIVE_STATUS_CONNECT_FAILED';
-		this.state.live.message = errorMessage;
+		this.state.live.message = typeof errorMessage === 'object' ? errorMessage.message : errorMessage;
 		this.updateState();
 	},
 

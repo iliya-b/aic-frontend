@@ -57,7 +57,11 @@ LiveActions.liveConnect.listenAndPromise(avmId => {
 	let password = '';
 
 	return Gateway.live.totp({avmId}).then(totp => {
-		password = totp.totp;
+		if (totp.totp && totp.totp.length > 1) {
+			password = totp.totp;
+		} else {
+			throw new Error('Could not get authentication for VNC.');
+		}
 		return new Promise((resolve, reject) => {
 			const promises = [NoVNCAdapter.loadScripts, NoVNCAdapter.createRFB, NoVNCAdapter.connect.bind(NoVNCAdapter, host, port, password, path)];
 			promises.reduce((pPrevious, pCurrent) => {
