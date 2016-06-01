@@ -55,7 +55,7 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-util": "^3.0.7",
     "less": "^2.7.1",
-    "material-ui": "0.15.0-beta.1",
+    "material-ui": "0.15.0",
     "mdi": "^1.5.54",
     "noVNC": "git+https://github.com/kanaka/noVNC.git#v0.5.1",
     "pretty-hrtime": "^1.0.2",

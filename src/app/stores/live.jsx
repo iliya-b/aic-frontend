@@ -260,7 +260,10 @@ const LiveStore = Reflux.createStore({
 
 	// Live sensors
 
-	onSetSensor(avmId, sensor, payload) {
+	onSetSensor(params) {
+		const {sensor, payload} = params;
+		debug('onSetSensor');
+		debug('arguments', arguments);
 		this.state.live.sensors[sensor] = payload;
 		if (sensor === 'accelerometer') {
 			this.state.live.delayedRotation = this.isRotation(payload, 'horizontal') ? 'horizontal' : 'vertical';
@@ -477,7 +480,7 @@ const LiveStore = Reflux.createStore({
 
 		this.state.live.properties = properties;
 		this.updateState();
-		PollingActions.stop('liveProperties');
+		// PollingActions.stop('liveProperties');
 	},
 
 	onPropertiesFailed(errorMessage) {
@@ -629,6 +632,8 @@ const LiveStore = Reflux.createStore({
 	// State update
 
 	updateState() {
+		debug('updateState');
+		debug('new state', this.state);
 		this.updateBoxes();
 		this.trigger(this.state);
 	}

@@ -20,6 +20,7 @@ import AuthActions from 'app/actions/auth';
 import AppConfigActions from 'app/actions/app-config';
 import AppActions from 'app/actions/app';
 import ServerErrorDialog from 'app/components/dialog/dialog-server-error';
+import PollingActions from 'app/actions/polling';
 
 const Main = class extends React.Component {
 	constructor(props) {
@@ -36,6 +37,8 @@ const Main = class extends React.Component {
 
 		// this.handleServerErrorDialogOpen = () => this.setState({serverErrorDialogOpen: true});
 		this.handleServerErrorDialogClose = () => AppActions.hideServerError();
+
+		this.handleClickStopPolling = () => PollingActions.stopAll();
 	}
 
 	_onHomeClick() {
@@ -91,7 +94,8 @@ const Main = class extends React.Component {
 
 							{this.state.config.debug ? ([
 								<RaisedButton key={1} linkButton label="Test Theme" title="Test Theme" secondary href="#/theme-test"/>,
-								<RaisedButton key={2} linkButton secondary href="#/" label="home"/>]
+								<RaisedButton key={2} linkButton secondary href="#/" label="home"/>,
+								<RaisedButton key={3} linkButton secondary onClick={this.handleClickStopPolling} label="stop polling"/>]
 							) : null}
 						</FullWidthSection>
 						<SessionEndedDialog open={this.state.sessionEndedDialogOpen} onRequestClose={this.handleSessionEndedDialogClose}/>
