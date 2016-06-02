@@ -11,7 +11,7 @@ import IconButton from 'material-ui/IconButton';
 import str from 'string';
 
 // APP
-import * as icons from 'app/components/icon/phone-list';
+import VariantIcon from 'app/components/icon/variant-icon';
 
 const ToolbarLive = class extends React.Component {
 
@@ -49,14 +49,9 @@ const ToolbarLive = class extends React.Component {
 		if (this.props.variants.length) {
 			this.props.variants.forEach((v, i) => {
 				const handleClickStartVariant = this.handleClickStart.bind(this, v.id);
-				const icon = icons[v.name] ? icons[v.name]({
-					color: 'rgba(0, 0, 0, 0.4)',
-					hoverColor: 'rgba(0, 0, 0, 0.87)'
-				}) : <FontIcon className="mdi mdi-help" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>;
 				buttons.push(
-					// <img key={i}  style={{height: 30}} src={`/images/android-${v.name}.png`}/>
-					<IconButton className={`btStart${str(v.name).camelize().s}`} key={i} tooltip={`Start ${v.name}`} style={styles.button} onClick={handleClickStartVariant}>
-						{icon}
+					<IconButton className={`btStart${str(v.label).camelize().s}`} key={i} tooltip={`Start ${v.label}`} style={styles.button} onClick={handleClickStartVariant}>
+						<VariantIcon variant={v}/>
 					</IconButton>
 				);
 			});

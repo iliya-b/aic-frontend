@@ -3,7 +3,7 @@
 import React from 'react';
 import ClearFix from 'material-ui/internal/ClearFix';
 import Spacing from 'material-ui/styles/spacing';
-import StyleResizable from 'material-ui/utils/styleResizable';
+import withWidth, {SMALL, LARGE} from 'material-ui/utils/withWidth';
 
 // TODO: check why {desktopGutter} from spacing does not work
 const desktopGutter = Spacing.desktopGutter;
@@ -15,12 +15,9 @@ const FullWidthSection = React.createClass({
 		contentStyle: React.PropTypes.object,
 		contentType: React.PropTypes.string,
 		style: React.PropTypes.object,
-		useContent: React.PropTypes.bool
+		useContent: React.PropTypes.bool,
+		width: React.PropTypes.number.isRequired
 	},
-
-	mixins: [
-		StyleResizable
-	],
 
 	getDefaultProps() {
 		return {
@@ -35,6 +32,7 @@ const FullWidthSection = React.createClass({
 			useContent,
 			contentType,
 			contentStyle,
+			width,
 			...other
 		} = this.props;
 
@@ -75,8 +73,8 @@ const FullWidthSection = React.createClass({
 				style={Object.assign(
 					styles.root,
 					style,
-					this.isDeviceSize(StyleResizable.statics.Sizes.SMALL) && styles.rootWhenSmall,
-					this.isDeviceSize(StyleResizable.statics.Sizes.LARGE) && styles.rootWhenLarge)}
+					width === SMALL && styles.rootWhenSmall,
+          width === LARGE && styles.rootWhenLarge)}
 				>
 				{content}
 			</ClearFix>
@@ -84,4 +82,4 @@ const FullWidthSection = React.createClass({
 	}
 });
 
-module.exports = FullWidthSection;
+module.exports = withWidth()(FullWidthSection);

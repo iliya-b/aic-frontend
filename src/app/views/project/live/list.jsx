@@ -10,16 +10,9 @@ import LiveActions from 'app/actions/live';
 import PollingActions from 'app/actions/polling';
 import LiveMachineList from 'app/components/project/live-machine-list';
 import ToolbarLive from 'app/components/toolbar/toolbar-live';
+import {variants} from 'app/configs/app-constants';
 
 let projectId;
-
-const variants = [
-	{id: 'kitkat-tablet', name: 'kitkatTablet', version: '4'},
-	{id: 'kitkat-phone', name: 'kitkatPhone', version: '4'},
-	{id: 'lollipop-tablet', name: 'lollipopTablet', version: '5'},
-	{id: 'lollipop-phone', name: 'lollipopPhone', version: '5'},
-	{id: 'kitkat-mp', name: 'kitkat-new', version: '4'}
-];
 
 const LiveList = class extends React.Component {
 

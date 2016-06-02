@@ -55,8 +55,6 @@ import LogBoxRow from 'app/components/shared/log-box-row';
 
 import CardAndroidSession from 'app/components/card/card-android-session';
 
-import * as IconPhoneList from 'app/components/icon/phone-list';
-
 import PanelSessionDetails from 'app/components/panel/panel-session-details';
 
 debug(InfoBox);
@@ -340,13 +338,6 @@ const ThemesPage = class extends React.Component {
 					<div style={{width: 847}}>
 						<PanelSessionDetails avmInfo={avmInfo1} apkList={packageList} properties={vmproperties}/>
 					</div>
-
-					<h2>Icons</h2>
-
-					{IconPhoneList.kitkatTablet()}
-					{IconPhoneList.kitkatPhone()}
-					{IconPhoneList.lollipopTablet()}
-					{IconPhoneList.lollipopPhone()}
 
 					<h2>VM Card</h2>
 

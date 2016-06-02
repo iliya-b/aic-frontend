@@ -4,23 +4,18 @@
 import React from 'react';
 import Card from 'material-ui/Card/Card';
 import CardActions from 'material-ui/Card/CardActions';
-// import CardMedia from 'material-ui/Card/CardMedia';
 import CardTitle from 'material-ui/Card/CardTitle';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import CardText from 'material-ui/Card/CardText';
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
-import str from 'string';
 // const debug = require('debug')('AiC:Components:Card:CardAndroidSession');
 
 // APP
 import MachineIcon from 'app/components/project/machine-icon';
-import * as IconPhoneList from 'app/components/icon/phone-list';
-
-// function getRandomInt(min, max) {
-// 	return Math.floor(Math.random() * (max - min)) + min;
-// }
+import VariantIcon from 'app/components/icon/variant-icon';
+import {variants} from 'app/configs/app-constants';
 
 const styles = {
 	iconAction: {
@@ -73,23 +68,13 @@ const MachineIconStates = {
 
 // chart-line timer-sand information
 
+function getVariantById(variantId) {
+	return variants.reduce((p, v) => {
+		return p || v.id !== variantId ? p : v;
+	}, false);
+}
+
 const CardAndroidSession = props => {
-	const validKeys = Object.keys(IconPhoneList).filter(key => {
-		return {}.hasOwnProperty.call(IconPhoneList, key) && key !== 'default';
-	});
-
-	const iconPhoneKey = str(props.image).camelize().s;
-
-	let icon;
-	if (validKeys.indexOf(iconPhoneKey) === -1) {
-		icon = <FontIcon className="mdi mdi-help" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>;
-	} else {
-		icon = IconPhoneList[iconPhoneKey]({
-			color: 'rgba(0, 0, 0, 0.4)',
-			hoverColor: 'rgba(0, 0, 0, 0.4)'
-		});
-	}
-
 	const localCreationTime = (new Date(props.ts_created)).toLocaleString();
 //			<CardMedia>
 //				<img src={`http://lorempixel.com/600/337/nature/${getRandomInt(0, 10) + 1}/`}/>
@@ -111,9 +96,9 @@ const CardAndroidSession = props => {
 				<span style={styles.textInfo} className={`spLiveVMStatus spLiveVMStatus${props.index} spLiveVMStatus${props.avm_id}`}>{props.avm_status}</span><br/>
 
 				<IconButton style={styles.iconInfo} tooltip="machine type">
-					{icon}
+					<VariantIcon variant={{id: props.image}}/>
 				</IconButton>
-				<span style={styles.textInfo} className={`spLiveVMMachineType spLiveVMMachineType${props.index} spLiveVMMachineType${props.avm_id}`}>{props.image}</span><br/>
+				<span style={styles.textInfo} className={`spLiveVMMachineType spLiveVMMachineType${props.index} spLiveVMMachineType${props.avm_id}`}>{getVariantById(props.image).label}</span><br/>
 
 				<IconButton style={styles.iconInfo} tooltip="creation time">
 					<FontIcon className="mdi mdi-clock" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>

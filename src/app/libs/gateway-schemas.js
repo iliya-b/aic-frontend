@@ -4,6 +4,7 @@
 // But in this file is OK since we define the schemes passed to back-end
 
 // JSON schemes to validated objects sent to back-end API
+// TODO: should validate the schema received from back-end
 
 const GatewaySchemas = {
 	projects: {
