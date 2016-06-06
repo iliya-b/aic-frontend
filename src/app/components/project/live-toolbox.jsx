@@ -151,7 +151,11 @@ const LiveToolbox = class extends React.Component {
 	}
 
 	changeActiveSecondToolbar(toolbar) {
-		this.setState({activeSecondBar: toolbar});
+		if (this.state.activeSecondBar === toolbar) {
+			this.setState({activeSecondBar: null});
+		} else {
+			this.setState({activeSecondBar: toolbar});
+		}
 	}
 
 	handleChangeSensors(sensorType, e, payload) {
