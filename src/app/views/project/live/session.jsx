@@ -26,6 +26,7 @@ const LiveSession = class extends React.Component {
 	constructor(props) {
 		super(props);
 		this._onStateChange = this._onStateChange.bind(this);
+		this.handleStopVM = this.handleStopVM.bind(this);
 		// this.handleBatteryChange = this.handleBatteryChange.bind(this);
 		// this.handleClickGPS = this.handleClickGPS.bind(this);
 		// this.handleChangeRotation = this.handleChangeRotation.bind(this);
