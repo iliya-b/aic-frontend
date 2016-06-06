@@ -98,6 +98,7 @@ TODO List
 	* ~~Not found route~~ :white_check_mark:
 	* ~~Next Path broken (regression)~~ :white_check_mark:
 	* Views have router.push(pathname), probably needs to be changed, so if one changes pathname there is no need to revisit all views.
+	* Lazy load routes https://github.com/reactjs/react-router/issues/924
 * Live
   * Get initial VM state to set the frontend sensors (for example battery slides should be relative to the vm battery)
   * ~~Audio port~~ :white_check_mark:

@@ -10,6 +10,9 @@ const PanelSessionScreen = class extends React.Component {
 		debug('render');
 
 		const style = {
+			root: {
+				paddingBottom: 10
+			},
 			iframeHorizontal: {
 				overflow: 'hidden',
 				width: '800px',
@@ -22,6 +25,7 @@ const PanelSessionScreen = class extends React.Component {
 				margin: 'auto'
 			},
 			audio: {
+				display: 'none',
 				paddingTop: 20,
 				textAlign: 'center'
 			}
@@ -30,7 +34,7 @@ const PanelSessionScreen = class extends React.Component {
 		style.iframeRotation = this.props.rotation === "0" ? style.iframeHorizontal : style.iframeVertical;
 
 		return (
-			<div>
+			<div style={style.root}>
 				<div style={style.iframeRotation}>
 					<canvas id="noVNC_canvas">
 							Canvas not supported.

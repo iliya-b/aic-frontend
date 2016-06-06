@@ -108,9 +108,10 @@ const CardAndroidSession = props => {
 			</CardText>
 			<Divider/>
 			<CardActions>
-				<IconButton className={`btEnterSession btEnterSession${props.index} btEnterSession${props.avm_id}`} label="Enter session" title={`Enter session ${props.avm_id}`} tooltip="Enter" onClick={props.actionEnter ? props.actionEnter.bind(null, props.avm_id) : null}>
-					<FontIcon className="mdi mdi-arrow-right-bold" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
-				</IconButton>
+				{(props.avm_status === 'READY') ?
+					<IconButton className={`btEnterSession btEnterSession${props.index} btEnterSession${props.avm_id}`} label="Enter session" title={`Enter session ${props.avm_id}`} tooltip="Enter" onClick={props.actionEnter ? props.actionEnter.bind(null, props.avm_id) : null}>
+						<FontIcon className="mdi mdi-arrow-right-bold" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+					</IconButton> : null}
 				<IconButton className={`btStopSession btStopSession${props.index} btStopSession${props.avm_id}`} label="Stop session" title={`Stop session ${props.avm_id}`} tooltip="Delete" onClick={props.actionStop ? props.actionStop.bind(null, props.avm_id) : null}>
 					<FontIcon className="mdi mdi-delete" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 				</IconButton>
