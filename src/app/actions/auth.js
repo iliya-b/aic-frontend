@@ -82,7 +82,29 @@ AuthActions.logout.listenAndPromise(Gateway.user.logout);
 
 // TODO: change to access app state
 AuthActions.getToken = function () {
-	return localStorage.token;
+	debug('getToken');
+	debug(localStorage);
+	if (localStorage.getItem('token') && localStorage.getItem('token') === '') {
+		AuthActions.removeToken();
+	}
+	return localStorage.getItem('token');
+};
+
+AuthActions.setToken = function (token) {
+	debug('setToken');
+	debug(localStorage);
+	localStorage.setItem('token', token);
+};
+
+AuthActions.removeToken = function () {
+	debug('removeToken');
+	localStorage.removeItem('token');
+};
+
+// AuthActions.isLogged = function (loginContext) {
+AuthActions.isLogged = function () {
+	debug('isLogged');
+	return Boolean(AuthActions.getToken()) !== false;
 };
 
 // TODO: all this redirects and getFoo should be updated to the new format of react-router
@@ -145,15 +167,6 @@ AuthActions.redirectTo = function (routerOrTransition, page, query) {
 		debug('router');
 		routerOrTransition.transitionTo(page, {}, query);
 	}
-};
-
-// AuthActions.isLogged = function (loginContext) {
-AuthActions.isLogged = function () {
-	debug('isLogged ');
-	debug(localStorage, localStorage.token);
-	localStorage.token = localStorage.token || '';
-	// return loginContext.status === 'LOGIN_STATUS_CONNECTED';
-	return localStorage.token !== '';
 };
 
 AuthActions.loadContextIfEmpty = function (loginContext) {
