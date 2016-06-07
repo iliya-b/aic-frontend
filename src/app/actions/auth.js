@@ -149,8 +149,11 @@ AuthActions.redirectTo = function (routerOrTransition, page, query) {
 
 // AuthActions.isLogged = function (loginContext) {
 AuthActions.isLogged = function () {
+	debug('isLogged ');
+	debug(localStorage, localStorage.token);
+	localStorage.token = localStorage.token || '';
 	// return loginContext.status === 'LOGIN_STATUS_CONNECTED';
-	return localStorage.token !== null && localStorage.token !== '';
+	return localStorage.token !== '';
 };
 
 AuthActions.loadContextIfEmpty = function (loginContext) {
