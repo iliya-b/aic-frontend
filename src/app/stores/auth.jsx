@@ -1,4 +1,3 @@
-/* global localStorage */
 'use strict';
 
 // Vendors
@@ -39,7 +38,7 @@ const AuthStore = Reflux.createStore({
 			this.onLoginFailedMessage(`It was not possible to login. Authentication server response was an error. Error: ${result.statusText}`);
 		} else if (result.hasOwnProperty('token')) {
 			debug('valid token');
-			localStorage.token = result.token;
+			AuthActions.setToken(result.token);
 			this.state.login.status = 'LOGIN_STATUS_CONNECTED';
 			this.updateState();
 		} else {
@@ -76,7 +75,7 @@ const AuthStore = Reflux.createStore({
 	},
 
 	onLogoutCompleted() {
-		localStorage.token = '';
+		AuthActions.removeToken();
 		// TODO:  Fix the logout result,
 		//        for now we have 500 (Internal Server Error)
 		debug('onLogoutCompleted', arguments);
