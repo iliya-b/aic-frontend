@@ -45,9 +45,7 @@ const GatewayRegisters = function () {
 				requestAPI: 'authNotRequired'
 			}, {
 				action: GatewayActions.logout,
-				placeholder: () => {
-					return Promise.resolve({});
-				}
+				pathname: '/user/logout'
 			}
 		]
 	});
