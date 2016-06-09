@@ -15,7 +15,9 @@ const AuthStore = require('app/stores/auth');
 const AuthRequired = class extends React.Component {
 
 	componentWillMount() {
+		debug('AuthRequired.componentWillMount');
 		this.unsubscribe = AuthStore.listen(this._onStateChange);
+		AuthActions.refreshState();
 	//   const myContext = this.context;
 	//   debug('AuthRequired componentWillMount');
 	//   AuthActions.loadContextIfEmpty().then( function ( userIsLogged ) {
@@ -28,7 +30,6 @@ const AuthRequired = class extends React.Component {
 	//     debug('Something really bad happened on auth.', err);
 	//   } );
 		// AuthActions
-		debug('AuthRequired.componentWillMount');
 		if (AuthActions.isLogged()) {
 			debug('user is logged');
 		} else {

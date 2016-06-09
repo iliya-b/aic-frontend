@@ -14,7 +14,9 @@ import Gateway from 'app/libs/gateway';
 // Actions
 const AuthActions = Reflux.createActions({
 	login: {asyncResult: true},
-	logout: {asyncResult: true}
+	logout: {asyncResult: true},
+	tryLogout: {},
+	refreshState: {}
 });
 
 // Listeners for asynchronous Backend API calls
@@ -104,6 +106,8 @@ AuthActions.removeToken = function () {
 // AuthActions.isLogged = function (loginContext) {
 AuthActions.isLogged = function () {
 	debug('isLogged');
+	debug('token', AuthActions.getToken());
+	debug('Boolean', Boolean(AuthActions.getToken()));
 	return Boolean(AuthActions.getToken()) !== false;
 };
 

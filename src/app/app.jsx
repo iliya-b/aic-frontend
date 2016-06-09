@@ -7,7 +7,6 @@
 
 // Vendor
 import ReactDOM from 'react-dom';
-import str from 'string';
 import Reflux from 'reflux';
 import refluxPromise from 'reflux-promise';
 
@@ -49,8 +48,6 @@ import PollingActions from 'app/actions/polling';
 
 	// Gateway/Backend
 	gatewayRegisters();
-	str.TMPL_OPEN = '{';
-	str.TMPL_CLOSE = '}';
 
 	// refluxPromise needs to be before the routes import
 	// and if AppRoutes is done on the begging of the file
@@ -60,12 +57,4 @@ import PollingActions from 'app/actions/polling';
 
 	// Router
 	ReactDOM.render(AppRoutes, document.getElementById('gobyApp'));
-
-	// Testing source maps
-	// try {
-	// 	const a = {};
-	// 	a.debug();
-	// } catch (ex) {
-	// 	console.log(ex.stack);
-	// }
 })();

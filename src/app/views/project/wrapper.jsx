@@ -33,7 +33,7 @@ const ProjectWrapper = class extends AuthRequired {
 	}
 
 	handleOnRightIconButtonTouchTap() {
-		AuthActions.logout(false);
+		AuthActions.tryLogout(false);
 	}
 
 	render() {

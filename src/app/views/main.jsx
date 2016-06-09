@@ -47,7 +47,6 @@ const Main = class extends React.Component {
 
 	getChildContext() {
 		return {
-			// muiTheme: ThemeManager.getCurrentTheme(),
 			muiTheme: AppTheme,
 			appConfig: this.state.config ? this.state.config : {},
 			loginStatus: this.state.login ? this.state.login : {}
@@ -138,7 +137,7 @@ const Main = class extends React.Component {
 			debug('this.props.location', this.props.location);
 			// const currentPathName = AuthActions.getPathName(this.context.router);
 			const currentPathName = this.props.location.pathname;
-			if (newState.login.status === 'LOGIN_STATUS_DISCONNECTED' &&
+			if ((newState.login.status === 'LOGIN_STATUS_DISCONNECTED' || newState.login.status === 'LOGIN_STATUS_DISCONNECT_FAILED') &&
 				currentPathName !== '/' &&
 				currentPathName !== '/home') {
 				if (newState.login.showMessage) {
@@ -153,7 +152,7 @@ const Main = class extends React.Component {
 			// and we need login information on WillTransitionTo of AuthRequired component
 			window.GobyAppGlobals.login = newState.login;
 			this.setState(newState);
-			// debug('changed main state' , newState ,  currentPathName);
+			debug('changed main state', newState);
 		}
 		if (newState.config) {
 			debug('Config loaded');

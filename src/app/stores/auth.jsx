@@ -21,13 +21,11 @@ const AuthStore = Reflux.createStore({
 
 	// Actions //
 
-	// Login
 	onLogin() {
 		this.state.login.status = 'LOGIN_STATUS_CONNECTING';
 		this.updateState();
 	},
 
-	// onLoginCompleted(message) {
 	onLoginCompleted(result) {
 		debug('then auth login');
 		debug('arguments', arguments);
@@ -61,9 +59,8 @@ const AuthStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	// Logout
-	// onLogout(showMessage) {
 	onLogout(showMessage) {
+		AuthActions.removeToken();
 		// TODO: this should be solved differently
 		// The problem is that the multiple api calls fired at once,
 		// call logout multiple times
@@ -75,7 +72,6 @@ const AuthStore = Reflux.createStore({
 	},
 
 	onLogoutCompleted() {
-		AuthActions.removeToken();
 		// TODO:  Fix the logout result,
 		//        for now we have 500 (Internal Server Error)
 		debug('onLogoutCompleted', arguments);
@@ -92,7 +88,6 @@ const AuthStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	// // Check
 	// onCheck() {
 	// 	this.state.login.status = 'LOGIN_STATUS_CHECKING';
 	// 	this.updateState();
@@ -108,6 +103,26 @@ const AuthStore = Reflux.createStore({
 	// 	this.state.login.status = 'LOGIN_STATUS_CHECK_FAILED';
 	// 	this.updateState();
 	// },
+
+	onTryLogout(showMessage) {
+		debug('onTryLogout', arguments);
+		debug('state', this.state);
+		// TODO: this should be solved differently
+		// The problem is that the multiple api calls fired at once,
+		// call logout multiple times
+		const invalidStates = ['LOGIN_STATUS_DISCONNECTING', 'LOGIN_STATUS_DISCONNECTED', 'LOGIN_STATUS_DISCONNECT_FAILED'];
+		if (invalidStates.indexOf(this.state.login.status) === -1) {
+			debug('calling logout');
+			AuthActions.logout(showMessage);
+		} else {
+			debug('not calling logout');
+		}
+	},
+
+	onRefreshState() {
+		debug('onRefreshState', this.state);
+		this.updateState();
+	},
 
 	// Methods //
 

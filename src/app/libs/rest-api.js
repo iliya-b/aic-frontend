@@ -83,7 +83,7 @@ const RestAPI = {
 					} else if (xhr.status === 401 && options.authRequired) {
 						debug('XHR onload 401');
 						const AuthActions = require('app/actions/auth');
-						AuthActions.logout('Your session has been ended2.');
+						AuthActions.tryLogout('Your session has been ended2.');
 					} else if (xhr.status === 500 && options.showError500Dialog) {
 						debug('XHR onload 500');
 						const AppActions = require('app/actions/app');
@@ -160,7 +160,7 @@ const RestAPI = {
 				} else if (response.status === 401 && options.authRequired) {
 					debug('fetch response', response);
 					const AuthActions = require('app/actions/auth');
-					AuthActions.logout('Your session has been ended2.');
+					AuthActions.tryLogout('Your session has been ended2.');
 				} else if (response.status === 500 && options.showError500Dialog) {
 					debug('response.status === 500', response, options.url, myInit);
 					const AppActions = require('app/actions/app');
