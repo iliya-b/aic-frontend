@@ -229,7 +229,7 @@ const LiveStore = Reflux.createStore({
 	// Live stop v2
 	onStop(request) {
 		debug('onStop', request);
-		if (request.avmId !== this.state.liveInfo.avm_id) {
+		if (this.state.liveInfo && request.avmId !== this.state.liveInfo.avm_id) {
 			debug('onStop', 'request for another vm');
 			return;
 		}
@@ -240,7 +240,7 @@ const LiveStore = Reflux.createStore({
 
 	onStopCompleted(response) {
 		// this.resetMachine();
-		if (response.request.avmId !== this.state.liveInfo.avm_id) {
+		if (this.state.liveInfo && response.request.avmId !== this.state.liveInfo.avm_id) {
 			debug('onStopCompleted', 'request for another vm');
 			return;
 		}
@@ -249,7 +249,7 @@ const LiveStore = Reflux.createStore({
 	},
 
 	onStopFailed(response) {
-		if (response.request.avmId !== this.state.liveInfo.avm_id) {
+		if (this.state.liveInfo && response.request.avmId !== this.state.liveInfo.avm_id) {
 			debug('onStopCompleted', 'request for another vm');
 			return;
 		}

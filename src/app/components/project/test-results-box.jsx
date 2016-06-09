@@ -5,7 +5,7 @@ const React = require('react');
 
 // Material design
 const mui = require('material-ui');
-const {Spacing} = require('material-ui/styles');
+import Spacing from 'material-ui/styles/spacing';
 const {
 	Paper,
 	Card,

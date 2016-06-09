@@ -17,7 +17,6 @@ const AuthRequired = class extends React.Component {
 	componentWillMount() {
 		debug('AuthRequired.componentWillMount');
 		this.unsubscribe = AuthStore.listen(this._onStateChange);
-		AuthActions.refreshState();
 	//   const myContext = this.context;
 	//   debug('AuthRequired componentWillMount');
 	//   AuthActions.loadContextIfEmpty().then( function ( userIsLogged ) {
