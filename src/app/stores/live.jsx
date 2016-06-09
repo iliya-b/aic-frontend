@@ -617,7 +617,12 @@ const LiveStore = Reflux.createStore({
 		LIVE_STATUS_STOPPED: {typeName: 'close', newStatus: 'success'},
 		LIVE_STATUS_STOP_FAILED: {typeName: 'close', newStatus: 'fail'},
 
-		LIVE_STATUS_RESET: {typeName: '', newStatus: ''}
+		LIVE_STATUS_RESET: {typeName: '', newStatus: ''},
+
+		LIVE_STATUS_INSTALLAPK_FAILED: {typeName: 'connect', newStatus: 'fail'},
+		LIVE_STATUS_LISTPACKAGES_FAILED: {typeName: 'connect', newStatus: 'fail'},
+		LIVE_STATUS_MONKEYRUNNER_FAILED: {typeName: 'connect', newStatus: 'fail'},
+		LIVE_STATUS_PROPERTIES_FAILED: {typeName: 'connect', newStatus: 'fail'}
 	},
 
 	isRotation(set, rotation) {
@@ -634,6 +639,11 @@ const LiveStore = Reflux.createStore({
 	updateState() {
 		debug('updateState');
 		debug('new state', this.state);
+
+		// If the machine goes to any failed state we should stop all polling
+		if (this.state.live.status.substr(-6) === 'FAILED') {
+			this.onClearTimeouts();
+		}
 		this.updateBoxes();
 		this.trigger(this.state);
 	}
