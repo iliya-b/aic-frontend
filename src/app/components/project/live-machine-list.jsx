@@ -12,13 +12,25 @@ import CardAndroidSession from 'app/components/card/card-android-session';
 const LiveMachineList = class extends React.Component {
 	render() {
 		let avmsRendered = '';
+		const styles = {
+			card: {
+				0: {
+					margin: '20px 20px 0 0',
+					width: 414
+				},
+				1: {
+					margin: '20px 0 0 0',
+					width: 413
+				}
+			}
+		};
 
 		// List VMs or information about loading and no VMs
 		if (this.props.avmList && this.props.avmList.length) {
 			avmsRendered = this.props.avmList.map((currentValue, index) => {
 				debug('currentValue', currentValue);
 				currentValue.index = index;
-				return <CardAndroidSession className={`cardLiveVM cardLiveVM${index} cardLiveVM${currentValue.avm_id}`} {...currentValue} key={currentValue.avm_id} actionEnter={this.props.actionEnter} actionStop={this.props.actionStop}/>;
+				return <CardAndroidSession style={styles.card[index % 2]} className={`cardLiveVM cardLiveVM${index} cardLiveVM${currentValue.avm_id}`} {...currentValue} key={currentValue.avm_id} actionEnter={this.props.actionEnter} actionStop={this.props.actionStop}/>;
 			});
 		} else if (this.props.isListLoading) {
 			avmsRendered = <InfoBox style={{textAlign: 'center'}}>Loading sessions...</InfoBox>;

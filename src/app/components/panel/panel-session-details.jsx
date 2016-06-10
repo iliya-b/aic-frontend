@@ -12,6 +12,9 @@ import str from 'string';
 import VoiceSVG from 'app/components/icon/voice';
 import GravitySVG from 'app/components/icon/gravity';
 
+// TODO: use LabeledSpan
+// import LabeledSpan from 'app/components/form/labeled-span';
+
 const infos = [
 	{
 		id: 'gps',

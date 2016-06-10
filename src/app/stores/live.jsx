@@ -132,9 +132,22 @@ const LiveStore = Reflux.createStore({
 	},
 
 	onStartFailed(errorMessage) {
-		this.state.live.status = 'LIVE_STATUS_VMSTART_FAILED';
-		this.state.live.message = errorMessage;
-		this.updateState();
+		debug('onStartFailed', errorMessage, errorMessage.response);
+
+		if (errorMessage.error && errorMessage.request && errorMessage.error.response) {
+			errorMessage.error.response.text().then(message => {
+				debug('text', message);
+				debug('state', this.state.live);
+				this.state.live.status = 'LIVE_STATUS_VMSTART_FAILED';
+				this.state.live.message = message;
+				this.state.live.startFailedUuid = errorMessage.request.uuid;
+				this.updateState();
+			});
+		} else {
+			this.state.live.status = 'LIVE_STATUS_VMSTART_FAILED';
+			this.state.live.message = typeof errorMessage === 'object' ? errorMessage.message : errorMessage;
+			this.updateState();
+		}
 	},
 
 	// // Live check

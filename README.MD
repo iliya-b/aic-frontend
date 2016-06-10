@@ -88,6 +88,7 @@ TODO List
 	* Theme test should be in another app (probably do it with the webpack change)
 	* Continuously deployment for dev env with [stridercd](http://alexfernandez.github.io/2016/stridercd.html) ?
 	* Add [eslint-plugin-ava](https://github.com/sindresorhus/eslint-plugin-ava) when [xo gets fixed](https://github.com/sindresorhus/xo/issues/88)
+	* Components test vs Theme page (maybe they can share some code).
 * Auth Todos
 	* ~~disconnect user when token is invalid in any backend request~~ :white_check_mark:
 	* true logout (now is just application sided not server sided)

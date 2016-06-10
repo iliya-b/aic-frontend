@@ -54,6 +54,8 @@ import CardAndroidSession from 'app/components/card/card-android-session';
 
 import PanelSessionDetails from 'app/components/panel/panel-session-details';
 
+import DroidPercentage from 'app/components/icon/droid-percentage';
+
 debug(InfoBox);
 
 // var logBoxRef = Array.apply(0, Array(8)).map(function (v, i) { return { message: 'Message ' + i , time: i }; });
@@ -324,6 +326,14 @@ const ThemesPage = class extends React.Component {
 			<div>
 				<ClearFix>
 					<RaisedButton linkButton href={'/'} secondary label={'Back to Home'}/>
+				</ClearFix>
+
+				<ClearFix>
+
+					<h2>Live</h2>
+
+					<DroidPercentage value={33}/>
+
 				</ClearFix>
 
 				<ClearFix>

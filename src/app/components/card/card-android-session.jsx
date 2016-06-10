@@ -44,6 +44,11 @@ const styles = {
 		fontWeight: 500,
 		display: 'inline-block',
 		paddingTop: 15
+	},
+	root: {
+		width: 400,
+		display: 'inline-block',
+		margin: 10
 	}
 };
 
@@ -80,7 +85,7 @@ const CardAndroidSession = props => {
 //				<img src={`http://lorempixel.com/600/337/nature/${getRandomInt(0, 10) + 1}/`}/>
 //			</CardMedia>
 	return (
-		<Card className={props.className} style={{width: 400, display: 'inline-block', margin: '10px'}}>
+		<Card className={props.className} style={props.style ? Object.assign(styles.root, props.style) : styles.root}>
 			<Avatar style={styles.avatar} icon={<MachineIcon style={{margin: '0 0 0 2px'}} status={MachineIconStates[props.avm_status]}/>}/>
 			<CardTitle className={`spLiveVMTitle spLiveVMTitle${props.index} spLiveVMTitle${props.avm_id}`} title={props.avm_id}/>
 			<CardText style={{paddingTop: 0}}>
@@ -129,7 +134,8 @@ CardAndroidSession.propTypes = {
 	index: React.PropTypes.number,
 	actionStop: React.PropTypes.func,
 	actionEnter: React.PropTypes.func,
-	className: React.PropTypes.string
+	className: React.PropTypes.string,
+	style: React.PropTypes.object
 };
 
 module.exports = CardAndroidSession;
