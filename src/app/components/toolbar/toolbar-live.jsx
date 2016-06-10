@@ -71,7 +71,7 @@ const ToolbarLive = class extends React.Component {
 						tooltip={canUserCreateVm ? `Start ${v.label}` : 'Quota limit reached. Please, delete any open session to create a new one.'}
 						style={styles.button}
 						onClick={handleClickStartVariant}
-						// disabled={!canUserCreateVm}
+						disabled={!canUserCreateVm}
 						>
 						<VariantIcon variant={v}/>
 					</IconButton>
