@@ -98,6 +98,25 @@ const GatewayRegisters = function () {
 		]
 	});
 
+	// Tests
+	Gateway.register({
+		namespace: 'tests',
+		actions: [
+			{
+				action: GatewayActions.list,
+				pathname: '/projects/{projectId}/test'
+			}, {
+				action: GatewayActions.upload,
+				pathname: '/projects/{projectId}/test',
+				allowMany: true
+			}, {
+				action: GatewayActions.delete,
+				pathname: '/projects/{projectId}/test/{testId}',
+				allowMany: true
+			}
+		]
+	});
+
 	// Camera
 	Gateway.register({
 		namespace: 'camera',

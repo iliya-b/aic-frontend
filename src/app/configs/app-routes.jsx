@@ -22,6 +22,7 @@ import ProjectWrapper from 'app/views/project/wrapper';
 import ProjectList from 'app/views/project/list';
 import ProjectPage from 'app/views/project/page';
 import ProjectApkManager from 'app/views/project/apk-manager';
+import ProjectTestManager from 'app/views/project/test-manager';
 import ProjectLiveWrapper from 'app/views/project/live/wrapper';
 import ProjectLiveSession from 'app/views/project/live/session';
 import ProjectLiveList from 'app/views/project/live/list';
@@ -37,6 +38,7 @@ const AppRoutes = (
 				<IndexRoute component={ProjectList}/>
 				<Route path=":projectId" component={ProjectPage}>
 					<IndexRoute component={ProjectApkManager}/>
+					<IndexRoute component={ProjectTestManager}/>
 					<Route path="live" component={ProjectLiveWrapper}>
 						<IndexRoute component={ProjectLiveList}/>
 						<Route path=":androId" component={ProjectLiveSession}/>
