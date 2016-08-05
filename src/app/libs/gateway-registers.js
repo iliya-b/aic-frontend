@@ -95,6 +95,11 @@ const GatewayRegisters = function () {
 				pathname: '/projects/{projectId}/apk/{apkId}',
 				allowMany: true
 			}
+			// }, {
+			// 	action: GatewayActions.compile,
+			// 	pathname: '/projects/{projectId}/apkcc',
+			// 	allowMany: true
+			// }
 		]
 	});
 
@@ -142,7 +147,7 @@ const GatewayRegisters = function () {
 		actions: [
 			{
 				action: GatewayActions.list,
-				pathname: '/android'
+				pathname: '/android/{avmId}/apk'
 			}, {
 				action: GatewayActions.create,
 				pathname: '/android',
@@ -174,6 +179,16 @@ const GatewayRegisters = function () {
 				action: GatewayActions.totp,
 				pathname: '/android/{avmId}/totp'
 			}
+			// }, {
+			// 	action: GatewayActions.listTests,
+			// 	pathname: '/android/{avmId}/testrun'
+			// }, {
+			// 	action: GatewayActions.runTest,
+			// 	pathname: '/android/{avmId}/testrun?package={....}'
+			// }, {
+			// 	action: GatewayActions.execStatus,
+			// 	pathname: '/android/{avmId}/exec/{execId}'
+			// }
 		]
 	});
 };

@@ -38,7 +38,7 @@ const AppRoutes = (
 				<IndexRoute component={ProjectList}/>
 				<Route path=":projectId" component={ProjectPage}>
 					<IndexRoute component={ProjectApkManager}/>
-					<IndexRoute component={ProjectTestManager}/>
+					<Route path="test" component={ProjectTestManager}/>
 					<Route path="live" component={ProjectLiveWrapper}>
 						<IndexRoute component={ProjectLiveList}/>
 						<Route path=":androId" component={ProjectLiveSession}/>
