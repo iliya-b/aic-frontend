@@ -146,7 +146,7 @@ const GatewayRegisters = function () {
 		actions: [
 			{
 				action: GatewayActions.list,
-				pathname: '/android/{avmId}/apk'
+				pathname: '/android'
 			}, {
 				action: GatewayActions.create,
 				pathname: '/android',
