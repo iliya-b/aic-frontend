@@ -4,6 +4,22 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ## [Unreleased]
 
+### Added
+- Test Manager.
+
+## [0.5.0]
+
+Note that we skipped 0.4.* for the sake of consistency with the other
+version projects of AiC.
+
+### Added
+- Reflux promise. Refactor of all the code related to backend API.
+- Build with webpack.
+- TOTP for VNC connection.
+- Prototype banner.
+- Images enabled by config.
+- VM Quota limit.
+
 ### Changed
 - Update packages, passing to react@v15.
 
