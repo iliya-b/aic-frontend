@@ -4,8 +4,15 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ## [Unreleased]
 
+## [0.5.1]
+
+Last tag before big changes on backend API (v0.6).
+
 ### Added
 - Test Manager.
+
+### Changed
+- Fix vm list.
 
 ## [0.5.0]
 
