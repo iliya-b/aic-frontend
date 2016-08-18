@@ -67,6 +67,11 @@ const MachineIcon = class extends React.Component {
 				colorAndro = this.props.color || this.context.muiTheme.palette.primary1Color;
 				statusClassName = 'mdi mdi-help';
 				break;
+			case MachineIcon.START:
+				colorIcon = this.context.muiTheme.palette.primary1Color;
+				colorAndro = this.context.muiTheme.palette.primary1Color;
+				statusClassName = 'mdi mdi-play';
+				break;
 			default:
 				colorIcon = this.context.muiTheme.palette.accent1Color;
 				colorAndro = this.context.muiTheme.palette.primary1Color;
@@ -200,5 +205,6 @@ MachineIcon.WARNING = 'warning';
 MachineIcon.INFO = 'info';
 MachineIcon.SERVERERROR = 'serverError';
 MachineIcon.QUESTION = 'question';
+MachineIcon.START = 'start';
 
 module.exports = MachineIcon;

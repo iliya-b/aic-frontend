@@ -536,6 +536,24 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
+	// Live list
+	onListImages() {
+		debug('onListImages');
+	},
+
+	onListImagesCompleted(images) {
+		debug('onListImagesCompleted', images);
+		this.state.live.images = images;
+		this.updateState();
+	},
+
+	onListImagesFailed(errorMessage) {
+		debug('onListImagesFailed');
+		this.state.live.status = 'LIVE_STATUS_LIST_IMAGES_FAILED';
+		this.state.live.message = errorMessage;
+		this.updateState();
+	},
+
 	// Methods //
 
 	// Status Box

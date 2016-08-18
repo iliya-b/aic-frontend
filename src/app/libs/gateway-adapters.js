@@ -90,30 +90,54 @@ const GatewayAdapters = {
 						avm_id: avm.avm_id, // eslint-disable-line camelcase
 						avm_owner: avm.avm_owner, // eslint-disable-line camelcase
 						image: avm.image,
-						avm_novnc_host: avm.novnc_host, // eslint-disable-line camelcase
-						avm_novnc_port: avm.novnc_port, // eslint-disable-line camelcase
+						// avm_novnc_host: avm.novnc_host, // eslint-disable-line camelcase
+						// avm_novnc_port: avm.novnc_port, // eslint-disable-line camelcase
 						project_id: avm.project_id, // eslint-disable-line camelcase
-						stack_name: avm.stack_name, // eslint-disable-line camelcase
+						// stack_name: avm.stack_name, // eslint-disable-line camelcase
 						avm_status: avm.status, // eslint-disable-line camelcase
-						ts_created: avm.ts_created // eslint-disable-line camelcase
+						ts_created: avm.ts_created, // eslint-disable-line camelcase
+						avm_name: avm.avm_name // eslint-disable-line camelcase
 					};
 				});
 			}
 		},
 		create: {
 			request: frontendObject => {
+				/*
+				{
+				name: '',
+				version: 'kitkat',
+				type: 'phone',
+				size: '800x600',
+				dpi: '120',
+				enableSensors: true,
+				enableBattery: true,
+				enableGps: true,
+				enableCamera: true,
+				enableRecord: true,
+				enableGsm: true,
+				enableNfc: true,
+				projectId
+				uuid
+			}
+				 */
+				const size = frontendObject.size.split('x');
 				return {
-					image: frontendObject.variant,
+					image: `${frontendObject.version}-${frontendObject.type}`,
 					project_id: frontendObject.projectId, // eslint-disable-line camelcase
-					android_version: frontendObject.version, // eslint-disable-line camelcase
-					enable_audio: 1, // eslint-disable-line camelcase
-					// enable_gsm: 0, // eslint-disable-line camelcase
-					// enable_sensors: 0, // eslint-disable-line camelcase
-					// enable_adb: 0, // eslint-disable-line camelcase
-					// enable_gps: 0, // eslint-disable-line camelcase
-					// enable_camera: 0, // eslint-disable-line camelcase
-					width: 800,
-					height: 600
+					avm_name: frontendObject.name, // eslint-disable-line camelcase
+					configuration: {
+						enable_sensors: frontendObject.enableSensors ? 1 : 0, // eslint-disable-line camelcase
+						enable_battery: frontendObject.enableBattery ? 1 : 0, // eslint-disable-line camelcase
+						enable_gps: frontendObject.enableGps ? 1 : 0, // eslint-disable-line camelcase
+						enable_camera: frontendObject.enableCamera ? 1 : 0, // eslint-disable-line camelcase
+						enable_record: frontendObject.enableRecord ? 1 : 0, // eslint-disable-line camelcase
+						enable_gsm: frontendObject.enableGsm ? 1 : 0, // eslint-disable-line camelcase
+						enable_nfc: frontendObject.enableNfc ? 1 : 0, // eslint-disable-line camelcase
+						width: parseInt(size[0], 10),
+						height: parseInt(size[1], 10),
+						dpi: parseInt(frontendObject.dpi, 10)
+					}
 				};
 			}
 		},

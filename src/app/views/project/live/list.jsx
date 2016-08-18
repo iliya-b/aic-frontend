@@ -14,6 +14,8 @@ import LiveMachineList from 'app/components/project/live-machine-list';
 import ToolbarLive from 'app/components/toolbar/toolbar-live';
 import {variants} from 'app/configs/app-constants';
 import uuid from 'app/libs/uuid';
+import PanelLiveCreation from 'app/components/panel/panel-live-creation';
+import PanselSessionsInfo from 'app/components/panel/panel-sessions-info';
 
 let projectId;
 let enableVariants;
@@ -98,8 +100,26 @@ const LiveList = class extends React.Component {
 			snackbar: {
 				open: false,
 				message: ''
-			}
+			},
+			dialogCreateOpen: false
 		};
+	}
+
+	handleOpenCreateDialog = () => {
+		this.setState({dialogCreateOpen: true});
+	}
+
+	handleCloseCreateDialog = () => {
+		this.setState({dialogCreateOpen: false});
+	}
+
+	handleStartSession2 = config => {
+		this.handleCloseCreateDialog();
+		debug('handleStartSession2', config);
+		config.projectId = projectId;
+		config.uuid = uuid();
+		LiveActions.start(config, {includeRequest: true});
+		PollingActions.start('liveList');
 	}
 
 	render() {
@@ -118,11 +138,14 @@ const LiveList = class extends React.Component {
 		return (
 			<div>
 				<ToolbarLive
-					onClickStart={this.handleStartSession}
+					onClickStart={this.handleOpenCreateDialog}
 					variants={enableVariants}
 					vmCount={vmCount}
 					vmMaxAllowed={3}
 					/>
+				<PanselSessionsInfo vmCount={vmCount} vmMaxAllowed={3}/>
+				<br/>
+				<PanelLiveCreation open={this.state.dialogCreateOpen} onStart={this.handleStartSession2} onCancel={this.handleCloseCreateDialog}/>
 				<LiveMachineList avmList={avmList} isListLoading={isListLoading} actionEnter={this.onEnterSession} actionStop={this.onStopSession}/>
 				<Snackbar
 					// open={snackInfo.open}
@@ -159,6 +182,7 @@ const LiveList = class extends React.Component {
 		projectId = this.props.params.projectId;
 		this.unsubscribe = LiveStore.listen(this.handleStateChange);
 		LiveActions.setProjectId(projectId);
+		LiveActions.listImages();
 	}
 
 	componentWillUnmount() {

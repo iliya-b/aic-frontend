@@ -186,6 +186,12 @@ const GatewayRegisters = function () {
 			}, {
 				action: GatewayActions.execStatus,
 				pathname: '/android/{avmId}/exec/{execId}'
+			}, {
+				action: {
+					name: 'listImages',
+					method: 'GET'
+				},
+				pathname: '/images'
 			}
 		]
 	});

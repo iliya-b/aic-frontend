@@ -30,7 +30,9 @@ const LiveActions = Reflux.createActions({
 
 	logMessage: {},
 	liveConnect: {asyncResult: true},
-	liveConnectAudio: {asyncResult: true}
+	liveConnectAudio: {asyncResult: true},
+
+	listImages: {asyncResult: true}
 });
 
 // Listeners for asynchronous Backend API calls
@@ -45,6 +47,7 @@ LiveActions.loadInfo.listenAndPromise(Gateway.live.read);
 LiveActions.monkeyRunner.listenAndPromise(Gateway.live.monkeyRunner);
 LiveActions.setSensor.listenAndPromise(Gateway.live.sensor);
 LiveActions.installAPK.listenAndPromise(Gateway.live.installAPK);
+LiveActions.listImages.listenAndPromise(Gateway.live.listImages);
 
 // noVNC & audio related
 LiveActions.setProjectId.listenAndPromise(NoVNCAdapter.loadUtil);

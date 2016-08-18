@@ -1,25 +1,45 @@
 'use strict';
 
-// Vendor
 import React from 'react';
 
-// APP
 const LabeledSpan = (props, context) => {
+	const hasValue = 'value' in props;
+
+	const {
+		className,
+		off,
+		key,
+		value,
+		label,
+		style,
+		...others
+	} = props;
+
 	const styles = {
 		label: {
 			position: 'absolute',
-			transform: 'perspective(1px) scale(0.75) translate3d(0px, -20px, 0px)',
+			transform: hasValue ? 'perspective(1px) scale(0.75) translate3d(0px, -20px, 0px)' : 'scale(0.75)',
 			transformOrigin: 'left top 0px',
-			color: context.muiTheme.palette.primary1Color
+			color: off ? context.muiTheme.palette.disabledColor : context.muiTheme.palette.primary1Color
 		},
-		field: {minWidth: 100, display: 'inline-block', lineHeight: '20px', margin: 0, padding: '10px 9px'},
+		root: {
+			paddingTop: hasValue ? 15 : 0,
+			minWidth: 100,
+			minHeight: 15,
+			display: 'inline-block',
+			lineHeight: '20px',
+			margin: 0,
+			position: 'relative'
+		},
 		value: {color: 'rgba(0, 0, 0, 0.5)'}
 	};
 
+	const spanValue = <span className={`sp${className}`} style={styles.value}>{value}</span>;
+
 	return (
-		<span className={`spWrapper${props.className}`} style={styles.field} key={props.key}>
-			<label className={`lb${props.className}`} style={styles.label}>{props.label}</label>
-			<span className={`sp${props.className}`} style={styles.value}>{props.value}</span>
+		<span {...others} className={`spWrapper${className}`} style={Object.assign(styles.root, style)} key={key}>
+			<label className={`lb${className}`} style={styles.label}>{label}</label>
+			{hasValue && spanValue}
 		</span>
 	);
 };
@@ -29,14 +49,18 @@ LabeledSpan.contextTypes = {
 };
 
 LabeledSpan.defaultProps = {
-	key: null
+	key: null,
+	off: false,
+	style: {}
 };
 
 LabeledSpan.propTypes = {
 	value: React.PropTypes.node,
 	label: React.PropTypes.node,
 	key: React.PropTypes.string,
-	className: React.PropTypes.string
+	className: React.PropTypes.string,
+	off: React.PropTypes.bool,
+	style: React.PropTypes.object
 };
 
 module.exports = LabeledSpan;

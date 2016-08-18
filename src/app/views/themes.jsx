@@ -38,6 +38,7 @@ import BoxStatus from 'app/components/project/box-status';
 import TestResultsBox from 'app/components/project/test-results-box';
 import MachineCardLive from 'app/components/project/machine-card-live';
 import MachineCard from 'app/components/project/machine-card';
+import MachineIcon from 'app/components/project/machine-icon';
 import LiveToolbox from 'app/components/project/live-toolbox';
 
 import SessionEndedDialog from 'app/components/dialog/dialog-session-ended';
@@ -56,7 +57,7 @@ import PanelSessionDetails from 'app/components/panel/panel-session-details';
 
 import DroidPercentage from 'app/components/icon/droid-percentage';
 
-debug(InfoBox);
+import LabeledSpan from 'app/components/form/labeled-span';
 
 // var logBoxRef = Array.apply(0, Array(8)).map(function (v, i) { return { message: 'Message ' + i , time: i }; });
 const logBoxRef = [
@@ -321,6 +322,32 @@ const ThemesPage = class extends React.Component {
 		const avmInfo3 = {avm_id: "yyy2", avm_novnc_host: "10.50.0.86", avm_novnc_port: 19623, avm_owner: "karine", avm_status: "READY", image: "lollipop", index: 1, project_id: "0602b27748484b249244ab471a9142d7", stack_name: "karine-cfaamg4e", ts_created: "2016-03-29T12:25:10.687575"}; // eslint-disable-line camelcase
 
 		const packageList = ['package1', 'package1', 'package1', 'package1 long name file pack', 'package1', 'package1', 'package1'];
+
+		const androidIconsSizes = ['', 'bigIcon', 'xbigIcon'];
+		const androidIconsStatus = [MachineIcon.DISABLED,
+			MachineIcon.ERROR,
+			MachineIcon.LOADING,
+			MachineIcon.SUCCESS,
+			MachineIcon.WARNING,
+			MachineIcon.INFO,
+			MachineIcon.SERVERERROR,
+			MachineIcon.QUESTION,
+			MachineIcon.START];
+		const androidIcons = androidIconsSizes.map(s1 => {
+			const iconList = androidIconsStatus.map(s2 => {
+				const size = {};
+				if (s1) {
+					size[s1] = true;
+				}
+				return <MachineIcon key={`${s1}-${s2}`} status={s2} {...size}/>;
+			});
+			return (
+				<div key={s1}>
+					<h3>{s1}</h3>
+					{iconList}
+				</div>
+			);
+		});
 
 		return (
 			<div>
@@ -604,6 +631,39 @@ const ThemesPage = class extends React.Component {
 
 					{avmsRendered}
 
+				</ClearFix>
+
+				<ClearFix>
+
+					<h2>Android icons</h2>
+
+					{androidIcons}
+
+				</ClearFix>
+
+				<ClearFix>
+
+					<h2>LabeledSpan side by side</h2>
+					<TextField floatingLabelFixed floatingLabelText="TextField for comparison" defaultValue="TextField for comparison"/>
+					<LabeledSpan/>
+					<LabeledSpan off/>
+					<LabeledSpan label="no value"/>
+					<LabeledSpan label="empty value" value=""/>
+					<LabeledSpan label="with value" value="value"/>
+					<LabeledSpan off label="no value"/>
+					<LabeledSpan off label="empty value" value=""/>
+					<LabeledSpan off label="with value" value="value"/>
+
+					<h2>LabeledSpan br</h2>
+					<TextField floatingLabelFixed floatingLabelText="TextField for comparison" defaultValue="TextField for comparison"/><br/>
+					<LabeledSpan/><br/>
+					<LabeledSpan off/><br/>
+					<LabeledSpan label="no value"/><br/>
+					<LabeledSpan label="empty value" value=""/><br/>
+					<LabeledSpan label="with value" value="value"/><br/>
+					<LabeledSpan off label="no value off"/><br/>
+					<LabeledSpan off label="empty value off"/><br/>
+					<LabeledSpan off label="with value off" value="value"/><br/>
 				</ClearFix>
 
 			</div>
