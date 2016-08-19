@@ -48,7 +48,7 @@ const GatewayAdapters = {
 			response: data => {
 				return data.apks.map(apk => {
 					return {
-						id: apk.file_id,
+						id: apk.apk_id,
 						filename: apk.filename,
 						status: apk.status
 					};
@@ -74,7 +74,7 @@ const GatewayAdapters = {
 			response: data => {
 				return data.camera_files.map(file => {
 					return {
-						id: file.file_id,
+						id: file.camera_id,
 						filename: file.filename,
 						status: file.status
 					};
@@ -147,10 +147,10 @@ const GatewayAdapters = {
 						enable_sensors: frontendObject.enableSensors ? 1 : 0, // eslint-disable-line camelcase
 						enable_battery: frontendObject.enableBattery ? 1 : 0, // eslint-disable-line camelcase
 						enable_gps: frontendObject.enableGps ? 1 : 0, // eslint-disable-line camelcase
-						// enable_camera: frontendObject.enableCamera ? 1 : 0, // eslint-disable-line camelcase
+						enable_camera: frontendObject.enableCamera ? 1 : 0, // eslint-disable-line camelcase
 						// enable_record: frontendObject.enableRecord ? 1 : 0, // eslint-disable-line camelcase
-						// enable_gsm: frontendObject.enableGsm ? 1 : 0, // eslint-disable-line camelcase
-						// enable_nfc: frontendObject.enableNfc ? 1 : 0, // eslint-disable-line camelcase
+						enable_gsm: frontendObject.enableGsm ? 1 : 0, // eslint-disable-line camelcase
+						enable_nfc: frontendObject.enableNfc ? 1 : 0, // eslint-disable-line camelcase
 						width: parseInt(size[0], 10),
 						height: parseInt(size[1], 10),
 						dpi: parseInt(frontendObject.dpi, 10)
@@ -163,6 +163,7 @@ const GatewayAdapters = {
 				return {
 					avm_id: res.avm.avm_id, // eslint-disable-line camelcase
 					avm_owner: res.avm.avm_owner, // eslint-disable-line camelcase
+					avm_name: res.avm.avm_name, // eslint-disable-line camelcase
 					image: res.avm.image,
 					avm_novnc_host: res.avm.novnc_host, // eslint-disable-line camelcase
 					avm_novnc_port: res.avm.novnc_port, // eslint-disable-line camelcase

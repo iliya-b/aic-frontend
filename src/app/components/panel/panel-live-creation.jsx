@@ -18,7 +18,7 @@ const sensors = [
 	{key: 'Battery', tooltip: 'battery', iconClassName: 'mdi mdi-battery'},
 	{key: 'Gps', tooltip: 'GPS', iconClassName: 'mdi mdi-map-marker'},
 	{key: 'Camera', tooltip: 'camera', iconClassName: 'mdi mdi-camera'},
-	{key: 'Record', tooltip: 'screen capture', iconClassName: 'mdi mdi-file-video'},
+	// {key: 'Record', tooltip: 'screen capture', iconClassName: 'mdi mdi-file-video'},
 	{key: 'Gsm', tooltip: 'GSM', iconClassName: 'mdi mdi-phone'},
 	{key: 'Nfc', tooltip: 'NFC', iconClassName: 'mdi mdi-nfc'}
 ];
@@ -168,7 +168,7 @@ const PanelLiveCreation = class extends React.Component {
 
 		return (
 			<Dialog {...others} open={open} title="Start session" actions={actionsButtons} autoScrollBodyContent onRequestClose={onCancel}>
-				<TextField name="createLiveSessionName" data-config-key="name" ref={this.setRefC} floatingLabelFixed floatingLabelText="session name" onChange={this.handleChangeConfig}/><br/>
+				<TextField name="createLiveSessionName" data-config-key="name" ref={this.setRefC} floatingLabelFixed floatingLabelText="session name" onChange={this.handleChangeConfig} defaultValue={this.state.config.name}/><br/>
 				<LabeledSpan label="android version" off style={styleLabels}/><br/>
 				<IconButton onClick={this.handleClickConfig} data-config-key="version" data-config-value="kitkat" tooltip="kitkat" iconStyle={iconStyleKitkat}>
 					<img src="/images/kitkat.png"/>

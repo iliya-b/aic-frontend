@@ -211,6 +211,9 @@ const avmInfoOrder = [
 		label: 'id',
 		value: info => info.avm_id
 	}, {
+		label: 'name',
+		value: info => info.avm_name
+	}, {
 		label: 'owner',
 		value: info => info.avm_owner
 	}, {
