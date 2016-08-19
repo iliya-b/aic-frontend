@@ -166,7 +166,7 @@ const GatewayRegisters = function () {
 				schema: GatewaySchemas.sensors
 			}, {
 				action: GatewayActions.listPackages,
-				pathname: '/android/{avmId}/pm'
+				pathname: '/android/{avmId}/apk'
 			}, {
 				action: GatewayActions.monkeyRunner,
 				pathname: '/android/{avmId}/monkey',

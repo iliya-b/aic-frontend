@@ -472,6 +472,7 @@ const LiveStore = Reflux.createStore({
 		// boot completed
 		if (!this.state.live.listPackages &&
 			properties["dev.bootcomplete"] === "1") {
+			// properties["aicVM.inited"] === "1") {
 			debug('onPropertiesCompleted listPackages');
 			LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
 			// Only clearTimeouts when debugging to not have span on logs
@@ -482,6 +483,7 @@ const LiveStore = Reflux.createStore({
 		if (!this.state.live.bootInit &&
 			(properties["init.svc.bootanim"] === "running" || properties["dev.bootcomplete"] === "1")) {
 		// if (!this.state.live.bootInit) {
+			// properties["aicVM.inited"] === "1") {
 			this.state.live.status = 'LIVE_STATUS_STARTED';
 			this.updateBoxes();
 			debug('onPropertiesCompleted boot initiate');

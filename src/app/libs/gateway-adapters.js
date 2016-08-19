@@ -102,6 +102,23 @@ const GatewayAdapters = {
 			}
 		},
 		create: {
+			requestwork: frontendObject => {
+				return {
+					image: 'kitkat-tablet',
+					project_id: frontendObject.projectId, // eslint-disable-line camelcase
+					android_version: '4', // eslint-disable-line camelcase
+					configuration: {
+						enable_audio: 1, // eslint-disable-line camelcase
+						// enable_gsm: 0, // eslint-disable-line camelcase
+						// enable_sensors: 0, // eslint-disable-line camelcase
+						// enable_adb: 0, // eslint-disable-line camelcase
+						// enable_gps: 0, // eslint-disable-line camelcase
+						// enable_camera: 0, // eslint-disable-line camelcase
+						width: 800,
+						height: 600
+					}
+				};
+			},
 			request: frontendObject => {
 				/*
 				{
@@ -130,10 +147,10 @@ const GatewayAdapters = {
 						enable_sensors: frontendObject.enableSensors ? 1 : 0, // eslint-disable-line camelcase
 						enable_battery: frontendObject.enableBattery ? 1 : 0, // eslint-disable-line camelcase
 						enable_gps: frontendObject.enableGps ? 1 : 0, // eslint-disable-line camelcase
-						enable_camera: frontendObject.enableCamera ? 1 : 0, // eslint-disable-line camelcase
-						enable_record: frontendObject.enableRecord ? 1 : 0, // eslint-disable-line camelcase
-						enable_gsm: frontendObject.enableGsm ? 1 : 0, // eslint-disable-line camelcase
-						enable_nfc: frontendObject.enableNfc ? 1 : 0, // eslint-disable-line camelcase
+						// enable_camera: frontendObject.enableCamera ? 1 : 0, // eslint-disable-line camelcase
+						// enable_record: frontendObject.enableRecord ? 1 : 0, // eslint-disable-line camelcase
+						// enable_gsm: frontendObject.enableGsm ? 1 : 0, // eslint-disable-line camelcase
+						// enable_nfc: frontendObject.enableNfc ? 1 : 0, // eslint-disable-line camelcase
 						width: parseInt(size[0], 10),
 						height: parseInt(size[1], 10),
 						dpi: parseInt(frontendObject.dpi, 10)

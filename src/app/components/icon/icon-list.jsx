@@ -17,8 +17,12 @@ const IconList = props => (
 		} else if (b.svgIcon) {
 			icon = React.createElement(b.svgIcon, {color: iconColor, hoverColor: iconHoverColor});
 		}
+		const disabled = {};
+		if (b.disabled) {
+			disabled.disabled = true;
+		}
 		return (
-			<IconButton className={`${props.iconClassNamePrefix}${str(b.tooltip).camelize().s}`} key={b.id} tooltip={b.tooltip} style={props.style} onClick={props.onClick[b.id]}>
+			<IconButton {...disabled} className={`${props.iconClassNamePrefix}${str(b.tooltip).camelize().s}`} key={b.id} tooltip={b.tooltip} style={props.style} onClick={props.onClick[b.id]}>
 				{icon}
 			</IconButton>
 		);
