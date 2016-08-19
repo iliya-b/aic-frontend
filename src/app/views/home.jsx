@@ -100,7 +100,7 @@ const Home = class extends AuthPage {
 		return (
 			<FullWidthSection style={styles.root}>
 				<div style={styles.tagline}>
-					<h1 style={styles.h1}><img style={styles.svgLogo} src="images/logo.png"/></h1>
+					<h1 style={styles.h1}><img style={styles.svgLogo} src="img/logo.png"/></h1>
 					<h2 style={styles.h2}>
 						A platform for testing Android applications in the Cloud
 					</h2>

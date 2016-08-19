@@ -33,7 +33,7 @@ const dpis = [
 
 const configSensorKey = key => `enable${key}`;
 
-const PanelLiveCreation = class extends React.Component {
+const DialogLiveCreation = class extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -171,10 +171,10 @@ const PanelLiveCreation = class extends React.Component {
 				<TextField name="createLiveSessionName" data-config-key="name" ref={this.setRefC} floatingLabelFixed floatingLabelText="session name" onChange={this.handleChangeConfig} defaultValue={this.state.config.name}/><br/>
 				<LabeledSpan label="android version" off style={styleLabels}/><br/>
 				<IconButton onClick={this.handleClickConfig} data-config-key="version" data-config-value="kitkat" tooltip="kitkat" iconStyle={iconStyleKitkat}>
-					<img src="/images/kitkat.png"/>
+					<img src="/img/kitkat.png"/>
 				</IconButton>
 				<IconButton onClick={this.handleClickConfig} data-config-key="version" data-config-value="lollipop" tooltip="lollipop" iconStyle={iconStyleLollipop}>
-					<img src="/images/lollipop.png"/>
+					<img src="/img/lollipop.png"/>
 				</IconButton><br/>
 				<LabeledSpan label="device type" off style={styleLabels}/><br/>
 				<IconButton onClick={this.handleClickConfig} data-config-key="type" data-config-value="phone" iconStyle={iconStylePhone} tooltip="phone" iconClassName="mdi mdi-cellphone-android"/>
@@ -196,18 +196,18 @@ const PanelLiveCreation = class extends React.Component {
 	}
 };
 
-PanelLiveCreation.contextTypes = {
+DialogLiveCreation.contextTypes = {
 	muiTheme: React.PropTypes.object
 };
 
-PanelLiveCreation.defaultProps = {
+DialogLiveCreation.defaultProps = {
 	open: true
 };
 
-PanelLiveCreation.propTypes = {
+DialogLiveCreation.propTypes = {
 	open: React.PropTypes.bool,
 	onCancel: React.PropTypes.func,
 	onStart: React.PropTypes.func
 };
 
-module.exports = PanelLiveCreation;
+module.exports = DialogLiveCreation;

@@ -14,7 +14,7 @@ import LiveMachineList from 'app/components/project/live-machine-list';
 import ToolbarLive from 'app/components/toolbar/toolbar-live';
 import {variants} from 'app/configs/app-constants';
 import uuid from 'app/libs/uuid';
-import PanelLiveCreation from 'app/components/panel/panel-live-creation';
+import DialogLiveCreation from 'app/components/dialog/dialog-live-creation';
 import PanselSessionsInfo from 'app/components/panel/panel-sessions-info';
 
 let projectId;
@@ -145,7 +145,7 @@ const LiveList = class extends React.Component {
 					/>
 				<PanselSessionsInfo vmCount={vmCount} vmMaxAllowed={3}/>
 				<br/>
-				<PanelLiveCreation open={this.state.dialogCreateOpen} onStart={this.handleStartSession2} onCancel={this.handleCloseCreateDialog}/>
+				<DialogLiveCreation open={this.state.dialogCreateOpen} onStart={this.handleStartSession2} onCancel={this.handleCloseCreateDialog}/>
 				<LiveMachineList avmList={avmList} isListLoading={isListLoading} actionEnter={this.onEnterSession} actionStop={this.onStopSession}/>
 				<Snackbar
 					// open={snackInfo.open}
