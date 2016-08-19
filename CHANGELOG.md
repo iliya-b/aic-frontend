@@ -4,6 +4,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ## [Unreleased]
 
+### Added
+- Dialog live session creation.
+
+### Changed
+- Update many API calls to comply with backend modifications.
+
 ## [0.5.1]
 
 Last tag before big changes on backend API (v0.6).
