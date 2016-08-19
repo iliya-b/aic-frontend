@@ -143,7 +143,7 @@ const GatewayAdapters = {
 					image: `${frontendObject.version}-${frontendObject.type}`,
 					project_id: frontendObject.projectId, // eslint-disable-line camelcase
 					avm_name: frontendObject.name, // eslint-disable-line camelcase
-					configuration: {
+					hwconfig: {
 						enable_sensors: frontendObject.enableSensors ? 1 : 0, // eslint-disable-line camelcase
 						enable_battery: frontendObject.enableBattery ? 1 : 0, // eslint-disable-line camelcase
 						enable_gps: frontendObject.enableGps ? 1 : 0, // eslint-disable-line camelcase
