@@ -112,6 +112,7 @@ TODO List
 * React
 	* props => {} functions do not check propTypes, in fact it does [Stateless Functions](https://facebook.github.io/react/docs/reusable-components.html#stateless-functions), needs more testing
 	* reorganize components into stateless components and containers (started with unit tests)
+	* Check perf with react-addons-perf https://facebook.github.io/react/docs/perf.html
 * Build
 	* Try to light up the build, npm cache?
 	* Clean up gulp tasks (simplified version can be found in other R&D projects)

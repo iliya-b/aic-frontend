@@ -3,8 +3,7 @@
 // Vendor
 import React from 'react';
 import FontIcon from 'material-ui/FontIcon';
-// TODO: remove deepExtend, we don't need it, Object.assign is sufficient for our needs
-import deepExtend from 'deep-extend';
+import {deepAssign} from 'app/libs/helpers';
 
 // APP
 import DroidDevilSVG from 'app/components/icon/droid-devil';
@@ -129,7 +128,7 @@ const MachineIcon = class extends React.Component {
 					left: 23
 				}
 			};
-			styles = deepExtend(styles, bigStyles);
+			styles = deepAssign(styles, bigStyles);
 		}
 
 		if (xbigIcon) {
@@ -150,7 +149,7 @@ const MachineIcon = class extends React.Component {
 					left: 38
 				}
 			};
-			styles = deepExtend(styles, xbigStyles);
+			styles = deepAssign(styles, xbigStyles);
 		}
 
 		iconAndro = <FontIcon className="mdi mdi-android" style={styles.andro}/>;
@@ -174,7 +173,7 @@ const MachineIcon = class extends React.Component {
 			iconStatus = <FireSVG style={styles.status}/>;
 		}
 
-		styles.root = deepExtend(styles.root, style);
+		styles.root = deepAssign(styles.root, style);
 
 		return (<div style={styles.root}>
 			{iconAndro}

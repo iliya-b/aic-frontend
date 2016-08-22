@@ -9,7 +9,7 @@ import IconButton from 'material-ui/IconButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import str from 'string';
+import {capimelize} from 'app/libs/helpers';
 const debug = require('debug')('AiC:Views:Project:List');
 
 // APP
@@ -189,7 +189,7 @@ const ProjectList = class extends React.Component {
 				const handleClickEnterItem = this.handleClickEnter.bind(this, index);
 				const handleClickDeleteItem = this.handleClickDelete.bind(this, index);
 				const handleClickUpdateItem = this.handleClickUpdate.bind(this, index);
-				const projectNameCamel = str(item.name).capitalize().camelize().s;
+				const projectNameCamel = capimelize(item.name);
 
 				return (
 					<Card key={item.id} style={styles.card}>

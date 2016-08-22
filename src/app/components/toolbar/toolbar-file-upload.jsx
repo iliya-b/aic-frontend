@@ -8,7 +8,7 @@ import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
 import ToolbarTitle from 'material-ui/Toolbar/ToolbarTitle';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
-import str from 'string';
+import {capimelize} from 'app/libs/helpers';
 
 // APP
 const ToolbarFileUpload = class extends React.Component {
@@ -58,7 +58,7 @@ const ToolbarFileUpload = class extends React.Component {
 			<Toolbar style={Object.assign(this.props.style || {}, styles.toolbar)}>
 				<FontIcon style={styles.icon} className={this.props.icon} color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarGroup firstChild lastChild>
-					<ToolbarTitle className={`txt${str(this.props.title).capitalize().camelize().s}Title`} text={this.props.title} style={styles.title}/>
+					<ToolbarTitle className={`txt${capimelize(this.props.title)}Title`} text={this.props.title} style={styles.title}/>
 					<ToolbarSeparator style={styles.separator}/>
 					{buttons}
 				</ToolbarGroup>

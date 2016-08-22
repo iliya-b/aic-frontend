@@ -4,7 +4,7 @@
 import React from 'react';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
-import str from 'string';
+import {camelize} from 'app/libs/helpers';
 
 // APP
 const IconList = props => (
@@ -22,7 +22,7 @@ const IconList = props => (
 			disabled.disabled = true;
 		}
 		return (
-			<IconButton {...disabled} className={`${props.iconClassNamePrefix}${str(b.tooltip).camelize().s}`} key={b.id} tooltip={b.tooltip} style={props.style} onClick={props.onClick[b.id]}>
+			<IconButton {...disabled} className={`${props.iconClassNamePrefix}${camelize(b.tooltip)}`} key={b.id} tooltip={b.tooltip} style={props.style} onClick={props.onClick[b.id]}>
 				{icon}
 			</IconButton>
 		);

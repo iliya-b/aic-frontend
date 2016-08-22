@@ -1,8 +1,4 @@
 'use strict';
-
-// Vendor
-import str from 'string';
-
 // Back-end API endpoints
 
 // APP
@@ -11,10 +7,6 @@ import GatewayAdapters from 'app/libs/gateway-adapters';
 import GatewaySchemas from 'app/libs/gateway-schemas';
 import GatewayActions from 'app/libs/gateway-actions';
 import RestAPI from 'app/libs/rest-api';
-
-// Set template for str substitution (used on pathnames)
-str.TMPL_OPEN = '{';
-str.TMPL_CLOSE = '}';
 
 const GatewayRegisters = function () {
 	// Register all adapters

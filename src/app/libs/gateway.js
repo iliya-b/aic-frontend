@@ -1,8 +1,11 @@
 /* global FormData */
 'use strict';
 
-// Vendor
-import str from 'string';
+import {template, setTemplateDelimiters} from 'app/libs/helpers';
+
+// Set template for str substitution (used on pathnames)
+setTemplateDelimiters('{', '}');
+
 const debug = require('debug')('AiC:Libs:Gateway');
 
 const Gateway = {
@@ -81,7 +84,7 @@ const Gateway = {
 		}
 		const requestCaller = Gateway.requestAPI[requestCallerName];
 		if (options.pathname) {
-			optionsAPI.pathname = str(options.pathname).template(obj).s;
+			optionsAPI.pathname = template(options.pathname, obj);
 		}
 		if (options.url) {
 			optionsAPI.url = options.url;

@@ -3,7 +3,7 @@
 // Vendor
 import React from 'react';
 import FontIcon from 'material-ui/FontIcon';
-import str from 'string';
+import {camelize} from 'app/libs/helpers';
 
 // APP
 const iconsList = {
@@ -16,7 +16,7 @@ const iconsList = {
 };
 
 const VariantIcon = props => (
-	iconsList[str(props.variant.id).camelize().s] ? iconsList[str(props.variant.id).camelize().s]({
+	iconsList[camelize(props.variant.id)] ? iconsList[camelize(props.variant.id)]({
 		color: 'rgba(0, 0, 0, 0.4)',
 		hoverColor: 'rgba(0, 0, 0, 0.87)'
 	}) : <FontIcon className="mdi mdi-help" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>

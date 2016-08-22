@@ -6,7 +6,7 @@ import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
 import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
-import str from 'string';
+import {capimelize} from 'app/libs/helpers';
 
 // APP
 import VoiceSVG from 'app/components/icon/voice';
@@ -264,9 +264,9 @@ const PanelSessionDetails = class extends React.Component {
 		const iconColor = 'rgba(0, 0, 0, 0.4)';
 		const iconHoverColor = 'rgba(0, 0, 0, 0.4)';
 		const infoRendered = infos.map(info => {
-			const infoCamel = str(info.tooltip).capitalize().camelize().s;
+			const infoCamel = capimelize(info.tooltip);
 			const fieldRendered = info.fields ? info.fields.map((field, index) => {
-				const idCamel = str(field.label).capitalize().camelize().s;
+				const idCamel = capimelize(field.label);
 				return (
 					<span className="sp1ABC" style={styles.field} key={index}>
 						<label className={`lbLiveInfo${infoCamel}${idCamel}`} style={styles.label}>{field.label}</label>
@@ -291,7 +291,7 @@ const PanelSessionDetails = class extends React.Component {
 		});
 
 		const apkListRendered = this.props.apkList ? this.props.apkList.map((apk, index) => {
-			const apkCamel = str(apk).capitalize().camelize().s;
+			const apkCamel = capimelize(apk);
 			return (
 				<span className="sp1ABC" style={styles.field} key={index}>
 					<label className={`lbLiveInfoAPK lbLiveInfoAPK${index} lbLiveInfoAPK${apkCamel}`} style={styles.label}>package name</label>
@@ -301,7 +301,7 @@ const PanelSessionDetails = class extends React.Component {
 		}) : null;
 
 		const avmInfoRendered = this.props.avmInfo ? avmInfoOrder.map((field, index) => {
-			const idCamel = str(field.label).capitalize().camelize().s;
+			const idCamel = capimelize(field.label);
 			return (
 				<span className="sp1ABC" style={styles.field} key={index}>
 					<label className={`lbLiveInfo${idCamel}`} style={styles.label}>{field.label}</label>
