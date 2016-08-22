@@ -16,6 +16,7 @@ const MachineIcon = class extends React.Component {
 		const {
 			status,
 			style,
+			// TODO: instead of bigIcon and xbigIcon it should have size field
 			bigIcon,
 			xbigIcon
 		} = this.props;
@@ -206,5 +207,15 @@ MachineIcon.INFO = 'info';
 MachineIcon.SERVERERROR = 'serverError';
 MachineIcon.QUESTION = 'question';
 MachineIcon.START = 'start';
+
+MachineIcon.STATUS_LIST = [MachineIcon.DISABLED,
+	MachineIcon.ERROR,
+	MachineIcon.LOADING,
+	MachineIcon.SUCCESS,
+	MachineIcon.WARNING,
+	MachineIcon.INFO,
+	MachineIcon.SERVERERROR,
+	MachineIcon.QUESTION,
+	MachineIcon.START];
 
 module.exports = MachineIcon;

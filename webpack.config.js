@@ -38,10 +38,9 @@ module.exports = {
 	},
 	resolve: {
 		extensions: ['', '.js', '.jsx'],
-		modules: [
-			path.resolve('./src'),
-			'node_modules'
-		]
+		alias: {
+			app: path.resolve(__dirname, './src/app/')
+		}
 	},
 	plugins: pluginList
 };

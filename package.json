@@ -23,7 +23,8 @@
     "babel-helpers": "babel-external-helpers > build/babel-helpers.js",
     "build-css": "lessc src/less/main.less build/css/main.css",
     "build": "npm run build-create-dir && npm run babel-helpers && npm run copy-static && npm run build-css && npm run webpack-build",
-    "create-conf-from-env": "gulp create-conf-from-env",
+    "create-conf-from-env-old": "gulp create-conf-from-env",
+    "create-conf-from-env": "create-json-from-env --input config-sample.json --output config.json --match \"^AIC_FRONTEND_(.+)\" --match-split \"([^_.]+)_(.+)\"",
     "no-console": "echo \"Verifying for console usage. Please use debug package instead.\" && ! grep -rnw 'src' -e \"console\" && echo \"Yes! No console.something being used! Good Job!\"",
     "no-todos": "echo \"Verifying for TODOs.\" && ! grep -rnw 'src' -e \"TODO\" && echo \"Yes! No TODOs to do! Good Job!\""
   },
@@ -80,6 +81,7 @@
   },
   "devDependencies": {
     "ava": "^0.14.0",
+    "create-json-from-env": "git+ssh://git@git.rnd.alterway.fr:UCF/create-json-from-env.git",
     "enzyme": "^2.2.0",
     "eslint": "^2.8.0",
     "eslint-config-xo-react": "^0.6.0",
@@ -90,8 +92,8 @@
     "react-addons-perf": "^15.0.1",
     "react-addons-test-utils": "^15.0.1",
     "tap-nyan": "0.0.2",
-    "xo": "^0.14.0",
-    "webpack-dev-server": "^2.0.0-beta"
+    "webpack-dev-server": "^2.0.0-beta",
+    "xo": "^0.14.0"
   },
   "config": {
     "loglevel": "warn"
