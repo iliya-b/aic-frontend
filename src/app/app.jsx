@@ -1,10 +1,6 @@
 /* global window, document */
 'use strict';
 
-// require('babel-polyfill');
-// import 'babel-core/polyfill';
-// import 'babel-polyfill';
-
 // Vendor
 import ReactDOM from 'react-dom';
 import Reflux from 'reflux';

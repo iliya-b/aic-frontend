@@ -3,7 +3,7 @@ import {
 	capitalize,
 	template,
 	templateSettings,
-	assign
+	merge
 } from 'lodash';
 
 // In case we want to change the lodash lib is all in one place
@@ -18,7 +18,6 @@ module.exports = {
 	capitalize,
 	capimelize: str => capitalize(camelCase(str)),
 	template: (templateStr, obj) => {
-		console.log(templateSettings.interpolate);
 		const compiled = template(templateStr);
 		return compiled(obj);
 	},
@@ -31,5 +30,5 @@ module.exports = {
 		}
 		templateSettings.interpolate = new RegExp(`${templateDelimiters.begin}([\\s\\S]+?)${templateDelimiters.end}`, 'g');
 	},
-	deepAssign: assign
+	deepAssign: merge
 };

@@ -126,3 +126,5 @@ TODO List
 	* valid response type (application/json for example)
 	* create api user preferences
 	* revisit the list vms API, should the filter by project done by frontend?
+* Prod
+	* We probably want to include babel-polyfill for production builds.
