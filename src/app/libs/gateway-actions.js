@@ -64,10 +64,6 @@ const GatewayActions = {
 		name: 'totp',
 		method: 'GET'
 	},
-	totp: {
-		name: 'totp',
-		method: 'GET'
-	},
 	compile: {
 		name: 'compile',
 		method: 'POST'

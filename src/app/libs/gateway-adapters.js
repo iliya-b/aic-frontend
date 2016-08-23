@@ -23,7 +23,8 @@ const GatewayAdapters = {
 				return result.projects.map(backendObject => {
 					return {
 						id: backendObject.project_id,
-						name: backendObject.project_name
+						name: backendObject.project_name,
+						status: backendObject.status
 					};
 				});
 			}
@@ -102,42 +103,7 @@ const GatewayAdapters = {
 			}
 		},
 		create: {
-			requestwork: frontendObject => {
-				return {
-					image: 'kitkat-tablet',
-					project_id: frontendObject.projectId, // eslint-disable-line camelcase
-					android_version: '4', // eslint-disable-line camelcase
-					configuration: {
-						enable_audio: 1, // eslint-disable-line camelcase
-						// enable_gsm: 0, // eslint-disable-line camelcase
-						// enable_sensors: 0, // eslint-disable-line camelcase
-						// enable_adb: 0, // eslint-disable-line camelcase
-						// enable_gps: 0, // eslint-disable-line camelcase
-						// enable_camera: 0, // eslint-disable-line camelcase
-						width: 800,
-						height: 600
-					}
-				};
-			},
 			request: frontendObject => {
-				/*
-				{
-				name: '',
-				version: 'kitkat',
-				type: 'phone',
-				size: '800x600',
-				dpi: '120',
-				enableSensors: true,
-				enableBattery: true,
-				enableGps: true,
-				enableCamera: true,
-				enableRecord: true,
-				enableGsm: true,
-				enableNfc: true,
-				projectId
-				uuid
-			}
-				 */
 				const size = frontendObject.size.split('x');
 				return {
 					image: `${frontendObject.version}-${frontendObject.type}`,

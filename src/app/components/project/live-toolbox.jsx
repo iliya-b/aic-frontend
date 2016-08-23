@@ -126,9 +126,12 @@ const LiveToolbox = class extends React.Component {
 
 		// Third toolbars - Panels
 		this.handleClickSecondBar = {};
+		this.handleChangeSensorsBinded = {};
+		this.handleChangeSensorsBinded.camera = this.handleChangeSensors.bind(this, 'camera');
 		this.handleClickSecondBar.android = this.changeActiveToolbar.bind(this, TOOLBAR_ANDROID);
 		TOOLBAR_SENSORS_ORDER.forEach(v => {
 			this.handleClickFirstBar[v] = this.changeActiveSecondToolbar.bind(this, v);
+			this.handleChangeSensorsBinded[v] = this.handleChangeSensors.bind(this, v);
 		});
 		PANEL_GSM_ORDER.forEach(v => {
 			// TODO: fix phone_number
@@ -193,7 +196,7 @@ const LiveToolbox = class extends React.Component {
 		if (this.state.activeSecondBar === null) {
 			currentSecondBar = null;
 		} else if (TOOLBAR_SENSORS_ORDER.indexOf(this.state.activeSecondBar) !== -1) {
-			const onChangeSensorBinded = this.handleChangeSensors.bind(this, this.state.activeSecondBar);
+			const onChangeSensorBinded = this.handleChangeSensorsBinded[this.state.activeSecondBar];
 			const props = {
 				style: styles.secondToolbar,
 				onInputFocus: this.props.onInputFocus,
@@ -212,7 +215,7 @@ const LiveToolbox = class extends React.Component {
 			};
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
 		} else if (this.state.activeSecondBar === 'camera') { // eslint-disable-line no-negated-condition
-			const onChangeSensorBinded = this.handleChangeSensors.bind(this, this.state.activeSecondBar);
+			const onChangeSensorBinded = this.handleChangeSensorsBinded[this.state.activeSecondBar];
 			const props = {
 				fileList: this.props.cameraList,
 				onClick: onChangeSensorBinded

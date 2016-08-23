@@ -28,9 +28,10 @@ const ProjectPage = class extends React.Component {
 		return `/projects/${projectId}/${partialPath}`;
 	}
 
-	_onItemClick(index, e) {
-		// debug(arguments);
+	handleItemClick = e => {
+		debug('handleItemClick', e.currentTarget.dataset);
 		e.preventDefault();
+		const index = parseInt(e.currentTarget.dataset.keyIndex, 10);
 		this.context.router.push(this.composePath(menuItems[index].path));
 	}
 
@@ -82,12 +83,12 @@ const ProjectPage = class extends React.Component {
 		const selectedPageIndex = this._getSelectedIndex();
 		debug('selectedPageIndex', selectedPageIndex);
 		const menusItems = menuItems.map(function (item, index) {
-			const handleOnClickMenuItem = this._onItemClick.bind(this, index);
 			return (<MenuItem
 				key={index}
+				data-key-index={index}
 				primaryText={item.text}
 				path={item.path}
-				onClick={handleOnClickMenuItem}
+				onClick={this.handleItemClick}
 				title={item.text}
 				href="#"
 				style={selectedPageIndex === index ? styles.menuItemSelected : null}

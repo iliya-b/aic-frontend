@@ -129,6 +129,7 @@ CardAndroidSession.propTypes = {
 	avm_id: React.PropTypes.string, // eslint-disable-line camelcase
 	avm_owner: React.PropTypes.string, // eslint-disable-line camelcase
 	avm_status: React.PropTypes.string, // eslint-disable-line camelcase
+	avm_name: React.PropTypes.string, // eslint-disable-line camelcase
 	image: React.PropTypes.string.isRequired,
 	ts_created: React.PropTypes.string, // eslint-disable-line camelcase
 	index: React.PropTypes.number,

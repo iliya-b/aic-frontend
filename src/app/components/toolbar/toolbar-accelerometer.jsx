@@ -81,7 +81,9 @@ const ToolbarAccelerometer = class extends React.Component {
 		} else {
 			styles.sensorIconRotation = styles.sensorIcon;
 		}
-		const onChange = this.onChange.bind(this, rotationName);
+		const onChange = () => {
+			this.onChange(rotationName);
+		};
 		return (
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-screen-rotation" color="rgba(0, 0, 0, 0.4)"/>

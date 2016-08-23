@@ -21,28 +21,28 @@ const GatewaySchemas = {
 		}
 	},
 	live: {
-		type: 'object' //, strict: true,
-		// properties: {
-		// 	image: {type: 'string'},
-		// 	project_id: {type: 'string'}, // eslint-disable-line camelcase
-		// 	avm_name: {type: 'string'}, // eslint-disable-line camelcase
-		// 	configuration: {
-		// 		type: 'object',
-		// 		strict: true,
-		// 		properties: {
-		// 			width: {type: 'integer', optional: true},
-		// 			height: {type: 'integer', optional: true},
-		// 			dpi: {type: 'integer', optional: true},
-		// 			enable_sensors: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
-		// 			enable_battery: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
-		// 			enable_gps: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
-		// 			enable_camera: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
-		// 			enable_record: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
-		// 			enable_gsm: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
-		// 			enable_nfc: {type: 'integer', min: 0, max: 1, optional: true} // eslint-disable-line camelcase
-		// 		}
-		// 	}
-		// }
+		type: 'object', strict: true,
+		properties: {
+			image: {type: 'string'},
+			project_id: {type: 'string'}, // eslint-disable-line camelcase
+			avm_name: {type: 'string'}, // eslint-disable-line camelcase
+			configuration: {
+				type: 'object',
+				strict: true,
+				properties: {
+					width: {type: 'integer', optional: true},
+					height: {type: 'integer', optional: true},
+					dpi: {type: 'integer', optional: true},
+					enable_sensors: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
+					enable_battery: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
+					enable_gps: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
+					enable_camera: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
+					// enable_record: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
+					enable_gsm: {type: 'integer', min: 0, max: 1, optional: true}, // eslint-disable-line camelcase
+					enable_nfc: {type: 'integer', min: 0, max: 1, optional: true} // eslint-disable-line camelcase
+				}
+			}
+		}
 	},
 	sensors: {
 		'accelerometer': {

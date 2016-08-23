@@ -10,7 +10,8 @@ const SanitizeObject = require('app/libs/sanitize-object');
 
 function parseJSON(response) {
 	debug('response parseJSON', response);
-	if (response.statusText === 'No Content') {
+	if (response.statusText === 'No Content' ||
+		response.statusText === 'Accepted') {
 		return {};
 	}
 	return response.json();

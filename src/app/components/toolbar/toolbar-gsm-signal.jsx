@@ -9,13 +9,6 @@ import Paper from 'material-ui/Paper';
 
 // APP
 const ToolbarGSMSignal = class extends React.Component {
-
-	onChange(e, value) {
-		this.props.onChange(e, 'signal', {
-			strength: parseInt(value, 10) // eslint-disable-line camelcase
-		});
-	}
-
 	render() {
 		const styles = {
 			separator: {
@@ -34,7 +27,11 @@ const ToolbarGSMSignal = class extends React.Component {
 				float: 'left'
 			}
 		};
-		const onChange = this.onChange.bind(this);
+		const onChange = (e, value) => {
+			this.props.onChange(e, 'signal', {
+				strength: parseInt(value, 10) // eslint-disable-line camelcase
+			});
+		};
 		return (
 			<Paper style={Object.assign(this.props.style || {}, styles.paper)} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-signal" color="rgba(0, 0, 0, 0.4)"/>

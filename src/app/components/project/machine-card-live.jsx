@@ -1,5 +1,7 @@
 'use strict';
 
+// TODO: refactor
+
 // React
 const React = require('react');
 
@@ -21,15 +23,42 @@ const MachineCardLive = class extends React.Component {
 
 	render() {
 		const state = this.props;
+		const handleClicks =	{
+			enter: state.actionEnter ? () => {
+				state.actionEnter(state.avm_id);
+			} : null,
+			stop: state.actionStop ? () => {
+				state.actionStop(state.avm_id);
+			} : null
+		};
 
 		const availableButtons = [
 			{
 				action: MachineCard.ACTIONS.ENTER,
-				button: <RaisedButton className={`btEnterSession btEnterSession${state.index} btEnterSession${state.avm_id}`} primary label="Enter session" title={`Enter session ${state.avm_id}`} key={MachineCard.ACTIONS.ENTER} onClick={state.actionEnter ? state.actionEnter.bind(null, state.avm_id) : null}/>
+				button: (
+					<RaisedButton
+						className={`btEnterSession btEnterSession${state.index} btEnterSession${state.avm_id}`}
+						primary
+						label="Enter session"
+						title={`Enter session ${state.avm_id}`}
+						key={MachineCard.ACTIONS.ENTER}
+						onClick={handleClicks.enter}
+						data-avm-id={state.avm_id}
+						/>
+				)
 			},
 			{
 				action: MachineCard.ACTIONS.STOP,
-				button: <RaisedButton className={`btStopSession btStopSession${state.index} btStopSession${state.avm_id}`} primary label="Stop session" title={`Stop session ${state.avm_id}`} key={MachineCard.ACTIONS.STOP} onClick={state.actionStop ? state.actionStop.bind(null, state.avm_id) : null}/>
+				button: (
+					<RaisedButton
+						className={`btStopSession btStopSession${state.index} btStopSession${state.avm_id}`}
+						primary
+						label="Stop session"
+						title={`Stop session ${state.avm_id}`}
+						key={MachineCard.ACTIONS.STOP}
+						onClick={handleClicks.stop}
+						/>
+				)
 			}
 		];
 

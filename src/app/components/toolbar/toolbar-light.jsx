@@ -9,11 +9,6 @@ import Paper from 'material-ui/Paper';
 
 // APP
 const ToolbarLight = class extends React.Component {
-
-	onChange(e, value) {
-		this.props.onChange(e, {light: value});
-	}
-
 	render() {
 		const styles = {
 			separator: {
@@ -32,7 +27,9 @@ const ToolbarLight = class extends React.Component {
 				float: 'left'
 			}
 		};
-		const onChange = this.onChange.bind(this);
+		const onChange = (e, value) => {
+			this.props.onChange(e, {light: value});
+		};
 		return (
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-white-balance-incandescent" color="rgba(0, 0, 0, 0.4)"/>
