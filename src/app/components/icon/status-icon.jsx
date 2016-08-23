@@ -251,4 +251,8 @@ StatusIcon.propTypes = {
 	tooltipPosition: React.PropTypes.string
 };
 
+StatusIcon.defaultProps = {
+	tooltipPosition: 'bottom-center'
+};
+
 module.exports = StatusIcon;

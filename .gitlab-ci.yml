@@ -1,20 +1,22 @@
 image: node:onbuild
 
 before_script:
+  - node --version
+  - npm --version
   - npm install --unsafe-perm
-  - npm run build
 
 test_integration:
   script:
+    - npm run build
     - npm run create-conf-from-env
     - mv config.json ./build/
-    - ./node_modules/.bin/http-server ./build -p 9080 &
-    - ./node_modules/.bin/phantomjs --ignore-ssl-errors=true -w &
-    - sleep 1
     - git clone git@git.rnd.alterway.fr:aic-documentation/aic_features.git
     - cd aic_features
     - ln -s ../node_modules/
     - npm install --unsafe-perm
+    - ./node_modules/.bin/http-server ../build -p 9080 &
+    - ./node_modules/.bin/phantomjs --ignore-ssl-errors=true -w &
+    - sleep 1
     - echo ${AIC_SCREENSHOT_PATH}
     - AIC_FRONTEND_HOST=http://localhost:9080/ ./run-tests.sh
   cache:
@@ -28,8 +30,7 @@ test_integration:
 
 test_unit:
   script:
-    - npm run xo
-    - npm run coverage
+    - npm test
   cache:
     paths:
       - node_modules

@@ -1,14 +1,13 @@
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 [![build status](https://git.rnd.alterway.fr/aic_ats/frontend/badges/master/build.svg)](https://git.rnd.alterway.fr/aic_ats/frontend/commits/master)
+[![coverage report](https://git.rnd.alterway.fr/aic_ats/frontend/badges/master/coverage.svg)](https://git.rnd.alterway.fr/aic_ats/frontend/commits/master)
 
-Cloning the project
-===================
+## Cloning the project
 
-noVNC is now added as a npm package and there is no need for special
+noVNC is now added as a npm package and there is *no* need for special
 cloning (with --recursive option) on this project.
 
-Building the project
-====================
+## Building the project
 
 The production environment is the build environment.
 The development is the environment for testing.
@@ -18,18 +17,17 @@ for testing) use either `npm install --production`, either
 to make node in production environment&gt;.
 Then run the `npm build`, which will create `./build/` folder.
 
-Development installation
-========================
+## Development installation
 
 Run `npm install` to install all packages needed to start the
 project.
 
 
 Run `npm start` to start a development web server and open then
-application in the browser.
+application in the browser. However, when using npm start, you should
+run at least once the build command.
 
-
-Run `npm build` to build the project at build/ folder. Any
+Run `npm run build` to build the project at build/ folder. Any
 webserver can be used to serve this folder and run the application.
 
 Application configuration file should be served with the rest of the
@@ -52,28 +50,43 @@ AIC_FRONTEND_BACKEND_HOST      | 'localhost'   | IP/Domain of the backend API ho
 AIC_FRONTEND_BACKEND_PORT      | '12345'       | Port of the backend API host
 AIC_FRONTEND_BACKEND_TIMEOUT   | 5000          | Value in miliseconds for timeout the API calls
 
-Tests
-=====
+## Tests
 
-Run `npm test` to run the unit tests on the project.
+Run `npm test` to run the tests on the project. It runs the code style
+test, the unit tests on the components and the check for console usage
+in the code.
 
-Run `npm run coverage` to run the unit tests and create test coverage
-output. The coverage files are created in a folder named `./coverage`.
+Run `npm run test:coverage` to run the unit tests and create test
+coverage output. The coverage files are created in a folder named
+`./coverage`.
 
-Integration tests are now in [another repository](https://git.rnd.alterway.fr/aic-documentation/aic_features). The gitlabci build
-will automatically clone it.
+Integration tests are now in
+[aic_features repository](https://git.rnd.alterway.fr/aic-documentation/aic_features).
+The gitlabci integration pipeline will clone and run integration tests
+on this project.
 
 
-Known Bugs
-==========
+## Known Bugs
 
 * Tables: can not unselect all ([open issue](https://github.com/callemall/material-ui/issues/3074) on the Table component of material-ui)
 * Tables: header separator bugs on DOM change ([open issue](https://github.com/callemall/material-ui/issues/3957))
 * Reflux unsubscribe method is broken, so users will get React messages like this: `Warning: setState(...): Can only update a mounted or mounting component. This usually means you called setState() on an unmounted component. This is a no-op. Please check the code for the undefined component.`
-* VM white screen is a chrome bug [ref1](https://bugs.chromium.org/p/chromium/issues/detail?id=588434) [ref2](http://stackoverflow.com/questions/36114379/chrome-canvas-bug-on-mac-os-x-when-switching-spaces)
+* [Fixed] There was a VM white screen chrome bug [ref1](https://bugs.chromium.org/p/chromium/issues/detail?id=588434) [ref2](http://stackoverflow.com/questions/36114379/chrome-canvas-bug-on-mac-os-x-when-switching-spaces)
 
-TODO List
-=========
+## Troubleshooting
+
+### `Cannot GET /`
+
+If in the browser you get the message `Cannot GET /` it is possible
+that you start the server without a `/build` directory. Build the
+project with the following command and reload the browser.
+
+```
+npm run build
+``` 
+
+
+## TODO List
 
 * ~~Update all code to xo default style~~ :white_check_mark:
 * Update readme (config.json, how to run tests, etc...)
