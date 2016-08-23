@@ -19,7 +19,7 @@
     "create-conf-from-env": "create-json-from-env --input config-sample.json --output config.json --match \"^AIC_FRONTEND_(.+)\" --match-split \"([^_.]+)_(.+)\"",
     "start": "webpack-dev-server --content-base ./build/ --history-api-fallback --progress --port 9080 --hot --inline",
     "test": "npm run test:code-style && npm run test:coverage && npm run test:no-console",
-    "test:coverage": "nyc --extension .jsx npm run test:unit && nyc report --reporter=lcov",
+    "test:coverage": "nyc --extension .jsx npm run test:unit && nyc report --reporter=lcov && nyc report --reporter=text-summary",
     "test:coverage-check": "npm run test:coverage && nyc check-coverage --lines 100 --functions 100 --branches 100",
     "test:unit": "NODE_PATH=./src ava --tap | tap-nyan",
     "test:unit-verbose": "NODE_PATH=./src ava",

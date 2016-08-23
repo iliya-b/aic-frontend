@@ -83,7 +83,7 @@ project with the following command and reload the browser.
 
 ```
 npm run build
-``` 
+```
 
 
 ## TODO List
