@@ -31,7 +31,7 @@ const PanelSessionScreen = class extends React.Component {
 			}
 		};
 
-		style.iframeRotation = this.props.rotation === "0" ? style.iframeHorizontal : style.iframeVertical;
+		style.iframeRotation = this.props.rotation === '0' ? style.iframeHorizontal : style.iframeVertical;
 
 		return (
 			<div style={style.root}>

@@ -2,23 +2,12 @@
 
 // This store + actions SHOULD BE REMOVED!!!! //
 
-// Reflux
-const Reflux = require('reflux');
-
-// Vendor
-const debug = require('debug')('AiC:Polling:Store');
-
-// APP
-const MachineCard = require('app/components/project/machine-card');
-const PollingActions = require('app/actions/polling');
-// const NotificationActions = require('app/actions/notification');
+import Reflux from 'reflux';
+import MachineCard from 'app/components/project/machine-card';
+import PollingActions from 'app/actions/polling';
 import LiveActions from 'app/actions/live';
 
-// function areDifferentObjects(obj1, obj2) {
-// 	return JSON.stringify(obj1) !== JSON.stringify(obj2);
-// }
-
-// const initialRetry = 3;
+const debug = require('debug')('AiC:Polling:Store');
 
 const verifyResponse = {
 	liveList: res => {

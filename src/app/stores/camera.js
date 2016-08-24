@@ -1,13 +1,10 @@
 'use strict';
 
-// Vendor
 import Reflux from 'reflux';
-const debug = require('debug')('AiC:Stores:Camera');
-
-// APP
 import CameraActions from 'app/actions/camera';
 
-// Store
+const debug = require('debug')('AiC:Stores:Camera');
+
 const CameraStore = Reflux.createStore({
 
 	// Base Store //

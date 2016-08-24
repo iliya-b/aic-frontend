@@ -1,13 +1,11 @@
 'use strict';
 
-// Vendor
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-const debug = require('debug')('AiC:Components:Dialog:SessionEndedDialog');
-
-// APP
 import InfoBox from 'app/components/shared/info-box';
+
+const debug = require('debug')('AiC:Components:Dialog:SessionEndedDialog');
 
 const SessionEndedDialog = class extends React.Component {
 

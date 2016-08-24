@@ -2,22 +2,14 @@
 
 // TODO: refactor
 
-// React
-const React = require('react');
-
-// Material design
-const mui = require('material-ui');
-const {
-	CardText,
-	CardActions,
-	RaisedButton
-} = mui;
+import React from 'react';
+import CardText from 'material-ui/Card/CardText';
+import CardActions from 'material-ui/Card/CardActions';
+import RaisedButton from 'material-ui/RaisedButton';
+import MachineCard from 'app/components/project/machine-card';
+import CodeBox from 'app/components/shared/code-box';
 
 const debug = require('debug')('AiC:Components:Project:MachineCardLive');
-
-// APP
-const MachineCard = require('app/components/project/machine-card');
-const CodeBox = require('app/components/shared/code-box');
 
 const MachineCardLive = class extends React.Component {
 

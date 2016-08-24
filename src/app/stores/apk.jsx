@@ -1,14 +1,10 @@
 'use strict';
 
-// Vendor
 import Reflux from 'reflux';
-const debug = require('debug')('AiC:Stores:APK');
-
-// APP
-// import AppUtils from 'app/components/shared/app-utils';
 import APKActions from 'app/actions/apk';
 
-// Store
+const debug = require('debug')('AiC:Stores:APK');
+
 const APKStore = Reflux.createStore({
 
 	// Base Store //

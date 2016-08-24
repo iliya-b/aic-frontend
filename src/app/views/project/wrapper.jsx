@@ -1,15 +1,9 @@
 'use strict';
 
-// Vendor
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
-// const debug = require('debug')('AiC:Views:ProjectWrapper');
-// import IconMenu from 'material-ui/IconMenu';
-// import MenuItem from 'material-ui/MenuItem';
-
-// APP
 import AuthActions from 'app/actions/auth';
 import ProjectActions from 'app/actions/project';
 import PollingStore from 'app/stores/polling';
@@ -69,7 +63,7 @@ const ProjectWrapper = class extends AuthRequired {
 		// const thisPage = this.context.router.getCurrentPath();
 		const thisPage = nextProps.location.pathname;
 		if (this.state.lastPage !== thisPage) {
-			if (nextProps.params.hasOwnProperty('projectId')) {
+			if ('projectId' in nextProps.params) {
 				ProjectActions.getNameById(nextProps.params.projectId)
 				.then(res => {
 					this.setState({title: res});

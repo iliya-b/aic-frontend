@@ -29,12 +29,12 @@ const AuthStore = Reflux.createStore({
 	onLoginCompleted(result) {
 		debug('then auth login');
 		debug('arguments', arguments);
-		debug('result.status', result.status, `---${result.status}---`, result.status === 401, result.hasOwnProperty('status'), 'status' in result);
+		debug('result.status', result.status, `---${result.status}---`, result.status === 401, 'status' in result);
 		if ('status' in result &&
 			(result.status === 400 || result.status === 401)) {
 			debug('400 || 401');
 			this.onLoginFailedMessage(`It was not possible to login. Authentication server response was an error. Error: ${result.statusText}`);
-		} else if (result.hasOwnProperty('token')) {
+		} else if ('token' in result) {
 			debug('valid token');
 			AuthActions.setToken(result.token);
 			this.state.login.status = 'LOGIN_STATUS_CONNECTED';

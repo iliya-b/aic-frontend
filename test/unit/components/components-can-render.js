@@ -2,6 +2,8 @@ import test from 'ava';
 import ReactTestUtils from 'react-addons-test-utils';
 import React from 'react';
 import {shallow} from 'enzyme';
+import getTheme from '../utils/get-theme';
+
 const componentsReq = {
 	// Card
 	CardAndroidSession: require('app/components/card/card-android-session'),
@@ -86,7 +88,6 @@ const componentsReq = {
 	ToolbarSensors: require('app/components/toolbar/toolbar-sensors'),
 	ToolbarTemperature: require('app/components/toolbar/toolbar-temperature')
 };
-import getTheme from '../utils/get-theme';
 
 let AppThemeTests;
 

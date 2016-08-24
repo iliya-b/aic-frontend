@@ -1,10 +1,8 @@
 'use strict';
 
-// Vendor
 import React from 'react';
-const debug = require('debug')('AiC:Components:Project:Live:LiveToolbox');
 
-// APP
+const debug = require('debug')('AiC:Components:Project:Live:LiveToolbox');
 
 // Android toolbar
 const TOOLBAR_ANDROID = 'android';

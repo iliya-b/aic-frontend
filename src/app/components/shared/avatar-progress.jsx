@@ -69,7 +69,7 @@ const AvatarProgress = class extends React.Component {
 			backgroundColor,
 			textAlign: 'center',
 			lineHeight: `${size}px`,
-			fontSize: size / 2 + 4,
+			fontSize: (size / 2) + 4,
 			color
 		}, style);
 

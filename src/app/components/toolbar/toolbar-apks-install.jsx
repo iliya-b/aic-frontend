@@ -1,6 +1,5 @@
 'use strict';
 
-// Vendor
 import React from 'react';
 import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
 import FontIcon from 'material-ui/FontIcon';
@@ -8,9 +7,8 @@ import Paper from 'material-ui/Paper';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
-
-// APP
 import ListItemStatus from 'app/components/list/list-item-status';
+
 const PanelAPKInstall = class extends React.Component {
 
 	constructor(props) {

@@ -1,12 +1,8 @@
 /* global window */
 'use strict';
 
-// Vendor
 import React from 'react';
 import Snackbar from 'material-ui/Snackbar';
-const debug = require('debug')('AiC:View:Live:List');
-
-// APP
 import LiveStore from 'app/stores/live';
 import LiveActions from 'app/actions/live';
 import PollingActions from 'app/actions/polling';
@@ -16,6 +12,8 @@ import {variants} from 'app/configs/app-constants';
 import uuid from 'app/libs/uuid';
 import DialogLiveCreation from 'app/components/dialog/dialog-live-creation';
 import PanselSessionsInfo from 'app/components/panel/panel-sessions-info';
+
+const debug = require('debug')('AiC:View:Live:List');
 
 let projectId;
 let enableVariants;
@@ -128,7 +126,7 @@ const LiveList = class extends React.Component {
 		let vmCount = 0;
 
 		// Filter VMs by projectId
-		if (this.state.live && this.state.live.hasOwnProperty('avms')) {
+		if (this.state.live && 'avms' in this.state.live) {
 			vmCount = this.state.live.avms.length;
 			avmList = this.state.live.avms.filter(v => {
 				return v.project_id === projectId;

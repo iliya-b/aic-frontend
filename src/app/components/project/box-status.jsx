@@ -1,14 +1,8 @@
 'use strict';
 
-// React
-const React = require('react');
-
-// Material design
-const mui = require('material-ui');
-const {
-	FontIcon,
-	Paper
-} = mui;
+import React from 'react';
+import FontIcon from 'material-ui/FontIcon';
+import Paper from 'material-ui/Paper';
 
 function getIconNameByStatus(status, defaultIcon, type) {
 	if (status === 'success') {

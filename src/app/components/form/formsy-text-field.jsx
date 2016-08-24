@@ -18,7 +18,9 @@ const FormsyTextField = React.createClass({
 		validateOnChange: React.PropTypes.bool,
 		requiredError: React.PropTypes.string,
 		errorText: React.PropTypes.string,
-		disabled: React.PropTypes.bool
+		disabled: React.PropTypes.bool,
+		validationError: React.PropTypes.string,
+		validationErrors: React.PropTypes.object
 	},
 
 	mixins: [Formsy.Mixin],
@@ -37,6 +39,9 @@ const FormsyTextField = React.createClass({
 			onChange, // eslint-disable-line no-unused-vars
 			errorText, // eslint-disable-line no-unused-vars
 			disabled, // eslint-disable-line no-unused-vars
+			requiredError, // eslint-disable-line no-unused-vars
+			validationError, // eslint-disable-line no-unused-vars
+			validationErrors, // eslint-disable-line no-unused-vars
 			...other
 		} = this.props;
 		const intendedErrorText = (this.isFormSubmitted() || !this.isPristine()) && this.showRequired() && this.props.requiredError ? this.props.requiredError : this.getErrorMessage();

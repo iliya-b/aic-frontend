@@ -1,12 +1,8 @@
 'use strict';
 
-// React
-const React = require('react');
-
-// Material design
-const mui = require('material-ui');
+import React from 'react';
 import Spacing from 'material-ui/styles/spacing';
-const {
+import {
 	Paper,
 	Card,
 	CardHeader,
@@ -18,12 +14,10 @@ const {
 	TableBody,
 	TableRow,
 	TableRowColumn
-} = mui;
-
-// APP
-const AvatarProgress = require('app/components/shared/avatar-progress');
-const AppUtils = require('app/components/shared/app-utils');
-const CodeBox = require('app/components/shared/code-box');
+} from 'material-ui';
+import AvatarProgress from 'app/components/shared/avatar-progress';
+import AppUtils from 'app/components/shared/app-utils';
+import CodeBox from 'app/components/shared/code-box';
 
 const TestResultsBox = class extends React.Component {
 

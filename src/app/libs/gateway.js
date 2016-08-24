@@ -18,11 +18,11 @@ const Gateway = {
 		options.actions.forEach(action => {
 			debug('actions', action);
 			action.namespace = options.namespace;
-			if (Gateway[options.namespace].hasOwnProperty(action.action.name)) {
+			if (action.action.name in Gateway[options.namespace]) {
 				throw new Error('Duplicated action on Gateway namespace. ', action.action.name, 'already exists in', options.namespace);
 			}
 			Gateway[options.namespace][action.action.name] = Gateway.request.bind(Gateway, action);
-			if (action.hasOwnProperty('allowMany') && action.allowMany) {
+			if ('allowMany' in action && action.allowMany) {
 				Gateway[options.namespace][`${action.action.name}Many`] = Gateway.many.bind(Gateway, action);
 			}
 		});

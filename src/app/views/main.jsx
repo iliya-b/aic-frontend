@@ -2,14 +2,10 @@
 // TODO: remove global window
 'use strict';
 
-// Vendor
 import React from 'react';
 import * as Colors from 'material-ui/styles/colors';
 import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-const debug = require('debug')('AiC:Views:Main');
-
-// APP
 import AppTheme from 'app/configs/app-theme';
 import FullWidthSection from 'app/components/shared/full-width-section';
 import SessionEndedDialog from 'app/components/dialog/dialog-session-ended';
@@ -21,6 +17,8 @@ import AppConfigActions from 'app/actions/app-config';
 import AppActions from 'app/actions/app';
 import ServerErrorDialog from 'app/components/dialog/dialog-server-error';
 import PollingActions from 'app/actions/polling';
+
+const debug = require('debug')('AiC:Views:Main');
 
 const Main = class extends React.Component {
 	constructor(props) {
@@ -92,9 +90,9 @@ const Main = class extends React.Component {
 							<p style={styles.p}>COPYRIGHT © AiC</p>
 
 							{this.state.config.debug ? ([
-								<RaisedButton key={1} linkButton label="Test Theme" title="Test Theme" secondary href="#/theme-test"/>,
-								<RaisedButton key={2} linkButton secondary href="#/" label="home"/>,
-								<RaisedButton key={3} linkButton secondary onClick={this.handleClickStopPolling} label="stop polling"/>]
+								<RaisedButton key={1} label="Test Theme" title="Test Theme" secondary href="#/theme-test"/>,
+								<RaisedButton key={2} secondary href="#/" label="home"/>,
+								<RaisedButton key={3} secondary onClick={this.handleClickStopPolling} label="stop polling"/>]
 							) : null}
 						</FullWidthSection>
 						<SessionEndedDialog open={this.state.sessionEndedDialogOpen} onRequestClose={this.handleSessionEndedDialogClose}/>

@@ -1,12 +1,8 @@
 'use strict';
 
-// Vendor
 import Reflux from 'reflux';
-
-// APP
 import ProjectActions from 'app/actions/project';
 
-// Store
 const ProjectStore = Reflux.createStore({
 
 	// Base Store //

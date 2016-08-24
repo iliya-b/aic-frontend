@@ -1,12 +1,10 @@
 'use strict';
 
-// Vendor
-const React = require('react');
-const debug = require('debug')('AiC:Components:Project:LiveScreen');
+import React from 'react';
+import LiveStore from 'app/stores/live';
+import LiveActions from 'app/actions/live';
 
-// APP
-const LiveStore = require('app/stores/live');
-const LiveActions = require('app/actions/live');
+const debug = require('debug')('AiC:Components:Project:LiveScreen');
 
 const LiveScreen = class extends React.Component {
 	constructor(props) {
@@ -41,7 +39,7 @@ const LiveScreen = class extends React.Component {
 
 		// const vncUrl = '';
 		// TODO: if
-		if (this.state.hasOwnProperty('live') && this.state.live.status === 'LIVE_STATUS_CONNECTED') {
+		if ('live' in this.state && this.state.live.status === 'LIVE_STATUS_CONNECTED') {
 			if (this.state.live.delayedRotation === 'horizontal') {
 				style.iframeRotation = style.iframeHorizontal;
 			} else if (this.state.live.delayedRotation === 'vertical') {

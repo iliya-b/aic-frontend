@@ -31,7 +31,7 @@ const AreaStatus = class extends React.Component {
 	render() {
 		let boxesTags;
 
-		if (this.state.hasOwnProperty(this.props.typeName)) {
+		if (this.props.typeName in this.state) {
 			boxesTags = this.state[this.props.typeName].boxes.map((item, index) => {
 				return item.enabled ? <BoxStatus key={index} typeName={item.typeName} status={item.status} isFirst={item.isFirst} isLast={item.isLast} objectName={item.objectName}/> : null;
 			});

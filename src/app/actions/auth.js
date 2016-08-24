@@ -1,17 +1,12 @@
 /* global window, localStorage */
 'use strict';
 
-// Vendor
 import url from 'url';
 import Reflux from 'reflux';
+import Gateway from 'app/libs/gateway';
+
 const debug = require('debug')('AiC:Auth:Actions');
 
-// APP
-// import BackendAPI from 'app/libs/backend-api';
-import Gateway from 'app/libs/gateway';
-// import AppConfigActions from 'app/actions/app-config';
-
-// Actions
 const AuthActions = Reflux.createActions({
 	login: {asyncResult: true},
 	logout: {asyncResult: true},
@@ -19,68 +14,8 @@ const AuthActions = Reflux.createActions({
 	refreshState: {}
 });
 
-// Listeners for asynchronous Backend API calls
 AuthActions.login.listenAndPromise(Gateway.user.login);
 AuthActions.logout.listenAndPromise(Gateway.user.logout);
-
-// AuthActions.login.listen(function (login, pass) {
-// 	Gateway.user.login({login, pass})
-// 	// BackendAPI.userLogin(login, pass)
-// 	.then(result => {
-// 		debug('then auth login');
-// 		debug(arguments);
-// 		if (result.hasOwnProperty('status') &&
-// 			(result.status === 400 || result.status === 401)) {
-// 			debug('arguments', arguments);
-// 			this.failure(`It was not possible to login. Authentication server response was an error. Error: ${result.statusText}`);
-// 		} else if (result.hasOwnProperty('token')) {
-// 			localStorage.token = result.token;
-// 			this.completed();
-// 		} else {
-// 			debug('arguments', arguments);
-// 			this.failure('It was not possible to login. Unknown authentication server response.');
-// 		}
-// 	})
-// 	.catch(err => {
-// 		debug('catch auth login');
-// 		debug(arguments, err);
-// 		this.failure('It was not possible to login. Please verify that your credentials are correct.');
-// 	});
-// });
-
-// AuthActions.logout.listen(function (showMessage) {
-// 	Gateway.user.logout()
-// 	// BackendAPI.userLogout()
-// 	.then(result => {
-// 		localStorage.token = '';
-// 		// TODO:  Fix the logout result,
-// 		//        for now we have 500 (Internal Server Error)
-// 		debug('logout', result);
-// 		this.completed(showMessage);
-// 		// if (result.hasOwnProperty('status') &&
-// 		//    (result.status === 400 || result.status === 401 )){
-// 		//   this.failure('It was not possible to login. Error: ' + result.statusText);
-// 		// }else if (result.hasOwnProperty('X-Auth-Token')){
-// 		//   localStorage.token = result['X-Auth-Token'];
-// 		//   this.completed();
-// 		// }else{
-// 		//   this.failure('It was not possible to login.');
-// 		// }
-// 	});
-// });
-
-// AuthActions.check.listen(function () {
-//   debug('AuthActions.check.listen');
-//   BackendAPI.isUserLogged( (result) => {
-//     if (result.hasOwnProperty('status') && result.status === 401 ){
-//       this.completed( false );
-//     }else if ( result.status === 200 ){
-//       this.completed( true );
-//     }else{
-//       this.failure('It was not possible to verify login status.');
-//     }
-//   });
-// });
 
 // TODO: change to access app state
 AuthActions.getToken = function () {
@@ -138,9 +73,9 @@ AuthActions.getQuery = function (routerOrTransition) {
 
 AuthActions.getPath = function (routerOrTransition, routerLocation) {
 	debug('AuthActions.getPath', routerOrTransition, routerLocation);
-	if (routerLocation && routerLocation.hasOwnProperty('pathname')) {
+	if (routerLocation && 'pathname' in routerLocation) {
 		return routerLocation.pathname;
-	} else if (routerOrTransition.hasOwnProperty('path')) {
+	} else if ('path' in routerOrTransition) {
 		return routerOrTransition.path;
 	// transition case
 	} else if (typeof routerOrTransition.getCurrentPath === 'function') {

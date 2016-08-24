@@ -20,7 +20,7 @@ const AppUtils = {
 		for (let i = 0; i < arguments.length; i++) {
 			const obj = arguments[i];
 			for (const key in obj) {
-				if (obj.hasOwnProperty(key)) {
+				if (key in obj) {
 					newObj[key] = obj[key];
 				}
 			}

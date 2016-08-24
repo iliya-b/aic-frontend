@@ -1,9 +1,7 @@
 'use strict';
 
-// Vendors
 import React from 'react';
 
-// APP
 const LiveWrapper = class extends React.Component {
 
 	render() {

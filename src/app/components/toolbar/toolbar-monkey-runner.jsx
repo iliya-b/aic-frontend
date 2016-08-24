@@ -1,6 +1,5 @@
 'use strict';
 
-// Vendor
 import React from 'react';
 import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
 import FontIcon from 'material-ui/FontIcon';
@@ -9,10 +8,10 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import ListItemStatus from 'app/components/list/list-item-status';
+
 const debug = require('debug')('AiC:Components:Toolbar:PanelMonkeyRunner');
 
-// APP
-import ListItemStatus from 'app/components/list/list-item-status';
 const PanelMonkeyRunner = class extends React.Component {
 
 	constructor(props) {

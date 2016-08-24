@@ -61,7 +61,7 @@ const ListItemsStatus = class extends React.Component {
 				</ReactCSSTransitionGroup>
 			);
 		}
-		return <span></span>;
+		return <span/>;
 	}
 };
 

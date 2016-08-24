@@ -1,16 +1,14 @@
 'use strict';
 
-// Vendor
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import Formsy from 'formsy-react';
-const debug = require('debug')('AiC:Component:Home:LoginDialog');
-
-// APP
 import FormsyTextField from 'app/components/form/formsy-text-field';
 
-const LoginDialog = class extends React.Component {
+const debug = require('debug')('AiC:Component:Home:LoginDialog');
+
+const DialogLogin = class extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -125,12 +123,12 @@ const LoginDialog = class extends React.Component {
 	}
 };
 
-LoginDialog.contextTypes = {
+DialogLogin.contextTypes = {
 	muiTheme: React.PropTypes.object,
 	router: React.PropTypes.object
 };
 
-LoginDialog.propTypes = {
+DialogLogin.propTypes = {
 	location: React.PropTypes.object,
 	open: React.PropTypes.bool,
 	onRequestClose: React.PropTypes.func,
@@ -139,4 +137,4 @@ LoginDialog.propTypes = {
 	formDisabled: React.PropTypes.bool
 };
 
-module.exports = LoginDialog;
+module.exports = DialogLogin;

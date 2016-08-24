@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ### Changed
 - Update many API calls to comply with backend modifications.
+- Update npm packages.
 
 ## [0.5.1]
 

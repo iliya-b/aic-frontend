@@ -70,8 +70,8 @@ const NoVNCAdapter = {
 			};
 			try {
 				noVNCState.rfb = new RFB({target: $D('noVNC_canvas'), encrypt: true, onUpdateState: rfbUpdateState});
-			} catch (exc) {
-				reject(`Unable to create noVNC client (${exc}).`);
+			} catch (err) {
+				reject(`Unable to create noVNC client (${err}).`);
 			}
 		});
 	},

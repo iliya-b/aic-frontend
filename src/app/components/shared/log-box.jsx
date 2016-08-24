@@ -1,11 +1,7 @@
 'use strict';
 
-// React
-const React = require('react');
-
-// Material design
-const mui = require('material-ui');
-const {Paper} = mui;
+import React from 'react';
+import Paper from 'material-ui/Paper';
 
 const LogBox = class extends React.Component {
 
@@ -30,7 +26,7 @@ const LogBox = class extends React.Component {
 			}
 		};
 
-		style.root.maxHeight = (style.rows.lineHeight + 2 * style.rows.padding) * visibleLines;
+		style.root.maxHeight = (style.rows.lineHeight + (2 * style.rows.padding)) * visibleLines;
 
 		// const logRows = this.props.log.map(function(logMessage, logIndex){
 		//   return  <TableRow key={logIndex} >

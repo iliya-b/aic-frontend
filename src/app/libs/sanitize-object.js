@@ -9,7 +9,7 @@ const inspector = require('schema-inspector');
 const SanitizeObject = {
 
 	sanitizeData(dataObj) {
-		if (!dataObj.hasOwnProperty('data') || !dataObj.hasOwnProperty('schema')) {
+		if (!('data' in dataObj) || !('schema' in dataObj)) {
 			throw new Error('Data object badly formatted.');
 		}
 

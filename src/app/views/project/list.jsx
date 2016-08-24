@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-// const debug = require('debug')('AiC:Views:Project:List');
 import ProjectStore from 'app/stores/project';
 import ProjectActions from 'app/actions/project';
 import DialogConfirmDelete from 'app/components/dialog/dialog-confirm-delete';

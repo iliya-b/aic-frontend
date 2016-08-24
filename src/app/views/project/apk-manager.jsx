@@ -1,17 +1,15 @@
 'use strict';
 
-// Vendors
 import React from 'react';
 import Paper from 'material-ui/Paper';
-const debug = require('debug')('AiC:Views:APKManager');
-
-// APP
 import ToolbarFileUpload from 'app/components/toolbar/toolbar-file-upload';
 import TableFiles from 'app/components/table/table-files';
 import TableProgress from 'app/components/table/table-progress';
 import Dropzone from 'app/components/shared/dropzone';
 import APKActions from 'app/actions/apk';
 import APKStore from 'app/stores/apk';
+
+const debug = require('debug')('AiC:Views:APKManager');
 
 let projectId = null;
 

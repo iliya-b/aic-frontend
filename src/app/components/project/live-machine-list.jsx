@@ -1,13 +1,10 @@
 'use strict';
 
-// Vendor
-const React = require('react');
-const debug = require('debug')('AiC:Component:LiveMachineList');
-
-// APP
-// const MachineCardLive = require('app/components/project/machine-card-live');
-const InfoBox = require('app/components/shared/info-box');
+import React from 'react';
+import InfoBox from 'app/components/shared/info-box';
 import CardAndroidSession from 'app/components/card/card-android-session';
+
+const debug = require('debug')('AiC:Component:LiveMachineList');
 
 const LiveMachineList = class extends React.Component {
 	render() {

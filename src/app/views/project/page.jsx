@@ -6,6 +6,7 @@ import Spacing from 'material-ui/styles/spacing';
 import * as Colors from 'material-ui/styles/colors';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
+
 const debug = require('debug')('AiC:Views:Project:Page');
 
 const menuItems = [
@@ -87,7 +88,6 @@ const ProjectPage = class extends React.Component {
 				key={index}
 				data-key-index={index}
 				primaryText={item.text}
-				path={item.path}
 				onClick={this.handleItemClick}
 				title={item.text}
 				href="#"

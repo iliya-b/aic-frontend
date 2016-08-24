@@ -1,11 +1,9 @@
 'use strict';
 
-// Vendor
 import React from 'react';
-const debug = require('debug')('AiC:Components:AuthPage');
-
-// APP
 import AuthActions from 'app/actions/auth';
+
+const debug = require('debug')('AiC:Components:AuthPage');
 
 // Redirects user if he is already logged in
 // Opposite to AuthRequired

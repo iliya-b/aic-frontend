@@ -1,14 +1,11 @@
 'use strict';
 
-// Vendor
 import Reflux from 'reflux';
-const debug = require('debug')('AiC:Actions:Project');
-
-// APP
 import Gateway from 'app/libs/gateway';
 import AppActions from 'app/actions/app';
 
-// Actions
+const debug = require('debug')('AiC:Actions:Project');
+
 const ProjectActions = Reflux.createActions({
 	list: {asyncResult: true},
 	create: {asyncResult: true},
@@ -16,38 +13,10 @@ const ProjectActions = Reflux.createActions({
 	delete: {asyncResult: true}
 });
 
-// Listeners for asynchronous Backend API calls
 ProjectActions.list.listenAndPromise(Gateway.projects.list);
 ProjectActions.create.listenAndPromise(Gateway.projects.create);
 ProjectActions.update.listenAndPromise(Gateway.projects.update);
 ProjectActions.delete.listenAndPromise(Gateway.projects.delete);
-
-// ProjectActions.create.listen(function (projectName) {
-// 	Gateway.projects.create({name: projectName})
-// 	.then(result => {
-// 		this.completed(result);
-// 	}, err => {
-// 		this.failure(err);
-// 	});
-// });
-
-// ProjectActions.update.listen(function (projectId, projectName) {
-// 	Gateway.projects.update({id: projectId, name: projectName})
-// 	.then(result => {
-// 		this.completed(result);
-// 	}, err => {
-// 		this.failure(err);
-// 	});
-// });
-
-// ProjectActions.delete.listen(function (projectId) {
-// 	Gateway.projects.delete({id: projectId})
-// 	.then(result => {
-// 		this.completed(result);
-// 	}, err => {
-// 		this.failure(err);
-// 	});
-// });
 
 // TODO: change to state ?
 ProjectActions.getNameById = function (projectId) {

@@ -1,16 +1,11 @@
 'use strict';
 
-// Reflux
-const Reflux = require('reflux');
+import Reflux from 'reflux';
+import AppUtils from 'app/components/shared/app-utils';
+import CampaignActions from 'app/actions/campaign';
 
-// Vendors
 const debug = require('debug')('AiC:Stores:Campaign');
 
-// APP
-const AppUtils = require('app/components/shared/app-utils');
-const CampaignActions = require('app/actions/campaign');
-
-// Store
 const CampaignStore = Reflux.createStore({
 
 	// Base Store //
@@ -85,7 +80,7 @@ const CampaignStore = Reflux.createStore({
 	onSocketMessage(message) {
 		const messageParsed = JSON.parse(message.data);
 		debug('onSocketMessage', messageParsed);
-		if (messageParsed.hasOwnProperty('message')) {
+		if ('message' in messageParsed) {
 			this.onLogMessage(messageParsed.message);
 			switch (messageParsed.message) {
 				case 'Stack retrieval or creation finished':
@@ -106,7 +101,7 @@ const CampaignStore = Reflux.createStore({
 					// TODO:
 					break;
 			}
-		} else if (messageParsed.hasOwnProperty('error')) {
+		} else if ('error' in messageParsed) {
 			switch (this.state.campaign.status) {
 				case 'CAMPAIGN_STATUS_CREATING':
 					CampaignActions.create.failure(messageParsed.error);

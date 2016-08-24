@@ -84,10 +84,12 @@ const RestAPI = {
 					} else if (xhr.status === 401 && options.authRequired) {
 						debug('XHR onload 401');
 						const AuthActions = require('app/actions/auth');
+
 						AuthActions.tryLogout('Your session has been ended2.');
 					} else if (xhr.status === 500 && options.showError500Dialog) {
 						debug('XHR onload 500');
 						const AppActions = require('app/actions/app');
+
 						AppActions.displayServerError('Something went wrong with the API server. Please contact service administration.');
 					} else {
 						const error = new Error(xhr.responseText);
@@ -161,10 +163,12 @@ const RestAPI = {
 				} else if (response.status === 401 && options.authRequired) {
 					debug('fetch response', response);
 					const AuthActions = require('app/actions/auth');
+
 					AuthActions.tryLogout('Your session has been ended2.');
 				} else if (response.status === 500 && options.showError500Dialog) {
 					debug('response.status === 500', response, options.url, myInit);
 					const AppActions = require('app/actions/app');
+
 					AppActions.displayServerError('Something went wrong with the API server. Please contact service administration.');
 				}
 				const error = new Error(response.statusText);
@@ -185,19 +189,20 @@ const RestAPI = {
 				}
 				resolve(result);
 			})
-			.catch((error, e2) => {
-				debug('request failed 1', error, error.message, error.name);
+			.catch((err, e2) => {
+				debug('request failed 1', err, err.message, err.name);
 				debug('request failed 2', e2);
 				debug('arguments', arguments);
-				if (error.message === 'Failed to fetch' && error.name === 'TypeError') {
+				if (err.message === 'Failed to fetch' && err.name === 'TypeError') {
 					const AppActions = require('app/actions/app');
+
 					AppActions.displayServerError('Impossible to reach API server. Please contact service administration.');
 				}
 				let result = {};
 				if (options.includeRequest) {
-					result = {request: options.requestObj, error};
+					result = {request: options.requestObj, err};
 				} else {
-					result = error;
+					result = err;
 				}
 				reject(result);
 			});
@@ -206,6 +211,7 @@ const RestAPI = {
 
 	apiCallAuth(options) {
 		const AuthActions = require('app/actions/auth');
+
 		options.headers = options.headers ? options.headers : {};
 		options.headers.Authorization = ` Bearer ${AuthActions.getToken()}`;
 		options.authRequired = true;

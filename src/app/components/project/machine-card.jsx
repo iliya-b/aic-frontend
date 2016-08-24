@@ -1,18 +1,10 @@
 'use strict';
 
-// React
-const React = require('react');
-
-// Material design
-const mui = require('material-ui');
-const {
-	Card,
-	CardHeader,
-	CardText
-} = mui;
-
-// APP
-const MachineIcon = require('app/components/project/machine-icon');
+import React from 'react';
+import Card from 'material-ui/Card';
+import CardText from 'material-ui/Card/CardText';
+import CardHeader from 'material-ui/Card/CardHeader';
+import MachineIcon from 'app/components/project/machine-icon';
 
 const MachineCard = class extends React.Component {
 

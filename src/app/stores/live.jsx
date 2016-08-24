@@ -1,10 +1,6 @@
 'use strict';
 
-// Vendor
 import Reflux from 'reflux';
-const debug = require('debug')('AiC:Stores:Live');
-
-// APP
 import AppUtils from 'app/components/shared/app-utils';
 import LiveActions from 'app/actions/live';
 import APKActions from 'app/actions/apk';
@@ -12,7 +8,8 @@ import CameraActions from 'app/actions/camera';
 import AppActions from 'app/actions/app';
 import PollingActions from 'app/actions/polling';
 
-// Store
+const debug = require('debug')('AiC:Stores:Live');
+
 const LiveStore = Reflux.createStore({
 
 	// Base Store //
@@ -464,14 +461,14 @@ const LiveStore = Reflux.createStore({
 	onPropertiesCompleted(properties) {
 		debug('onPropertiesCompleted', properties);
 
-		debug('onPropertiesCompleted value', properties["dev.bootcomplete"] === "1");
-		debug('onPropertiesCompleted value', !this.state.live.listPackages && properties["dev.bootcomplete"] === "1");
-		debug('onPropertiesCompleted value', !this.state.live.bootInit && (properties["init.svc.bootanim"] === "1" || properties["dev.bootcomplete"] === "1"));
+		debug('onPropertiesCompleted value', properties['dev.bootcomplete'] === '1');
+		debug('onPropertiesCompleted value', !this.state.live.listPackages && properties['dev.bootcomplete'] === '1');
+		debug('onPropertiesCompleted value', !this.state.live.bootInit && (properties['init.svc.bootanim'] === '1' || properties['dev.bootcomplete'] === '1'));
 
 		// TODO: should be changed to machine state
 		// boot completed
 		if (!this.state.live.listPackages &&
-			properties["dev.bootcomplete"] === "1") {
+			properties['dev.bootcomplete'] === '1') {
 			// properties["aicVM.inited"] === "1") {
 			debug('onPropertiesCompleted listPackages');
 			LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
@@ -481,7 +478,7 @@ const LiveStore = Reflux.createStore({
 
 		// docker finished (not available) boot initiate
 		if (!this.state.live.bootInit &&
-			(properties["init.svc.bootanim"] === "running" || properties["dev.bootcomplete"] === "1")) {
+			(properties['init.svc.bootanim'] === 'running' || properties['dev.bootcomplete'] === '1')) {
 		// if (!this.state.live.bootInit) {
 			// properties["aicVM.inited"] === "1") {
 			this.state.live.status = 'LIVE_STATUS_STARTED';

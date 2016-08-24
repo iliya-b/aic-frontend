@@ -1,16 +1,11 @@
 /* global window, document */
 'use strict';
 
-// Vendor
 import Reflux from 'reflux';
-// const debug = require('debug')('AiC:Live:Actions');
-
-// APP
 import Gateway from 'app/libs/gateway';
 import NoVNCAdapter from 'app/libs/novnc-adapter';
 import AudioAdapter from 'app/libs/audio-adapter';
 
-// Actions
 const LiveActions = Reflux.createActions({
 	list: {asyncResult: true},
 	stop: {asyncResult: true},
@@ -35,8 +30,6 @@ const LiveActions = Reflux.createActions({
 	listImages: {asyncResult: true}
 });
 
-// Listeners for asynchronous Backend API calls
-
 // Backend related
 LiveActions.list.listenAndPromise(Gateway.live.list);
 LiveActions.stop.listenAndPromise(Gateway.live.delete);
@@ -53,6 +46,7 @@ LiveActions.listImages.listenAndPromise(Gateway.live.listImages);
 LiveActions.setProjectId.listenAndPromise(NoVNCAdapter.loadUtil);
 LiveActions.liveConnect.listenAndPromise(avmId => {
 	const AuthActions = require('app/actions/auth');
+
 	const token = ` Bearer ${AuthActions.getToken()}`;
 	const host = window.GobyAppGlobals.config.backend.host;
 	const port = window.GobyAppGlobals.config.backend.port;
@@ -76,6 +70,7 @@ LiveActions.liveConnect.listenAndPromise(avmId => {
 
 LiveActions.liveConnectAudio.listenAndPromise(avmId => {
 	const AuthActions = require('app/actions/auth');
+
 	const token = ` Bearer ${AuthActions.getToken()}`;
 	const host = window.GobyAppGlobals.config.backend.host;
 	const port = window.GobyAppGlobals.config.backend.port;

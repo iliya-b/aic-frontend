@@ -1,20 +1,17 @@
 'use strict';
 
-// Vendor
 import React from 'react';
 import Typography from 'material-ui/styles/typography';
 import RaisedButton from 'material-ui/RaisedButton';
-const debug = require('debug')('AiC:Views:Home');
-
-// APP
 import FullWidthSection from 'app/components/shared/full-width-section';
 import LoginDialog from 'app/components/dialog/dialog-login';
 import AuthPage from 'app/components/shared/auth-page';
 import AuthStore from 'app/stores/auth';
 import AuthActions from 'app/actions/auth';
 
+const debug = require('debug')('AiC:Views:Home');
+
 const Home = class extends AuthPage {
-// const Home = class extends React.Component {
 
 	constructor(props) {
 		super(props);
