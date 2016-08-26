@@ -10,11 +10,11 @@ test_integration:
     - npm run build
     - npm run create-conf-from-env
     - mv config.json ./build/
+    - ./node_modules/.bin/http-server ./build -p 9080 &
     - git clone git@git.rnd.alterway.fr:aic-documentation/aic_features.git
     - cd aic_features
     - ln -s ../node_modules/
     - npm install --unsafe-perm
-    - ./node_modules/.bin/http-server ../build -p 9080 &
     - ./node_modules/.bin/phantomjs --ignore-ssl-errors=true -w &
     - sleep 1
     - echo ${AIC_SCREENSHOT_PATH}

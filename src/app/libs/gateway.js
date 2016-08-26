@@ -64,7 +64,7 @@ const Gateway = {
 	},
 
 	request(options, obj, extraOptions) {
-		debug(options, obj);
+		debug('request', options, obj, extraOptions);
 		if (options.placeholder) {
 			return options.placeholder();
 		}

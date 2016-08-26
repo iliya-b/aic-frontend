@@ -168,6 +168,44 @@ const GatewayAdapters = {
 			response: backendObject => {
 				return backendObject.properties;
 			}
+		},
+		listImages: {
+			response: backendObject => backendObject.images
+		}
+	},
+	campaign: {
+		list: {
+			response: backendObject => backendObject.campaigns
+		},
+		read: {
+			response: backendObject => backendObject.campaign
+		},
+		create: {
+			request: frontendObject => {
+				return {
+					campaign_name: frontendObject.name, // eslint-disable-line camelcase
+					tests: [{
+						image: frontendObject.images,
+						apks: frontendObject.apks,
+						packages: ['com.zenika.aic.core.libs.test/android.test.InstrumentationTestRunner']
+					}]
+				};
+
+// 				{
+// 	tests: [
+// 		{
+// 		images: [''],
+// 		packages: ['']
+// 		apks: [
+// 			{
+// 			apk_id: 'xxx'
+// 			}
+// 		]
+// 		}
+// 	],
+// 	campaign_name: ''
+// }
+			}
 		}
 	}
 };

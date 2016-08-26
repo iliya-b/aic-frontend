@@ -13,7 +13,8 @@ const menuItems = [
 	{path: '', text: 'APK Manager'},
 	{path: 'camera', text: 'Camera Assets'},
 	{path: 'test', text: 'Test Manager'},
-	{path: 'live', text: 'Live Mode'}
+	{path: 'live', text: 'Live Mode'},
+	{path: 'campaign', text: 'Test Campaigns'}
 ];
 
 let projectId;

@@ -179,11 +179,30 @@ const GatewayRegisters = function () {
 				action: GatewayActions.execStatus,
 				pathname: '/android/{avmId}/exec/{execId}'
 			}, {
+				// TODO: create another namespace for images
 				action: {
 					name: 'listImages',
 					method: 'GET'
 				},
 				pathname: '/images'
+			}
+		]
+	});
+
+	// Test Campaign
+	Gateway.register({
+		namespace: 'campaign',
+		actions: [
+			{
+				action: {name: 'list', method: 'GET'},
+				pathname: '/projects/{projectId}/campaigns'
+			}, {
+				action: {name: 'create', method: 'POST'},
+				pathname: '/projects/{projectId}/campaigns',
+				schema: GatewaySchemas.campaign
+			}, {
+				action: {name: 'read', method: 'GET'},
+				pathname: '/projects/{projectId}/campaigns/{campaignId}'
 			}
 		]
 	});

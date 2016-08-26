@@ -33,17 +33,20 @@ ProjectIcon.ERROR = 'ERROR';
 ProjectIcon.CREATING = 'CREATING';
 ProjectIcon.READY = 'READY';
 ProjectIcon.DELETING = 'DELETING';
+ProjectIcon.QUEUED = 'QUEUED';
 
 project2Status[ProjectIcon.ERROR] = StatusIcon.ERROR;
 project2Status[ProjectIcon.CREATING] = StatusIcon.LOADING;
 project2Status[ProjectIcon.READY] = StatusIcon.SUCCESS;
 project2Status[ProjectIcon.DELETING] = StatusIcon.LOADING;
+project2Status[ProjectIcon.QUEUED] = StatusIcon.QUEUED;
 
 ProjectIcon.STATUS_LIST = [
 	ProjectIcon.ERROR,
 	ProjectIcon.CREATING,
 	ProjectIcon.READY,
-	ProjectIcon.DELETING
+	ProjectIcon.DELETING,
+	ProjectIcon.QUEUED
 ];
 ProjectIcon.SIZE_LIST = StatusIcon.SIZE_LIST;
 

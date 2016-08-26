@@ -82,6 +82,11 @@ const StatusIcon = class extends React.Component {
 				colorAndro = this.context.muiTheme.palette.primary1Color;
 				statusClassName = 'mdi mdi-play';
 				break;
+			case StatusIcon.QUEUED:
+				colorIcon = this.context.muiTheme.palette.disabledColor;
+				colorAndro = this.context.muiTheme.palette.disabledColor;
+				statusClassName = 'mdi mdi-timer';
+				break;
 			default:
 				colorIcon = this.context.muiTheme.palette.accent1Color;
 				colorAndro = this.context.muiTheme.palette.primary1Color;
@@ -217,6 +222,7 @@ StatusIcon.INFO = 'info';
 StatusIcon.SERVERERROR = 'serverError';
 StatusIcon.QUESTION = 'question';
 StatusIcon.START = 'start';
+StatusIcon.QUEUED = 'QUEUED';
 
 StatusIcon.STATUS_LIST = [StatusIcon.DISABLED,
 	StatusIcon.ERROR,
@@ -226,7 +232,8 @@ StatusIcon.STATUS_LIST = [StatusIcon.DISABLED,
 	StatusIcon.INFO,
 	StatusIcon.SERVERERROR,
 	StatusIcon.QUESTION,
-	StatusIcon.START];
+	StatusIcon.START,
+	StatusIcon.QUEUED];
 
 StatusIcon.NORMAL = 'normal';
 StatusIcon.BIG = 'big';

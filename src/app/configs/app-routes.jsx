@@ -27,6 +27,8 @@ import ProjectLiveWrapper from 'app/views/project/live/wrapper';
 import ProjectLiveSession from 'app/views/project/live/session';
 import ProjectLiveList from 'app/views/project/live/list';
 import ProjectCameraAssets from 'app/views/project/camera-assets';
+import ProjectCampaignList from 'app/views/project/campaign/list';
+import ProjectCampaignShow from 'app/views/project/campaign/show';
 
 // Routes
 const AppRoutes = (
@@ -39,6 +41,10 @@ const AppRoutes = (
 				<Route path=":projectId" component={ProjectPage}>
 					<IndexRoute component={ProjectApkManager}/>
 					<Route path="test" component={ProjectTestManager}/>
+					<Route path="campaign" component={ProjectLiveWrapper}>
+						<IndexRoute component={ProjectCampaignList}/>
+						<Route path=":campaignId" component={ProjectCampaignShow}/>
+					</Route>
 					<Route path="live" component={ProjectLiveWrapper}>
 						<IndexRoute component={ProjectLiveList}/>
 						<Route path=":androId" component={ProjectLiveSession}/>

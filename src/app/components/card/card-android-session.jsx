@@ -84,9 +84,10 @@ const CardAndroidSession = props => {
 //			<CardMedia>
 //				<img src={`http://lorempixel.com/600/337/nature/${getRandomInt(0, 10) + 1}/`}/>
 //			</CardMedia>
+//			<Avatar style={styles.avatar} icon={<MachineIcon style={{margin: '0 0 0 2px'}} status={MachineIconStates[props.avm_status]}/>}/>
 	return (
 		<Card className={props.className} style={props.style ? Object.assign(styles.root, props.style) : styles.root}>
-			<Avatar style={styles.avatar} icon={<MachineIcon style={{margin: '0 0 0 2px'}} status={MachineIconStates[props.avm_status]}/>}/>
+
 			<CardTitle className={`spLiveVMTitle spLiveVMTitle${props.index} spLiveVMTitle${props.avm_id}`} title={props.avm_name}/>
 			<CardText style={{paddingTop: 0}}>
 

@@ -225,6 +225,16 @@ const GatewaySchemas = {
 			throttle: {type: 'integer', optional: true},
 			event_count: {type: 'integer'} // eslint-disable-line camelcase
 		}
+	},
+	campaign: {
+		type: 'object'
+		// strict: true,
+		// properties: {
+		// 	images: {type: 'array'}, // eslint-disable-line camelcase
+		// 	apks: {type: 'array'}, // eslint-disable-line camelcase
+		// 	packages: {type: 'array', optional: true}, // eslint-disable-line camelcase
+		// 	campaign_name: {type: 'string'} // eslint-disable-line camelcase
+		// }
 	}
 };
 

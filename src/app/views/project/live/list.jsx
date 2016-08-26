@@ -36,7 +36,8 @@ const LiveList = class extends React.Component {
 			}
 			debug('changing state', this.state.live ? this.state.live.status : '', newState);
 			if (newState.live.status === 'LIVE_STATUS_INITIALIZED') {
-				PollingActions.start('liveList');
+				// PollingActions.start('liveList');
+				LiveActions.list();
 			}
 
 			debug('ids', this.state.live && this.state.live.startFailedUuid ? this.state.live.startFailedUuid : 'no state', newState.live && newState.live.startFailedUuid ? newState.live.startFailedUuid : 'no new', snackInfo);
@@ -71,7 +72,7 @@ const LiveList = class extends React.Component {
 			}, null);
 			const requestUuid = uuid();
 			LiveActions.start({variant, projectId, version, uuid: requestUuid}, {includeRequest: true});
-			PollingActions.start('liveList');
+			// PollingActions.start('liveList');
 		};
 
 		this.onEnterSession = avmId => {
@@ -81,7 +82,7 @@ const LiveList = class extends React.Component {
 
 		this.onStopSession = avmId => {
 			LiveActions.stop({avmId}, {includeRequest: true});
-			PollingActions.start('liveList');
+			// PollingActions.start('liveList');
 		};
 
 		this.handleSnackbarClose = () => {
@@ -117,7 +118,7 @@ const LiveList = class extends React.Component {
 		config.projectId = projectId;
 		config.uuid = uuid();
 		LiveActions.start(config, {includeRequest: true});
-		PollingActions.start('liveList');
+		// PollingActions.start('liveList');
 	}
 
 	render() {
@@ -186,7 +187,7 @@ const LiveList = class extends React.Component {
 	componentWillUnmount() {
 		// Subscribe and unsubscribe because we don't want to use the mixins
 		this.unsubscribe();
-		PollingActions.stop('liveList');
+		// PollingActions.stop('liveList');
 	}
 
 };

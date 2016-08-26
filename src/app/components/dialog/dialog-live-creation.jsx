@@ -8,7 +8,7 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 
-const debug = require('debug')('AiC:Components:Panel:PanelLiveCreation');
+const debug = require('debug')('AiC:Components:Dialog:DialogLiveCreation');
 
 // References:
 // https://developer.android.com/about/dashboards/index.html
