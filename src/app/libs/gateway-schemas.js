@@ -26,7 +26,7 @@ const GatewaySchemas = {
 			image: {type: 'string'},
 			project_id: {type: 'string'}, // eslint-disable-line camelcase
 			avm_name: {type: 'string'}, // eslint-disable-line camelcase
-			configuration: {
+			hwconfig: {
 				type: 'object',
 				strict: true,
 				properties: {

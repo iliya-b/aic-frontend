@@ -184,11 +184,13 @@ const GatewayAdapters = {
 			request: frontendObject => {
 				return {
 					campaign_name: frontendObject.name, // eslint-disable-line camelcase
-					tests: [{
-						image: frontendObject.images,
-						apks: frontendObject.apks,
-						packages: ['com.zenika.aic.core.libs.test/android.test.InstrumentationTestRunner']
-					}]
+					tests: frontendObject.images.map(image => {
+						return {
+							image,
+							apks: frontendObject.apks,
+							packages: ['com.zenika.aic.core.libs.test/android.test.InstrumentationTestRunner']
+						};
+					})
 				};
 
 // 				{

@@ -1,0 +1,4 @@
+$ adb shell am instrument -e perf true -r -w com.example.android.apis/.app.LocalSampleInstrumentation
+INSTRUMENTATION_RESULT: shortMsg=java.lang.NullPointerException
+INSTRUMENTATION_RESULT: longMsg=java.lang.NullPointerException
+INSTRUMENTATION_CODE: 0

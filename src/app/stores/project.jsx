@@ -94,12 +94,12 @@ const ProjectStore = Reflux.createStore({
 	},
 
 	rescheduleList() {
-		const statusThatNeedReload = ['DELETING', 'CREATING'];
+		const statusThatNeedReload = ['DELETING', 'CREATING', 'QUEUED'];
 		const shouldListAgain = this.state.project.list.reduce((p, c) => {
 			return !p && statusThatNeedReload.indexOf(c.status) !== -1 ? true : p;
 		}, false);
 		if (shouldListAgain) {
-			setTimeout(ProjectActions.list, 1000);
+			setTimeout(ProjectActions.list, 2000);
 		}
 	}
 });

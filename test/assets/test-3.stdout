@@ -1,0 +1,12 @@
+$ adb shell am instrument -e perf true -r -w instrumentation:com.example.android.apis/.app.LocalSampleInstrumentation
+INSTRUMENTATION_STATUS: id=ActivityManagerService
+INSTRUMENTATION_STATUS: Error=Unable to find instrumentation info for: ComponentInfo{instrumentation:com.example.android.apis/instrumentation:com.example.android.apis.app.LocalSampleInstrumentation}
+INSTRUMENTATION_STATUS_CODE: -1
+android.util.AndroidException: INSTRUMENTATION_FAILED: instrumentation:com.example.android.apis/instrumentation:com.example.android.apis.app.LocalSampleInstrumentation
+	at com.android.commands.am.Am.runInstrument(Am.java:865)
+	at com.android.commands.am.Am.onRun(Am.java:282)
+	at com.android.internal.os.BaseCommand.run(BaseCommand.java:47)
+	at com.android.commands.am.Am.main(Am.java:76)
+	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:243)
+	at dalvik.system.NativeStart.main(Native Method)

@@ -1,6 +1,7 @@
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 [![build status](https://git.rnd.alterway.fr/aic_ats/frontend/badges/master/build.svg)](https://git.rnd.alterway.fr/aic_ats/frontend/commits/master)
 [![coverage report](https://git.rnd.alterway.fr/aic_ats/frontend/badges/master/coverage.svg)](https://git.rnd.alterway.fr/aic_ats/frontend/commits/master)
+[![ava runner](https://img.shields.io/badge/runner-ava-4d88e3.svg)](https://github.com/avajs/ava)
 
 ## Cloning the project
 
