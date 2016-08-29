@@ -16,7 +16,7 @@ To install only dependencies needed by the build (exclude packages
 for testing) use either `npm install --production`, either
 `NODE_ENV=production npm install`, either &lt;insert here another way
 to make node in production environment&gt;.
-Then run the `npm build`, which will create `./build/` folder.
+Then run the `npm run build`, which will create `./build/` folder.
 
 ## Development installation
 
