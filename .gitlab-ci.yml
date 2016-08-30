@@ -33,9 +33,14 @@ job_deploy_dev:
   stage: deploy_dev
   script:
     - echo "deploying dev"
-    - ssh aicdeploy@$AIC_DEV_HOST "rm -rf ~/aic/services/artifacts/frontend/*"
-    - scp -r build/* aicdeploy@$AIC_DEV_HOST:aic/services/artifacts/frontend/
-    - ssh aicdeploy@$AIC_DEV_HOST "ln -s ~/aic/services/frontend-config.json ~/aic/services/artifacts/frontend/config.json"
+    # Save previous deployment
+    - PREVIOUS_DEPLOY_DIR=$(ssh aicdeploy@$AIC_DEV_HOST "readlink -f ~/aic/services/artifacts/frontend")
+    # Send new build
+    - scp -r build/ aicdeploy@$AIC_DEV_HOST:aic/services/artifacts/frontend_${CI_BUILD_REF_NAME}_${CI_BUILD_REF}
+    # Recreate link to new build
+    - ssh aicdeploy@$AIC_DEV_HOST "rm -rf ~/aic/services/artifacts/frontend; ln -s ~/aic/services/artifacts/frontend_${CI_BUILD_REF_NAME}_${CI_BUILD_REF} ~/aic/services/artifacts/frontend"
+    # Remove previous deployment
+    - ssh aicdeploy@$AIC_DEV_HOST "rm -rf $PREVIOUS_DEPLOY_DIR"
   only:
     - dev
     - master
@@ -76,7 +81,11 @@ job_release:
 job_deploy_prod:
   stage: deploy_prod_&_release
   script:
-    - echo "tbd"
+    - echo "deploying prod"
+    # - scp -r build/* aicdeploy@$AIC_PROD_HOST:aic/services/artifacts/frontend/
+    # - ssh aicdeploy@$AIC_PROD_HOST "rm -rf ~/aic/services/artifacts/frontend/*"
+
+    # - ssh aicdeploy@$AIC_PROD_HOST "ln -s ~/aic/services/frontend-config.json ~/aic/services/artifacts/frontend/config.json"
   only:
     - master
 
