@@ -47,15 +47,11 @@ job_test_integration:
     - npm --version
     - git clone git@git.rnd.alterway.fr:aic-documentation/aic_features.git
     - cd aic_features
-    - ln -s ../node_modules/
     - npm install --unsafe-perm
     - npm run start-phantomjs &
     - sleep 1
     - echo ${AIC_SCREENSHOT_PATH}
     - AIC_FRONTEND_HOST=${AIC_DEV_HOST} ./run-tests.sh
-  # cache:
-  #   paths:
-  #     - node_modules
   artifacts:
     expire_in: 1 day
     paths:
