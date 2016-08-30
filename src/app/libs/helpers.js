@@ -30,7 +30,7 @@ const moveCaretToEnd = el => {
 module.exports = {
 	camelize: camelCase,
 	capitalize,
-	capimelize: str => capitalize(camelCase(str)),
+	capimelize: str => capitalize(camelCase(capitalize(str))),
 	template: (templateStr, obj) => {
 		const compiled = template(templateStr);
 		return compiled(obj);

@@ -14,7 +14,6 @@ const DialogConfirmDelete = props => {
 			key="confirmDeleteDialogActionConfirm"
 			label="Confirm"
 			title="Confirm"
-			href="#"
 			secondary
 			onClick={props.onConfirm}
 			/>,
@@ -22,7 +21,6 @@ const DialogConfirmDelete = props => {
 			key="confirmDeleteDialogActionCancel"
 			label="Cancel"
 			title="Cancel"
-			href="#"
 			secondary
 			onClick={props.onCancel}
 			/>
