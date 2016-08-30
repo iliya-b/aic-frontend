@@ -30,14 +30,13 @@ job_test_unit:
       - node_modules
 
 job_deploy_dev:
-  image: ubuntu
   stage: deploy_dev
   script:
     - echo "deploying dev"
     - scp -r build aicdeploy@$AIC_DEV_HOST:aic/services/artifacts/frontend
     - ssh aicdeploy@$AIC_DEV_HOST
     - ln -s ~/aic/services/frontend-config.json ~/aic/services/artifacts/frontend/config.json
-   only:
+  only:
     - dev
     - master
 
