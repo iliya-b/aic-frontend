@@ -20,9 +20,9 @@ const PanelCampaignShow = props => {
 
 PanelCampaignShow.propTypes = {
 	progress: React.PropTypes.number,
-	campaign_id: React.PropTypes.string,
-	campaign_name: React.PropTypes.string,
-	campaign_status: React.PropTypes.string
+	campaign_id: React.PropTypes.string, // eslint-disable-line camelcase
+	campaign_name: React.PropTypes.string, // eslint-disable-line camelcase
+	campaign_status: React.PropTypes.string // eslint-disable-line camelcase
 };
 
 module.exports = PanelCampaignShow;

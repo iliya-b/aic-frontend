@@ -5,7 +5,7 @@ import React from 'react';
 import Snackbar from 'material-ui/Snackbar';
 import LiveStore from 'app/stores/live';
 import LiveActions from 'app/actions/live';
-import PollingActions from 'app/actions/polling';
+// import PollingActions from 'app/actions/polling';
 import LiveMachineList from 'app/components/project/live-machine-list';
 import ToolbarLive from 'app/components/toolbar/toolbar-live';
 import {variants} from 'app/configs/app-constants';

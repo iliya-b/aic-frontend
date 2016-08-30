@@ -47,7 +47,7 @@ test(`Can parse file test-1.stdout`, t => {
 	resultStr = resultStr.substring(resultStr.indexOf('\n') + 1);
 	// console.log(resultStr);
 	const resultObj = adbTestResultParser(resultStr);
-	console.log(resultObj);
+	// console.log(resultObj);
 	t.is(typeof resultObj, 'object');
 	t.is(resultObj.testCases.length, 2);
 	t.is(typeof resultObj.timeMilliseconds, 'number');
@@ -61,7 +61,7 @@ test(`Can parse file test-2.stdout`, t => {
 	resultStr = resultStr.substring(resultStr.indexOf('\n') + 1);
 	// console.log(resultStr);
 	const resultObj = adbTestResultParser(resultStr);
-	console.log(resultObj);
+	// console.log(resultObj);
 	t.is(typeof resultObj, 'object');
 	t.is(resultObj.testCases.length, 2);
 	t.is(typeof resultObj.timeMilliseconds, 'number');
@@ -75,7 +75,7 @@ test(`Can parse file test-3.stdout`, t => {
 	resultStr = resultStr.substring(resultStr.indexOf('\n') + 1);
 	// console.log(resultStr);
 	const resultObj = adbTestResultParser(resultStr);
-	console.log(resultObj);
+	// console.log(resultObj);
 	t.is(typeof resultObj, 'object');
 	t.is(resultObj.testCases.length, 1);
 	t.is(resultObj.timeMilliseconds, null);
@@ -88,7 +88,7 @@ test(`Can parse file test-4.stdout`, t => {
 	resultStr = resultStr.substring(resultStr.indexOf('\n') + 1);
 	// console.log(resultStr);
 	const resultObj = adbTestResultParser(resultStr);
-	console.log(resultObj);
+	// console.log(resultObj);
 	t.is(typeof resultObj, 'object');
 	t.is(resultObj.testCases.length, 0);
 	t.is(resultObj.timeMilliseconds, null);
@@ -101,7 +101,7 @@ test(`Can parse file test-5.stdout`, t => {
 	resultStr = resultStr.substring(resultStr.indexOf('\n') + 1);
 	// console.log(resultStr);
 	const resultObj = adbTestResultParser(resultStr);
-	console.log(resultObj);
+	// console.log(resultObj);
 	t.is(typeof resultObj, 'object');
 	t.is(resultObj.testCases.length, 2);
 	t.is(typeof resultObj.timeMilliseconds, 'number');

@@ -9,11 +9,11 @@ import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import CardText from 'material-ui/Card/CardText';
 import Divider from 'material-ui/Divider';
-import Avatar from 'material-ui/Avatar';
+// import Avatar from 'material-ui/Avatar';
 // const debug = require('debug')('AiC:Components:Card:CardAndroidSession');
 
 // APP
-import MachineIcon from 'app/components/project/machine-icon';
+// import MachineIcon from 'app/components/project/machine-icon';
 import VariantIcon from 'app/components/icon/variant-icon';
 import {variants} from 'app/configs/app-constants';
 
@@ -64,12 +64,12 @@ const styles = {
 // 		statusIcon[MachineCard.VMSTATE.DELETING] = MachineIcon.LOADING;
 // 		statusIcon[MachineCard.VMSTATE.FAILED] = MachineIcon.ERROR;
 
-const MachineIconStates = {
-	READY: MachineIcon.SUCCESS,
-	CREATING: MachineIcon.LOADING,
-	FAILED: MachineIcon.ERROR,
-	DELETING: MachineIcon.LOADING
-};
+// const MachineIconStates = {
+// 	READY: MachineIcon.SUCCESS,
+// 	CREATING: MachineIcon.LOADING,
+// 	FAILED: MachineIcon.ERROR,
+// 	DELETING: MachineIcon.LOADING
+// };
 
 // chart-line timer-sand information
 
