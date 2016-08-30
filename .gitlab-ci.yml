@@ -14,7 +14,8 @@ job_build:
     - npm run build
   artifacts:
     expire_in: 1 day
-    - build
+    paths:
+      - build
 
 job_test_unit:
   image: node:onbuild
