@@ -33,7 +33,8 @@ job_deploy_dev:
   stage: deploy_dev
   script:
     - echo "deploying dev"
-    - scp -r build/ aicdeploy@$AIC_DEV_HOST:aic/services/artifacts/frontend/
+    - ssh aicdeploy@$AIC_DEV_HOST "rm -rf ~/aic/services/artifacts/frontend/*"
+    - scp -r build/* aicdeploy@$AIC_DEV_HOST:aic/services/artifacts/frontend/
     - ssh aicdeploy@$AIC_DEV_HOST "ln -s ~/aic/services/frontend-config.json ~/aic/services/artifacts/frontend/config.json"
   only:
     - dev
