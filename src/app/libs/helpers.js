@@ -1,6 +1,7 @@
 import {
 	camelCase,
 	capitalize,
+	upperFirst,
 	template,
 	templateSettings,
 	merge
@@ -30,7 +31,7 @@ const moveCaretToEnd = el => {
 module.exports = {
 	camelize: camelCase,
 	capitalize,
-	capimelize: str => capitalize(camelCase(capitalize(str))),
+	capimelize: str => upperFirst(camelCase(capitalize(str))),
 	template: (templateStr, obj) => {
 		const compiled = template(templateStr);
 		return compiled(obj);

@@ -76,6 +76,19 @@ const CameraAssets = class extends React.Component {
 			case 'deleteCompleted':
 				CameraActions.list({projectId});
 				break;
+			case 'listCompleted':
+				{
+					const statusToLoad = ['QUEUED', 'DELETING', 'UPLOADING'];
+					const shouldListAgain = newState.camera.files.reduce((p, c) => {
+						return !p && statusToLoad.indexOf(c.status) !== -1 ? true : p;
+					}, false);
+					if (shouldListAgain) {
+						setTimeout(() => {
+							CameraActions.list({projectId});
+						}, 1000);
+					}
+					break;
+				}
 			default:
 				break;
 		}

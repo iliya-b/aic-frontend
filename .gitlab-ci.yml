@@ -11,7 +11,7 @@ job_build:
   script:
     - node --version
     - npm --version
-    - npm install --unsafe-perm --production
+    - npm install --unsafe-perm --production --quiet
     - npm run build
   artifacts:
     expire_in: 1 day
@@ -23,7 +23,7 @@ job_test_unit:
   script:
     - node --version
     - npm --version
-    - npm install --unsafe-perm
+    - npm install --unsafe-perm --quiet
     - npm test
   cache:
     paths:
@@ -54,7 +54,7 @@ job_test_integration:
     - npm --version
     - git clone git@git.rnd.alterway.fr:aic-documentation/aic_features.git
     - cd aic_features
-    - npm install --unsafe-perm
+    - npm install --unsafe-perm --quiet
     - npm run start-phantomjs &
     - sleep 1
     - echo ${AIC_SCREENSHOT_PATH}

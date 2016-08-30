@@ -76,6 +76,19 @@ const APKManager = class extends React.Component {
 			case 'deleteCompleted':
 				APKActions.list({projectId});
 				break;
+			case 'listCompleted':
+				{
+					const statusToLoad = ['QUEUED', 'DELETING'];
+					const shouldListAgain = newState.apk.apks.reduce((p, c) => {
+						return !p && statusToLoad.indexOf(c.status) !== -1 ? true : p;
+					}, false);
+					if (shouldListAgain) {
+						setTimeout(() => {
+							APKActions.list({projectId});
+						}, 1000);
+					}
+					break;
+				}
 			default:
 				break;
 		}
