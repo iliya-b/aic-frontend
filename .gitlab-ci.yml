@@ -49,16 +49,17 @@ job_deploy_dev:
 
 job_test_integration:
   stage: test_integration
+  services:
+    - karine/docker-chromedriver
   script:
     - node --version
     - npm --version
     - git clone git@git.rnd.alterway.fr:aic-documentation/aic_features.git
     - cd aic_features
     - npm install --unsafe-perm --quiet
-    - npm run start-phantomjs &
-    - sleep 1
-    - echo ${AIC_SCREENSHOT_PATH}
-    - AIC_FRONTEND_HOST=https://${AIC_DEV_HOST}:8443/ ./run-tests.sh
+    - echo "Saving screenshots at ${AIC_SCREENSHOT_PATH}"
+    - echo "Running tests at https://${AIC_DEV_HOST}:8443/"
+    - AIC_WB_HOST=karine__docker-chromedriver AIC_FRONTEND_HOST=https://${AIC_DEV_HOST}:8443/ ./run-tests.sh
   artifacts:
     expire_in: 1 day
     paths:
