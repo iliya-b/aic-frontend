@@ -108,14 +108,14 @@ const GatewayRegisters = function () {
 		actions: [
 			{
 				action: GatewayActions.list,
-				pathname: '/projects/{projectId}/test'
+				pathname: '/projects/{projectId}/testsources'
 			}, {
 				action: GatewayActions.upload,
-				pathname: '/projects/{projectId}/test',
+				pathname: '/projects/{projectId}/testsources',
 				allowMany: true
 			}, {
 				action: GatewayActions.delete,
-				pathname: '/projects/{projectId}/test/{testId}',
+				pathname: '/projects/{projectId}/testsources/{testId}',
 				allowMany: true
 			}
 		]
@@ -146,7 +146,7 @@ const GatewayRegisters = function () {
 		actions: [
 			{
 				action: GatewayActions.list,
-				pathname: '/android/{avmId}/apk'
+				pathname: '/android'
 			}, {
 				action: GatewayActions.create,
 				pathname: '/android',

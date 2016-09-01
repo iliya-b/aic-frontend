@@ -130,6 +130,7 @@ const TestManager = class extends React.Component {
 					list={this.state.test.tests}
 					selected={this.state.selectFileIndexes}
 					type="Tests"
+					key="1"
 					/>
 			);
 		} else if (this.state.test && this.state.test.status === 'listCompleted') {

@@ -59,11 +59,13 @@ const GatewayAdapters = {
 	tests: {
 		list: {
 			response: data => {
-				return data.tests.map(test => {
+				return data.testsources.map(test => {
 					return {
-						id: test.file_id,
+						apk_id: test.apk_id,
 						filename: test.filename,
-						status: test.status
+						project_id: test.project_id,
+						status: test.status,
+						id: test.testsource_id
 					};
 				});
 			}
