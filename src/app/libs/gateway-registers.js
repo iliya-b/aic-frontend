@@ -100,14 +100,14 @@ const GatewayRegisters = function () {
 		actions: [
 			{
 				action: GatewayActions.list,
-				pathname: '/projects/{projectId}/test'
+				pathname: '/projects/{projectId}/testsources'
 			}, {
 				action: GatewayActions.upload,
-				pathname: '/projects/{projectId}/test',
+				pathname: '/projects/{projectId}/testsources',
 				allowMany: true
 			}, {
 				action: GatewayActions.delete,
-				pathname: '/projects/{projectId}/test/{testId}',
+				pathname: '/projects/{projectId}/testsources/{testId}',
 				allowMany: true
 			}
 		]

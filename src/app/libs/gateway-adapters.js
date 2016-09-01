@@ -60,11 +60,13 @@ const GatewayAdapters = {
 	tests: {
 		list: {
 			response: data => {
-				return data.tests.map(test => {
+				return data.testsources.map(test => {
 					return {
-						id: test.file_id,
+						apk_id: test.apk_id, // eslint-disable-line camelcase
 						filename: test.filename,
-						status: test.status
+						project_id: test.project_id, // eslint-disable-line camelcase
+						status: test.status,
+						id: test.testsource_id
 					};
 				});
 			}

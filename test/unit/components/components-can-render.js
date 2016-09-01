@@ -42,7 +42,7 @@ const componentsReq = {
 	LiveToolbox: require('app/components/project/live-toolbox'),
 	MachineCardLive: require('app/components/project/machine-card-live'),
 	MachineCard: require('app/components/project/machine-card'),
-	MachineIcon: require('app/components/project/machine-icon'),
+	MachineIcon: require('app/components/icon/machine-icon'),
 	TestResultsBox: require('app/components/project/test-results-box'),
 	// Shared
 	// AppUtils: require('app/components/shared/app-utils'), // Not a component but a utility module
@@ -52,7 +52,7 @@ const componentsReq = {
 	CodeBox: require('app/components/shared/code-box'),
 	Dropzone: require('app/components/shared/dropzone'),
 	FullWidthSection: require('app/components/shared/full-width-section'),
-	InfoBox: require('app/components/shared/info-box'),
+	PanelInfo: require('app/components/panel/panel-info'),
 	LogBoxRow: require('app/components/shared/log-box-row'),
 	LogBox: require('app/components/shared/log-box'),
 	Nl2br: require('app/components/shared/nl2br'),

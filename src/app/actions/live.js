@@ -17,6 +17,7 @@ const LiveActions = Reflux.createActions({
 	monkeyRunner: {asyncResult: true},
 	setSensor: {asyncResult: true},
 	installAPK: {asyncResult: true},
+	runTest: {asyncResult: true},
 
 	setProjectId: {asyncResult: true},
 	loadState: {},
@@ -41,6 +42,7 @@ LiveActions.monkeyRunner.listenAndPromise(Gateway.live.monkeyRunner);
 LiveActions.setSensor.listenAndPromise(Gateway.live.sensor);
 LiveActions.installAPK.listenAndPromise(Gateway.live.installAPK);
 LiveActions.listImages.listenAndPromise(Gateway.live.listImages);
+LiveActions.runTest.listenAndPromise(Gateway.live.runTest);
 
 // noVNC & audio related
 LiveActions.setProjectId.listenAndPromise(NoVNCAdapter.loadUtil);
