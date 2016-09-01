@@ -4,7 +4,8 @@ import React from 'react';
 import Card from 'material-ui/Card';
 import CardText from 'material-ui/Card/CardText';
 import CardHeader from 'material-ui/Card/CardHeader';
-import MachineIcon from 'app/components/project/machine-icon';
+import MachineIcon from 'app/components/icon/machine-icon';
+import {getVmStatus} from 'app/libs/helpers';
 
 const MachineCard = class extends React.Component {
 
@@ -23,19 +24,13 @@ const MachineCard = class extends React.Component {
 			}
 		};
 
-		const statusIcon = {};
-		statusIcon[MachineCard.VMSTATE.READY] = MachineIcon.SUCCESS;
-		statusIcon[MachineCard.VMSTATE.CREATING] = MachineIcon.LOADING;
-		statusIcon[MachineCard.VMSTATE.DELETING] = MachineIcon.LOADING;
-		statusIcon[MachineCard.VMSTATE.FAILED] = MachineIcon.ERROR;
-
 		const statusMessage = {};
 		statusMessage[MachineCard.VMSTATE.READY] = 'success';
 		statusMessage[MachineCard.VMSTATE.CREATING] = 'creating';
 		statusMessage[MachineCard.VMSTATE.FAILED] = 'error';
 		statusMessage[MachineCard.VMSTATE.DELETING] = 'deleting';
 
-		const machineState = <MachineIcon status={statusIcon[avm_status]}/>;
+		const machineState = <MachineIcon status={getVmStatus(avm_status)}/>; // eslint-disable-line camelcase
 
 		/* eslint-disable camelcase */
 		const infoTests = (<div style={styles.info}>

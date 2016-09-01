@@ -1,6 +1,5 @@
 'use strict';
 
-// Vendor
 import React from 'react';
 import Card from 'material-ui/Card/Card';
 import CardActions from 'material-ui/Card/CardActions';
@@ -9,13 +8,13 @@ import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import CardText from 'material-ui/Card/CardText';
 import Divider from 'material-ui/Divider';
-// import Avatar from 'material-ui/Avatar';
-// const debug = require('debug')('AiC:Components:Card:CardAndroidSession');
-
-// APP
-// import MachineIcon from 'app/components/project/machine-icon';
+import Avatar from 'material-ui/Avatar';
+import MachineIcon from 'app/components/icon/machine-icon';
 import VariantIcon from 'app/components/icon/variant-icon';
 import {variants} from 'app/configs/app-constants';
+import {getVmStatus} from 'app/libs/helpers';
+
+// const debug = require('debug')('AiC:Components:Card:CardAndroidSession');
 
 const styles = {
 	iconAction: {
@@ -35,7 +34,7 @@ const styles = {
 	avatar: {
 		backgroundColor: 'transparent',
 		// backgroundColor: 'rgba(188, 188, 188, 0.15)',
-		margin: '16px 16px 0 16px',
+		margin: '4px 15px 0px 6px',
 		float: 'left'
 	},
 	textInfo: {
@@ -52,27 +51,6 @@ const styles = {
 	}
 };
 
-// const MachineIconStates = [MachineIcon.SUCCESS, MachineIcon.LOADING, MachineIcon.ERROR];
-// MachineCard.VMSTATE = {};
-// MachineCard.VMSTATE.READY = 'READY';
-// MachineCard.VMSTATE.CREATING = 'CREATING';
-// MachineCard.VMSTATE.FAILED = 'FAILED';
-// MachineCard.VMSTATE.DELETING = 'DELETING';
-// 	const statusIcon = {};
-// 		statusIcon[MachineCard.VMSTATE.READY] = MachineIcon.SUCCESS;
-// 		statusIcon[MachineCard.VMSTATE.CREATING] = MachineIcon.LOADING;
-// 		statusIcon[MachineCard.VMSTATE.DELETING] = MachineIcon.LOADING;
-// 		statusIcon[MachineCard.VMSTATE.FAILED] = MachineIcon.ERROR;
-
-// const MachineIconStates = {
-// 	READY: MachineIcon.SUCCESS,
-// 	CREATING: MachineIcon.LOADING,
-// 	FAILED: MachineIcon.ERROR,
-// 	DELETING: MachineIcon.LOADING
-// };
-
-// chart-line timer-sand information
-
 function getVariantById(variantId) {
 	return variants.reduce((p, v) => {
 		return p || v.id !== variantId ? p : v;
@@ -84,10 +62,9 @@ const CardAndroidSession = props => {
 //			<CardMedia>
 //				<img src={`http://lorempixel.com/600/337/nature/${getRandomInt(0, 10) + 1}/`}/>
 //			</CardMedia>
-//			<Avatar style={styles.avatar} icon={<MachineIcon style={{margin: '0 0 0 2px'}} status={MachineIconStates[props.avm_status]}/>}/>
 	return (
 		<Card className={props.className} style={props.style ? Object.assign(styles.root, props.style) : styles.root}>
-
+			<Avatar style={styles.avatar} icon={<MachineIcon style={{margin: '0 0 0 2px'}} status={getVmStatus(props.avm_status)}/>}/>
 			<CardTitle className={`spLiveVMTitle spLiveVMTitle${props.index} spLiveVMTitle${props.avm_id}`} title={props.avm_name}/>
 			<CardText style={{paddingTop: 0}}>
 

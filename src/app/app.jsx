@@ -1,12 +1,11 @@
 /* global window, document */
 'use strict';
 
-// Vendor
+// TODO: polyfill for browser compatibility
+// import 'babel-polyfill';
 import ReactDOM from 'react-dom';
 import Reflux from 'reflux';
 import refluxPromise from 'reflux-promise';
-
-// APP
 import gatewayRegisters from 'app/libs/gateway-registers';
 import PollingActions from 'app/actions/polling';
 
@@ -30,19 +29,6 @@ import PollingActions from 'app/actions/polling';
 	// Check this repo:
 	// https://github.com/zilverline/react-tap-event-plugin
 	injectTapEventPlugin();
-
-	// TODO: remove polyfills, there are only here so the integration
-	// tests can be run in phantomjs.
-	// Promise polyfill
-	// Phantomjs does not implement (yet) Promise
-	// https://github.com/ariya/phantomjs/issues/12401
-	if (!window.Promise) {
-		window.Promise = require('promise-polyfill');
-	}
-	// Object.assign polyfill
-	// Phantomjs was having TypeError with Object.assign
-	// https://github.com/ariya/phantomjs/issues/14506
-	require('es6-object-assign').polyfill();
 
 	// Uses the user agent's Promise implementation
 	Reflux.use(refluxPromise(window.Promise));

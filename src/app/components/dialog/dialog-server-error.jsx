@@ -1,14 +1,17 @@
 'use strict';
 
-// Vendor
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-
-// APP
-import InfoBox from 'app/components/shared/info-box';
+import PanelInfo from 'app/components/panel/panel-info';
 
 const DialogServerError = props => {
+	const {
+		open,
+		onRequestClose,
+		message,
+		...others
+	} = props;
 	const actionsButtons = [
 		<FlatButton
 			key="serverErrorDialogActionClose"
@@ -16,25 +19,27 @@ const DialogServerError = props => {
 			title="Close"
 			href="#"
 			secondary
-			onClick={props.onRequestClose}
+			onClick={onRequestClose}
 			/>
 	];
 
 	return (
-		<Dialog modal title="Server Error" actions={actionsButtons} {...props}>
-			<InfoBox boxType={InfoBox.SERVERERROR} showIcon zDepth={0} styleType={InfoBox.STYLE_XBIG}>{props.message}</InfoBox>
+		<Dialog open={open} modal title="Server Error" actions={actionsButtons} {...others}>
+			<PanelInfo status={PanelInfo.FIRE} showIcon zDepth={0} size={PanelInfo.BIGGER}>{message}</PanelInfo>
 		</Dialog>
 		);
 };
 
-DialogServerError.propTypes = {
-	open: React.PropTypes.bool.isRequired,
-	onRequestClose: React.PropTypes.func.isRequired,
-	message: React.PropTypes.string
+DialogServerError.defaultProps = {
+	open: true,
+	onRequestClose: () => {},
+	message: 'Something went wrong. Please contact service administration.'
 };
 
-DialogServerError.defaultProps = {
-	message: 'Something went wrong. Please contact service administration.'
+DialogServerError.propTypes = {
+	open: React.PropTypes.bool,
+	onRequestClose: React.PropTypes.func,
+	message: React.PropTypes.string
 };
 
 module.exports = DialogServerError;

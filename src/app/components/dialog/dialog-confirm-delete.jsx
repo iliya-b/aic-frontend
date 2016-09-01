@@ -1,12 +1,9 @@
 'use strict';
 
-// Vendor
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-
-// APP
-import InfoBox from 'app/components/shared/info-box';
+import PanelInfo from 'app/components/panel/panel-info';
 
 const DialogConfirmDelete = props => {
 	const actionsButtons = [
@@ -27,9 +24,17 @@ const DialogConfirmDelete = props => {
 	];
 	return (
 		<Dialog modal title="Confirm deletion" actions={actionsButtons} {...props}>
-			<InfoBox boxType={InfoBox.WARNING} showIcon zDepth={0} styleType={InfoBox.STYLE_XBIG}>Are you sure to delete{props.deleteItemName}?</InfoBox>
+			<PanelInfo status={PanelInfo.WARNING} showIcon zDepth={0} size={PanelInfo.BIGGER}>Are you sure to delete{props.deleteItemName}?</PanelInfo>
 		</Dialog>
 		);
+};
+
+DialogConfirmDelete.defaultProps = {
+	open: true,
+	deleteItemName: '',
+	onRequestClose: () => {},
+	onCancel: () => {},
+	onConfirm: () => {}
 };
 
 DialogConfirmDelete.propTypes = {

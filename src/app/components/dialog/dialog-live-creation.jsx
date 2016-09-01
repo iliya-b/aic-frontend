@@ -202,7 +202,9 @@ DialogLiveCreation.contextTypes = {
 };
 
 DialogLiveCreation.defaultProps = {
-	open: true
+	open: true,
+	onCancel: () => {},
+	onStart: () => {}
 };
 
 DialogLiveCreation.propTypes = {

@@ -30,7 +30,6 @@ import BoxStatus from 'app/components/project/box-status';
 import TestResultsBox from 'app/components/project/test-results-box';
 import MachineCardLive from 'app/components/project/machine-card-live';
 import MachineCard from 'app/components/project/machine-card';
-import MachineIcon from 'app/components/project/machine-icon';
 import LiveToolbox from 'app/components/project/live-toolbox';
 
 import SessionEndedDialog from 'app/components/dialog/dialog-session-ended';
@@ -38,7 +37,6 @@ import SessionEndedDialog from 'app/components/dialog/dialog-session-ended';
 import TableFiles from 'app/components/table/table-files';
 
 import AppUtils from 'app/components/shared/app-utils';
-import InfoBox from 'app/components/shared/info-box';
 import AvatarProgress from 'app/components/shared/avatar-progress';
 import LogBox from 'app/components/shared/log-box';
 import LogBoxRow from 'app/components/shared/log-box-row';
@@ -273,29 +271,6 @@ const ThemesPage = class extends React.Component {
 			return <MachineCardLive {...currentValue} key={index}/>;
 		});
 
-		const infoStylesTypes = [InfoBox.STYLE_XBIG, InfoBox.STYLE_BIG, ''];
-		const infoBoxesTypes = [InfoBox.SERVERERROR, InfoBox.ERROR, InfoBox.SUCCESS, InfoBox.LOADING, InfoBox.WARNING, InfoBox.INFO, InfoBox.DISABLED, ''];
-		const infoShowIcon = [true, false];
-
-		let infoValues = infoShowIcon.map(showIcon => {
-			return Reflect.apply([].concat, [], infoStylesTypes.map(styleType => {
-				return infoBoxesTypes.map(boxType => {
-					return {
-						children: `${boxType} message.`,
-						boxType,
-						styleType,
-						showIcon
-					};
-				});
-			}));
-		});
-
-		infoValues = Reflect.apply([].concat, [], infoValues);
-
-		const infoBoxes = infoValues.map((infoProps, infoIndex) => {
-			return <InfoBox style={{margin: '10px'}} key={infoIndex} {...infoProps}/>;
-		});
-
 		const apkList = [
 			{
 				id: 'abc',
@@ -316,32 +291,6 @@ const ThemesPage = class extends React.Component {
 		const avmInfo3 = {avm_id: 'yyy2', avm_novnc_host: '10.50.0.86', avm_novnc_port: 19623, avm_owner: 'karine', avm_status: 'READY', image: 'lollipop', index: 1, project_id: '0602b27748484b249244ab471a9142d7', stack_name: 'karine-cfaamg4e', ts_created: '2016-03-29T12:25:10.687575'}; // eslint-disable-line camelcase
 
 		const packageList = ['package1', 'package1', 'package1', 'package1 long name file pack', 'package1', 'package1', 'package1'];
-
-		const androidIconsSizes = ['', 'bigIcon', 'xbigIcon'];
-		const androidIconsStatus = [MachineIcon.DISABLED,
-			MachineIcon.ERROR,
-			MachineIcon.LOADING,
-			MachineIcon.SUCCESS,
-			MachineIcon.WARNING,
-			MachineIcon.INFO,
-			MachineIcon.SERVERERROR,
-			MachineIcon.QUESTION,
-			MachineIcon.START];
-		const androidIcons = androidIconsSizes.map(s1 => {
-			const iconList = androidIconsStatus.map(s2 => {
-				const size = {};
-				if (s1) {
-					size[s1] = true;
-				}
-				return <MachineIcon key={`${s1}-${s2}`} status={s2} {...size}/>;
-			});
-			return (
-				<div key={s1}>
-					<h3>{s1}</h3>
-					{iconList}
-				</div>
-			);
-		});
 
 		return (
 			<div>
@@ -372,14 +321,6 @@ const ThemesPage = class extends React.Component {
 						<CardAndroidSession {...avmInfo2}/>
 						<CardAndroidSession {...avmInfo3}/>
 					</div>
-
-				</ClearFix>
-
-				<ClearFix>
-
-					<h2>Info Boxes</h2>
-
-					{infoBoxes}
 
 				</ClearFix>
 
@@ -624,14 +565,6 @@ const ThemesPage = class extends React.Component {
 					<h2>Live Sessions</h2>
 
 					{avmsRendered}
-
-				</ClearFix>
-
-				<ClearFix>
-
-					<h2>Android icons</h2>
-
-					{androidIcons}
 
 				</ClearFix>
 

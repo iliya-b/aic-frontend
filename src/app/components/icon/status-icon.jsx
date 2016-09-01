@@ -6,7 +6,6 @@ import {deepAssign} from 'app/libs/helpers';
 import FireSVG from 'app/components/icon/fire';
 import Tooltip from 'material-ui/internal/Tooltip';
 
-// const StatusIcon = (this.props, context) => {
 const StatusIcon = class extends React.Component {
 	constructor(props) {
 		super(props);
@@ -42,7 +41,7 @@ const StatusIcon = class extends React.Component {
 				colorAndro = this.context.muiTheme.palette.disabledColor;
 				statusClassName = 'mdi mdi-block-helper';
 				break;
-			case StatusIcon.SERVERERROR:
+			case StatusIcon.FIRE:
 				colorIcon = this.context.muiTheme.palette.errorColor;
 				colorAndro = this.context.muiTheme.palette.errorColor;
 				statusClassName = 'mdi mdi-fire';
@@ -77,7 +76,7 @@ const StatusIcon = class extends React.Component {
 				colorAndro = this.props.color || this.context.muiTheme.palette.primary1Color;
 				statusClassName = 'mdi mdi-help';
 				break;
-			case StatusIcon.START:
+			case StatusIcon.PLAY:
 				colorIcon = this.context.muiTheme.palette.primary1Color;
 				colorAndro = this.context.muiTheme.palette.primary1Color;
 				statusClassName = 'mdi mdi-play';
@@ -122,7 +121,7 @@ const StatusIcon = class extends React.Component {
 				left: 15,
 				textShadow: `-${shadowSize}px -${shadowSize}px ${shadowColor},${shadowSize}px -${shadowSize}px ${shadowColor},-${shadowSize}px ${shadowSize}px ${shadowColor},${shadowSize}px ${shadowSize}px ${shadowColor}`,
 				animation: (status === StatusIcon.LOADING ? 'liveIconRotate 3s linear infinite' : 'initial'),
-				fontSize: '20px'
+				fontSize: 20
 			}
 		};
 
@@ -138,8 +137,8 @@ const StatusIcon = class extends React.Component {
 					top: 4
 				},
 				status: {
-					fontSize: '25px',
-					top: 23,
+					fontSize: 25,
+					top: status === StatusIcon.FIRE ? 23 : 10,
 					left: 23
 				}
 			};
@@ -170,13 +169,11 @@ const StatusIcon = class extends React.Component {
 		// iconAndro = <FontIcon className="mdi mdi-android" style={styles.andro}/>;
 		iconStatus = <FontIcon className={statusClassName} style={styles.status}/>;
 
-		if (status === StatusIcon.DISABLED && size !== StatusIcon.BIGGER) {
-			styles.status.fontSize = size === StatusIcon.BIG ? '19px' : '15px';
-			styles.status.top = size === StatusIcon.BIG ? 23 : 17;
-			styles.status.left = size === StatusIcon.BIG ? 26 : 17;
+		if (status === StatusIcon.DISABLED) {
+			styles.status.fontSize -= 5;
 		}
 
-		if (status === StatusIcon.SERVERERROR) {
+		if (status === StatusIcon.FIRE) {
 			// Android
 			styles.andro.fill = styles.andro.color;
 			styles.andro.width = styles.andro.fontSize;
@@ -213,15 +210,15 @@ const StatusIcon = class extends React.Component {
 	}
 };
 
-StatusIcon.DISABLED = 'disabled';
-StatusIcon.ERROR = 'error';
-StatusIcon.LOADING = 'loading';
-StatusIcon.SUCCESS = 'success';
-StatusIcon.WARNING = 'warning';
-StatusIcon.INFO = 'info';
-StatusIcon.SERVERERROR = 'serverError';
-StatusIcon.QUESTION = 'question';
-StatusIcon.START = 'start';
+StatusIcon.DISABLED = 'DISABLED';
+StatusIcon.ERROR = 'ERROR';
+StatusIcon.LOADING = 'LOADING';
+StatusIcon.SUCCESS = 'SUCCESS';
+StatusIcon.WARNING = 'WARNING';
+StatusIcon.INFO = 'INFO';
+StatusIcon.FIRE = 'FIRE';
+StatusIcon.QUESTION = 'QUESTION';
+StatusIcon.PLAY = 'PLAY';
 StatusIcon.QUEUED = 'QUEUED';
 
 StatusIcon.STATUS_LIST = [StatusIcon.DISABLED,
@@ -230,14 +227,14 @@ StatusIcon.STATUS_LIST = [StatusIcon.DISABLED,
 	StatusIcon.SUCCESS,
 	StatusIcon.WARNING,
 	StatusIcon.INFO,
-	StatusIcon.SERVERERROR,
+	StatusIcon.FIRE,
 	StatusIcon.QUESTION,
-	StatusIcon.START,
+	StatusIcon.PLAY,
 	StatusIcon.QUEUED];
 
-StatusIcon.NORMAL = 'normal';
-StatusIcon.BIG = 'big';
-StatusIcon.BIGGER = 'bigger';
+StatusIcon.NORMAL = 'NORMAL';
+StatusIcon.BIG = 'BIG';
+StatusIcon.BIGGER = 'BIGGER';
 
 StatusIcon.SIZE_LIST = [StatusIcon.NORMAL,
 	StatusIcon.BIG,

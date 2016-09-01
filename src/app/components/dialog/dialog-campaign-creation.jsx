@@ -190,7 +190,11 @@ DialogCampaignCreation.contextTypes = {
 };
 
 DialogCampaignCreation.defaultProps = {
-	open: true
+	open: true,
+	images: [{image: 'kitkat-phone'}, {image: 'kitkat-tablet'}, {image: 'lollipop-phone'}, {image: 'lollipop-tablet'}],
+	apks: [],
+	onCancel: () => {},
+	onStart: () => {}
 };
 
 DialogCampaignCreation.propTypes = {

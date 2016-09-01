@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import InfoBox from 'app/components/shared/info-box';
+import PanelInfo from 'app/components/panel/panel-info';
 import CardAndroidSession from 'app/components/card/card-android-session';
 
 const debug = require('debug')('AiC:Component:LiveMachineList');
@@ -30,9 +30,9 @@ const LiveMachineList = class extends React.Component {
 				return <CardAndroidSession style={styles.card[index % 2]} className={`cardLiveVM cardLiveVM${index} cardLiveVM${currentValue.avm_id}`} {...currentValue} key={currentValue.avm_id} actionEnter={this.props.actionEnter} actionStop={this.props.actionStop}/>;
 			});
 		} else if (this.props.isListLoading) {
-			avmsRendered = <InfoBox style={{textAlign: 'center'}}>Loading sessions...</InfoBox>;
+			avmsRendered = <PanelInfo style={{textAlign: 'center'}}>Loading sessions...</PanelInfo>;
 		} else {
-			avmsRendered = <InfoBox style={{textAlign: 'center'}}>No sessions found. You can start a new session.</InfoBox>;
+			avmsRendered = <PanelInfo style={{textAlign: 'center'}}>No sessions found. You can start a new session.</PanelInfo>;
 		}
 
 		return (<div>

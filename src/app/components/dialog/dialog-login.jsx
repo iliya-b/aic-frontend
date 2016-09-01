@@ -128,6 +128,12 @@ DialogLogin.contextTypes = {
 	router: React.PropTypes.object
 };
 
+DialogLogin.defaultProps = {
+	open: true,
+	onRequestClose: () => {},
+	onLoginSubmit: () => {}
+};
+
 DialogLogin.propTypes = {
 	location: React.PropTypes.object,
 	open: React.PropTypes.bool,

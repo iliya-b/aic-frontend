@@ -3,7 +3,7 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import InfoBox from 'app/components/shared/info-box';
+import PanelInfo from 'app/components/panel/panel-info';
 
 const debug = require('debug')('AiC:Components:Dialog:SessionEndedDialog');
 
@@ -37,7 +37,7 @@ const SessionEndedDialog = class extends React.Component {
 
 		return (
 			<Dialog modal title="Session Timeout" actions={loginActions} {...other}>
-				<InfoBox boxType={InfoBox.WARNING} showIcon zDepth={0} styleType={InfoBox.STYLE_XBIG}>Your session has been ended.</InfoBox>
+				<PanelInfo status={PanelInfo.WARNING} showIcon zDepth={0} size={PanelInfo.BIGGER}>Your session has been ended.</PanelInfo>
 			</Dialog>
 			);
 	}
@@ -47,6 +47,11 @@ const SessionEndedDialog = class extends React.Component {
 SessionEndedDialog.contextTypes = {
 	muiTheme: React.PropTypes.object,
 	router: React.PropTypes.object
+};
+
+SessionEndedDialog.defaultProps = {
+	open: true,
+	onRequestClose: () => {}
 };
 
 SessionEndedDialog.propTypes = {

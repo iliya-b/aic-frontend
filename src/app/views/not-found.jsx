@@ -1,11 +1,8 @@
 'use strict';
 
-// Vendor
 import React from 'react';
-
-// APP
 import FullWidthSection from 'app/components/shared/full-width-section';
-import MachineIcon from 'app/components/project/machine-icon';
+import MachineIcon from 'app/components/icon/machine-icon';
 
 const NotFound = class extends React.Component {
 
@@ -32,7 +29,7 @@ const NotFound = class extends React.Component {
 		return (
 			<FullWidthSection style={styles.root}>
 				<div style={styles.tagline}>
-					<MachineIcon color="white" shadowColor="rgb(45, 139, 203)" status={MachineIcon.QUESTION} xbigIcon/>
+					<MachineIcon color="white" shadowColor="rgb(45, 139, 203)" status={MachineIcon.QUESTION} size={MachineIcon.BIGGER}/>
 					<h1 style={styles.h1}>404 Page not found.</h1>
 				</div>
 			</FullWidthSection>
