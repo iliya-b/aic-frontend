@@ -1,16 +1,11 @@
 'use strict';
 
 import React from 'react';
-import Paper from 'material-ui/Paper';
-import FontIcon from 'material-ui/FontIcon';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow} from 'material-ui/Table';
 import DeviceIcon from 'app/components/icon/device-icon';
-import CampaignIcon from 'app/components/icon/campaign-icon';
 import TableTestResult from 'app/components/table/table-test-result';
 import adbTestResultParser from 'app/libs/adb-test-result-parser';
 import AppPalette from 'app/configs/app-palette';
-import AvatarProgress from 'app/components/shared/avatar-progress';
 import AppUtils from 'app/components/shared/app-utils';
 
 const getTotals = testCases => {
