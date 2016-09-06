@@ -21,13 +21,24 @@ const ListCampaignContainer = class extends React.Component {
 		);
 	}
 
+	list() {
+		CampaignActions.list({projectId: this.props.projectId});
+	}
+
 	handleStateChange = newState => {
 		this.setState(newState);
+		const statusList = ['RUNNING', 'QUEUED'];
+		const shouldListAgain = newState.campaign.campaigns.reduce((p, c) => (!p && statusList.indexOf(c.status) !== -1 ? true : p), false);
+		if (shouldListAgain) {
+			setTimeout(() => {
+				this.list();
+			}, 1000);
+		}
 	}
 
 	componentDidMount() {
 		this.unsubscribe = CampaignStore.listen(this.handleStateChange);
-		CampaignActions.list({projectId: this.props.projectId});
+		this.list();
 	}
 
 	componentWillUnmount() {

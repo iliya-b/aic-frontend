@@ -6,10 +6,13 @@ import {deepAssign} from 'app/libs/helpers';
 import FireSVG from 'app/components/icon/fire';
 import Tooltip from 'material-ui/internal/Tooltip';
 
+const debug = require('debug')('AiC:Components:Icon:StatusIcon');
+
 const StatusIcon = class extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {tooltipOpen: false};
+		debug('constructor');
 	}
 
 	handleOpenTooltip = () => {
@@ -21,6 +24,7 @@ const StatusIcon = class extends React.Component {
 	}
 
 	render() {
+		debug('render');
 		const {
 			status,
 			style,
@@ -193,14 +197,14 @@ const StatusIcon = class extends React.Component {
 	// style={{cursor: 'default'}} tooltip={tooltip}
 
 		const tooltipPositionSplitted = tooltipPosition ? tooltipPosition.split('-') : ['', ''];
-		const tooltipElement = tooltip ? (
+		const tooltipElement = tooltip && (
 			<Tooltip
 				label={tooltip}
 				show={this.state.tooltipOpen}
 				verticalPosition={tooltipPositionSplitted[0]}
 				horizontalPosition={tooltipPositionSplitted[1]}
 				/>
-		) : null;
+		);
 
 		return (<div style={styles.root} onMouseOver={this.handleOpenTooltip} onMouseOut={this.handleCloseTooltip}>
 			{iconItem}

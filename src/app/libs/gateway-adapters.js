@@ -180,7 +180,23 @@ const GatewayAdapters = {
 			response: backendObject => backendObject.campaigns
 		},
 		read: {
-			response: backendObject => backendObject.campaign
+			response: backendObject => {
+				return {
+					id: backendObject.campaign.campaign_id,
+					projectId: backendObject.campaign.project_id,
+					status: backendObject.campaign.campaign_status,
+					progress: backendObject.campaign.progress,
+					tests: backendObject.campaign.tests.map(t => {
+						return {
+							stdout: t.stdout,
+							apkPackage: t.package,
+							status: t.status,
+							image: t.image
+						};
+					}),
+					name: backendObject.campaign.campaign_name
+				};
+			}
 		},
 		create: {
 			request: frontendObject => {
@@ -190,7 +206,7 @@ const GatewayAdapters = {
 						return {
 							image,
 							apks: frontendObject.apks,
-							packages: ['com.zenika.aic.core.libs.test/android.test.InstrumentationTestRunner']
+							packages: ['com.zenika.aic.core.libs.test/android.test.InstrumentationTestRunner', 'com.zenika.aic.demo.sensor.test/android.support.test.runner.AndroidJUnitRunner']
 						};
 					})
 				};

@@ -55,7 +55,6 @@ const TestResultsBox = class extends React.Component {
 				style={{marginRight: Spacing.desktopGutter}}
 				progress={percentageFailedTests}
 				color="rgba(0, 0, 0, 0.54)"
-				// color={totalFailedTests ? this.context.muiTheme.palette.errorColor : this.context.muiTheme.palette.successColor}
 				backgroundColor={this.context.muiTheme.palette.successColor}
 				foregroundColor={this.context.muiTheme.palette.errorColor}
 				/>

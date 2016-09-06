@@ -4,9 +4,12 @@ import React from 'react';
 import FontIcon from 'material-ui/FontIcon';
 import StatusIcon from 'app/components/icon/status-icon';
 
+const debug = require('debug')('AiC:Components:Icon:CampaignIcon');
+
 const campaign2Status = {};
 
 const CampaignIcon = props => {
+	debug('render');
 	const {
 		status,
 		...others

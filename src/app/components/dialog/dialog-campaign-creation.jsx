@@ -8,7 +8,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Chip from 'material-ui/Chip';
 import IconButtonApp from 'app/components/icon/icon-button-app';
-import DeviceIcon from 'app/components/icon/device';
+import DeviceIcon from 'app/components/icon/device-icon';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 

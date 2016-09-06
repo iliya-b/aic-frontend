@@ -21,15 +21,24 @@ const CampaignShow = class extends React.Component {
 		return <div>Loading</div>;
 	}
 
+	loadCampaign = () => {
+		CampaignActions.read({projectId: this.props.params.projectId, campaignId: this.props.params.campaignId});
+	}
+
 	handleStateChange = newState => {
 		this.setState(newState);
+		if (newState.campaign.campaign.status === 'RUNNING') {
+			setTimeout(() => {
+				this.loadCampaign();
+			}, 1000);
+		}
 	}
 
 	componentDidMount() {
 		debug('componentDidMount');
 		this.unsubscribe = [];
 		this.unsubscribe.push(CampaignStore.listen(this.handleStateChange));
-		CampaignActions.read({projectId: this.props.params.projectId, campaignId: this.props.params.campaignId});
+		this.loadCampaign();
 	}
 
 	componentWillUnmount() {

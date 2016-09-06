@@ -22,6 +22,7 @@ const LiveStore = Reflux.createStore({
 		this.resetLive();
 		this.state.live.status = 'LIVE_STATUS_INITIATING';
 		this.updateState();
+		this.updateListTimeout = false;
 	},
 
 	// Actions //
@@ -126,6 +127,7 @@ const LiveStore = Reflux.createStore({
 		this.state.live.avm = avm;
 		this.state.live.status = 'LIVE_STATUS_VMSTARTED';
 		this.updateState();
+		this.updateList();
 	},
 
 	onStartFailed(errorMessage) {
@@ -246,6 +248,7 @@ const LiveStore = Reflux.createStore({
 		this.onClearTimeouts();
 		this.state.live.status = 'LIVE_STATUS_STOPPING';
 		this.updateState();
+		this.updateList();
 	},
 
 	onStopCompleted(response) {
@@ -526,6 +529,12 @@ const LiveStore = Reflux.createStore({
 		this.state.live.avms = avms;
 		this.state.live.status = 'LIVE_STATUS_LISTED';
 		this.updateState();
+		const statusList = ['CREATING', 'QUEUED', 'DELETING'];
+		const shouldListAgain = avms.reduce((p, c) => (!p && statusList.indexOf(c.avm_status) !== -1 ? true : p), false);
+		debug('shouldListAgain', shouldListAgain);
+		if (shouldListAgain) {
+			this.updateList();
+		}
 	},
 
 	onListFailed(errorMessage) {
@@ -662,6 +671,15 @@ const LiveStore = Reflux.createStore({
 	updateBoxes() {
 		const actualStatus = this.statusUpdating[this.state.live.status];
 		this.changeBoxes(actualStatus.typeName, 'status', actualStatus.newStatus);
+	},
+
+	updateList() {
+		if (!this.updateListTimeout) {
+			this.updateListTimeout = setTimeout(() => {
+				LiveActions.list();
+				this.updateListTimeout = false;
+			}, 3000);
+		}
 	},
 
 	// State update

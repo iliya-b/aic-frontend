@@ -49,6 +49,8 @@ const getColorByStatus = status => {
 };
 // TODO: implement status
 const vm2Status = {
+	CREATING: 'LOADING',
+	DELETING: 'LOADING',
 	ERROR: 'ERROR',
 	RUNNING: 'LOADING',
 	READY: 'SUCCESS',

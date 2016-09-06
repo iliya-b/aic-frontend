@@ -31,6 +31,7 @@ const DeviceIcon = (props, context) => {
 	const {
 		isOn,
 		image,
+		style,
 		...others
 	} = props;
 
@@ -41,14 +42,14 @@ const DeviceIcon = (props, context) => {
 	const colorOn = context.muiTheme.palette.primary1Color;
 	const colorOff = context.muiTheme.palette.disabledColor;
 
-	const styleDeviceWrapper = {position: 'relative'};
+	const styleDeviceWrapper = {display: 'inline-block', position: 'relative'};
 	const shadowSize = 1;
 	const shadowColor = '#fff';
 	const styleIconDevice = {
 		position: 'absolute',
 		color: isOn ? colorOn : colorOff,
-		top: 23,
-		left: 18,
+		top: 12,
+		left: 7,
 		textShadow: `-${shadowSize}px -${shadowSize}px ${shadowColor},${shadowSize}px -${shadowSize}px ${shadowColor},-${shadowSize}px ${shadowSize}px ${shadowColor},${shadowSize}px ${shadowSize}px ${shadowColor}`
 	};
 
@@ -67,7 +68,7 @@ const DeviceIcon = (props, context) => {
 	}
 
 	return (
-		<div style={styleDeviceWrapper} {...others}>
+		<div style={Object.assign(styleDeviceWrapper, style || {})} {...others}>
 			{iconAndroid}
 			{iconType}
 		</div>
@@ -76,7 +77,8 @@ const DeviceIcon = (props, context) => {
 
 DeviceIcon.propTypes = {
 	isOn: React.PropTypes.bool,
-	image: React.PropTypes.string
+	image: React.PropTypes.string,
+	style: React.PropTypes.object
 };
 
 DeviceIcon.contextTypes = {
