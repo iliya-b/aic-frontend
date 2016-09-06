@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import {isEqual} from 'app/libs/helpers';
 
 const debug = require('debug')('AiC:Components:Panel:PanelSessionScreen');
 
@@ -9,9 +10,6 @@ const PanelSessionScreen = class extends React.Component {
 		debug('render');
 
 		const style = {
-			root: {
-				paddingBottom: 10
-			},
 			iframeHorizontal: {
 				overflow: 'hidden',
 				width: this.props.width,
@@ -36,7 +34,7 @@ const PanelSessionScreen = class extends React.Component {
 		style.iframeRotation = this.props.rotation === '0' ? style.iframeHorizontal : style.iframeVertical;
 
 		return (
-			<div style={style.root}>
+			<div style={this.props.style}>
 				<div style={style.iframeRotation}>
 					<canvas id="noVNC_canvas" data-x={maxWidthHeight} width={maxWidthHeight} height={maxWidthHeight}>
 							Canvas not supported.
@@ -52,7 +50,7 @@ const PanelSessionScreen = class extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		return nextProps.rotation !== this.props.rotation;
+		return nextProps.rotation !== this.props.rotation || !isEqual(nextProps.style, this.props.style);
 	}
 };
 
@@ -64,13 +62,15 @@ PanelSessionScreen.contextTypes = {
 PanelSessionScreen.defaultProps = {
 	rotation: '0',
 	width: 800,
-	height: 600
+	height: 600,
+	style: {}
 };
 
 PanelSessionScreen.propTypes = {
 	rotation: React.PropTypes.string,
 	width: React.PropTypes.number,
-	height: React.PropTypes.number
+	height: React.PropTypes.number,
+	style: React.PropTypes.object
 };
 
 module.exports = PanelSessionScreen;

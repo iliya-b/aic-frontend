@@ -28,7 +28,10 @@ const LiveActions = Reflux.createActions({
 	liveConnect: {asyncResult: true},
 	liveConnectAudio: {asyncResult: true},
 
-	listImages: {asyncResult: true}
+	listImages: {asyncResult: true},
+
+	enterFullscreen: {},
+	exitFullscreen: {}
 });
 
 // Backend related

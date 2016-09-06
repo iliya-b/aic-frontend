@@ -4,7 +4,8 @@ import {
 	upperFirst,
 	template,
 	templateSettings,
-	merge
+	merge,
+	isEqual
 } from 'lodash';
 // In case we want to change the lodash lib is all in one place
 
@@ -83,5 +84,6 @@ module.exports = {
 	deepAssign: merge,
 	moveCaretToEnd,
 	getColorByStatus,
-	getVmStatus
+	getVmStatus,
+	isEqual
 };

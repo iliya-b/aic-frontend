@@ -122,6 +122,14 @@ const LiveToolbox = class extends React.Component {
 			this.props.onClickTerminate();
 		};
 
+		this.handleClickFirstBar.fullscreen = () => {
+			if (this.props.isFullscreen) {
+				this.props.onExitFullscreen();
+			} else {
+				this.props.onEnterFullscreen();
+			}
+		};
+
 		// Third toolbars - Panels
 		this.handleClickSecondBar = {};
 		this.handleChangeSensorsBinded = {};
@@ -183,7 +191,8 @@ const LiveToolbox = class extends React.Component {
 		} else {
 			const props = {
 				onClick: this.handleClickFirstBar,
-				secondBar: this.state.activeSecondBar
+				secondBar: this.state.activeSecondBar,
+				isFullscreen: this.props.isFullscreen
 			};
 			currentBar = React.createElement(toolbars[this.state.activeBar], props);
 		}
@@ -249,7 +258,7 @@ const LiveToolbox = class extends React.Component {
 		}
 
 		return (
-			<div style={styles.wrapper}>
+			<div style={this.props.style}>
 				{currentBar}
 				{currentSecondBar}
 			</div>
@@ -276,7 +285,11 @@ LiveToolbox.propTypes = {
 	properties: React.PropTypes.object,
 	avmInfo: React.PropTypes.object,
 	apkInstalled: React.PropTypes.array,
-	monkeyCalls: React.PropTypes.array
+	monkeyCalls: React.PropTypes.array,
+	onEnterFullscreen: React.PropTypes.func,
+	onExitFullscreen: React.PropTypes.func,
+	isFullscreen: React.PropTypes.bool,
+	style: React.PropTypes.object
 };
 
 module.exports = LiveToolbox;

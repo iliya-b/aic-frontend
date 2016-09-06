@@ -477,6 +477,7 @@ const LiveStore = Reflux.createStore({
 			LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
 			// Only clearTimeouts when debugging to not have span on logs
 			// this.onClearTimeouts();
+			// PollingActions.stop('liveProperties');
 		}
 
 		// docker finished (not available) boot initiate
@@ -562,6 +563,19 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
+	// Fullscreen
+	onEnterFullscreen() {
+		debug('onEnterFullscreen');
+		this.state.live.isFullscreen = true;
+		this.updateState();
+	},
+
+	onExitFullscreen() {
+		debug('onExitFullscreen');
+		this.state.live.isFullscreen = false;
+		this.updateState();
+	},
+
 	// Methods //
 
 	// Status Box
@@ -580,6 +594,7 @@ const LiveStore = Reflux.createStore({
 
 	resetLive() {
 		this.state.live = {};
+		this.state.live.isFullscreen = false;
 		this.state.live.logBox = [];
 		this.state.live.screen = {};
 		this.resetMachine();

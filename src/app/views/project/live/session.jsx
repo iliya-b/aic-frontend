@@ -1,3 +1,4 @@
+/* global document */
 'use strict';
 
 import React from 'react';
@@ -13,6 +14,7 @@ import CameraStore from 'app/stores/camera';
 import LiveActions from 'app/actions/live';
 import PollingActions from 'app/actions/polling';
 import NoVNCAdapter from 'app/libs/novnc-adapter';
+import fullscreen from 'app/libs/fullscreen';
 
 const debug = require('debug')('AiC:Views:Project:Live:Session');
 
@@ -41,6 +43,35 @@ const LiveSession = class extends React.Component {
 			const refId = `${avmId}-${packages.join('-')}-${eventCount}-${throttle}-${Date.now()}`;
 			LiveActions.monkeyRunner({avmId, packages, eventCount, throttle, refId}, {includeRequest: true});
 		};
+
+		fullscreen.addFullscreenchange(this.handleDocumentFullscreenChange);
+	}
+
+	handleDocumentFullscreenChange = () => {
+		const documentIsFullscreen = Boolean(fullscreen.fullscreenElement());
+		debug('onfullscreenchange', documentIsFullscreen, this.isFullscreen());
+		if (documentIsFullscreen !== this.isFullscreen()) {
+			if (documentIsFullscreen) {
+				LiveActions.enterFullscreen();
+			} else {
+				LiveActions.exitFullscreen();
+			}
+		}
+	}
+
+	handleEnterFullscreen = () => {
+		debug('handleEnterFullscreen');
+		fullscreen.requestFullscreen(document.querySelector('#liveBox'));
+		LiveActions.enterFullscreen();
+	}
+
+	handleExitFullscreen = () => {
+		fullscreen.exitFullscreen();
+		LiveActions.exitFullscreen();
+	}
+
+	isFullscreen = () => {
+		return this.state && this.state.live && this.state.live.isFullscreen;
 	}
 
 	render() {
@@ -51,7 +82,9 @@ const LiveSession = class extends React.Component {
 				padding: Spacing.desktopGutter
 			},
 			paperLive: {
-				padding: Spacing.desktopGutter
+				padding: this.isFullscreen() ? 0 : Spacing.desktopGutter,
+				display: this.isFullscreen() ? 'flex' : 'block',
+				background: this.isFullscreen() ? '#000' : '#fff'
 			},
 			error: {
 				icon: {
@@ -69,8 +102,20 @@ const LiveSession = class extends React.Component {
 			infoArea: {
 				width: 547,
 				margin: '0 auto',
-				paddingBottom: `${Spacing.desktopGutter}px`
+				paddingBottom: this.isFullscreen() ? 0 : `${Spacing.desktopGutter}px`
 			}
+		};
+
+		const styleScreen = {
+			margin: 'auto',
+			marginBottom: this.isFullscreen() ? 'auto' : 20,
+			background: '#fff'
+		};
+
+		const styleLiveToolBox = {
+			position: this.isFullscreen() ? 'absolute' : 'initial',
+			top: 0,
+			left: 0
 		};
 
 		return (
@@ -91,7 +136,7 @@ const LiveSession = class extends React.Component {
 				) : null}
 
 				{this.state && (this.state.live.status === 'LIVE_STATUS_CONNECTING' || this.state.live.status === 'LIVE_STATUS_CONNECTED') ? (
-					<Paper style={style.paperLive}>
+					<Paper id="liveBox" style={style.paperLive}>
 
 						{this.state.live.status === 'LIVE_STATUS_CONNECTING' ? (
 							<div style={style.paperCenter}>
@@ -103,34 +148,40 @@ const LiveSession = class extends React.Component {
 							rotation={this.state.live.properties ? this.state.live.properties['aicd.screen_rotation'] : '0'}
 							width={this.state.liveInfo.hwconfig.width}
 							height={this.state.liveInfo.hwconfig.height}
+							style={styleScreen}
 							/>
 
 						{this.state.live.status === 'LIVE_STATUS_CONNECTED' ? (
-							<div>
-								<LiveToolbox
-									onInputFocus={this.handleOnInputFocus}
-									onInputBlur={this.handleOnInputBlur}
-									avmId={this.state.liveInfo.avm_id}
-									// Terminate //
-									onClickTerminate={this.handleStopVM}
-									// Sensors //
-									onChangeSensor={this.handleChangeSensor}
-									sensorsValues={this.state.live.sensors}
-									// APKs
-									onInstallAPK={this.handleAPKs}
-									apkList={this.state.apk ? this.state.apk.apks : []}
-									apkInstalled={this.state.live.installedAPKs ? this.state.live.installedAPKs : []}
-									// Monkey Runner
-									onMonkeyRunner={this.handleMonkeyRunner}
-									packageList={this.state.live.packages}
-									monkeyCalls={this.state.live.monkeyCalls ? this.state.live.monkeyCalls : []}
-									// Camera
-									cameraList={this.state.camera ? this.state.camera.files : []}
-									// Details
-									properties={this.state.live.properties}
-									avmInfo={this.state.liveInfo}
-									/>
-							</div>
+							<LiveToolbox
+								// Live
+								avmId={this.state.liveInfo.avm_id}
+								// Canvas focus
+								onInputFocus={this.handleOnInputFocus}
+								onInputBlur={this.handleOnInputBlur}
+								// Terminate //
+								onClickTerminate={this.handleStopVM}
+								// Sensors //
+								onChangeSensor={this.handleChangeSensor}
+								sensorsValues={this.state.live.sensors}
+								// APKs
+								onInstallAPK={this.handleAPKs}
+								apkList={this.state.apk ? this.state.apk.apks : []}
+								apkInstalled={this.state.live.installedAPKs ? this.state.live.installedAPKs : []}
+								// Monkey Runner
+								onMonkeyRunner={this.handleMonkeyRunner}
+								packageList={this.state.live.packages}
+								monkeyCalls={this.state.live.monkeyCalls ? this.state.live.monkeyCalls : []}
+								// Camera
+								cameraList={this.state.camera ? this.state.camera.files : []}
+								// Details
+								properties={this.state.live.properties}
+								avmInfo={this.state.liveInfo}
+								// Fullscreen
+								onEnterFullscreen={this.handleEnterFullscreen}
+								onExitFullscreen={this.handleExitFullscreen}
+								isFullscreen={this.state.live.isFullscreen}
+								style={styleLiveToolBox}
+								/>
 						) : null}
 
 					</Paper>
@@ -159,49 +210,6 @@ const LiveSession = class extends React.Component {
 		return true;
 	}
 
-	// handleOnLiveAction(actionName) {
-	// 	// debug(arguments);
-	// 	switch (actionName) {
-	// 		case 'test':
-	// 			debug(arguments);
-	// 			break;
-	// 		case 'check':
-	// 			LiveActions.liveCheck();
-	// 			break;
-	// 		case 'start':
-	// 			LiveActions.liveStart();
-	// 			break;
-	// 		case 'restart':
-	// 			LiveActions.liveReset();
-	// 			LiveActions.liveCheck();
-	// 			break;
-	// 		case 'connect':
-	// 			LiveActions.liveConnect(this.state.live.screen.ip, this.state.live.screen.port);
-	// 			break;
-	// 		case 'close':
-	// 			LiveActions.liveStop(this.state.live.screen.port);
-	// 			break;
-	// 		case 'setState': {
-	// 			if (!this.context.appConfig.debug) {
-	// 				return;
-	// 			}
-	// 			const newState = this.state;
-	// 			newState.live.status = 'LIVE_STATUS_CONNECTING';
-	// 			newState.live.screen.ip = '10.2.0.156';
-	// 			newState.live.screen.port = '5909';
-	// 			newState.live.audio = {};
-	// 			newState.live.audio.ip = '10.2.0.156';
-	// 			newState.live.audio.port = '6909';
-	// 			newState.live.screen.rotation = 'horizontal';
-	// 			newState.live.delayedRotation = 'horizontal';
-	// 			LiveActions.setState(newState);
-	// 			break;
-	// 		}
-	// 		default:
-	// 			break;
-	// 	}
-	// }
-
 	handleOnInputFocus() {
 		NoVNCAdapter.focus();
 	}
@@ -209,29 +217,6 @@ const LiveSession = class extends React.Component {
 	handleOnInputBlur() {
 		NoVNCAdapter.blur();
 	}
-
-	// handleBatteryChange(e, value) {
-	// 	e.preventDefault();
-	// 	LiveActions.setSensorBattery(avmId, value);
-	// }
-
-	// handleChangeRotation(e) {
-	// 	e.preventDefault();
-	// 	const newRotationName = this.state.live.rotationSets[this.state.live.screen.rotation].next;
-	// 	const newRotationValue = this.state.live.rotationSets[newRotationName];
-	// 	LiveActions.setSensorAccelerometer(avmId, newRotationValue.x, newRotationValue.y, newRotationValue.z, newRotationName);
-
-	// 	setTimeout(() => {
-	// 		LiveActions.setDelayedRotation();
-	// 	}, 1500);
-	// }
-
-	// handleClickGPS(e, lat, lon) {
-	// 	// e.preventDefault();
-	// 	// const lat = parseFloat(this.lat.getValue());
-	// 	// const lon = parseFloat(this.lon.getValue());
-	// 	LiveActions.setSensorLocation(avmId, lat, lon);
-	// }
 
 	handleStopVM() {
 		this.handleOnInputFocus();
