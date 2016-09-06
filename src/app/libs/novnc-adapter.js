@@ -44,10 +44,10 @@ const NoVNCAdapter = {
 				window.INCLUDE_URI = '/noVNC/';
 
 				// Load noVNC supporting scripts
-				// noVNC@v5.0.1
+				// noVNC@v0.6.1
 				Util.load_scripts(['webutil.js', 'base64.js', 'websock.js', 'des.js',
 													'keysymdef.js', 'keyboard.js', 'input.js', 'display.js',
-													'jsunzip.js', 'rfb.js', 'keysym.js']);
+													'inflator.js', 'rfb.js', 'keysym.js']);
 			}
 		});
 	},
