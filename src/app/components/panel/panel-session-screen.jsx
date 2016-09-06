@@ -1,10 +1,9 @@
 'use strict';
 
-// Vendor
-const React = require('react');
+import React from 'react';
+
 const debug = require('debug')('AiC:Components:Panel:PanelSessionScreen');
 
-// APP
 const PanelSessionScreen = class extends React.Component {
 	render() {
 		debug('render');
@@ -15,13 +14,14 @@ const PanelSessionScreen = class extends React.Component {
 			},
 			iframeHorizontal: {
 				overflow: 'hidden',
-				width: '800px',
-				height: '600px'
+				width: this.props.width,
+				height: this.props.height,
+				margin: 'auto'
 			},
 			iframeVertical: {
 				overflow: 'hidden',
-				width: '600px',
-				height: '800px',
+				width: this.props.height,
+				height: this.props.width,
 				margin: 'auto'
 			},
 			audio: {
@@ -31,12 +31,14 @@ const PanelSessionScreen = class extends React.Component {
 			}
 		};
 
+		const maxWidthHeight = Math.max(this.props.width, this.props.height);
+
 		style.iframeRotation = this.props.rotation === '0' ? style.iframeHorizontal : style.iframeVertical;
 
 		return (
 			<div style={style.root}>
 				<div style={style.iframeRotation}>
-					<canvas id="noVNC_canvas">
+					<canvas id="noVNC_canvas" data-x={maxWidthHeight} width={maxWidthHeight} height={maxWidthHeight}>
 							Canvas not supported.
 					</canvas>
 				</div>
@@ -59,8 +61,16 @@ PanelSessionScreen.contextTypes = {
 	router: React.PropTypes.object
 };
 
+PanelSessionScreen.defaultProps = {
+	rotation: '0',
+	width: 800,
+	height: 600
+};
+
 PanelSessionScreen.propTypes = {
-	rotation: React.PropTypes.string
+	rotation: React.PropTypes.string,
+	width: React.PropTypes.number,
+	height: React.PropTypes.number
 };
 
 module.exports = PanelSessionScreen;

@@ -138,7 +138,19 @@ const GatewayAdapters = {
 					project_id: res.avm.project_id, // eslint-disable-line camelcase
 					stack_name: res.avm.stack_name, // eslint-disable-line camelcase
 					avm_status: res.avm.status, // eslint-disable-line camelcase
-					ts_created: res.avm.ts_created // eslint-disable-line camelcase
+					ts_created: res.avm.ts_created, // eslint-disable-line camelcase
+					hwconfig: {
+						dpi: res.avm.hwconfig.dpi,
+						enableBattery: res.avm.hwconfig.enable_battery,
+						enableCamera: res.avm.hwconfig.enable_camera,
+						enableGps: res.avm.hwconfig.enable_gps,
+						enableGsm: res.avm.hwconfig.enable_gsm,
+						enableNfc: res.avm.hwconfig.enable_nfc,
+						enableRecord: res.avm.hwconfig.enable_record,
+						enableSensors: res.avm.hwconfig.enable_sensors,
+						height: res.avm.hwconfig.height,
+						width: res.avm.hwconfig.width
+					}
 				};
 			}
 		},
