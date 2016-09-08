@@ -53,9 +53,9 @@ const ToolbarAndroid = class extends React.Component {
 				tooltip: 'Monkey runner',
 				fontIcon: 'mdi mdi-panda'
 			}, {
-				id: 'fullscreen',
-				tooltip: this.props.isFullscreen ? 'Exit FullScreen' : 'Enter FullScreen',
-				fontIcon: this.props.isFullscreen ? 'mdi mdi-fullscreen-exit' : 'mdi mdi-fullscreen'
+				id: 'screen',
+				tooltip: 'Screen settings',
+				fontIcon: 'mdi mdi-desktop-mac'
 			}, {
 				id: 'details',
 				tooltip: 'Session details',
@@ -96,8 +96,7 @@ ToolbarAndroid.contextTypes = {
 ToolbarAndroid.propTypes = {
 	style: React.PropTypes.object,
 	onClick: React.PropTypes.object,
-	secondBar: React.PropTypes.string,
-	isFullscreen: React.PropTypes.bool
+	secondBar: React.PropTypes.string
 };
 
 module.exports = ToolbarAndroid;

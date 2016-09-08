@@ -7,6 +7,8 @@ import APKActions from 'app/actions/apk';
 import CameraActions from 'app/actions/camera';
 import AppActions from 'app/actions/app';
 import PollingActions from 'app/actions/polling';
+import {calcScreenScale} from 'app/libs/scale';
+import NoVNCAdapter from 'app/libs/novnc-adapter';
 
 const debug = require('debug')('AiC:Stores:Live');
 
@@ -494,7 +496,19 @@ const LiveStore = Reflux.createStore({
 			CameraActions.list({projectId: this.state.projectId});
 		}
 
+		// If rotation changes need to recalculate scale
+		let shouldCalculateScale = false;
+		if ((this.state && this.state.live && this.state.live.isScaledscreen) &&
+			properties['aicd.screen_rotation'] !== this.state.live.properties['aicd.screen_rotation']) {
+			shouldCalculateScale = true;
+		}
+
 		this.state.live.properties = properties;
+
+		if (shouldCalculateScale) {
+			this.calculateScale();
+		}
+
 		this.updateState();
 		// PollingActions.stop('liveProperties');
 	},
@@ -576,6 +590,26 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
+	onEnterScaledscreen() {
+		debug('onEnterScaledscreen');
+		this.calculateScale();
+		this.state.live.isScaledscreen = true;
+		this.updateState();
+	},
+
+	onExitScaledscreen() {
+		debug('onExitScaledscreen');
+		this.setScale(1);
+		this.state.live.isScaledscreen = false;
+		this.updateState();
+	},
+
+	onRecalculeScale() {
+		debug('onExitScaledscreen');
+		this.calculateScale();
+		this.updateState();
+	},
+
 	// Methods //
 
 	// Status Box
@@ -595,6 +629,8 @@ const LiveStore = Reflux.createStore({
 	resetLive() {
 		this.state.live = {};
 		this.state.live.isFullscreen = false;
+		this.state.live.isScaledscreen = false;
+		this.state.live.scale = 1;
 		this.state.live.logBox = [];
 		this.state.live.screen = {};
 		this.resetMachine();
@@ -681,6 +717,19 @@ const LiveStore = Reflux.createStore({
 
 	isRotation(set, rotation) {
 		return set.x === this.state.live.rotationSets[rotation].x && set.y === this.state.live.rotationSets[rotation].y && set.z === this.state.live.rotationSets[rotation].z;
+	},
+
+	calculateScale() {
+		const width = this.state.liveInfo.hwconfig.width;
+		const height = this.state.liveInfo.hwconfig.height;
+		const rotation = this.state.live.properties ? this.state.live.properties['aicd.screen_rotation'] : '0';
+		// const isFullscreen = this.state && this.state.live && this.state.live.isFullscreen;
+		this.setScale(calcScreenScale(width, height, rotation));
+	},
+
+	setScale(value) {
+		this.state.live.scale = value;
+		NoVNCAdapter.resizeByScale(value);
 	},
 
 	updateBoxes() {

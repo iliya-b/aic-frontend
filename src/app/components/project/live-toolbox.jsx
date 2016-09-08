@@ -12,7 +12,8 @@ const TOOLBAR_GSM = 'gsm';
 const TOOLBAR_APKS = 'apks';
 const TOOLBAR_SESSIONDETAILS = 'details';
 const TOOLBAR_MONKEYURUNNER = 'monkeyRunner';
-const TOOLBAR_MAIN_ORDER = [TOOLBAR_SENSORS, TOOLBAR_CAMERA, TOOLBAR_GSM, TOOLBAR_APKS, TOOLBAR_SESSIONDETAILS, TOOLBAR_MONKEYURUNNER, TOOLBAR_ANDROID];
+const TOOLBAR_SCREEN = 'screen';
+const TOOLBAR_MAIN_ORDER = [TOOLBAR_SENSORS, TOOLBAR_CAMERA, TOOLBAR_GSM, TOOLBAR_APKS, TOOLBAR_SESSIONDETAILS, TOOLBAR_MONKEYURUNNER, TOOLBAR_SCREEN, TOOLBAR_ANDROID];
 
 // Sensors toolbar
 const TOOLBAR_GPS = 'gps';
@@ -54,6 +55,7 @@ toolbars.camera = require('app/components/panel/panel-camera');
 toolbars.gsm = require('app/components/toolbar/toolbar-gsm');
 toolbars.apks = require('app/components/toolbar/toolbar-apks-install');
 toolbars.error = require('app/components/toolbar/toolbar-error');
+toolbars.screen = require('app/components/toolbar/toolbar-screen');
 
 // Sensors panels
 toolbars.gps = require('app/components/toolbar/toolbar-gps');
@@ -130,6 +132,14 @@ const LiveToolbox = class extends React.Component {
 			}
 		};
 
+		this.handleClickFirstBar.scalescreen = () => {
+			if (this.props.isScaledscreen) {
+				this.props.onExitScaledscreen();
+			} else {
+				this.props.onEnterScaledscreen();
+			}
+		};
+
 		// Third toolbars - Panels
 		this.handleClickSecondBar = {};
 		this.handleChangeSensorsBinded = {};
@@ -192,7 +202,8 @@ const LiveToolbox = class extends React.Component {
 			const props = {
 				onClick: this.handleClickFirstBar,
 				secondBar: this.state.activeSecondBar,
-				isFullscreen: this.props.isFullscreen
+				isFullscreen: this.props.isFullscreen,
+				isScaledscreen: this.props.isScaledscreen
 			};
 			currentBar = React.createElement(toolbars[this.state.activeBar], props);
 		}
@@ -289,7 +300,10 @@ LiveToolbox.propTypes = {
 	onEnterFullscreen: React.PropTypes.func,
 	onExitFullscreen: React.PropTypes.func,
 	isFullscreen: React.PropTypes.bool,
-	style: React.PropTypes.object
+	isScaledscreen: React.PropTypes.bool,
+	style: React.PropTypes.object,
+	onExitScaledscreen: React.PropTypes.func,
+	onEnterScaledscreen: React.PropTypes.func
 };
 
 module.exports = LiveToolbox;

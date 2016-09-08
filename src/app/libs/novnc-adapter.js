@@ -111,6 +111,16 @@ const NoVNCAdapter = {
 		}
 		noVNCState.rfb.get_keyboard().set_focused(true);
 		noVNCState.rfb.get_mouse().set_focused(true);
+	},
+
+	resizeByScale(scale) {
+		const display = noVNCState.rfb.get_display();
+		const remoteSizes = {
+			width: display._fb_width * scale,
+			height: display._fb_height * scale
+		};
+		const scaleRatio = display.autoscale(remoteSizes.width, remoteSizes.height);
+		noVNCState.rfb.get_mouse().set_scale(scaleRatio);
 	}
 
 };

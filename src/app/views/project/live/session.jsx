@@ -57,6 +57,9 @@ const LiveSession = class extends React.Component {
 				LiveActions.exitFullscreen();
 			}
 		}
+		if (this.isScaledscreen()) {
+			LiveActions.recalculeScale();
+		}
 	}
 
 	handleEnterFullscreen = () => {
@@ -74,6 +77,24 @@ const LiveSession = class extends React.Component {
 		return this.state && this.state.live && this.state.live.isFullscreen;
 	}
 
+	isScaledscreen = () => {
+		return this.state && this.state.live && this.state.live.isScaledscreen;
+	}
+
+	getRotation = () => {
+		return this.state.live.properties ? this.state.live.properties['aicd.screen_rotation'] : '0';
+	}
+
+	handleEnterScaledscreen = () => {
+		debug('handleEnterScaledscreen');
+		LiveActions.enterScaledscreen();
+	}
+
+	handleExitScaledscreen = () => {
+		debug('handleExitScaledscreen');
+		LiveActions.exitScaledscreen();
+	}
+
 	render() {
 		debug('render');
 		const style = {
@@ -82,9 +103,11 @@ const LiveSession = class extends React.Component {
 				padding: Spacing.desktopGutter
 			},
 			paperLive: {
-				padding: this.isFullscreen() ? 0 : Spacing.desktopGutter,
+				padding: this.isFullscreen() ? 0 : (Spacing.desktopGutter - 1),
 				display: this.isFullscreen() ? 'flex' : 'block',
-				background: this.isFullscreen() ? '#000' : '#fff'
+				background: this.isFullscreen() ? '#000' : '#fff',
+				width: this.isFullscreen() ? '100%' : 'auto',
+				height: this.isFullscreen() ? '100%' : 'auto'
 			},
 			error: {
 				icon: {
@@ -118,6 +141,13 @@ const LiveSession = class extends React.Component {
 			left: 0
 		};
 
+		const styleLiveBoxWrapper = {
+			width: '100%',
+			height: '100%',
+			display: this.isFullscreen() ? 'flex' : 'block',
+			background: 'transparent'
+		};
+
 		return (
 			<div>
 
@@ -136,7 +166,8 @@ const LiveSession = class extends React.Component {
 				) : null}
 
 				{this.state && (this.state.live.status === 'LIVE_STATUS_CONNECTING' || this.state.live.status === 'LIVE_STATUS_CONNECTED') ? (
-					<Paper id="liveBox" style={style.paperLive}>
+					<Paper style={style.paperLive}>
+						<div id="liveBox" style={styleLiveBoxWrapper}>
 
 						{this.state.live.status === 'LIVE_STATUS_CONNECTING' ? (
 							<div style={style.paperCenter}>
@@ -144,12 +175,13 @@ const LiveSession = class extends React.Component {
 							</div>
 						) : null}
 
-						<PanelSessionScreen
-							rotation={this.state.live.properties ? this.state.live.properties['aicd.screen_rotation'] : '0'}
-							width={this.state.liveInfo.hwconfig.width}
-							height={this.state.liveInfo.hwconfig.height}
-							style={styleScreen}
-							/>
+							<PanelSessionScreen
+								rotation={this.getRotation()}
+								width={this.state.liveInfo.hwconfig.width}
+								height={this.state.liveInfo.hwconfig.height}
+								scale={this.state.live.scale}
+								style={styleScreen}
+								/>
 
 						{this.state.live.status === 'LIVE_STATUS_CONNECTED' ? (
 							<LiveToolbox
@@ -180,10 +212,13 @@ const LiveSession = class extends React.Component {
 								onEnterFullscreen={this.handleEnterFullscreen}
 								onExitFullscreen={this.handleExitFullscreen}
 								isFullscreen={this.state.live.isFullscreen}
+								onEnterScaledscreen={this.handleEnterScaledscreen}
+								onExitScaledscreen={this.handleExitScaledscreen}
+								isScaledscreen={this.state.live.isScaledscreen}
 								style={styleLiveToolBox}
 								/>
 						) : null}
-
+						</div>
 					</Paper>
 				) : null}
 

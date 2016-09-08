@@ -31,7 +31,10 @@ const LiveActions = Reflux.createActions({
 	listImages: {asyncResult: true},
 
 	enterFullscreen: {},
-	exitFullscreen: {}
+	exitFullscreen: {},
+	enterScaledscreen: {},
+	exitScaledscreen: {},
+	recalculeScale: {}
 });
 
 // Backend related

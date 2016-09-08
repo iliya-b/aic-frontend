@@ -9,17 +9,20 @@ const PanelSessionScreen = class extends React.Component {
 	render() {
 		debug('render');
 
+		const calcWidth = this.props.scale * this.props.width;
+		const calcHeight = this.props.scale * this.props.height;
+
 		const style = {
 			iframeHorizontal: {
 				overflow: 'hidden',
-				width: this.props.width,
-				height: this.props.height,
+				width: calcWidth,
+				height: calcHeight,
 				margin: 'auto'
 			},
 			iframeVertical: {
 				overflow: 'hidden',
-				width: this.props.height,
-				height: this.props.width,
+				width: calcHeight,
+				height: calcWidth,
 				margin: 'auto'
 			},
 			audio: {
@@ -28,15 +31,16 @@ const PanelSessionScreen = class extends React.Component {
 				textAlign: 'center'
 			}
 		};
-
-		const maxWidthHeight = Math.max(this.props.width, this.props.height);
+		const styleRoot = {
+			overflow: 'auto'
+		};
 
 		style.iframeRotation = this.props.rotation === '0' ? style.iframeHorizontal : style.iframeVertical;
 
 		return (
-			<div style={this.props.style}>
+			<div style={Object.assign(styleRoot, this.props.style)}>
 				<div style={style.iframeRotation}>
-					<canvas id="noVNC_canvas" data-x={maxWidthHeight} width={maxWidthHeight} height={maxWidthHeight}>
+					<canvas id="noVNC_canvas">
 							Canvas not supported.
 					</canvas>
 				</div>
@@ -50,19 +54,17 @@ const PanelSessionScreen = class extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		return nextProps.rotation !== this.props.rotation || !isEqual(nextProps.style, this.props.style);
+		return nextProps.rotation !== this.props.rotation ||
+			!isEqual(nextProps.style, this.props.style) ||
+			nextProps.scale !== this.props.scale;
 	}
-};
-
-PanelSessionScreen.contextTypes = {
-	muiTheme: React.PropTypes.object,
-	router: React.PropTypes.object
 };
 
 PanelSessionScreen.defaultProps = {
 	rotation: '0',
 	width: 800,
 	height: 600,
+	scale: 1,
 	style: {}
 };
 
@@ -70,6 +72,7 @@ PanelSessionScreen.propTypes = {
 	rotation: React.PropTypes.string,
 	width: React.PropTypes.number,
 	height: React.PropTypes.number,
+	scale: React.PropTypes.number,
 	style: React.PropTypes.object
 };
 
