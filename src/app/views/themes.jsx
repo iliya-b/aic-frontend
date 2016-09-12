@@ -308,9 +308,7 @@ const ThemesPage = class extends React.Component {
 					<SelectTextField items={selectFieldItems2}/>
 					<SelectTextField multiple items={selectFieldItems2}/>
 				</ClearFix>
-			</div>
-		);
-		/*
+
 				<ClearFix>
 
 					<h2>Live</h2>
@@ -607,7 +605,7 @@ const ThemesPage = class extends React.Component {
 				</ClearFix>
 
 			</div>
-		);*/
+		);
 	}
 
 	handleClickAddLogBox(e) {

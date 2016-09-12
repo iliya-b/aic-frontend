@@ -4,7 +4,6 @@ import React from 'react';
 import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
 import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
-import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import ListItemStatus from 'app/components/list/list-item-status';
 import SelectTextField from 'app/components/form/select-text-field';
