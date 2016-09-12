@@ -48,6 +48,7 @@ import PanelSessionDetails from 'app/components/panel/panel-session-details';
 import DroidPercentage from 'app/components/icon/droid-percentage';
 
 import LabeledSpan from 'app/components/form/labeled-span';
+import SelectTextField from 'app/components/form/select-text-field';
 
 const debug = require('debug')('AiC:Views:Themes');
 
@@ -296,6 +297,11 @@ const ThemesPage = class extends React.Component {
 			<div>
 				<ClearFix>
 					<RaisedButton linkButton href={'/'} secondary label={'Back to Home'}/>
+				</ClearFix>
+
+				<ClearFix>
+					<h2>Form</h2>
+					<SelectTextField items={'abc', 'def', 'long strange label of longness super extensive', 'Maps', 'Books', 'Flights', 'Apps'}/>
 				</ClearFix>
 
 				<ClearFix>
