@@ -293,17 +293,21 @@ const ThemesPage = class extends React.Component {
 
 		const packageList = ['package1', 'package1', 'package1', 'package1 long name file pack', 'package1', 'package1', 'package1'];
 
+		const selectFieldItems = ['abc', 'def', 'long strange label of longness super extensive', 'Maps', 'Books', 'Flights', 'Apps'];
 		return (
 			<div>
 				<ClearFix>
-					<RaisedButton linkButton href={'/'} secondary label={'Back to Home'}/>
+					<RaisedButton href={'/'} secondary label={'Back to Home'}/>
 				</ClearFix>
 
 				<ClearFix>
 					<h2>Form</h2>
-					<SelectTextField items={['abc', 'def', 'long strange label of longness super extensive', 'Maps', 'Books', 'Flights', 'Apps']}/>
+					<SelectTextField items={selectFieldItems}/>
+					<SelectTextField multiple items={selectFieldItems}/>
 				</ClearFix>
-
+			</div>
+		);
+		/*
 				<ClearFix>
 
 					<h2>Live</h2>
@@ -600,7 +604,7 @@ const ThemesPage = class extends React.Component {
 				</ClearFix>
 
 			</div>
-		);
+		);*/
 	}
 
 	handleClickAddLogBox(e) {

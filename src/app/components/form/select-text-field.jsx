@@ -21,7 +21,7 @@ const SelectTextField = class extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			selectedItems: [],
+			selectedItems: props.multiple ? [] : null,
 			itemsOpen: false,
 			filterValue: '',
 			focusMenuItem: -1
@@ -30,45 +30,65 @@ const SelectTextField = class extends React.Component {
 		this.clickAll = [];
 		this.availableRenderedCount = -1;
 		this.mappedItems = [];
+		this.calcItems(props);
 	}
 
 	getFocusedItem = () => {
 		return this.state.focusMenuItem === -1 && this.lastRenderedItems.length ? 0 : this.state.focusMenuItem;
 	}
 
-	changeSelection(newSelection) {
+	selectionChange(newSelection) {
 		this.setState({selectedItems: newSelection});
 		if (this.props.onChange) {
 			this.props.onChange(newSelection);
 		}
 	}
 
-	handleAddItem = item => {
-		const newSelection = this.state.selectedItems.slice();
-		newSelection.push(item);
-		this.changeSelection(newSelection);
+	selectionAdd = item => {
+		let newSelection = item;
+		if (this.props.multiple) {
+			newSelection = this.state.selectedItems.slice();
+			newSelection.push(item);
+		}
+		this.selectionChange(newSelection);
 		setTimeout(() => {
 			this.refInput.focus();
 		}, 100);
 	}
 
+	selectionRemove = item => {
+		let newSelection = null;
+		if (this.props.multiple) {
+			newSelection = this.state.selectedItems.slice();
+			newSelection.splice(newSelection.indexOf(item), 1);
+		}
+		this.selectionChange(newSelection);
+	}
+
+	selectionRemoveAll = () => {
+		let newSelection = null;
+		if (this.props.multiple) {
+			newSelection = [];
+		}
+		this.selectionChange(newSelection);
+	}
+
 	handleClickItem = e => {
 		this.clickOnItems = e.timeStamp;
 		debug('handleClickItem', e, e.timeStamp, e.currentTarget);
-		this.handleAddItem(e.currentTarget.dataset.itemValue);
+		this.selectionAdd(e.currentTarget.dataset.itemValue);
 	}
 
 	handleRemoveItem = e => {
 		debug('handleRemoveItem', e, e.timeStamp, e.currentTarget, e.target);
 		this.clickOnItems = e.timeStamp;
-		const newSelection = this.state.selectedItems.slice();
-		newSelection.splice(newSelection.indexOf(e.currentTarget.dataset.itemValue), 1);
-		this.changeSelection(newSelection);
+		this.selectionRemove(e.currentTarget.dataset.itemValue);
 	}
 
 	handleResetItems = e => {
 		this.clickOnItems = e.timeStamp;
-		this.changeSelection([]);
+		this.selectionRemoveAll();
+		this.setState({filterValue: ''});
 	}
 
 	handleCheckClicks = () => {
@@ -100,7 +120,12 @@ const SelectTextField = class extends React.Component {
 
 	handleTextChange = e => {
 		debug('handleTextChange', e);
-		this.setState({filterValue: e.target.value, focusMenuItem: -1});
+		let filterValue = e.target.value;
+		if (!this.props.multiple && this.state.selectedItems !== null) {
+			filterValue = filterValue.substr(this.state.selectedItems.length);
+			this.selectionRemoveAll();
+		}
+		this.setState({filterValue, focusMenuItem: -1});
 		setTimeout(() => {
 			this.refInput.focus();
 		}, 100);
@@ -132,18 +157,20 @@ const SelectTextField = class extends React.Component {
 		if (e.keyCode === 13) {
 			// ENTER
 			debug('enter in');
-			let nextFocusIndex;
-			if (focusedItem === -1) {
-				return;
-			} else if (this.availableRenderedCount > (focusedItem + 1)) {
-				nextFocusIndex = focusedItem;
-			} else if (this.availableRenderedCount > 1) {
-				nextFocusIndex = focusedItem - 1;
-			} else {
-				nextFocusIndex = -1;
+			if (this.props.multiple) {
+				let nextFocusIndex;
+				if (focusedItem === -1) {
+					return;
+				} else if (this.availableRenderedCount > (focusedItem + 1)) {
+					nextFocusIndex = focusedItem;
+				} else if (this.availableRenderedCount > 1) {
+					nextFocusIndex = focusedItem - 1;
+				} else {
+					nextFocusIndex = -1;
+				}
+				this.setState({focusMenuItem: nextFocusIndex});
 			}
-			this.setState({focusMenuItem: nextFocusIndex});
-			this.handleAddItem(this.lastRenderedItems[focusedItem]);
+			this.selectionAdd(this.lastRenderedItems[focusedItem].value);
 			debug('enter out');
 		} else if (e.keyCode === 38) {
 			// UP
@@ -159,10 +186,11 @@ const SelectTextField = class extends React.Component {
 			}
 		} else if (e.keyCode === 8) {
 			// BACKSPACE
-			if (this.state.filterValue === '' && this.state.selectedItems.length) {
-				const newSelection = this.state.selectedItems.slice();
-				newSelection.splice(newSelection.length - 1, 1);
-				this.changeSelection(newSelection);
+			if (this.props.multiple && this.state.filterValue === '' && this.state.selectedItems.length) {
+				const itemToRemove = this.state.selectedItems[this.state.selectedItems.length - 1];
+				this.selectionRemove(itemToRemove);
+			} else if (this.props.multiple && this.state.selectedItems !== null) {
+				this.selectionRemoveAll();
 			}
 		}
 		setTimeout(() => {
@@ -188,6 +216,7 @@ const SelectTextField = class extends React.Component {
 			hintText,
 			onBlur, // eslint-disable-line no-unused-vars
 			onFocus, // eslint-disable-line no-unused-vars
+			multiple,
 			...others
 		} = this.props;
 		// const palette = context.muiTheme.baseTheme.palette;
@@ -217,7 +246,6 @@ const SelectTextField = class extends React.Component {
 			height: 20,
 			border: 0,
 			padding: 0
-			// position: 'absolute'
 		};
 
 		const styleMenu = {
@@ -227,26 +255,26 @@ const SelectTextField = class extends React.Component {
 			zIndex: 5000
 		};
 
-		// const styleCenterWrapper = {
-		// 	display: 'table-cell',
-		// 	verticalAlign: 'middle'
-		// };
-
-		const selectedRendered = this.state.selectedItems
-			.map(a => this.mappedItems[this.indexItems[a]])
-			.map(this.renderSelected);
-
-		const inputValue = this.state.filterValue ? this.state.filterValue : false;
+		let selectedRendered;
+		const filterValue = this.state.filterValue ? this.state.filterValue : false;
+		let inputValue = filterValue ? filterValue : '';
+		if (multiple) {
+			selectedRendered = this.state.selectedItems
+				.map(a => this.mappedItems[this.indexItems[a]])
+				.map(this.renderSelected);
+		} else if (this.state.selectedItems) {
+			inputValue = this.state.selectedItems;
+		}
 
 		this.lastRenderedItems = this.mappedItems
-			.filter(a => this.state.selectedItems.indexOf(a.value) === -1)
-			.filter(a => !inputValue || (inputValue && a.label.toLowerCase().startsWith(inputValue)));
+			.filter(a => !multiple || this.state.selectedItems.indexOf(a.value) === -1)
+			.filter(a => !filterValue || (filterValue && a.label.toLowerCase().startsWith(filterValue.toLowerCase())));
 
 		const availableRendered = this.lastRenderedItems.map(this.renderList);
 
 		this.availableRenderedCount = availableRendered.length;
 
-		const showResetButton = this.state.selectedItems.length > 0;
+		const showResetButton = (multiple && this.state.selectedItems.length > 0) || (!multiple && this.state.selectedItems !== null);
 		const showItems = this.availableRenderedCount > 0;
 
 		const iconDrop = this.state.itemsOpen ? <DropUpArrow/> : <DropDownArrow/>;
@@ -265,8 +293,9 @@ const SelectTextField = class extends React.Component {
 			<div style={Object.assign({}, styleRoot, style)} {...others}>
 				<div>
 					<div style={styleWrapperSelectedNText}>
-						{selectedRendered}
+						{multiple && selectedRendered}
 						<TextField
+							name={`${this.props.name}Input`}
 							ref={this.setRefInput}
 							onClick={this.handleTextClick}
 							onChange={this.handleTextChange}
@@ -276,12 +305,13 @@ const SelectTextField = class extends React.Component {
 							underlineShow={false}
 							hintText={hintText}
 							style={{width: 'auto', float: 'left'}}
+							value={inputValue}
 							/>
 					</div>
 					{showResetButton && <div style={styleWrapperButtons}><IconButton onClick={this.handleResetItems} style={styleIconBt} iconStyle={Object.assign({}, styleIconClose, iconStyle)}>
 						<NavigationClose/>
 					</IconButton></div>}
-					{showItems && <div style={styleWrapperButtons}><IconButton onClick={this.handleToogleItems} tooltip="SVG Icon" style={styleIconBt} iconStyle={Object.assign({}, styleIconDown, iconStyle)}>
+					{showItems && <div style={styleWrapperButtons}><IconButton onClick={this.handleToogleItems} style={styleIconBt} iconStyle={Object.assign({}, styleIconDown, iconStyle)}>
 						{iconDrop}
 					</IconButton></div>}
 				</div>
@@ -302,9 +332,13 @@ const SelectTextField = class extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		this.calcItems(nextProps);
+	}
+
+	calcItems(props) {
 		this.indexItems = {};
-		this.mappedItems = nextProps.items.map((a, i) => {
-			const transformedItem = 'value' in a ? a : {value: a, label: a};
+		this.mappedItems = props.items.map((a, i) => {
+			const transformedItem = typeof a === 'object' && 'value' in a ? a : {value: a, label: a};
 			this.indexItems[transformedItem.value] = i;
 			return transformedItem;
 		});
@@ -344,11 +378,28 @@ const SelectTextField = class extends React.Component {
 			overflow: 'hidden',
 			textOverflow: 'ellipsis'
 		};
+		const styleMenuFocused = {
+			background: 'rgba(0, 0, 0, 0.098)'
+		};
+		const styleMenuSelected = {
+			color: this.context.muiTheme.palette.accent1Color
+		};
 		const focusedItem = this.getFocusedItem();
+		const isSelectedItem = this.state.selectedItems !== null && !this.props.multiple ? a.value === this.state.selectedItems : false;
+
+		debug('rendering', a, isSelectedItem, this.state.selectedItems, a.value === this.state.selectedItems);
+
+		const styleMenuMerged = styleMenuLabel;
+		if (i === focusedItem) {
+			Object.assign(styleMenuMerged, styleMenuFocused);
+		}
+		if (isSelectedItem) {
+			Object.assign(styleMenuMerged, styleMenuSelected);
+		}
 		return (
 			<MenuItemApp
 				desktop
-				style={Object.assign({}, styleMenuLabel, i === focusedItem ? {background: 'rgba(0, 0, 0, 0.098)'} : {})}
+				style={styleMenuMerged}
 				onClick={this.handleClickItem}
 				onMouseOver={this.handleMenuOver}
 				onMouseOut={this.handleMenuOut}
@@ -366,7 +417,8 @@ SelectTextField.contextTypes = {
 };
 
 SelectTextField.defaultProps = {
-	items: []
+	items: [],
+	multiple: false
 };
 
 SelectTextField.propTypes = {
@@ -376,7 +428,9 @@ SelectTextField.propTypes = {
 	onFocus: React.PropTypes.func,
 	onBlur: React.PropTypes.func,
 	onChange: React.PropTypes.func,
-	hintText: React.PropTypes.string
+	hintText: React.PropTypes.string,
+	name: React.PropTypes.string,
+	multiple: React.PropTypes.bool
 };
 
 module.exports = SelectTextField;
