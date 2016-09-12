@@ -301,7 +301,7 @@ const ThemesPage = class extends React.Component {
 
 				<ClearFix>
 					<h2>Form</h2>
-					<SelectTextField items={'abc', 'def', 'long strange label of longness super extensive', 'Maps', 'Books', 'Flights', 'Apps'}/>
+					<SelectTextField items={['abc', 'def', 'long strange label of longness super extensive', 'Maps', 'Books', 'Flights', 'Apps']}/>
 				</ClearFix>
 
 				<ClearFix>

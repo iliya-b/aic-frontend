@@ -14,12 +14,12 @@ const PanelAPKInstall = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {value: this.props.apkList.length ? this.props.apkList[0].id : null};
-		this.handleChange = (event, index, value) => {
-			this.setState({value});
+		this.state = {apkSelection: []};
+		this.handleChange = apkSelection => {
+			this.setState({apkSelection});
 		};
 		this.handleClick = e => {
-			props.onClick(e, this.state.value);
+			this.state.apkSelection.forEach(a => props.onClick(e, a));
 		};
 	}
 
@@ -91,7 +91,16 @@ const PanelAPKInstall = class extends React.Component {
 			<Paper style={styles.paper} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-puzzle" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<SelectTextField items={this.props.apkList.map(a => a.filename)}/>
+				<SelectTextField
+					onChange={this.handleChange}
+					hintText="Select APK"
+					onFocus={this.props.onInputFocus}
+					onBlur={this.props.onInputBlur}
+					style={{float: 'left', marginTop: 5}}
+					items={this.props.apkList.map(a => {
+						return {value: a.id, label: a.filename};
+					})}
+					/>
 				<RaisedButton
 					className="btLiveAPKInstallSubmit"
 					label="Install"
@@ -102,6 +111,7 @@ const PanelAPKInstall = class extends React.Component {
 					/>
 				<br/>
 				{apkInstalledRendered}
+				<div style={{clear: 'both'}}/>
 			</Paper>
 		);
 	}
@@ -115,6 +125,8 @@ PanelAPKInstall.contextTypes = {
 PanelAPKInstall.propTypes = {
 	style: React.PropTypes.object,
 	onClick: React.PropTypes.func,
+	onInputFocus: React.PropTypes.func,
+	onInputBlur: React.PropTypes.func,
 	apkList: React.PropTypes.arrayOf(React.PropTypes.shape({
 		filename: React.PropTypes.string,
 		id: React.PropTypes.string

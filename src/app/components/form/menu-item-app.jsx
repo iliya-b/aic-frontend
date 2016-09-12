@@ -38,7 +38,7 @@ const MenuItemApp = (props, context) => {
 	}
 
 	return (
-		<div {...other} style={Object.assign(styleRoot, style)}><span style={styleText}>{primaryText}</span></div>
+		<div {...other} style={Object.assign(styleRoot, style)} title={primaryText}><span style={styleText}>{primaryText}</span></div>
 	);
 };
 

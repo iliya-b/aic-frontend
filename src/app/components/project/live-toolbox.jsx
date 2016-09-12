@@ -229,7 +229,9 @@ const LiveToolbox = class extends React.Component {
 			const props = {
 				apkList: this.props.apkList,
 				onClick: this.props.onInstallAPK,
-				apkInstalled: this.props.apkInstalled
+				apkInstalled: this.props.apkInstalled,
+				onInputFocus: this.props.onInputFocus,
+				onInputBlur: this.props.onInputBlur
 			};
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
 		} else if (this.state.activeSecondBar === 'camera') { // eslint-disable-line no-negated-condition

@@ -1,7 +1,7 @@
+/* global document */
 'use strict';
 
 import React from 'react';
-import MenuItemApp from './menu-item-app';
 import TextField from 'material-ui/TextField';
 import TextFieldUnderline from 'material-ui/TextField/TextFieldUnderline';
 import Paper from 'material-ui/Paper';
@@ -10,10 +10,11 @@ import DropDownArrow from 'material-ui/svg-icons/navigation/arrow-drop-down';
 import DropUpArrow from 'material-ui/svg-icons/navigation/arrow-drop-up';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import Chip from 'material-ui/Chip';
+import MenuItemApp from './menu-item-app';
 
 const debug = require('debug')('AiC:Component:Form:SelectTextField');
 
-// This http://jedwatson.github.io/react-select/ but in material design
+// Inspired by http://jedwatson.github.io/react-select/ but in material design
 
 const SelectTextField = class extends React.Component {
 
@@ -28,16 +29,24 @@ const SelectTextField = class extends React.Component {
 		this.clickOnItems = [];
 		this.clickAll = [];
 		this.availableRenderedCount = -1;
+		this.mappedItems = [];
 	}
 
 	getFocusedItem = () => {
 		return this.state.focusMenuItem === -1 && this.lastRenderedItems.length ? 0 : this.state.focusMenuItem;
 	}
 
+	changeSelection(newSelection) {
+		this.setState({selectedItems: newSelection});
+		if (this.props.onChange) {
+			this.props.onChange(newSelection);
+		}
+	}
+
 	handleAddItem = item => {
 		const newSelection = this.state.selectedItems.slice();
 		newSelection.push(item);
-		this.setState({selectedItems: newSelection});
+		this.changeSelection(newSelection);
 		setTimeout(() => {
 			this.refInput.focus();
 		}, 100);
@@ -54,12 +63,12 @@ const SelectTextField = class extends React.Component {
 		this.clickOnItems = e.timeStamp;
 		const newSelection = this.state.selectedItems.slice();
 		newSelection.splice(newSelection.indexOf(e.currentTarget.dataset.itemValue), 1);
-		this.setState({selectedItems: newSelection});
+		this.changeSelection(newSelection);
 	}
 
 	handleResetItems = e => {
 		this.clickOnItems = e.timeStamp;
-		this.setState({selectedItems: []});
+		this.changeSelection([]);
 	}
 
 	handleCheckClicks = () => {
@@ -105,6 +114,15 @@ const SelectTextField = class extends React.Component {
 				this.refInput.focus();
 			}, 100);
 		}
+		if (this.props.onFocus) {
+			this.props.onFocus(e);
+		}
+	}
+
+	handleTextBlur = e => {
+		if (this.props.onBlur) {
+			this.props.onBlur(e);
+		}
 	}
 
 	handleTextKeyDown = e => {
@@ -144,7 +162,7 @@ const SelectTextField = class extends React.Component {
 			if (this.state.filterValue === '' && this.state.selectedItems.length) {
 				const newSelection = this.state.selectedItems.slice();
 				newSelection.splice(newSelection.length - 1, 1);
-				this.setState({selectedItems: newSelection});
+				this.changeSelection(newSelection);
 			}
 		}
 		setTimeout(() => {
@@ -166,7 +184,10 @@ const SelectTextField = class extends React.Component {
 		const {
 			style,
 			iconStyle,
-			items,
+			items, // eslint-disable-line no-unused-vars
+			hintText,
+			onBlur, // eslint-disable-line no-unused-vars
+			onFocus, // eslint-disable-line no-unused-vars
 			...others
 		} = this.props;
 		// const palette = context.muiTheme.baseTheme.palette;
@@ -211,12 +232,15 @@ const SelectTextField = class extends React.Component {
 		// 	verticalAlign: 'middle'
 		// };
 
-		const selectedRendered = this.state.selectedItems.map(this.renderSelected);
+		const selectedRendered = this.state.selectedItems
+			.map(a => this.mappedItems[this.indexItems[a]])
+			.map(this.renderSelected);
+
 		const inputValue = this.state.filterValue ? this.state.filterValue : false;
 
-		this.lastRenderedItems = items
-			.filter(a => this.state.selectedItems.indexOf(a) === -1)
-			.filter(a => !inputValue || (inputValue && a.toLowerCase().startsWith(inputValue)));
+		this.lastRenderedItems = this.mappedItems
+			.filter(a => this.state.selectedItems.indexOf(a.value) === -1)
+			.filter(a => !inputValue || (inputValue && a.label.toLowerCase().startsWith(inputValue)));
 
 		const availableRendered = this.lastRenderedItems.map(this.renderList);
 
@@ -247,9 +271,10 @@ const SelectTextField = class extends React.Component {
 							onClick={this.handleTextClick}
 							onChange={this.handleTextChange}
 							onFocus={this.handleTextFocus}
+							onBlur={this.handleTextBlur}
 							onKeyDown={this.handleTextKeyDown}
 							underlineShow={false}
-							hintText="Hint Text"
+							hintText={hintText}
 							style={{width: 'auto', float: 'left'}}
 							/>
 					</div>
@@ -276,6 +301,15 @@ const SelectTextField = class extends React.Component {
 		document.removeEventListener('click', this.handleClickAway);
 	}
 
+	componentWillReceiveProps(nextProps) {
+		this.indexItems = {};
+		this.mappedItems = nextProps.items.map((a, i) => {
+			const transformedItem = 'value' in a ? a : {value: a, label: a};
+			this.indexItems[transformedItem.value] = i;
+			return transformedItem;
+		});
+	}
+
 	renderSelected = s => {
 		const fn = () => {};
 		const styleChip = {
@@ -291,14 +325,14 @@ const SelectTextField = class extends React.Component {
 		};
 		return (
 			<Chip
-				key={s}
+				key={s.value}
 				onRequestDelete={fn}
 				style={styleChip}
 				labelStyle={styleChipLabel}
-				data-item-value={s}
+				data-item-value={s.value}
 				onClick={this.handleRemoveItem}
 				>
-				{s}
+				{s.label}
 			</Chip>
 		);
 	}
@@ -318,10 +352,10 @@ const SelectTextField = class extends React.Component {
 				onClick={this.handleClickItem}
 				onMouseOver={this.handleMenuOver}
 				onMouseOut={this.handleMenuOut}
-				data-item-value={a}
+				data-item-value={a.value}
 				data-item-index={i}
-				key={a}
-				primaryText={a}
+				key={a.value}
+				primaryText={a.label}
 				/>
 		);
 	}
@@ -334,20 +368,15 @@ SelectTextField.contextTypes = {
 SelectTextField.defaultProps = {
 	items: []
 };
-// 	key: null,
-// 	off: false,
-// 	style: {}
-// };
 
 SelectTextField.propTypes = {
 	iconStyle: React.PropTypes.object,
 	style: React.PropTypes.object,
-	items: React.PropTypes.array
-// 	value: React.PropTypes.node,
-// 	label: React.PropTypes.node,
-// 	key: React.PropTypes.string,
-// 	className: React.PropTypes.string,
-// 	off: React.PropTypes.bool
+	items: React.PropTypes.array,
+	onFocus: React.PropTypes.func,
+	onBlur: React.PropTypes.func,
+	onChange: React.PropTypes.func,
+	hintText: React.PropTypes.string
 };
 
 module.exports = SelectTextField;
