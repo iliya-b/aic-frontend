@@ -122,7 +122,8 @@ const SelectTextField = class extends React.Component {
 		debug('handleTextChange', e);
 		let filterValue = e.target.value;
 		if (!this.props.multiple && this.state.selectedItems !== null) {
-			filterValue = filterValue.substr(this.state.selectedItems.length);
+			const inputValue = this.getItemByValue(this.state.selectedItems).label;
+			filterValue = filterValue.substr(inputValue.length);
 			this.selectionRemoveAll();
 		}
 		this.setState({filterValue, focusMenuItem: -1});
@@ -260,10 +261,10 @@ const SelectTextField = class extends React.Component {
 		let inputValue = filterValue ? filterValue : '';
 		if (multiple) {
 			selectedRendered = this.state.selectedItems
-				.map(a => this.mappedItems[this.indexItems[a]])
+				.map(a => this.getItemByValue(a))
 				.map(this.renderSelected);
 		} else if (this.state.selectedItems) {
-			inputValue = this.state.selectedItems;
+			inputValue = this.getItemByValue(this.state.selectedItems).label;
 		}
 
 		this.lastRenderedItems = this.mappedItems
@@ -315,7 +316,7 @@ const SelectTextField = class extends React.Component {
 						{iconDrop}
 					</IconButton></div>}
 				</div>
-				<TextFieldUnderline focus={this.state.itemsOpen} style={{position: 'relative'}} muiTheme={this.context.muiTheme}/>
+				<TextFieldUnderline focus={this.state.itemsOpen} muiTheme={this.context.muiTheme}/>
 				{showItems && this.state.itemsOpen && <Paper style={styleMenu} ref={this.setRefMenu}>
 					{availableRendered}
 				</Paper>}
@@ -333,6 +334,10 @@ const SelectTextField = class extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		this.calcItems(nextProps);
+	}
+
+	getItemByValue(value) {
+		return this.mappedItems[this.indexItems[value]];
 	}
 
 	calcItems(props) {

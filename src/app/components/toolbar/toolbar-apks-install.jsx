@@ -100,6 +100,7 @@ const PanelAPKInstall = class extends React.Component {
 					items={this.props.apkList.map(a => {
 						return {value: a.id, label: a.filename};
 					})}
+					multiple
 					/>
 				<RaisedButton
 					className="btLiveAPKInstallSubmit"

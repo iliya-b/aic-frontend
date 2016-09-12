@@ -4,7 +4,7 @@ import React from 'react';
 import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
 import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
-import SelectField from 'material-ui/SelectField';
+import SelectTextField from 'app/components/form/select-text-field';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
@@ -16,19 +16,21 @@ const PanelMonkeyRunner = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {value: this.props.packageList && this.props.packageList.length ? this.props.packageList[0].id : null};
+		this.state = {value: null};
 		this.setRefEventCount = c => {
 			this.eventCount = c;
 		};
 		this.setRefThrottle = c => {
 			this.throttle = c;
 		};
-		this.handleChange = (event, index, value) => {
+		this.handleChange = value => {
 			this.setState({value});
 		};
 		this.handleClick = e => {
 			debug('handleClick', this, e);
-			this.props.onClick(e, [this.state.value], parseInt(this.eventCount.getValue(), 10), parseInt(this.throttle.getValue(), 10));
+			if (this.state.value !== null) {
+				this.props.onClick(e, [this.state.value], parseInt(this.eventCount.getValue(), 10), parseInt(this.throttle.getValue(), 10));
+			}
 		};
 	}
 
@@ -89,20 +91,28 @@ const PanelMonkeyRunner = class extends React.Component {
 			monkeyCallsRendered = <ListItemStatus style={{clear: 'both', display: 'block', marginLeft: 48}} items={monkeyCallsFiltered}/>;
 		}
 
+		// <SelectField className="inputLiveAPKInstallFilename" style={styles.items} labelStyle={styles.labelStyle} maxHeight={300} value={this.state.value} onChange={this.handleChange}>
+		// 			{items}
+		// 		</SelectField>
+
 		return (
 			<Paper style={styles.paper} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-panda" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<SelectField className="inputLiveAPKInstallFilename" style={styles.items} labelStyle={styles.labelStyle} maxHeight={300} value={this.state.value} onChange={this.handleChange}>
-					{items}
-				</SelectField>
+				<SelectTextField
+					onChange={this.handleChange}
+					hintText="Select application"
+					onFocus={this.props.onInputFocus}
+					onBlur={this.props.onInputBlur}
+					style={{float: 'left'}}
+					items={this.props.packageList}
+					/>
 				<TextField name="fieldLiveMonkeyRunnerEventCount" style={styles.itemsInputSmall} ref={this.setRefEventCount} hintText="event count" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<TextField name="fieldLiveMonkeyRunnerThrottle" style={styles.itemsInputSmall} ref={this.setRefThrottle} hintText="throttle (in ms)" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<RaisedButton
 					className="btLiveMonkeyRunnerRun"
 					label="Run"
 					title="Run"
-					href="#"
 					primary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}

@@ -294,6 +294,7 @@ const ThemesPage = class extends React.Component {
 		const packageList = ['package1', 'package1', 'package1', 'package1 long name file pack', 'package1', 'package1', 'package1'];
 
 		const selectFieldItems = ['abc', 'def', 'long strange label of longness super extensive', 'Maps', 'Books', 'Flights', 'Apps'];
+		const selectFieldItems2 = selectFieldItems.map((a, i) => ({value: String(i), label: a}));
 		return (
 			<div>
 				<ClearFix>
@@ -304,6 +305,8 @@ const ThemesPage = class extends React.Component {
 					<h2>Form</h2>
 					<SelectTextField items={selectFieldItems}/>
 					<SelectTextField multiple items={selectFieldItems}/>
+					<SelectTextField items={selectFieldItems2}/>
+					<SelectTextField multiple items={selectFieldItems2}/>
 				</ClearFix>
 			</div>
 		);
