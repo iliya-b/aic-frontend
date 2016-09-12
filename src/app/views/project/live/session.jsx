@@ -138,7 +138,8 @@ const LiveSession = class extends React.Component {
 		const styleLiveToolBox = {
 			position: this.isFullscreen() ? 'absolute' : 'initial',
 			top: 0,
-			left: 0
+			left: 0,
+			width: 800
 		};
 
 		const styleLiveBoxWrapper = {

@@ -1,26 +1,20 @@
 'use strict';
 
-// Vendor
 import React from 'react';
 import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
 import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
+import SelectTextField from 'app/components/form/select-text-field';
 
-// APP
 const PanelCamera = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {value: this.props.fileList.length ? this.props.fileList[0].id : null};
-		this.handleChange = (event, index, value) => {
+		this.state = {value: null};
+		this.handleChange = value => {
 			this.setState({value});
 		};
-		// this.handleClick = e => {
-		// 	props.onClick(e, this.state.value);
-		// };
 		this.handleClick = e => {
 			this.props.onClick(e, {file_id: this.state.value}); // eslint-disable-line camelcase
 		};
@@ -53,17 +47,19 @@ const PanelCamera = class extends React.Component {
 			styles.paper = Object.assign({}, this.props.style, styles.paper);
 		}
 
-		const items = [];
-		this.props.fileList.forEach(file => {
-			items.push(<MenuItem value={file.id} key={file.id} primaryText={file.filename}/>);
-		});
 		return (
 			<Paper style={styles.paper} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-camera" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
-				<SelectField className="inputLiveCameraFilename" style={styles.items} maxHeight={300} value={this.state.value} onChange={this.handleChange}>
-					{items}
-				</SelectField>
+				<SelectTextField
+					name="inputLiveCameraFilename"
+					onChange={this.handleChange}
+					hintText="Select file"
+					onFocus={this.props.onInputFocus}
+					onBlur={this.props.onInputBlur}
+					style={{float: 'left'}}
+					items={this.props.fileList.map(a => ({value: a.id, label: a.filename}))}
+					/>
 				<RaisedButton
 					className="btLiveCameraSubmit"
 					label="Send"
@@ -89,7 +85,9 @@ PanelCamera.propTypes = {
 	fileList: React.PropTypes.arrayOf(React.PropTypes.shape({
 		filename: React.PropTypes.string,
 		id: React.PropTypes.string
-	})).isRequired
+	})).isRequired,
+	onInputFocus: React.PropTypes.func,
+	onInputBlur: React.PropTypes.func
 };
 
 module.exports = PanelCamera;

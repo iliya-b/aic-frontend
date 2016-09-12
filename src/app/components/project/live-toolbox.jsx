@@ -238,7 +238,9 @@ const LiveToolbox = class extends React.Component {
 			const onChangeSensorBinded = this.handleChangeSensorsBinded[this.state.activeSecondBar];
 			const props = {
 				fileList: this.props.cameraList,
-				onClick: onChangeSensorBinded
+				onClick: onChangeSensorBinded,
+				onInputFocus: this.props.onInputFocus,
+				onInputBlur: this.props.onInputBlur
 			};
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
 		} else if (PANEL_GSM_ORDER.indexOf(this.state.activeSecondBar) !== -1) { // eslint-disable-line no-negated-condition

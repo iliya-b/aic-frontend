@@ -4,11 +4,10 @@ import React from 'react';
 import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
 import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
-import SelectTextField from 'app/components/form/select-text-field';
-import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import ListItemStatus from 'app/components/list/list-item-status';
+import SelectTextField from 'app/components/form/select-text-field';
 
 const debug = require('debug')('AiC:Components:Toolbar:PanelMonkeyRunner');
 
@@ -71,11 +70,6 @@ const PanelMonkeyRunner = class extends React.Component {
 			styles.paper = Object.assign({}, this.props.style, styles.paper);
 		}
 
-		const items = [];
-		this.props.packageList.forEach((packageName, index) => {
-			items.push(<MenuItem value={packageName} key={index} primaryText={packageName}/>);
-		});
-
 		let monkeyCallsRendered = null;
 		if (this.props.monkeyCalls) {
 			const monkeyCallsFiltered = this.props.monkeyCalls
@@ -91,15 +85,12 @@ const PanelMonkeyRunner = class extends React.Component {
 			monkeyCallsRendered = <ListItemStatus style={{clear: 'both', display: 'block', marginLeft: 48}} items={monkeyCallsFiltered}/>;
 		}
 
-		// <SelectField className="inputLiveAPKInstallFilename" style={styles.items} labelStyle={styles.labelStyle} maxHeight={300} value={this.state.value} onChange={this.handleChange}>
-		// 			{items}
-		// 		</SelectField>
-
 		return (
 			<Paper style={styles.paper} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-panda" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
 				<SelectTextField
+					name="inputLiveAPKInstallFilename"
 					onChange={this.handleChange}
 					hintText="Select application"
 					onFocus={this.props.onInputFocus}

@@ -4,7 +4,6 @@ import React from 'react';
 import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
 import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
-// import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import ListItemStatus from 'app/components/list/list-item-status';
@@ -56,10 +55,8 @@ const PanelAPKInstall = class extends React.Component {
 			styles.paper = Object.assign({}, this.props.style, styles.paper);
 		}
 
-		const items = [];
 		const filenames = {};
 		this.props.apkList.forEach(apk => {
-			items.push(<MenuItem value={apk.id} key={apk.id} primaryText={apk.filename}/>);
 			filenames[apk.id] = apk.filename;
 		});
 
@@ -84,14 +81,12 @@ const PanelAPKInstall = class extends React.Component {
 			apkInstalledRendered = <ListItemStatus style={{clear: 'both', display: 'block', marginLeft: 48}} items={apkInstalledFiltered}/>;
 		}
 
-		// <SelectField className="inputLiveAPKInstallFilename" style={styles.items} labelStyle={styles.labelStyle} maxHeight={300} value={this.state.value} onChange={this.handleChange}>
-		//			{items}
-		//		</SelectField>
 		return (
 			<Paper style={styles.paper} zDepth={1}>
 				<FontIcon style={styles.icon} className="mdi mdi-puzzle" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
 				<SelectTextField
+					name="inputLiveAPKInstallFilename"
 					onChange={this.handleChange}
 					hintText="Select APK"
 					onFocus={this.props.onInputFocus}
