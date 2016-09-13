@@ -303,8 +303,8 @@ const ThemesPage = class extends React.Component {
 
 				<ClearFix>
 					<h2>Form</h2>
-					<SelectTextField items={selectFieldItems}/>
-					<SelectTextField multiple items={selectFieldItems}/>
+					<SelectTextField hintText="hintText" items={selectFieldItems}/>
+					<SelectTextField hintText="hintText" multiple items={selectFieldItems}/>
 					<SelectTextField items={selectFieldItems2}/>
 					<SelectTextField multiple items={selectFieldItems2}/>
 				</ClearFix>

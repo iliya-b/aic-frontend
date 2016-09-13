@@ -143,10 +143,10 @@ const SelectTextField = class extends React.Component {
 		debug('handleTextFocus', e.timeStamp, e);
 		if (!this.state.itemsOpen) {
 			this.setState({itemsOpen: true, focusMenuItem: -1});
-			setTimeout(() => {
-				this.refInput.focus();
-			}, 100);
 		}
+		setTimeout(() => {
+			this.refInput.focus();
+		}, 100);
 		if (this.props.onFocus) {
 			this.props.onFocus(e);
 		}
@@ -286,8 +286,20 @@ const SelectTextField = class extends React.Component {
 
 		this.availableRenderedCount = availableRendered.length;
 
+		let notFoundRendered = null;
+		if (this.availableRenderedCount === 0 && filterValue) {
+			notFoundRendered = (
+				<MenuItemApp
+					desktop
+					key="notfound"
+					primaryText="No results found"
+					disabled
+					/>
+				);
+		}
+
 		const showResetButton = (multiple && this.state.selectedItems.length > 0) || (!multiple && this.state.selectedItems !== null);
-		const showItems = this.availableRenderedCount > 0;
+		const showItems = (this.availableRenderedCount > 0 || notFoundRendered !== null);
 
 		const iconDrop = this.state.itemsOpen ? <DropUpArrow/> : <DropDownArrow/>;
 
@@ -309,6 +321,13 @@ const SelectTextField = class extends React.Component {
 			tableLayout: 'fixed'
 		};
 
+		let inputSize = false;
+		if (inputValue && inputValue.length) {
+			inputSize = inputValue.length;
+		} else if (hintText && hintText.length) {
+			inputSize = hintText.length;
+		}
+
 		return (
 			<div style={Object.assign({}, styleRoot, style)} {...others}>
 				<div style={styleWrapperControls}>
@@ -324,8 +343,10 @@ const SelectTextField = class extends React.Component {
 							onKeyDown={this.handleTextKeyDown}
 							underlineShow={false}
 							hintText={hintText}
-							style={{width: 'auto', float: 'left'}}
+							style={{maxWidth: '100%', float: 'left', width: 'initial', overflow: 'hidden'}}
+							inputStyle={{width: 'initial'}}
 							value={inputValue}
+							size={inputSize}
 							/>
 					</div>
 					{showResetButton && <div style={styleWrapperButtons}><IconButton onClick={this.handleResetItems} style={styleIconBt} iconStyle={Object.assign({}, styleIconClose, iconStyle)}>
@@ -338,6 +359,7 @@ const SelectTextField = class extends React.Component {
 				<div style={{position: 'relative', marginTop: -4}}><TextFieldUnderline focus={this.state.itemsOpen} muiTheme={this.context.muiTheme}/></div>
 				{showItems && this.state.itemsOpen && <Paper style={Object.assign(styleMenuBase, menuStyle)} ref={this.setRefMenu}>
 					{availableRendered}
+					{notFoundRendered}
 				</Paper>}
 			</div>
 		);

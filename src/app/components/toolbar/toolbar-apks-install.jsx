@@ -13,12 +13,19 @@ const PanelAPKInstall = class extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {apkSelection: []};
-		this.handleChange = apkSelection => {
-			this.setState({apkSelection});
-		};
-		this.handleClick = e => {
-			this.state.apkSelection.forEach(a => props.onClick(e, a));
-		};
+	}
+
+	handleChange = apkSelection => {
+		this.setState({apkSelection});
+	}
+
+	handleClick = e => {
+		this.state.apkSelection.forEach(a => this.props.onClick(e, a));
+		this.refSelection.selectionRemoveAll();
+	}
+
+	setRefSelection = c => {
+		this.refSelection = c;
 	}
 
 	render() {
@@ -85,6 +92,7 @@ const PanelAPKInstall = class extends React.Component {
 				<FontIcon style={styles.icon} className="mdi mdi-puzzle" color="rgba(0, 0, 0, 0.4)"/>
 				<ToolbarSeparator style={styles.separator}/>
 				<SelectTextField
+					ref={this.setRefSelection}
 					name="inputLiveAPKInstallFilename"
 					onChange={this.handleChange}
 					hintText="Select APK"
