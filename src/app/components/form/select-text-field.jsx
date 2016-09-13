@@ -94,8 +94,9 @@ const SelectTextField = class extends React.Component {
 	handleCheckClicks = () => {
 		setTimeout(() => {
 			if (this.clickOnItems === this.clickAll) {
-				debug('click in');
+				debug('click in', this.clickOnItems, this.clickAll);
 			} else if (this.state.itemsOpen) {
+				debug('click out', this.clickOnItems, this.clickAll);
 				this.setState({itemsOpen: false});
 			}
 		}, 100);
@@ -132,8 +133,14 @@ const SelectTextField = class extends React.Component {
 		}, 100);
 	}
 
+	handleWrapperClick = e => {
+		debug('handleWrapperClick', e.timeStamp, e);
+		this.clickOnItems = e.timeStamp;
+		this.handleTextFocus(e);
+	}
+
 	handleTextFocus = e => {
-		debug('handleTextFocus', e);
+		debug('handleTextFocus', e.timeStamp, e);
 		if (!this.state.itemsOpen) {
 			this.setState({itemsOpen: true, focusMenuItem: -1});
 			setTimeout(() => {
@@ -190,7 +197,7 @@ const SelectTextField = class extends React.Component {
 			if (this.props.multiple && this.state.filterValue === '' && this.state.selectedItems.length) {
 				const itemToRemove = this.state.selectedItems[this.state.selectedItems.length - 1];
 				this.selectionRemove(itemToRemove);
-			} else if (this.props.multiple && this.state.selectedItems !== null) {
+			} else if (!this.props.multiple && this.state.selectedItems !== null) {
 				this.selectionRemoveAll();
 			}
 		}
@@ -213,11 +220,13 @@ const SelectTextField = class extends React.Component {
 		const {
 			style,
 			iconStyle,
+			menuStyle,
 			items, // eslint-disable-line no-unused-vars
 			hintText,
 			onBlur, // eslint-disable-line no-unused-vars
 			onFocus, // eslint-disable-line no-unused-vars
 			multiple,
+			maxHeight,
 			...others
 		} = this.props;
 		// const palette = context.muiTheme.baseTheme.palette;
@@ -249,11 +258,13 @@ const SelectTextField = class extends React.Component {
 			padding: 0
 		};
 
-		const styleMenu = {
+		const styleMenuBase = {
 			position: 'absolute',
 			marginTop: -8,
-			width: styleRoot.width,
-			zIndex: 5000
+			width: '100%',
+			zIndex: 5000,
+			maxHeight,
+			overflowY: 'auto'
 		};
 
 		let selectedRendered;
@@ -282,18 +293,26 @@ const SelectTextField = class extends React.Component {
 
 		const styleWrapperButtons = {
 			display: 'table-cell',
-			verticalAlign: 'middle'
+			verticalAlign: 'middle',
+			width: 20
 		};
 
 		const styleWrapperSelectedNText = {
-			display: 'table-cell',
-			width: `calc(${styleRoot.width}px - ${(showResetButton ? 20 : 0) + (showItems ? 20 : 0)}px)`
+			cursor: 'text',
+			width: '100%',
+			display: 'inline-block'
+		};
+
+		const styleWrapperControls = {
+			display: 'table',
+			width: '100%',
+			tableLayout: 'fixed'
 		};
 
 		return (
 			<div style={Object.assign({}, styleRoot, style)} {...others}>
-				<div>
-					<div style={styleWrapperSelectedNText}>
+				<div style={styleWrapperControls}>
+					<div style={styleWrapperSelectedNText} onClick={this.handleWrapperClick}>
 						{multiple && selectedRendered}
 						<TextField
 							name={`${this.props.name}Input`}
@@ -316,8 +335,8 @@ const SelectTextField = class extends React.Component {
 						{iconDrop}
 					</IconButton></div>}
 				</div>
-				<TextFieldUnderline focus={this.state.itemsOpen} muiTheme={this.context.muiTheme}/>
-				{showItems && this.state.itemsOpen && <Paper style={styleMenu} ref={this.setRefMenu}>
+				<div style={{position: 'relative', marginTop: -4}}><TextFieldUnderline focus={this.state.itemsOpen} muiTheme={this.context.muiTheme}/></div>
+				{showItems && this.state.itemsOpen && <Paper style={Object.assign(styleMenuBase, menuStyle)} ref={this.setRefMenu}>
 					{availableRendered}
 				</Paper>}
 			</div>
@@ -353,12 +372,12 @@ const SelectTextField = class extends React.Component {
 		const fn = () => {};
 		const styleChip = {
 			margin: '0 5px 5px 0',
-			float: 'left'
+			float: 'left',
+			maxWidth: '100%'
 		};
 
 		const styleChipLabel = {
-			// TODO change hardcoded value
-			maxWidth: 300 - 90,
+			maxWidth: 'calc(100% - 44px)',
 			overflow: 'hidden',
 			textOverflow: 'ellipsis'
 		};
@@ -378,8 +397,6 @@ const SelectTextField = class extends React.Component {
 
 	renderList = (a, i) => {
 		const styleMenuLabel = {
-			// TODO change hardcoded value
-			width: 300,
 			overflow: 'hidden',
 			textOverflow: 'ellipsis'
 		};
@@ -423,19 +440,22 @@ SelectTextField.contextTypes = {
 
 SelectTextField.defaultProps = {
 	items: [],
-	multiple: false
+	multiple: false,
+	maxHeight: 256
 };
 
 SelectTextField.propTypes = {
-	iconStyle: React.PropTypes.object,
 	style: React.PropTypes.object,
+	iconStyle: React.PropTypes.object,
+	menuStyle: React.PropTypes.object,
 	items: React.PropTypes.array,
 	onFocus: React.PropTypes.func,
 	onBlur: React.PropTypes.func,
 	onChange: React.PropTypes.func,
 	hintText: React.PropTypes.string,
 	name: React.PropTypes.string,
-	multiple: React.PropTypes.bool
+	multiple: React.PropTypes.bool,
+	maxHeight: React.PropTypes.number
 };
 
 module.exports = SelectTextField;

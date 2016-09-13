@@ -17,8 +17,7 @@ const MenuItemApp = (props, context) => {
 		color: disabled ? disabledColor : textColor,
 		cursor: disabled ? 'not-allowed' : 'pointer',
 		lineHeight: desktop ? '32px' : '48px',
-		fontSize: desktop ? 15 : 16,
-		whiteSpace: 'nowrap'
+		fontSize: desktop ? 15 : 16
 	};
 	const styleText = {
 		paddingLeft: sidePadding,
@@ -27,15 +26,11 @@ const MenuItemApp = (props, context) => {
 		paddingTop: 0,
 		boxSizing: 'border-box',
 		width: '100%',
-		display: 'block'
+		display: 'block',
+		overflow: 'hidden',
+		textOverflow: 'ellipsis',
+		whiteSpace: 'nowrap'
 	};
-	if (style.width) {
-		Object.assign(styleText, {
-			maxWidth: styleRoot.width - 90,
-			overflow: 'hidden',
-			textOverflow: 'ellipsis'
-		});
-	}
 
 	return (
 		<div {...other} style={Object.assign(styleRoot, style)} title={primaryText}><span style={styleText}>{primaryText}</span></div>

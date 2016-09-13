@@ -6,11 +6,9 @@ import LabeledSpan from 'app/components/form/labeled-span';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
-import Chip from 'material-ui/Chip';
 import IconButtonApp from 'app/components/icon/icon-button-app';
 import DeviceIcon from 'app/components/icon/device-icon';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import SelectTextField from 'app/components/form/select-text-field';
 
 const debug = require('debug')('AiC:Components:Dialog:DialogCampaignCreation');
 
@@ -24,15 +22,14 @@ const DialogCampaignCreation = class extends React.Component {
 				name: '',
 				images: [],
 				apks: []
-			},
-			isAddingApk: false
+			}
 		};
 		this.refsC = {};
 	}
 
 	udpdateConfig = (config, value) => {
 		const newStateConfig = Object.assign({}, this.state.config);
-		if (Array.isArray(newStateConfig[config])) {
+		if (Array.isArray(newStateConfig[config]) && config !== 'apks') {
 			const posConfig = newStateConfig[config].indexOf(value);
 			if (posConfig === -1) {
 				newStateConfig[config].push(value);
@@ -57,11 +54,6 @@ const DialogCampaignCreation = class extends React.Component {
 		this.handleDatasetConfig(e.currentTarget);
 	}
 
-	handleClickParentConfig = e => {
-		debug('handleClickParentConfig', e.currentTarget.parentNode);
-		this.handleDatasetConfig(e.currentTarget.parentNode);
-	}
-
 	handleChangeConfig = e => {
 		debug('handleChangeConfig', e.currentTarget.dataset, e.currentTarget, this.refName);
 		const configKey = e.currentTarget.dataset.configKey;
@@ -81,25 +73,8 @@ const DialogCampaignCreation = class extends React.Component {
 		this.props.onStart(this.state.config);
 	}
 
-	handleToggleApkSelection = () => {
-		this.setState({isAddingApk: !this.state.isAddingApk});
-	}
-
-	handleAddApk = () => {
-		if (this.state.addingApkId) {
-			this.udpdateConfig('apks', this.state.addingApkId);
-			this.handleToggleApkSelection();
-		}
-	}
-
-	handleChangeApk = (event, index, value) => {
-		this.setState({addingApkId: value});
-	}
-
-	getApkName = apkId => {
-		return this.props.apks.reduce((p, apk) => {
-			return !p && apk.id === apkId ? apk.filename : p;
-		}, false);
+	handleChangeAPKs = newSelection => {
+		this.udpdateConfig('apks', newSelection);
 	}
 
 	render() {
@@ -112,18 +87,6 @@ const DialogCampaignCreation = class extends React.Component {
 			images, // eslint-disable-line no-unused-vars
 			...others
 		} = this.props;
-
-		const styleChip = {margin: 4};
-		const styleChipWrapper = {
-			display: 'flex',
-			flexWrap: 'wrap'
-		};
-		const styleAddApk = {
-			padding: '0 4px',
-			margin: '0 8px',
-			width: 'auto',
-			height: 'auto'
-		};
 
 		const actionsButtons = [
 			<RaisedButton secondary label="Start" key="start" onClick={this.handleStart}/>,
@@ -139,47 +102,34 @@ const DialogCampaignCreation = class extends React.Component {
 			);
 		});
 
-		const apksSelected = this.state.config.apks.map(apkId => {
-			return (
-				<Chip
-					key={apkId}
-					style={styleChip}
-					onRequestDelete={this.handleClickParentConfig}
-					data-config-key="apks"
-					data-config-value={apkId}
-					>{this.getApkName(apkId)}</Chip>
-			);
-		});
-
 		const apksMenu = this.props.apks
 			.filter(apk => apk.status === 'READY')
-			.filter(apk => this.state.config.apks.indexOf(apk.id) === -1)
-			.map(apk => {
-				return <MenuItem value={apk.id} key={apk.id} primaryText={apk.filename}/>;
-			});
-
-		const apkSelection = this.state.isAddingApk ? (
-			<div>
-				<SelectField value={this.state.addingApkId} onChange={this.handleChangeApk} maxHeight={200}>
-					{apksMenu}
-				</SelectField>
-				<IconButtonApp onClick={this.handleAddApk} style={styleAddApk} iconClassName="mdi mdi-check" secondary/>
-			</div>
-		) : (
-			<IconButtonApp onClick={this.handleToggleApkSelection} style={styleAddApk} iconClassName="mdi mdi-plus" primary={apksMenu.length !== 0} disabled={apksMenu.length === 0}/>
-		);
+			.map(apk => ({value: apk.id, label: apk.filename}));
 
 		return (
 			<Dialog {...others} open={open} title="Start campaign" actions={actionsButtons} autoScrollBodyContent onRequestClose={onCancel}>
-				<TextField name="createCampaignName" data-config-key="name" ref={this.setRefC} floatingLabelFixed floatingLabelText="campaign name" onChange={this.handleChangeConfig} defaultValue={this.state.config.name}/><br/>
+				<TextField
+					name="createCampaignName"
+					data-config-key="name"
+					ref={this.setRefC}
+					floatingLabelFixed
+					floatingLabelText="campaign name"
+					onChange={this.handleChangeConfig}
+					defaultValue={this.state.config.name}
+					/><br/>
 				<LabeledSpan label="devices" off style={styleLabels}/><br/>
 				{devices}
 				<br/>
 				<LabeledSpan label="APKs" off style={styleLabels}/><br/>
-				<div style={styleChipWrapper}>
-					{apksSelected}
-					{apkSelection}
-				</div>
+				<SelectTextField
+					name="startCampaignAPKs"
+					onChange={this.handleChangeAPKs}
+					hintText="Select APKs"
+					style={{position: 'initial', width: '100%'}}
+					menuStyle={{width: 'calc(100% - 50px)'}}
+					items={apksMenu}
+					multiple
+					/>
 			</Dialog>
 		);
 	}
@@ -191,7 +141,7 @@ DialogCampaignCreation.contextTypes = {
 
 DialogCampaignCreation.defaultProps = {
 	open: true,
-	images: [{image: 'kitkat-phone'}, {image: 'kitkat-tablet'}, {image: 'lollipop-phone'}, {image: 'lollipop-tablet'}],
+	images: [],
 	apks: [],
 	onCancel: () => {},
 	onStart: () => {}
