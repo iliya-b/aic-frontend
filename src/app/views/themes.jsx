@@ -23,7 +23,8 @@ import {
 	TextField,
 	Toggle,
 	Paper,
-	FontIcon
+	FontIcon,
+	Chip,
 } from 'material-ui';
 
 import BoxStatus from 'app/components/project/box-status';
@@ -49,6 +50,7 @@ import DroidPercentage from 'app/components/icon/droid-percentage';
 
 import LabeledSpan from 'app/components/form/labeled-span';
 import SelectTextField from 'app/components/form/select-text-field';
+import ChipDelete from 'app/components/form/chip-delete';
 
 const debug = require('debug')('AiC:Views:Themes');
 
@@ -295,10 +297,17 @@ const ThemesPage = class extends React.Component {
 
 		const selectFieldItems = ['abc', 'def', 'long strange label of longness super extensive', 'Maps', 'Books', 'Flights', 'Apps'];
 		const selectFieldItems2 = selectFieldItems.map((a, i) => ({value: String(i), label: a}));
+
+		const fn = () => {};
 		return (
 			<div>
 				<ClearFix>
 					<RaisedButton href={'/'} secondary label={'Back to Home'}/>
+				</ClearFix>
+
+				<ClearFix>
+					<h2>Form</h2>
+					<ChipDelete onRequestDelete={fn}>Testing Chip</ChipDelete>
 				</ClearFix>
 
 				<ClearFix>
@@ -470,61 +479,6 @@ const ThemesPage = class extends React.Component {
 					<RaisedButton label="Session Ended Dialog" primary onClick={this.handleOpenable.open.sessionEndedDialog}/>
 					<SessionEndedDialog open={this.state.openComponents.sessionEndedDialog} onRequestClose={this.handleOpenable.close.sessionEndedDialog}/>
 
-				</ClearFix>
-
-				<ClearFix>
-					<AvatarProgress
-						progress={0}
-						icon={<FontIcon className="mdi mdi-android"/>}
-						color={styles.avatarProgressAndro.color}
-						backgroundColor={styles.avatarProgressAndro.backgroundColor}
-						foregroundColor={styles.avatarProgressAndro.foregroundColor}
-						/>
-
-					<AvatarProgress
-						style={{marginLeft: '10px'}}
-						progress={12}
-						icon={<FontIcon className="mdi mdi-android"/>}
-						color={styles.avatarProgressAndro.color}
-						backgroundColor={styles.avatarProgressAndro.backgroundColor}
-						foregroundColor={styles.avatarProgressAndro.foregroundColor}
-						/>
-
-					<AvatarProgress
-						style={{marginLeft: '10px'}}
-						progress={25}
-						icon={<FontIcon className="mdi mdi-android"/>}
-						color={styles.avatarProgressAndro.color}
-						backgroundColor={styles.avatarProgressAndro.backgroundColor}
-						foregroundColor={styles.avatarProgressAndro.foregroundColor}
-						/>
-
-					<AvatarProgress
-						style={{marginLeft: '10px'}}
-						progress={50}
-						icon={<FontIcon className="mdi mdi-android"/>}
-						color={styles.avatarProgressAndro.color}
-						backgroundColor={styles.avatarProgressAndro.backgroundColor}
-						foregroundColor={styles.avatarProgressAndro.foregroundColor}
-						/>
-
-					<AvatarProgress
-						style={{marginLeft: '10px'}}
-						progress={75}
-						icon={<FontIcon className="mdi mdi-android"/>}
-						color={styles.avatarProgressAndro.color}
-						backgroundColor={styles.avatarProgressAndro.backgroundColor}
-						foregroundColor={styles.avatarProgressAndro.foregroundColor}
-						/>
-
-					<AvatarProgress
-						style={{marginLeft: '10px'}}
-						progress={100}
-						icon={<FontIcon className="mdi mdi-android"/>}
-						color={styles.avatarProgressAndro.color}
-						backgroundColor={styles.avatarProgressAndro.backgroundColor}
-						foregroundColor={styles.avatarProgressAndro.foregroundColor}
-						/>
 				</ClearFix>
 
 				<ClearFix>
