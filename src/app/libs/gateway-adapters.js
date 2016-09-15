@@ -185,6 +185,17 @@ const GatewayAdapters = {
 		},
 		listImages: {
 			response: backendObject => backendObject.images
+		},
+		installAPK: {
+			response: backendObject => ({
+				request: backendObject.request,
+				response: {
+					commandId: backendObject.response.command_id
+				}
+			})
+		},
+		command: {
+			response: backendObject => backendObject.results[0]
 		}
 	},
 	campaign: {

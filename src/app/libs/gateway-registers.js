@@ -185,6 +185,12 @@ const GatewayRegisters = function () {
 					method: 'GET'
 				},
 				pathname: '/images'
+			}, {
+				action: {
+					name: 'command',
+					method: 'GET'
+				},
+				pathname: '/android/{avmId}/command/{commandId}'
 			}
 		]
 	});

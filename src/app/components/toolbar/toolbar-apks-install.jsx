@@ -5,7 +5,7 @@ import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
 import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
-import ListItemStatus from 'app/components/list/list-item-status';
+import PanelProgress from 'app/components/panel/panel-progress';
 import SelectTextField from 'app/components/form/select-text-field';
 
 const PanelAPKInstall = class extends React.Component {
@@ -67,24 +67,15 @@ const PanelAPKInstall = class extends React.Component {
 		});
 
 		let apkInstalledRendered = null;
-		const iconStatusMapping = {
-			ERROR: 'ERROR',
-			INSTALLING: 'LOADING',
-			SUCCESS: 'SUCCESS'
-		};
-
-		if (this.props.apkInstalled) {
+		if (this.props.apkInstalled && this.props.apkInstalled.length) {
 			const apkInstalledFiltered = this.props.apkInstalled
-				.filter(apk => {
-					return apk.endTime ? (Date.now() - apk.endTime) < 30000 : true;
-				})
 				.map(apk => ({
-					id: apk.refId,
-					icon: iconStatusMapping[apk.status],
-					label: filenames[apk.apkId]
+					children: filenames[apk.apkId],
+					status: apk.status
 				}));
 
-			apkInstalledRendered = <ListItemStatus style={{clear: 'both', display: 'block', marginLeft: 48}} items={apkInstalledFiltered}/>;
+			// apkInstalledRendered = <ListItemStatus style={{clear: 'both', display: 'block', marginLeft: 48}} items={apkInstalledFiltered}/>;
+			apkInstalledRendered = <PanelProgress animation={false} style={{clear: 'both', display: 'block', margin: 10}} items={apkInstalledFiltered}/>;
 		}
 
 		return (

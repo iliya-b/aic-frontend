@@ -34,7 +34,8 @@ const LiveActions = Reflux.createActions({
 	exitFullscreen: {},
 	enterScaledscreen: {},
 	exitScaledscreen: {},
-	recalculeScale: {}
+	recalculeScale: {},
+	notifyLiveInstallAPK: {}
 });
 
 // Backend related

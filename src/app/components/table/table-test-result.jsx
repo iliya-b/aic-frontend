@@ -1,18 +1,11 @@
 'use strict';
 
 import React from 'react';
-import FontIcon from 'material-ui/FontIcon';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import CodeBox from 'app/components/shared/code-box';
 // TODO: Use context or AppPalette?
 import AppPalette from 'app/configs/app-palette';
-
-const statusIcons = {
-	OK: <FontIcon className="mdi mdi-check" style={{color: AppPalette.successColor}}/>,
-	ERROR: <FontIcon className="mdi mdi-close" style={{color: AppPalette.errorColor}}/>,
-	FAILURE: <FontIcon className="mdi mdi-close" style={{color: AppPalette.errorColor}}/>,
-	NOTFOUND: <FontIcon className="mdi mdi-help" style={{color: AppPalette.primary1Color}}/>
-};
+import SimpleStatusIcon from 'app/components/icon/simple-status-icon';
 
 // 			current: 1,
 // 			id: 'InstrumentationTestRunner',
@@ -34,7 +27,7 @@ const statusIcons = {
 const resultRow = result => {
 	const isFailure = result.statusText !== 'OK';
 	const isLast = result.current === result.numTests;
-	const statusIcon = result.statusText in statusIcons ? statusIcons[result.statusText] : statusIcons.NOTFOUND;
+	const statusIcon = <SimpleStatusIcon status={result.statusText}/>;
 
 	const rowInfo = (<TableRow key={`info-${result.current}`} style={(isFailure || isLast) ? {borderBottomWidth: 0} : {}} >
 		<TableRowColumn style={{width: '50px'}}>{statusIcon}</TableRowColumn>

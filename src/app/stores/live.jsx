@@ -9,6 +9,7 @@ import AppActions from 'app/actions/app';
 import PollingActions from 'app/actions/polling';
 import {calcScreenScale} from 'app/libs/scale';
 import NoVNCAdapter from 'app/libs/novnc-adapter';
+import Notify from 'app/libs/notify';
 
 const debug = require('debug')('AiC:Stores:Live');
 
@@ -381,24 +382,36 @@ const LiveStore = Reflux.createStore({
 		this.state.live.installedAPKs.push({
 			refId,
 			apkId,
-			status: 'INSTALLING',
+			status: 'REQUESTED',
 			startTime: Date.now()
 		});
 		this.updateState();
 	},
 
 	onInstallAPKCompleted(response) {
-		debug('onInstallAPKCompleted');
+		debug('onInstallAPKCompleted', response);
 		const refId = response.request.refId;
-		LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
+		// LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
 		const index = this.state.live.installedAPKs.reduce((found, apk, index) => {
 			return apk.refId === refId ? index : found;
 		}, -1);
 		if (index !== -1) {
-			this.state.live.installedAPKs[index].endTime = Date.now();
-			this.state.live.installedAPKs[index].status = 'SUCCESS';
+			this.state.live.installedAPKs[index].updateTime = Date.now();
+			this.state.live.installedAPKs[index].commandId = response.response.commandId;
+			debug('Notify', Notify);
+			Notify.startLiveInstallAPK({avmId: this.state.liveInfo.avm_id, commandId: this.state.live.installedAPKs[index].commandId});
 		}
 		this.updateState();
+	},
+
+	onNotifyLiveInstallAPK(commandInfo, commandDetails) {
+		debug('onNotifyLiveInstallAPK', commandInfo, commandDetails);
+		const commandId = commandInfo.commandId;
+		const commandIndex = this.state.live.installedAPKs.reduce((p, c, i) => !p && c.commandId === commandId ? i : p, false);
+		if (this.state.live.installedAPKs[commandIndex].status !== commandDetails.status) {
+			this.state.live.installedAPKs[commandIndex].status = commandDetails.status;
+			this.updateState();
+		}
 	},
 
 	onInstallAPKFailed(response) {
@@ -408,11 +421,11 @@ const LiveStore = Reflux.createStore({
 			return apk.refId === refId ? index : found;
 		}, -1);
 		if (index !== -1) {
-			this.state.live.installedAPKs[index].endTime = Date.now();
+			this.state.live.installedAPKs[index].updateTime = Date.now();
 			this.state.live.installedAPKs[index].status = 'ERROR';
 		}
 		this.state.live.message = response.error;
-		this.state.live.status = 'LIVE_STATUS_INSTALLAPK_FAILED';
+		// this.state.live.status = 'LIVE_STATUS_INSTALLAPK_FAILED';
 		this.updateState();
 	},
 
@@ -479,7 +492,7 @@ const LiveStore = Reflux.createStore({
 			LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
 			// Only clearTimeouts when debugging to not have span on logs
 			// this.onClearTimeouts();
-			// PollingActions.stop('liveProperties');
+			PollingActions.stop('liveProperties');
 		}
 
 		// docker finished (not available) boot initiate

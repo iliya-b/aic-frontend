@@ -85,5 +85,6 @@ module.exports = {
 	moveCaretToEnd,
 	getColorByStatus,
 	getVmStatus,
-	isEqual
+	isEqual,
+	upperFirst
 };
