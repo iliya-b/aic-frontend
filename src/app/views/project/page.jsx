@@ -66,7 +66,7 @@ const ProjectPage = class extends React.Component {
 			content: {
 				boxSizing: 'border-box',
 				padding: `${Spacing.desktopGutter}px`,
-				maxWidth: `${(Spacing.desktopKeylineIncrement * 14)}px`,
+				// maxWidth: `${(Spacing.desktopKeylineIncrement * 14)}px`,
 				marginLeft: subNavWidth,
 				borderLeft: `solid 1px ${Colors.grey300}`,
 				minHeight: '90vh'

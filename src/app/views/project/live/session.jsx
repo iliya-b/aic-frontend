@@ -1,4 +1,4 @@
-/* global document */
+/* global document, window */
 'use strict';
 
 import React from 'react';
@@ -16,11 +16,16 @@ import PollingActions from 'app/actions/polling';
 import NoVNCAdapter from 'app/libs/novnc-adapter';
 import fullscreen from 'app/libs/fullscreen';
 import Notify from 'app/libs/notify';
+import {throttle} from 'lodash';
 
 const debug = require('debug')('AiC:Views:Project:Live:Session');
 
 let avmId;
 let projectId;
+
+const recalculeScaleThrottled = throttle(() => {
+	LiveActions.recalculeScaleIfConnected();
+}, 66, {trailing: false});
 
 const LiveSession = class extends React.Component {
 
@@ -140,7 +145,7 @@ const LiveSession = class extends React.Component {
 			position: this.isFullscreen() ? 'absolute' : 'initial',
 			top: 0,
 			left: 0,
-			width: 800
+			width: this.isFullscreen() ? 800 : 'auto'
 		};
 
 		const styleLiveBoxWrapper = {
@@ -277,6 +282,7 @@ const LiveSession = class extends React.Component {
 		// LiveActions.loadInfo(avmId);
 		// window.intervalTimeoutLoad = setInterval(LiveActions.loadInfo, 1000, avmId);
 		PollingActions.start('liveLoadInfo', {avmId});
+		window.addEventListener('resize', recalculeScaleThrottled);
 	}
 
 	componentWillUnmount() {
@@ -288,6 +294,7 @@ const LiveSession = class extends React.Component {
 		// Subscribe and unsubscribe because we don't want to use the mixins
 		this.unsubscribe.map(v => v());
 		Notify.clearLive({avmId});
+		window.removeEventListener('resize', recalculeScaleThrottled);
 	}
 
 };

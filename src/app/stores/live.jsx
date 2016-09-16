@@ -616,9 +616,16 @@ const LiveStore = Reflux.createStore({
 	},
 
 	onRecalculeScale() {
-		debug('onExitScaledscreen');
+		debug('onRecalculeScale');
 		this.calculateScale();
 		this.updateState();
+	},
+
+	onRecalculeScaleIfConnected() {
+		debug('onRecalculeScaleIfConnected', this.state.live.status);
+		if (this.state.live.status === 'LIVE_STATUS_CONNECTED') {
+			LiveActions.recalculeScale();
+		}
 	},
 
 	// Methods //
