@@ -9,7 +9,8 @@ const statusColors = {
 	ERROR: AppPalette.errorColor,
 	NOTFOUND: AppPalette.primary1Color,
 	LOADING: AppPalette.primary1Color,
-	QUEUED: AppPalette.disabledColor
+	QUEUED: AppPalette.disabledColor,
+	REQUESTED: AppPalette.disabledColor
 };
 
 const statusIcons = {
@@ -17,7 +18,8 @@ const statusIcons = {
 	ERROR: <FontIcon className="mdi mdi-close" style={{color: statusColors.ERROR}}/>,
 	NOTFOUND: <FontIcon className="mdi mdi-help" style={{color: statusColors.NOTFOUND}}/>,
 	LOADING: <FontIcon className="mdi mdi-reload" style={{color: statusColors.LOADING, animation: 'liveIconRotate 3s linear infinite'}}/>,
-	QUEUED: <FontIcon className="mdi mdi-timer" style={{color: statusColors.QUEUED}}/>
+	QUEUED: <FontIcon className="mdi mdi-timer" style={{color: statusColors.QUEUED}}/>,
+	REQUESTED: <FontIcon className="mdi mdi-clock-fast" style={{color: statusColors.REQUESTED}}/>
 };
 
 // Aliases

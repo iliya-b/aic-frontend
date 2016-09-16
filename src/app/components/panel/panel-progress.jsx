@@ -10,9 +10,11 @@ import {Card, CardHeader, CardText} from 'material-ui/Card';
 const colors = SimpleStatusIcon.STATUS_COLORS;
 colors.OTHERS = 'white';
 colors.QUEUED = 'rgb(152, 152, 152)';
+colors.REQUESTED = 'rgb(152, 152, 152)';
 
 const order = [
 	'OTHERS',
+	SimpleStatusIcon.STATUS_LIST.REQUESTED,
 	SimpleStatusIcon.STATUS_LIST.QUEUED,
 	SimpleStatusIcon.STATUS_LIST.RUNNING,
 	SimpleStatusIcon.STATUS_LIST.ERROR,
@@ -21,11 +23,9 @@ const order = [
 
 const calculateProgress = items => {
 	const sum = {};
-	sum[SimpleStatusIcon.STATUS_LIST.QUEUED] = 0;
-	sum[SimpleStatusIcon.STATUS_LIST.RUNNING] = 0;
-	sum[SimpleStatusIcon.STATUS_LIST.READY] = 0;
-	sum[SimpleStatusIcon.STATUS_LIST.ERROR] = 0;
-	sum.OTHERS = 0;
+	order.forEach(o => {
+		sum[o] = 0;
+	});
 
 	items.forEach(i => {
 		if (i.status in sum) {
@@ -40,37 +40,55 @@ const calculateProgress = items => {
 		.map((o, i, arr) => {
 			const total = arr.reduce((p, c) => p + sum[c], 0);
 			const partial = arr.reduce((p, c, ci) => ci >= i ? p + sum[c] : p, 0);
-			const type = o in sum ? o : 'OTHERS';
+			// const type = o in sum ? o : 'OTHERS';
 			return {
-				sum: sum[type],
+				sum: sum[o],
 				progress: parseInt(partial / total * 100, 10),
-				color: colors[type],
-				type
+				color: colors[o],
+				type: o,
+				id: o
 			};
 		});
 
 	return orderInfo;
 };
 
-const progressTitles = {};
-progressTitles.OTHERS = 'Progress status unknown';
-progressTitles[SimpleStatusIcon.STATUS_LIST.QUEUED] = 'Some applications are queued for installation';
-progressTitles[SimpleStatusIcon.STATUS_LIST.RUNNING] = 'Some applications are being installed';
-progressTitles[SimpleStatusIcon.STATUS_LIST.READY] = 'All applications were successfully installed';
-progressTitles[SimpleStatusIcon.STATUS_LIST.ERROR] = 'Some applications were not successfully installed';
+const progressTitles = {apk: {}, monkeyRunner: {}};
+progressTitles.apk.OTHERS = 'Progress status unknown';
+progressTitles.apk[SimpleStatusIcon.STATUS_LIST.REQUESTED] = 'Some applications were requested for installation';
+progressTitles.apk[SimpleStatusIcon.STATUS_LIST.QUEUED] = 'Some applications are queued for installation';
+progressTitles.apk[SimpleStatusIcon.STATUS_LIST.RUNNING] = 'Some applications are being installed';
+progressTitles.apk[SimpleStatusIcon.STATUS_LIST.READY] = 'All applications were successfully installed';
+progressTitles.apk[SimpleStatusIcon.STATUS_LIST.ERROR] = 'Some applications were not successfully installed';
 
-const progressSubTitles = {};
-progressSubTitles.OTHERS = 'status unknown';
-progressSubTitles[SimpleStatusIcon.STATUS_LIST.QUEUED] = 'queued';
-progressSubTitles[SimpleStatusIcon.STATUS_LIST.RUNNING] = 'installing';
-progressSubTitles[SimpleStatusIcon.STATUS_LIST.READY] = 'ready';
-progressSubTitles[SimpleStatusIcon.STATUS_LIST.ERROR] = 'error(s)';
+progressTitles.monkeyRunner.OTHERS = 'Progress status unknown';
+progressTitles.monkeyRunner[SimpleStatusIcon.STATUS_LIST.REQUESTED] = 'Some applications were requested for monkey runner';
+progressTitles.monkeyRunner[SimpleStatusIcon.STATUS_LIST.QUEUED] = 'Some applications are queued for monkey runner';
+progressTitles.monkeyRunner[SimpleStatusIcon.STATUS_LIST.RUNNING] = 'Some applications are running';
+progressTitles.monkeyRunner[SimpleStatusIcon.STATUS_LIST.READY] = 'All applications ran successfully';
+progressTitles.monkeyRunner[SimpleStatusIcon.STATUS_LIST.ERROR] = 'Some applications were not successfully ran';
+
+const progressSubTitles = {apk: {}, monkeyRunner: {}};
+progressSubTitles.apk.OTHERS = 'status unknown';
+progressSubTitles.apk[SimpleStatusIcon.STATUS_LIST.REQUESTED] = 'requested';
+progressSubTitles.apk[SimpleStatusIcon.STATUS_LIST.QUEUED] = 'queued';
+progressSubTitles.apk[SimpleStatusIcon.STATUS_LIST.RUNNING] = 'installing';
+progressSubTitles.apk[SimpleStatusIcon.STATUS_LIST.READY] = 'ready';
+progressSubTitles.apk[SimpleStatusIcon.STATUS_LIST.ERROR] = 'error(s)';
+
+progressSubTitles.monkeyRunner.OTHERS = 'status unknown';
+progressSubTitles.monkeyRunner[SimpleStatusIcon.STATUS_LIST.REQUESTED] = 'requested';
+progressSubTitles.monkeyRunner[SimpleStatusIcon.STATUS_LIST.QUEUED] = 'queued';
+progressSubTitles.monkeyRunner[SimpleStatusIcon.STATUS_LIST.RUNNING] = 'running';
+progressSubTitles.monkeyRunner[SimpleStatusIcon.STATUS_LIST.READY] = 'ready';
+progressSubTitles.monkeyRunner[SimpleStatusIcon.STATUS_LIST.ERROR] = 'error(s)';
 
 const PanelProgress = props => {
 	const {
 		style,
 		items,
 		animation,
+		type,
 		...others
 	} = props;
 
@@ -87,7 +105,7 @@ const PanelProgress = props => {
 			} else {
 				joinStr = ', ';
 			}
-			return `${p}${joinStr}${c.sum} ${progressSubTitles[c.type]}`;
+			return `${p}${joinStr}${c.sum} ${progressSubTitles[type][c.type]}`;
 		}, '');
 
 	let percentagesProgressFirst;
@@ -111,9 +129,9 @@ const PanelProgress = props => {
 		margin: '0 5px 5px 0'
 	};
 
-	const itemsRendered = items.map((c, i) => <ChipStatus style={styleChip} key={i} {...c}/>);
+	const itemsRendered = items.map(c => <ChipStatus style={styleChip} key={c.id} {...c}/>);
 
-	const progressTitle = <span style={{color: percentagesProgressFirst.type === 'OTHERS' ? '#000' : percentagesProgressFirst.color}}>{progressTitles[percentagesProgressFirst.type]}</span>;
+	const progressTitle = <span style={{color: percentagesProgressFirst.type === 'OTHERS' ? '#000' : percentagesProgressFirst.color}}>{progressTitles[type][percentagesProgressFirst.type]}</span>;
 
 	return (
 		<Card containerStyle={{paddingBottom: 0}} style={Object.assign({}, style)} {...others}>
@@ -142,7 +160,8 @@ PanelProgress.propTypes = {
 	status: React.PropTypes.oneOf(PanelProgress.STATUS_LIST),
 	size: React.PropTypes.oneOf(PanelProgress.SIZE_LIST),
 	items: React.PropTypes.array,
-	animation: React.PropTypes.bool
+	animation: React.PropTypes.bool,
+	type: React.PropTypes.string
 };
 
 module.exports = PanelProgress;

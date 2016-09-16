@@ -46,8 +46,6 @@ import PanelSessionDetails from 'app/components/panel/panel-session-details';
 import DroidPercentage from 'app/components/icon/droid-percentage';
 
 import SelectTextField from 'app/components/form/select-text-field';
-import ChipDelete from 'app/components/form/chip-delete';
-
 import PanelProgress from 'app/components/panel/panel-progress';
 import SimpleStatusIcon from 'app/components/icon/simple-status-icon';
 
@@ -95,6 +93,14 @@ const items4 = [
 
 const items5 = [
 	{status: 'TOTO', children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.ERROR, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.READY, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.RUNNING, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.QUEUED, children: 'com.aic.bla'}
+];
+
+const items6 = [
+	{status: SimpleStatusIcon.STATUS_LIST.REQUESTED, children: 'com.aic.bla'},
 	{status: SimpleStatusIcon.STATUS_LIST.ERROR, children: 'com.aic.bla'},
 	{status: SimpleStatusIcon.STATUS_LIST.READY, children: 'com.aic.bla'},
 	{status: SimpleStatusIcon.STATUS_LIST.RUNNING, children: 'com.aic.bla'},
@@ -333,7 +339,6 @@ const ThemesPage = class extends React.Component {
 		const selectFieldItems = ['abc', 'def', 'long strange label of longness super extensive', 'Maps', 'Books', 'Flights', 'Apps'];
 		const selectFieldItems2 = selectFieldItems.map((a, i) => ({value: String(i), label: a}));
 
-		const fn = () => {};
 		return (
 			<div>
 				<ClearFix>
@@ -357,11 +362,8 @@ const ThemesPage = class extends React.Component {
 					<PanelProgress style={{margin: 10, width: 800}} items={items5}/>
 					<br/>
 					<PanelProgress style={{margin: 10, width: 800}} items={[]}/>
-				</ClearFix>
-
-				<ClearFix>
-					<h2>Form</h2>
-					<ChipDelete onRequestDelete={fn}>Testing Chip</ChipDelete>
+					<br/>
+					<PanelProgress style={{margin: 10, width: 800}} items={items6}/>
 				</ClearFix>
 
 				<ClearFix>
@@ -586,7 +588,6 @@ const ThemesPage = class extends React.Component {
 					{avmsRendered}
 
 				</ClearFix>
-
 
 			</div>
 		);

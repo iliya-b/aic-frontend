@@ -4,7 +4,6 @@
 const debug = require('debug')('AiC:Libs:NoVNCAdapter');
 
 const noVNCState = {};
-window.noVNCState = noVNCState;
 
 const NoVNCAdapter = {
 	loadUtil: () => {

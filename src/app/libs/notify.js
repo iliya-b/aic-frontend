@@ -7,30 +7,25 @@ import LiveActions from 'app/actions/live';
 // const debug = require('debug')('AiC:Libs:Notify');
 
 const Notify = new NotifyCore();
-Notify.register({
+Notify.registerGroups({
+	live: {
+		id: 'avmId'
+	}
+});
+
+Notify.registerActions({
 	liveInstallAPK: {
 		group: 'live',
 		request: Gateway.live.command,
 		notify: LiveActions.notifyLiveInstallAPK,
 		stopCondition: (actionInfo, response) => (response.status === 'READY' || response.status === 'ERROR')
+	},
+	liveMonkeyRunner: {
+		group: 'live',
+		request: Gateway.live.command,
+		notify: LiveActions.notifyLiveMonkeyRunner,
+		stopCondition: (actionInfo, response) => (response.status === 'READY' || response.status === 'ERROR')
 	}
 });
-
-// const Notify = {
-
-
-
-// 	// startLiveInstallAPK({avmId: this.state.liveInfo.avm_id, commandId: this.state.live.installedAPKs[index].commandId});
-// 	startLiveInstallAPK: liveInstallAPKInfo => {
-
-// 	},
-
-
-// LiveActions.notifyLiveInstallAPK(commandInfo)
-
-// 	if (commandInfo.status === 'READY' || commandInfo.status === 'ERROR') {
-// 				Notify.stopLiveInstallAPK({avmId: this.state.liveInfo.avm_id, commandId: commandInfo.commandId});
-// 			}
-// };
 
 module.exports = Notify;

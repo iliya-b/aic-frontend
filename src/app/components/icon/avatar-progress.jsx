@@ -76,9 +76,9 @@ const AvatarProgress = props => {
 	}) : null;
 
 	const circles = progress
-		.map((p, i) => {
+		.map(p => {
 			const styleMerged = Object.assign(animation ? getStyleProgressAnimated(p) : getStyleProgressNormal(p), styleOuter);
-			return <circle key={i} style={styleMerged} cx="170" cy="20" r="17" transform="rotate(-90, 95, 95)"/>;
+			return <circle key={p.id} style={styleMerged} cx="170" cy="20" r="17" transform="rotate(-90, 95, 95)"/>;
 		});
 
 	return (

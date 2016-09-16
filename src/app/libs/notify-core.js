@@ -10,20 +10,48 @@ class NotifyCore {
 		this.actions = {};
 	}
 
-	createGroup(group) {
-		this.groups[group] = {children: []};
+	createGroup(group, groupOptions) {
+		this.groups[group] = deepAssign({children: [], activeCount: {}}, groupOptions);
 		const groupLabel = upperFirst(group);
 
 		// Register watch and clear functions
-		this[`watch${groupLabel}`] = groupInfo => {
-			debug(`watch${groupLabel}`, groupInfo);
-		};
-		this[`clear${groupLabel}`] = groupInfo => {
-			debug(`clear${groupLabel}`, groupInfo);
-			// this.groups[group].forEach(label => {
-			// 	this[`stop${label}`]();
-			// });
-		};
+		this[`watch${groupLabel}`] = this.watchGroup.bind(this, group);
+		this[`clear${groupLabel}`] = this.clearGroup.bind(this, group);
+	}
+
+	getGroupId(group, groupInfo) {
+		return groupInfo[this.groups[group].id];
+	}
+
+	watchGroup(group, groupInfo) {
+		debug(`watch ${group}`, groupInfo);
+		const groupId = this.getGroupId(group, groupInfo);
+		if (groupId in this.groups[group].activeCount) {
+			this.groups[group].activeCount[groupId]++;
+		} else {
+			this.groups[group].activeCount[groupId] = 1;
+		}
+		debug(`end watch ${group}`, this.groups, this.actions);
+	}
+
+	clearGroup(group, groupInfo) {
+		debug(`clear ${group}`, groupInfo);
+		const groupId = this.getGroupId(group, groupInfo);
+		const groupIdName = this.groups[group].id;
+		this.groups[group].activeCount[groupId]--;
+
+		// Nobody is watching this group, all calls should be removed
+		if (this.groups[group].activeCount[groupId] === 0) {
+			this.groups[group].children.forEach(action => {
+				this.actions[action].running
+					.filter(r => r.actionInfo[groupIdName] === groupId)
+					.forEach(r => {
+						r.shouldStop = true;
+						clearTimeout(r.timeout);
+					});
+			});
+		}
+		debug(`end clear ${group}`, this.groups, this.actions);
 	}
 
 	addToGroup(groupLabel, action) {
@@ -56,26 +84,34 @@ class NotifyCore {
 	startAction(action, actionInfo) {
 		debug(`start${action}`, actionInfo);
 		// TODO should reject calls with same action and actionInfo
-		const initialDelaySeconds = 0;
-		const timeoutSeconds = 5;
-		const runningIndex = this.actions[action].running.length;
-		this.actions[action].running.push({shouldStop: false, lastResponse: null});
-		const fn = () => {
-			debug(`fn ${action}`, actionInfo);
-			this.actions[action].request(actionInfo).then(response => {
-				debug(`response ${action}`, response);
-				const finalResponse = 'response' in response ? response.response : response;
-				if (!isEqual(finalResponse, this.actions[action].running[runningIndex].lastResponse)) {
-					this.actions[action].running[runningIndex].lastResponse = finalResponse;
-					this.actions[action].notify(actionInfo, response);
-					this.actions[action].running[runningIndex].shouldStop = this.actions[action].stopCondition(actionInfo, response);
-				}
-				if (!this.actions[action].running[runningIndex].shouldStop) {
-					this.actions[action].running[runningIndex].timeout = setTimeout(fn, timeoutSeconds * 1000);
-				}
-			});
-		};
-		this.actions[action].running[runningIndex].timeout = setTimeout(fn, initialDelaySeconds * 1000);
+
+		// Should only start action if the group is being watched
+		if (this.isActionWatched(action, actionInfo)) {
+			const initialDelaySeconds = 0;
+			const timeoutSeconds = 5;
+			const runningIndex = this.actions[action].running.length;
+			this.actions[action].running.push({shouldStop: false, lastResponse: null, actionInfo});
+			const fn = () => {
+				debug(`fn ${action}`, actionInfo);
+				this.actions[action].request(actionInfo).then(response => {
+					debug(`response ${action}`, response);
+					const finalResponse = 'response' in response ? response.response : response;
+					if (!isEqual(finalResponse, this.actions[action].running[runningIndex].lastResponse)) {
+						debug(`not equal, notifying ${action}`);
+						this.actions[action].running[runningIndex].lastResponse = finalResponse;
+						this.actions[action].notify(actionInfo, response);
+						this.actions[action].running[runningIndex].shouldStop = this.actions[action].stopCondition(actionInfo, response);
+					}
+					if (!this.actions[action].running[runningIndex].shouldStop) {
+						debug(`new timeout ${action}`);
+						this.actions[action].running[runningIndex].timeout = setTimeout(fn, timeoutSeconds * 1000);
+					}
+				});
+			};
+			this.actions[action].running[runningIndex].timeout = setTimeout(fn, initialDelaySeconds * 1000);
+		} else {
+			debug(`start ${action} ignored. Nobody watching.`, actionInfo);
+		}
 	}
 
 	stopAction(action, actionInfo) {
@@ -83,11 +119,44 @@ class NotifyCore {
 		// this.actions[action].running[runningIndex].shouldStop = true;
 	}
 
-	register(info) {
+	registerActions(info) {
 		const keys = Object.keys(info);
 		keys.forEach(k => {
 			this.addAction(k, info[k]);
 		});
+	}
+
+	registerGroups(info) {
+		const keys = Object.keys(info);
+		keys.forEach(k => {
+			this.createGroup(k, info[k]);
+		});
+	}
+
+	isActionWatched(action, actionInfo) {
+		debug(`isActionWatched ${action}`, actionInfo);
+		const group = this.actions[action].group;
+		const groupId = this.getGroupId(group, actionInfo);
+		debug(`isActionWatched vars`, group, groupId, this.groups[group].activeCount[groupId]);
+		debug(`isActionWatched class`, this.groups, this.actions);
+		if (!this.actionExists(action) ||
+				!this.groupExists(group) ||
+				!this.groupActiveExists(group, groupId)) {
+			return false;
+		}
+		return (this.groups[group].activeCount[groupId] !== 0);
+	}
+
+	groupActiveExists(group, groupId) {
+		return group in this.groups && groupId in this.groups[group].activeCount;
+	}
+
+	groupExists(group) {
+		return group in this.groups;
+	}
+
+	actionExists(action) {
+		return action in this.actions;
 	}
 }
 

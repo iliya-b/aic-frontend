@@ -398,7 +398,6 @@ const LiveStore = Reflux.createStore({
 		if (index !== -1) {
 			this.state.live.installedAPKs[index].updateTime = Date.now();
 			this.state.live.installedAPKs[index].commandId = response.response.commandId;
-			debug('Notify', Notify);
 			Notify.startLiveInstallAPK({avmId: this.state.liveInfo.avm_id, commandId: this.state.live.installedAPKs[index].commandId});
 		}
 		this.updateState();
@@ -411,6 +410,9 @@ const LiveStore = Reflux.createStore({
 		if (this.state.live.installedAPKs[commandIndex].status !== commandDetails.status) {
 			this.state.live.installedAPKs[commandIndex].status = commandDetails.status;
 			this.updateState();
+			if (commandDetails.status === 'READY') {
+				LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
+			}
 		}
 	},
 
@@ -436,7 +438,7 @@ const LiveStore = Reflux.createStore({
 		this.state.live.monkeyCalls = this.state.live.monkeyCalls || [];
 		this.state.live.monkeyCalls.push({
 			id: refId,
-			status: 'LOADING',
+			status: 'REQUESTED',
 			startTime: Date.now(),
 			label: `${packages.join(' ')} (${eventCount}x-${throttle}ms)`
 		});
@@ -450,10 +452,23 @@ const LiveStore = Reflux.createStore({
 			return mcall.id === refId ? index : found;
 		}, -1);
 		if (index !== -1) {
-			this.state.live.monkeyCalls[index].endTime = Date.now();
-			this.state.live.monkeyCalls[index].status = 'SUCCESS';
+			// this.state.live.monkeyCalls[index].endTime = Date.now();
+			// this.state.live.monkeyCalls[index].status = 'SUCCESS';
+			this.state.live.monkeyCalls[index].updateTime = Date.now();
+			this.state.live.monkeyCalls[index].commandId = response.response.commandId;
+			Notify.startLiveMonkeyRunner({avmId: this.state.liveInfo.avm_id, commandId: this.state.live.monkeyCalls[index].commandId});
 		}
 		this.updateState();
+	},
+
+	onNotifyLiveMonkeyRunner(commandInfo, commandDetails) {
+		debug('onNotifyLiveMonkeyRunner', commandInfo, commandDetails);
+		const commandId = commandInfo.commandId;
+		const commandIndex = this.state.live.monkeyCalls.reduce((p, c, i) => !p && c.commandId === commandId ? i : p, false);
+		if (this.state.live.monkeyCalls[commandIndex].status !== commandDetails.status) {
+			this.state.live.monkeyCalls[commandIndex].status = commandDetails.status;
+			this.updateState();
+		}
 	},
 
 	onMonkeyRunnerFailed(response) {

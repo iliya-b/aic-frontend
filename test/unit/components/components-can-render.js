@@ -39,7 +39,7 @@ const componentsReq = {
 	BoxStatus: require('app/components/project/box-status'),
 	LiveMachineList: require('app/components/project/live-machine-list'),
 	// LiveScreen: require('app/components/project/live-screen'), // Live store
-	LiveToolbox: require('app/components/project/live-toolbox'),
+	// LiveToolbox: require('app/components/project/live-toolbox'), // Live Actions
 	MachineCardLive: require('app/components/project/machine-card-live'),
 	MachineCard: require('app/components/project/machine-card'),
 	MachineIcon: require('app/components/icon/machine-icon'),

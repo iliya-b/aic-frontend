@@ -15,6 +15,7 @@ import LiveActions from 'app/actions/live';
 import PollingActions from 'app/actions/polling';
 import NoVNCAdapter from 'app/libs/novnc-adapter';
 import fullscreen from 'app/libs/fullscreen';
+import Notify from 'app/libs/notify';
 
 const debug = require('debug')('AiC:Views:Project:Live:Session');
 
@@ -266,6 +267,7 @@ const LiveSession = class extends React.Component {
 		debug('this.props.params', this.props.params);
 		projectId = this.props.params.projectId;
 		avmId = this.props.params.androId;
+		Notify.watchLive({avmId});
 		this.unsubscribe = [];
 		this.unsubscribe.push(LiveStore.listen(this._onStateChange));
 		this.unsubscribe.push(APKStore.listen(this._onStateChange));
@@ -285,6 +287,7 @@ const LiveSession = class extends React.Component {
 		LiveActions.disconnectAudio();
 		// Subscribe and unsubscribe because we don't want to use the mixins
 		this.unsubscribe.map(v => v());
+		Notify.clearLive({avmId});
 	}
 
 };

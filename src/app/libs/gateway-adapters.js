@@ -176,7 +176,13 @@ const GatewayAdapters = {
 					throttle: frontendObject.throttle,
 					event_count: frontendObject.eventCount // eslint-disable-line camelcase
 				};
-			}
+			},
+			response: backendObject => ({
+				request: backendObject.request,
+				response: {
+					commandId: backendObject.response.command_id
+				}
+			})
 		},
 		properties: {
 			response: backendObject => {

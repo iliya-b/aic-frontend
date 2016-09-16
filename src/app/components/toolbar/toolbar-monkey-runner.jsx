@@ -6,7 +6,7 @@ import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import ListItemStatus from 'app/components/list/list-item-status';
+import PanelProgress from 'app/components/panel/panel-progress';
 import SelectTextField from 'app/components/form/select-text-field';
 
 const debug = require('debug')('AiC:Components:Toolbar:PanelMonkeyRunner');
@@ -71,18 +71,16 @@ const PanelMonkeyRunner = class extends React.Component {
 		}
 
 		let monkeyCallsRendered = null;
-		if (this.props.monkeyCalls) {
+		if (this.props.monkeyCalls && this.props.monkeyCalls.length) {
 			const monkeyCallsFiltered = this.props.monkeyCalls
-				.filter(mcall => {
-					return mcall.endTime ? (Date.now() - mcall.endTime) < 30000 : true;
-				})
 				.map(mcall => ({
 					id: mcall.id,
-					icon: mcall.status,
-					label: mcall.label
+					status: mcall.status,
+					children: mcall.label
 				}));
 
-			monkeyCallsRendered = <ListItemStatus style={{clear: 'both', display: 'block', marginLeft: 48}} items={monkeyCallsFiltered}/>;
+			// monkeyCallsRendered = <ListItemStatus style={{clear: 'both', display: 'block', marginLeft: 48}} items={monkeyCallsFiltered}/>;
+			monkeyCallsRendered = <PanelProgress type="monkeyRunner" animation={false} style={{clear: 'both', display: 'block', margin: 10}} items={monkeyCallsFiltered}/>;
 		}
 
 		return (
@@ -110,6 +108,7 @@ const PanelMonkeyRunner = class extends React.Component {
 					/>
 				<br/>
 				{monkeyCallsRendered}
+				<div style={{clear: 'both', height: 1, marginTop: -1}}/>
 			</Paper>
 		);
 	}

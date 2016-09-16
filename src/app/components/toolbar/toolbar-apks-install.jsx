@@ -70,12 +70,13 @@ const PanelAPKInstall = class extends React.Component {
 		if (this.props.apkInstalled && this.props.apkInstalled.length) {
 			const apkInstalledFiltered = this.props.apkInstalled
 				.map(apk => ({
+					id: apk.refId,
 					children: filenames[apk.apkId],
 					status: apk.status
 				}));
 
 			// apkInstalledRendered = <ListItemStatus style={{clear: 'both', display: 'block', marginLeft: 48}} items={apkInstalledFiltered}/>;
-			apkInstalledRendered = <PanelProgress animation={false} style={{clear: 'both', display: 'block', margin: 10}} items={apkInstalledFiltered}/>;
+			apkInstalledRendered = <PanelProgress type="apk" animation={false} style={{clear: 'both', display: 'block', margin: 10}} items={apkInstalledFiltered}/>;
 		}
 
 		return (
@@ -105,7 +106,7 @@ const PanelAPKInstall = class extends React.Component {
 					/>
 				<br/>
 				{apkInstalledRendered}
-				<div style={{clear: 'both'}}/>
+				<div style={{clear: 'both', height: 1, marginTop: -1}}/>
 			</Paper>
 		);
 	}

@@ -1,6 +1,8 @@
 'use strict';
 
 import React from 'react';
+import LiveActions from 'app/actions/live';
+import {throttle} from 'lodash';
 
 const debug = require('debug')('AiC:Components:Project:Live:LiveToolbox');
 
@@ -163,6 +165,15 @@ const LiveToolbox = class extends React.Component {
 		});
 
 		this.handleGSM = (e, action, payload) => this.props.onChangeSensor(`gsm/${action}`, e, payload);
+
+		this.listPackages = throttle(() => {
+			LiveActions.listPackages({avmId: this.props.avmInfo.avm_id});
+		}, 2000, {trailing: false});
+
+		this.handleInputFocusMonkeyRunner = e => {
+			this.listPackages();
+			this.props.onInputFocus(e);
+		};
 	}
 
 	changeActiveToolbar(toolbar) {
@@ -254,7 +265,7 @@ const LiveToolbox = class extends React.Component {
 		} else if (this.state.activeSecondBar === 'monkeyRunner') { // eslint-disable-line no-negated-condition
 			const props = {
 				onClick: this.props.onMonkeyRunner,
-				onInputFocus: this.props.onInputFocus,
+				onInputFocus: this.handleInputFocusMonkeyRunner,
 				onInputBlur: this.props.onInputBlur,
 				packageList: this.props.packageList,
 				monkeyCalls: this.props.monkeyCalls
