@@ -59,7 +59,6 @@ const ToolbarTemperature = class extends React.Component {
 					className="btLiveSensorTemperatureSubmit"
 					label="Submit"
 					title="Submit"
-					href="#"
 					primary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}

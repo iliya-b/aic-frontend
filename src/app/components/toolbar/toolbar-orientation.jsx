@@ -70,7 +70,6 @@ const ToolbarOrientation = class extends React.Component {
 					className="btLiveSensorOrientationSubmit"
 					label="Submit"
 					title="Submit"
-					href="#"
 					primary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}

@@ -59,7 +59,6 @@ const ToolbarPressure = class extends React.Component {
 					className="btLiveSensorPressureSubmit"
 					label="Submit"
 					title="Submit"
-					href="#"
 					primary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}

@@ -70,7 +70,6 @@ const ToolbarGyroscope = class extends React.Component {
 					className="btLiveSensorGyroscopeSubmit"
 					label="Submit"
 					title="Submit"
-					href="#"
 					primary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}

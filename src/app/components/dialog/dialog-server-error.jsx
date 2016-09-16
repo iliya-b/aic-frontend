@@ -17,7 +17,6 @@ const DialogServerError = props => {
 			key="serverErrorDialogActionClose"
 			label="Close"
 			title="Close"
-			href="#"
 			secondary
 			onClick={onRequestClose}
 			/>

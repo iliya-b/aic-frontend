@@ -60,7 +60,6 @@ const ToolbarGSMCall = class extends React.Component {
 					className="btLiveSensorGSMCall"
 					label="Receive call"
 					title="Receive call"
-					href="#"
 					primary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}

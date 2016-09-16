@@ -91,7 +91,6 @@ const ProjectPage = class extends React.Component {
 				primaryText={item.text}
 				onClick={this.handleItemClick}
 				title={item.text}
-				href="#"
 				style={selectedPageIndex === index ? styles.menuItemSelected : null}
 				/>);
 		}, this);

@@ -71,7 +71,6 @@ const ToolbarLinearAcceleration = class extends React.Component {
 					className="btLiveSensorLinearAccelerationSubmit"
 					label="Submit"
 					title="Submit"
-					href="#"
 					primary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}

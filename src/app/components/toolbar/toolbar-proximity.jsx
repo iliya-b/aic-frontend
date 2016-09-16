@@ -60,7 +60,6 @@ const ToolbarProximity = class extends React.Component {
 					className="btLiveSensorProximitySubmit"
 					label="Submit"
 					title="Submit"
-					href="#"
 					primary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}

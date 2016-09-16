@@ -29,7 +29,6 @@ const SessionEndedDialog = class extends React.Component {
 				key="sessionEndedActionClose"
 				label="Go to homepage"
 				title="Go to homepage"
-				href="#"
 				secondary
 				onClick={this.handleClose}
 				/>

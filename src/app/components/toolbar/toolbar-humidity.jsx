@@ -59,7 +59,6 @@ const ToolbarHumidity = class extends React.Component {
 					className="btLiveSensorHumiditySubmit"
 					label="Submit"
 					title="Submit"
-					href="#"
 					primary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}

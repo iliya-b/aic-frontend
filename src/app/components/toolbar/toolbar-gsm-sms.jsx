@@ -64,7 +64,6 @@ const ToolbarGSMSMS = class extends React.Component {
 					className="btLiveSensorGSMSMSSend"
 					label="Send"
 					title="Send"
-					href="#"
 					primary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}

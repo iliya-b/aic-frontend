@@ -72,7 +72,6 @@ const ToolbarGravity = class extends React.Component {
 					className="btLiveSensorGravitySubmit"
 					label="Submit"
 					title="Submit"
-					href="#"
 					primary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}

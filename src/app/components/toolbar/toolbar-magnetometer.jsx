@@ -70,7 +70,6 @@ const ToolbarMagnetometer = class extends React.Component {
 					className="btLiveSensorMagnetometerSubmit"
 					label="Submit"
 					title="Submit"
-					href="#"
 					primary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}

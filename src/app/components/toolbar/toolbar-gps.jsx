@@ -58,7 +58,6 @@ const ToolbarGPS = class extends React.Component {
 					className="btLiveSensorGPSSubmit"
 					label="Submit"
 					title="Submit"
-					href="#"
 					primary
 					onClick={this.handleClickGPS}
 					style={styles.buttonSubmit}

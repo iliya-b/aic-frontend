@@ -64,7 +64,6 @@ const PanelCamera = class extends React.Component {
 					className="btLiveCameraSubmit"
 					label="Send"
 					title="Send"
-					href="#"
 					primary
 					onClick={this.handleClick}
 					style={styles.buttonSubmit}

@@ -223,24 +223,6 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	// // Live stop
-	// onLiveStop() {
-	// 	this.state.live.status = 'LIVE_STATUS_STOPPING';
-	// 	this.updateState();
-	// },
-
-	// onLiveStopCompleted() {
-	// 	this.resetMachine();
-	// 	this.state.live.status = 'LIVE_STATUS_STOPPED';
-	// 	this.updateState();
-	// },
-
-	// onLiveStopFailed(errorMessage) {
-	// 	this.state.live.status = 'LIVE_STATUS_STOP_FAILED';
-	// 	this.state.live.message = errorMessage;
-	// 	this.updateState();
-	// },
-
 	// Live stop v2
 	onStop(request) {
 		debug('onStop', request);
@@ -507,7 +489,7 @@ const LiveStore = Reflux.createStore({
 			LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
 			// Only clearTimeouts when debugging to not have span on logs
 			// this.onClearTimeouts();
-			PollingActions.stop('liveProperties');
+			// PollingActions.stop('liveProperties');
 		}
 
 		// docker finished (not available) boot initiate
