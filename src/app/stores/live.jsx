@@ -212,6 +212,7 @@ const LiveStore = Reflux.createStore({
 		debug(arguments);
 		this.state.live.status = 'LIVE_STATUS_CONNECTED';
 		this.updateState();
+		LiveActions.enterScaledscreen();
 	},
 
 	onLiveConnectFailed(errorMessage) {
