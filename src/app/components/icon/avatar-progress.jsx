@@ -72,10 +72,12 @@ const AvatarProgress = props => {
 	};
 
 	const iconElement = icon ? React.cloneElement(icon, {
-		style: Object.assign(styleIcon, icon.props.style)
+		style: Object.assign(styleIcon, icon.props.style || {})
 	}) : null;
 
 	const circles = progress
+		// Order: biggest to smallest
+		.sort((a, b) => b.progress - a.progress)
 		.map(p => {
 			const styleMerged = Object.assign(animation ? getStyleProgressAnimated(p) : getStyleProgressNormal(p), styleOuter);
 			return <circle key={p.id} style={styleMerged} cx="170" cy="20" r="17" transform="rotate(-90, 95, 95)"/>;
@@ -95,11 +97,22 @@ const AvatarProgress = props => {
 	);
 };
 
+AvatarProgress.defaultProps = {
+	animation: true
+};
+
 AvatarProgress.propTypes = {
-	children: React.PropTypes.object,
+	children: React.PropTypes.node,
 	style: React.PropTypes.object,
 	icon: React.PropTypes.node,
-	progress: React.PropTypes.array,
+	progress: React.PropTypes.arrayOf(React.PropTypes.shape({
+		id: React.PropTypes.oneOfType([
+			React.PropTypes.string,
+			React.PropTypes.number
+		]),
+		progress: React.PropTypes.number,
+		color: React.PropTypes.string
+	})),
 	backgroundColor: React.PropTypes.string,
 	animation: React.PropTypes.bool
 };

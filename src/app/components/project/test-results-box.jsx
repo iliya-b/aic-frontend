@@ -15,7 +15,7 @@ import {
 	TableRow,
 	TableRowColumn
 } from 'material-ui';
-import AvatarProgress from 'app/components/shared/avatar-progress';
+import AvatarProgress from 'app/components/icon/avatar-progress';
 import AppUtils from 'app/components/shared/app-utils';
 import CodeBox from 'app/components/shared/code-box';
 
@@ -51,12 +51,10 @@ const TestResultsBox = class extends React.Component {
 			const totalPassedTests = totalTests - totalFailedTests;
 
 			const testProgress = (<AvatarProgress
-				icon={<FontIcon className="mdi mdi-android"/>}
+				icon={<FontIcon style={{color: 'rgba(0, 0, 0, 0.54)'}} className="mdi mdi-android"/>}
 				style={{marginRight: Spacing.desktopGutter}}
-				progress={percentageFailedTests}
-				color="rgba(0, 0, 0, 0.54)"
+				progress={[{id: 'error', progress: percentageFailedTests, color: this.context.muiTheme.palette.errorColor}]}
 				backgroundColor={this.context.muiTheme.palette.successColor}
-				foregroundColor={this.context.muiTheme.palette.errorColor}
 				/>
 			);
 
