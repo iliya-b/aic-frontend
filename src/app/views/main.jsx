@@ -16,7 +16,6 @@ import AuthActions from 'app/actions/auth';
 import AppConfigActions from 'app/actions/app-config';
 import AppActions from 'app/actions/app';
 import ServerErrorDialog from 'app/components/dialog/dialog-server-error';
-import PollingActions from 'app/actions/polling';
 
 const debug = require('debug')('AiC:Views:Main');
 
@@ -35,8 +34,6 @@ const Main = class extends React.Component {
 
 		// this.handleServerErrorDialogOpen = () => this.setState({serverErrorDialogOpen: true});
 		this.handleServerErrorDialogClose = () => AppActions.hideServerError();
-
-		this.handleClickStopPolling = () => PollingActions.stopAll();
 	}
 
 	_onHomeClick() {
@@ -88,12 +85,6 @@ const Main = class extends React.Component {
 						{this.props.children}
 						<FullWidthSection useContent style={styles.footer}>
 							<p style={styles.p}>COPYRIGHT © AiC</p>
-
-							{this.state.config.debug ? ([
-								<RaisedButton key={1} label="Test Theme" title="Test Theme" secondary href="#/theme-test"/>,
-								<RaisedButton key={2} secondary href="#/" label="home"/>,
-								<RaisedButton key={3} secondary onClick={this.handleClickStopPolling} label="stop polling"/>]
-							) : null}
 						</FullWidthSection>
 						<SessionEndedDialog open={this.state.sessionEndedDialogOpen} onRequestClose={this.handleSessionEndedDialogClose}/>
 						<ServerErrorDialog open={this.state.app ? this.state.app.serverError.open : false} onRequestClose={this.handleServerErrorDialogClose} message={this.state.app ? this.state.app.serverError.message : ''}/>

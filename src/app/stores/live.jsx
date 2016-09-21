@@ -6,7 +6,6 @@ import LiveActions from 'app/actions/live';
 import APKActions from 'app/actions/apk';
 import CameraActions from 'app/actions/camera';
 import AppActions from 'app/actions/app';
-import PollingActions from 'app/actions/polling';
 import {calcScreenScale} from 'app/libs/scale';
 import NoVNCAdapter from 'app/libs/novnc-adapter';
 import Notify from 'app/libs/notify';
@@ -76,12 +75,10 @@ const LiveStore = Reflux.createStore({
 			this.state.live.liveIsConnect = true;
 			// Load properties each x seconds
 			// TODO: should be changed once notification is done?
-			// this.onClearTimeouts();
 			// After ready the docker needs to boot up
 			// TODO: change to state
 			// window.intervalTimeout = setInterval(LiveActions.properties, 1000, {avmId: this.state.liveInfo.avm_id}, {showError500Dialog: false});
 			// LiveActions.properties({avmId: this.state.liveInfo.avm_id}, {showError500Dialog: false});
-			// PollingActions.start('liveProperties', {avmId: this.state.liveInfo.avm_id}, {showError500Dialog: false});
 			Notify.startLiveProperties({avmId: this.state.liveInfo.avm_id}, {showError500Dialog: false});
 		}
 		this.updateState();
@@ -113,17 +110,9 @@ const LiveStore = Reflux.createStore({
 		this.state.live.message = errorMessage;
 		// this.state.live.status = 'LIVE_STATUS_INITIAL_FAILED';
 		this.state.live.status = 'LIVE_STATUS_CHECK_FAILED';
-		this.onClearTimeouts();
 		// this.updateState();
 		debug('not found avm', this);
 		AppActions.notFound();
-	},
-
-	onClearTimeouts() {
-		// clearInterval(window.intervalTimeoutLoad);
-		// clearInterval(window.intervalTimeout);
-		PollingActions.stop('liveLoadInfo');
-		PollingActions.stop('liveProperties');
 	},
 
 	// Load State
@@ -253,7 +242,6 @@ const LiveStore = Reflux.createStore({
 			debug('onStop', 'request for another vm');
 			return;
 		}
-		this.onClearTimeouts();
 		this.state.live.status = 'LIVE_STATUS_STOPPING';
 		this.updateState();
 		this.updateList();
@@ -510,9 +498,6 @@ const LiveStore = Reflux.createStore({
 			// properties["aicVM.inited"] === "1") {
 			debug('onPropertiesCompleted listPackages');
 			LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
-			// Only clearTimeouts when debugging to not have span on logs
-			// this.onClearTimeouts();
-			// PollingActions.stop('liveProperties');
 		}
 
 		// docker finished (not available) boot initiate
@@ -543,7 +528,6 @@ const LiveStore = Reflux.createStore({
 		}
 
 		this.updateState();
-		// PollingActions.stop('liveProperties');
 	},
 
 	onNotifyLiveProperties(actionInfo, properties) {
@@ -556,9 +540,6 @@ const LiveStore = Reflux.createStore({
 			// properties["aicVM.inited"] === "1") {
 			debug('onPropertiesCompleted listPackages');
 			LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
-			// Only clearTimeouts when debugging to not have span on logs
-			// this.onClearTimeouts();
-			// PollingActions.stop('liveProperties');
 		}
 
 		// docker finished (not available) boot initiate
@@ -589,7 +570,6 @@ const LiveStore = Reflux.createStore({
 		}
 
 		this.updateState();
-		// PollingActions.stop('liveProperties');
 	},
 
 	onPropertiesFailed(errorMessage) {
@@ -607,7 +587,7 @@ const LiveStore = Reflux.createStore({
 			// this.state.live.status = 'LIVE_STATUS_LISTPACKAGES_FAILED';
 			this.state.live.status = 'LIVE_STATUS_START_FAILED';
 			this.updateState();
-			PollingActions.stop('liveProperties');
+			// TODO: should stop after x errors
 		}
 	},
 
@@ -845,7 +825,7 @@ const LiveStore = Reflux.createStore({
 
 		// If the machine goes to any failed state we should stop all polling
 		if (this.state.live.status.substr(-6) === 'FAILED') {
-			this.onClearTimeouts();
+			// TODO: should it stop polling?
 		}
 		this.updateBoxes();
 		this.trigger(this.state);

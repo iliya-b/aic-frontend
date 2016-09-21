@@ -6,8 +6,6 @@ import Snackbar from 'material-ui/Snackbar';
 import LiveStore from 'app/stores/live';
 import UserStore from 'app/stores/user';
 import LiveActions from 'app/actions/live';
-// import UserActions from 'app/actions/user';
-// import PollingActions from 'app/actions/polling';
 import LiveMachineList from 'app/components/project/live-machine-list';
 import ToolbarLive from 'app/components/toolbar/toolbar-live';
 import {variants} from 'app/configs/app-constants';
@@ -40,11 +38,6 @@ const LiveList = class extends React.Component {
 				newState.snackbar = {message: '', open: false};
 			}
 			debug('changing state', this.state.live ? this.state.live.status : '', newState);
-			if (newState.live.status === 'LIVE_STATUS_INITIALIZED') {
-				// PollingActions.start('liveList');
-				// LiveActions.list();
-			}
-
 			debug('ids', this.state.live && this.state.live.startFailedUuid ? this.state.live.startFailedUuid : 'no state', newState.live && newState.live.startFailedUuid ? newState.live.startFailedUuid : 'no new', snackInfo);
 			if (newState.live.status === 'LIVE_STATUS_VMSTART_FAILED' && snackInfo.uuid.indexOf(newState.live.startFailedUuid) === -1) {
 				// snackInfo.open = true;
@@ -77,7 +70,6 @@ const LiveList = class extends React.Component {
 			}, null);
 			const requestUuid = uuid();
 			LiveActions.start({variant, projectId, version, uuid: requestUuid}, {includeRequest: true});
-			// PollingActions.start('liveList');
 		};
 
 		this.onEnterSession = avmId => {
@@ -87,7 +79,6 @@ const LiveList = class extends React.Component {
 
 		this.onStopSession = avmId => {
 			LiveActions.stop({avmId}, {includeRequest: true});
-			// PollingActions.start('liveList');
 		};
 
 		this.handleSnackbarClose = () => {
@@ -123,7 +114,6 @@ const LiveList = class extends React.Component {
 		config.projectId = projectId;
 		config.uuid = uuid();
 		LiveActions.start(config, {includeRequest: true});
-		// PollingActions.start('liveList');
 	}
 
 	render() {
@@ -154,8 +144,6 @@ const LiveList = class extends React.Component {
 				<DialogLiveCreation open={this.state.dialogCreateOpen} onStart={this.handleStartSession2} onCancel={this.handleCloseCreateDialog}/>
 				<LiveMachineList avmList={avmList} isListLoading={isListLoading} actionEnter={this.onEnterSession} actionStop={this.onStopSession}/>
 				<Snackbar
-					// open={snackInfo.open}
-					// message={snackInfo.message}
 					open={this.state.snackbar.open}
 					message={this.state.snackbar.message}
 					action="close"
@@ -191,7 +179,6 @@ const LiveList = class extends React.Component {
 		this.unsubscribe.push(UserStore.listen(this.handleStateChange));
 		LiveActions.setProjectId(projectId);
 		LiveActions.listImages();
-		// UserActions.quota();
 		Notify.watchProjectSessions({projectId});
 		Notify.startUserQuota({projectId});
 		Notify.startListSessions({projectId});
@@ -200,7 +187,6 @@ const LiveList = class extends React.Component {
 	componentWillUnmount() {
 		// Subscribe and unsubscribe because we don't want to use the mixins
 		this.unsubscribe.forEach(fn => fn());
-		// PollingActions.stop('liveList');
 		Notify.clearProjectSessions({projectId});
 	}
 

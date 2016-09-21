@@ -6,7 +6,6 @@ import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import AuthActions from 'app/actions/auth';
 import ProjectActions from 'app/actions/project';
-import PollingStore from 'app/stores/polling';
 import AuthRequired from 'app/components/shared/auth-required';
 
 const ProjectWrapper = class extends AuthRequired {
@@ -82,12 +81,9 @@ const ProjectWrapper = class extends AuthRequired {
 	componentWillMount() {
 		super.componentWillMount();
 		this.updateTitle(this.props);
-		this.unsubscribe = PollingStore.listen(this._onStateChange);
 	}
 
 	componentWillUnmount() {
-		// Subscribe and unsubscribe because we don't want to use the mixins
-		this.unsubscribe();
 		super.componentWillUnmount();
 	}
 

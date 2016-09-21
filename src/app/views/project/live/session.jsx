@@ -12,7 +12,6 @@ import LiveStore from 'app/stores/live';
 import APKStore from 'app/stores/apk';
 import CameraStore from 'app/stores/camera';
 import LiveActions from 'app/actions/live';
-// import PollingActions from 'app/actions/polling';
 import NoVNCAdapter from 'app/libs/novnc-adapter';
 import fullscreen from 'app/libs/fullscreen';
 import Notify from 'app/libs/notify';
@@ -279,9 +278,6 @@ const LiveSession = class extends React.Component {
 		this.unsubscribe.push(CameraStore.listen(this._onStateChange));
 		LiveActions.liveReset();
 		LiveActions.setProjectId(projectId);
-		// LiveActions.loadInfo(avmId);
-		// window.intervalTimeoutLoad = setInterval(LiveActions.loadInfo, 1000, avmId);
-		// PollingActions.start('liveLoadInfo', {avmId});
 		window.addEventListener('resize', recalculeScaleThrottled);
 		Notify.startLiveRead({avmId});
 	}
