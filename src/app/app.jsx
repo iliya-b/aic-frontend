@@ -7,7 +7,6 @@ import ReactDOM from 'react-dom';
 import Reflux from 'reflux';
 import refluxPromise from 'reflux-promise';
 import gatewayRegisters from 'app/libs/gateway-registers';
-import Notify from 'app/libs/notify';
 
 (function () {
 	// Needed for configuration
@@ -15,9 +14,6 @@ import Notify from 'app/libs/notify';
 
 	// Needed to enable debugging on browser
 	window.GobyAppGlobals.Debugger = require('debug');
-
-	// Enable stop polling on browser
-	window.GobyAppGlobals.Notify = Notify;
 
 	// Debugging React
 	// window.Perf = require('react-addons-perf');

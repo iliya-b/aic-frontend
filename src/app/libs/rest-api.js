@@ -11,7 +11,7 @@ const SanitizeObject = require('app/libs/sanitize-object');
 function parseJSON(response) {
 	debug('response parseJSON', response);
 	return response.text().then(text => {
-		if (text.trim() === '') {
+		if (text.trim() === '' || text === '202: Accepted') {
 			return {};
 		}
 		return JSON.parse(text);

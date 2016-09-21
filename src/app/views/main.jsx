@@ -4,7 +4,6 @@
 
 import React from 'react';
 import * as Colors from 'material-ui/styles/colors';
-import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppTheme from 'app/configs/app-theme';
 import FullWidthSection from 'app/components/shared/full-width-section';

@@ -1,3 +1,4 @@
+/* global window */
 'use strict';
 
 import NotifyCore from 'app/libs/notify-core';
@@ -66,5 +67,8 @@ Notify.registerActions({
 		stopCondition: (actionInfo, response) => response.every(NotifyStopCondition.campaignShouldStop)
 	}
 });
+
+// Enable stop polling on browser
+window.GobyAppGlobals.Notify = Notify;
 
 module.exports = Notify;
