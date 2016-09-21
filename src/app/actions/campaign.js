@@ -6,7 +6,8 @@ import Gateway from 'app/libs/gateway';
 const CampaignActions = Reflux.createActions({
 	list: {asyncResult: true},
 	read: {asyncResult: true},
-	create: {asyncResult: true}
+	create: {asyncResult: true},
+	notifyList: {}
 });
 
 CampaignActions.list.listenAndPromise(Gateway.campaign.list);

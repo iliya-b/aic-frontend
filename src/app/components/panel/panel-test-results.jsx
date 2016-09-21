@@ -95,7 +95,7 @@ const PanelTestResults = props => {
 	// 		/>
 	// );
 
-	const testProgress = <DeviceIcon isOn image={image}/>;
+	const testProgress = image ? <DeviceIcon isOn image={image}/> : null;
 
 	const resultsPerPackage = parsedResults.map((p, i) => <TableTestResult key={i} testCases={p.testCases}/>);
 

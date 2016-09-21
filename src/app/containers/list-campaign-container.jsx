@@ -1,9 +1,9 @@
 'use strict';
 
 import React from 'react';
-import CampaignActions from 'app/actions/campaign';
 import CampaignStore from 'app/stores/campaign';
 import ListCampaign from 'app/components/list/list-campaign';
+import Notify from 'app/libs/notify';
 
 const ListCampaignContainer = class extends React.Component {
 	constructor(props) {
@@ -21,28 +21,19 @@ const ListCampaignContainer = class extends React.Component {
 		);
 	}
 
-	list() {
-		CampaignActions.list({projectId: this.props.projectId});
-	}
-
 	handleStateChange = newState => {
 		this.setState(newState);
-		const statusList = ['RUNNING', 'QUEUED'];
-		const shouldListAgain = newState.campaign.campaigns.reduce((p, c) => (!p && statusList.indexOf(c.status) !== -1 ? true : p), false);
-		if (shouldListAgain) {
-			setTimeout(() => {
-				this.list();
-			}, 1000);
-		}
 	}
 
 	componentDidMount() {
 		this.unsubscribe = CampaignStore.listen(this.handleStateChange);
-		this.list();
+		Notify.watchProjectCampaigns({projectId: this.props.projectId});
+		Notify.startListCampaigns({projectId: this.props.projectId});
 	}
 
 	componentWillUnmount() {
 		this.unsubscribe();
+		Notify.clearProjectCampaigns({projectId: this.props.projectId});
 	}
 
 };

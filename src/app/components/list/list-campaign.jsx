@@ -22,7 +22,7 @@ const ListCampaign = props => {
 					id={item.campaign_id}
 					key={item.campaign_id}
 					index={index}
-					name={item.campaign_id}
+					name={item.campaign_name || item.campaign_id}
 					status={item.status}
 					onEnter={props.onEnter}
 					/>

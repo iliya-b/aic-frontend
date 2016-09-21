@@ -90,7 +90,7 @@ class NotifyCore {
 		return groupId in this.actions[action].running && !this.actions[action].running[groupId].shouldStop;
 	}
 
-	startAction(action, actionInfo) {
+	startAction(action, actionInfo, extraOptions) {
 		debug(`start${action}`, actionInfo);
 		// TODO should reject calls with same action and actionInfo
 		if (this.isActionRunning(action, actionInfo)) {
@@ -100,8 +100,8 @@ class NotifyCore {
 
 		// Should only start action if the group is being watched
 		if (this.isActionWatched(action, actionInfo)) {
-			const initialDelaySeconds = 0;
-			const timeoutSeconds = 5;
+			const initialDelaySeconds = isObject(extraOptions) && 'initialDelaySeconds' in extraOptions ? extraOptions.initialDelaySeconds : 0;
+			const timeoutSeconds = isObject(extraOptions) && 'timeoutSeconds' in extraOptions ? extraOptions.timeoutSeconds : 5;
 			// const runningIndex = this.actions[action].running.length;
 			const runningIndex = this.getGroupIdByAction(action, actionInfo);
 			this.actions[action].running[runningIndex] = {shouldStop: false, lastResponse: null, actionInfo};

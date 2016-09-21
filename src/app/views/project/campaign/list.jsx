@@ -4,12 +4,12 @@ import React from 'react';
 import ToolbarCampaign from 'app/components/toolbar/toolbar-campaign';
 import ListCampaignContainer from 'app/containers/list-campaign-container';
 import DialogCampaignCreation from 'app/components/dialog/dialog-campaign-creation';
-
 import APKStore from 'app/stores/apk';
 import APKActions from 'app/actions/apk';
 import LiveStore from 'app/stores/live';
 import LiveActions from 'app/actions/live';
 import CampaignActions from 'app/actions/campaign';
+import Notify from 'app/libs/notify';
 
 const debug = require('debug')('AiC:Views:Campaign:CampaignList');
 
@@ -38,9 +38,7 @@ const CampaignList = class extends React.Component {
 		config.projectId = this.props.params.projectId;
 		CampaignActions.create(config);
 		this.handleCloseDialog();
-		setTimeout(() => {
-			CampaignActions.list({projectId: this.props.params.projectId});
-		}, 1000);
+		Notify.startListCampaigns({projectId: this.props.params.projectId}, {initialDelaySeconds: 1});
 	}
 
 	render() {

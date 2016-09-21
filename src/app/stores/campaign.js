@@ -23,6 +23,12 @@ const CampaignStore = Reflux.createStore({
 		this.updateState();
 	},
 
+	onNotifyList(actionInfo, response) {
+		this.state.campaign.campaigns = response;
+		this.state.campaign.status = 'listCompleted';
+		this.updateState();
+	},
+
 	onReadCompleted(data) {
 		this.state.campaign.campaign = data;
 		this.state.campaign.status = 'showCompleted';
