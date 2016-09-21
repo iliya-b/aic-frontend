@@ -6,6 +6,8 @@
 // Adapters convert the objects retrieved by API to the objects
 // expected by front-end
 
+import {camelizeObj} from 'app/libs/helpers';
+
 const GatewayAdapters = {
 	user: {
 		login: {
@@ -15,6 +17,9 @@ const GatewayAdapters = {
 					password: frontendObject.pass
 				};
 			}
+		},
+		quota: {
+			response: backendObject => camelizeObj(backendObject.quota)
 		}
 	},
 	projects: {
@@ -99,7 +104,8 @@ const GatewayAdapters = {
 						// stack_name: avm.stack_name, // eslint-disable-line camelcase
 						avm_status: avm.status, // eslint-disable-line camelcase
 						ts_created: avm.ts_created, // eslint-disable-line camelcase
-						avm_name: avm.avm_name // eslint-disable-line camelcase
+						avm_name: avm.avm_name, // eslint-disable-line camelcase
+						campaignId: avm.campaign_id
 					};
 				});
 			}
@@ -239,21 +245,6 @@ const GatewayAdapters = {
 						};
 					})
 				};
-
-// 				{
-// 	tests: [
-// 		{
-// 		images: [''],
-// 		packages: ['']
-// 		apks: [
-// 			{
-// 			apk_id: 'xxx'
-// 			}
-// 		]
-// 		}
-// 	],
-// 	campaign_name: ''
-// }
 			}
 		}
 	}

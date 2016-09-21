@@ -16,7 +16,10 @@ const PanelSessionsInfo = props => {
 		padding: 10
 	};
 
-	const vmCountPerc = parseInt(props.vmCount / props.vmMaxAllowed * 100, 10);
+	let vmCountPerc = 0;
+	if (props.vmMaxAllowed !== 0) {
+		vmCountPerc = parseInt(props.vmCount / props.vmMaxAllowed * 100, 10);
+	}
 
 	return (
 		<Paper style={stylePaper}>

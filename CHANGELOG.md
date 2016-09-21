@@ -6,10 +6,23 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ### Added
 - Dialog live session creation.
+- User quota API integration (before was hardcoded value).
+- Test manager (testsources backend API integration).
+- Test campaign (campaigns backend API integration).
+- Add component select field.
+- Live fullscreen and fit size.
+- Add CI deployment and release.
+- Add Notify lib to group polling actions.
 
 ### Changed
 - Update many API calls to comply with backend modifications.
 - Update npm packages.
+- Update async calls of live apk install and monkey runner.
+- Some components from /#themes to new project frontend-stories.
+- Update live list to filter out campaign machines.
+
+Note: v0.6 skipped because we did not had a stable version to tag
+before tag v0.7 arrived in the backend.
 
 ## [0.5.1]
 

@@ -45,6 +45,12 @@ const GatewayRegisters = function () {
 			}, {
 				action: GatewayActions.logout,
 				pathname: '/user/logout'
+			}, {
+				action: {
+					name: 'quota',
+					method: 'GET'
+				},
+				pathname: '/user/quota'
 			}
 		]
 	});

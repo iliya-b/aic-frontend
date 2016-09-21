@@ -48,7 +48,7 @@ const componentsReq = {
 	// AppUtils: require('app/components/shared/app-utils'), // Not a component but a utility module
 	// AuthPage: require('app/components/shared/auth-page'), // Auth action
 	// AuthRequired: require('app/components/shared/auth-required'), // Auth action
-	AvatarProgress: require('app/components/shared/avatar-progress'),
+	AvatarProgress: require('app/components/icon/avatar-progress'),
 	CodeBox: require('app/components/shared/code-box'),
 	Dropzone: require('app/components/shared/dropzone'),
 	FullWidthSection: require('app/components/shared/full-width-section'),
@@ -113,7 +113,8 @@ const componentsProps = {
 	ToolbarGsm: {onClick: {gsmCall: () => {}}},
 	ToolbarLive: {variants: []},
 	ToolbarMonkey: {packageList: []},
-	ToolbarSensors: {onClick: {}}
+	ToolbarSensors: {onClick: {}},
+	AvatarProgress: {backgroundColor: 'red', progress: [{id: 1, progress: 10, color: 'red'}]}
 };
 
 const componentsChildren = {

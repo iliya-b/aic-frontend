@@ -31,6 +31,40 @@ const moveCaretToEnd = el => {
 	}
 };
 
+ // ret = obj
+ //  method = methods[caseType]
+
+ //  if _.isArray(obj)
+ //    ret = []
+ //    i = 0
+
+ //    while i < obj.length
+ //      ret.push normalize(obj[i], caseType)
+ //      ++i
+ //  else if _.isObject(obj)
+ //    ret = {}
+ //    for k of obj
+ //      ret[method(k)] = normalize(obj[k], caseType)
+
+ //  ret
+
+const isObject = value => typeof value === 'object';
+const isArray = value => Array.isArray(value);
+
+const camelizeObj = obj => {
+	let result = obj;
+	if (isArray(obj)) {
+		result = obj.map(camelizeObj);
+	} else if (isObject(obj)) {
+		result = {};
+		const objKeys = Object.keys(obj);
+		objKeys.forEach(k => {
+			result[camelCase(k)] = camelizeObj(obj[k]);
+		});
+	}
+	return result;
+};
+
 // TODO: implement status
 const colorByStatus = {
 	DISABLED: AppPalette.disabledColor,
@@ -86,5 +120,7 @@ module.exports = {
 	getColorByStatus,
 	getVmStatus,
 	isEqual,
-	upperFirst
+	upperFirst,
+	camelizeObj,
+	isObject
 };

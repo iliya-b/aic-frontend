@@ -4,7 +4,9 @@
 import React from 'react';
 import Snackbar from 'material-ui/Snackbar';
 import LiveStore from 'app/stores/live';
+import UserStore from 'app/stores/user';
 import LiveActions from 'app/actions/live';
+// import UserActions from 'app/actions/user';
 // import PollingActions from 'app/actions/polling';
 import LiveMachineList from 'app/components/project/live-machine-list';
 import ToolbarLive from 'app/components/toolbar/toolbar-live';
@@ -12,6 +14,7 @@ import {variants} from 'app/configs/app-constants';
 import uuid from 'app/libs/uuid';
 import DialogLiveCreation from 'app/components/dialog/dialog-live-creation';
 import PanselSessionsInfo from 'app/components/panel/panel-sessions-info';
+import Notify from 'app/libs/notify';
 
 const debug = require('debug')('AiC:View:Live:List');
 
@@ -31,13 +34,15 @@ const LiveList = class extends React.Component {
 		super(props);
 
 		this.handleStateChange = newState => {
+			debug('handleStateChange', newState);
+			newState = Object.assign({}, this.state, newState);
 			if (!newState.snackbar) {
 				newState.snackbar = {message: '', open: false};
 			}
 			debug('changing state', this.state.live ? this.state.live.status : '', newState);
 			if (newState.live.status === 'LIVE_STATUS_INITIALIZED') {
 				// PollingActions.start('liveList');
-				LiveActions.list();
+				// LiveActions.list();
 			}
 
 			debug('ids', this.state.live && this.state.live.startFailedUuid ? this.state.live.startFailedUuid : 'no state', newState.live && newState.live.startFailedUuid ? newState.live.startFailedUuid : 'no new', snackInfo);
@@ -124,25 +129,27 @@ const LiveList = class extends React.Component {
 	render() {
 		const isListLoading = !(this.state.live && this.state.live.status === 'LIVE_STATUS_LISTED');
 		let avmList = [];
-		let vmCount = 0;
 
-		// Filter VMs by projectId
+		// Filter VMs by projectId and only live sessions (exclude campaign machines)
 		if (this.state.live && 'avms' in this.state.live) {
-			vmCount = this.state.live.avms.length;
 			avmList = this.state.live.avms.filter(v => {
-				return v.project_id === projectId;
+				return v.project_id === projectId && v.campaignId === '';
 			});
 		}
+
+		// User quota
+		const liveCurrent = this.state.user && this.state.user.quota ? this.state.user.quota.vmLiveCurrent : 0;
+		const liveMax = this.state.user && this.state.user.quota ? this.state.user.quota.vmLiveMax : 0;
 
 		return (
 			<div>
 				<ToolbarLive
 					onClickStart={this.handleOpenCreateDialog}
 					variants={enableVariants}
-					vmCount={vmCount}
-					vmMaxAllowed={3}
+					vmCount={liveCurrent}
+					vmMaxAllowed={liveMax}
 					/>
-				<PanselSessionsInfo vmCount={vmCount} vmMaxAllowed={3}/>
+				<PanselSessionsInfo vmCount={liveCurrent} vmMaxAllowed={liveMax}/>
 				<br/>
 				<DialogLiveCreation open={this.state.dialogCreateOpen} onStart={this.handleStartSession2} onCancel={this.handleCloseCreateDialog}/>
 				<LiveMachineList avmList={avmList} isListLoading={isListLoading} actionEnter={this.onEnterSession} actionStop={this.onStopSession}/>
@@ -179,15 +186,22 @@ const LiveList = class extends React.Component {
 		debug('this.props', this.props);
 		debug('this.context.router', this.context.router);
 		projectId = this.props.params.projectId;
-		this.unsubscribe = LiveStore.listen(this.handleStateChange);
+		this.unsubscribe = [];
+		this.unsubscribe.push(LiveStore.listen(this.handleStateChange));
+		this.unsubscribe.push(UserStore.listen(this.handleStateChange));
 		LiveActions.setProjectId(projectId);
 		LiveActions.listImages();
+		// UserActions.quota();
+		Notify.watchProjectSessions({projectId});
+		Notify.startUserQuota({projectId});
+		Notify.startListSessions({projectId});
 	}
 
 	componentWillUnmount() {
 		// Subscribe and unsubscribe because we don't want to use the mixins
-		this.unsubscribe();
+		this.unsubscribe.forEach(fn => fn());
 		// PollingActions.stop('liveList');
+		Notify.clearProjectSessions({projectId});
 	}
 
 };

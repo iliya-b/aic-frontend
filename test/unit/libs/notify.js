@@ -144,50 +144,35 @@ test.cb(`Can stop action when clear group`, t => {
 	}, 2000);
 });
 
-// test.cb(`Can stop action when clear all watches group`, t => {
-// 	t.plan(7);
-// 	let counter = 0;
-// 	const Notify = new NotifyCore();
-// 	Notify.registerGroups({
-// 		groupX6: {
-// 			id: 'myGroupId6'
-// 		}
-// 	});
+test.cb(`Ignores multiple start action (call once at most)`, t => {
+	t.plan(4);
+	let counter = 0;
+	const Notify = new NotifyCore();
+	Notify.registerGroups({
+		groupX6: {
+			id: 'myGroupId6'
+		}
+	});
 
-// 	Notify.registerActions({
-// 		actionY6: {
-// 			group: 'groupX6',
-// 			request: actionInfo => {
-// 				return new Promise(resolve => {
-// 					setTimeout(() => {
-// 						resolve(actionInfo);
-// 					}, 1000);
-// 				});
-// 			},
-// 			notify: (actionInfo, response) => {
-// 				counter++;
-// 				t.is(counter, 1);
-// 				t.is(response.myGroupId, actionInfo.myGroupId);
-// 				t.is(response.otherInfo, actionInfo.otherInfo);
-// 			},
-// 			stopCondition: () => false
-// 		}
-// 	});
+	Notify.registerActions({
+		actionY6: {
+			group: 'groupX6',
+			request: () => Promise.resolve({x: Math.random(), y: 123}),
+			notify: (actionInfo, response) => {
+				counter++;
+				t.is(response.y, 123);
+			},
+			stopCondition: () => false
+		}
+	});
 
-// 	Notify.watchGroupX6({myGroupId6: 'groupId6'});
-// 	Notify.watchGroupX6({myGroupId6: 'groupId6'});
-// 	Notify.startActionY6({myGroupId6: 'groupId6', otherInfo: 'toto'});
-
-// 	setTimeout(() => {
-// 		Notify.clearGroupX6({myGroupId6: 'groupId6'});
-// 	}, 500);
-
-// 	setTimeout(() => {
-// 		Notify.clearGroupX6({myGroupId6: 'groupId6'});
-// 	}, 3000);
-
-// 	setTimeout(() => {
-// 		t.is(counter, 1);
-// 		t.end();
-// 	}, 10000);
-// });
+	Notify.watchGroupX6({myGroupId6: 'groupId6'});
+	Notify.startActionY6({myGroupId6: 'groupId6', otherInfo: 'toto'});
+	Notify.startActionY6({myGroupId6: 'groupId6', otherInfo: 'toto'});
+	Notify.startActionY6({myGroupId6: 'groupId6', otherInfo: 'toto'});
+	Notify.startActionY6({myGroupId6: 'groupId6', otherInfo: 'toto'});
+	setTimeout(() => {
+		t.is(counter, 3);
+		t.end();
+	}, 13000);
+});

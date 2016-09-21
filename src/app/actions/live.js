@@ -7,7 +7,8 @@ import NoVNCAdapter from 'app/libs/novnc-adapter';
 import AudioAdapter from 'app/libs/audio-adapter';
 
 const LiveActions = Reflux.createActions({
-	list: {asyncResult: true},
+	// list: {asyncResult: true},
+	notifyList: {},
 	stop: {asyncResult: true},
 	start: {asyncResult: true},
 	listPackages: {asyncResult: true},
@@ -42,7 +43,7 @@ const LiveActions = Reflux.createActions({
 });
 
 // Backend related
-LiveActions.list.listenAndPromise(Gateway.live.list);
+// LiveActions.list.listenAndPromise(Gateway.live.list);
 LiveActions.stop.listenAndPromise(Gateway.live.delete);
 LiveActions.start.listenAndPromise(Gateway.live.create);
 LiveActions.listPackages.listenAndPromise(Gateway.live.listPackages);

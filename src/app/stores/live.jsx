@@ -544,29 +544,36 @@ const LiveStore = Reflux.createStore({
 	},
 
 	// Live list
-	onList() {
-		debug('onList');
-		this.state.live.status = 'LIVE_STATUS_LISTING';
-		this.updateState();
-	},
+	// onList() {
+	// 	debug('onList');
+	// 	this.state.live.status = 'LIVE_STATUS_LISTING';
+	// 	this.updateState();
+	// },
 
-	onListCompleted(avms) {
-		debug('onListCompleted', avms);
+	// onListCompleted(avms) {
+	// 	debug('onListCompleted', avms);
+	// 	this.state.live.avms = avms;
+	// 	this.state.live.status = 'LIVE_STATUS_LISTED';
+	// 	this.updateState();
+	// 	const statusList = ['CREATING', 'QUEUED', 'DELETING'];
+	// 	const shouldListAgain = avms.reduce((p, c) => (!p && statusList.indexOf(c.avm_status) !== -1 ? true : p), false);
+	// 	debug('shouldListAgain', shouldListAgain);
+	// 	if (shouldListAgain) {
+	// 		this.updateList();
+	// 	}
+	// },
+
+	// onListFailed(errorMessage) {
+	// 	debug('onListFailed');
+	// 	this.state.live.status = 'LIVE_STATUS_LIST_FAILED';
+	// 	this.state.live.message = errorMessage;
+	// 	this.updateState();
+	// },
+
+	onNotifyList(requestInfo, avms) {
+		debug('onNotifyList', avms);
 		this.state.live.avms = avms;
 		this.state.live.status = 'LIVE_STATUS_LISTED';
-		this.updateState();
-		const statusList = ['CREATING', 'QUEUED', 'DELETING'];
-		const shouldListAgain = avms.reduce((p, c) => (!p && statusList.indexOf(c.avm_status) !== -1 ? true : p), false);
-		debug('shouldListAgain', shouldListAgain);
-		if (shouldListAgain) {
-			this.updateList();
-		}
-	},
-
-	onListFailed(errorMessage) {
-		debug('onListFailed');
-		this.state.live.status = 'LIVE_STATUS_LIST_FAILED';
-		this.state.live.message = errorMessage;
 		this.updateState();
 	},
 
@@ -756,11 +763,9 @@ const LiveStore = Reflux.createStore({
 	},
 
 	updateList() {
-		if (!this.updateListTimeout) {
-			this.updateListTimeout = setTimeout(() => {
-				LiveActions.list();
-				this.updateListTimeout = false;
-			}, 3000);
+		if (this.state.projectId) {
+			Notify.startListSessions({projectId: this.state.projectId});
+			Notify.startUserQuota({projectId: this.state.projectId});
 		}
 	},
 
