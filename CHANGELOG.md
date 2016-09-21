@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ## [Unreleased]
 
+## [0.7.0]
+
 ### Added
 - Dialog live session creation.
 - User quota API integration (before was hardcoded value).
