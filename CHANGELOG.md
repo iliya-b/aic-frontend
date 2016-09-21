@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ## [0.7.0]
 
+Tagging v0.7.1 to keep up with backend version.
+
+## [0.7.0]
+
 ### Added
 - Dialog live session creation.
 - User quota API integration (before was hardcoded value).
