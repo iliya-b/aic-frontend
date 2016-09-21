@@ -39,7 +39,9 @@ const LiveActions = Reflux.createActions({
 	notifyLiveInstallAPK: {},
 	notifyLiveMonkeyRunner: {},
 
-	recalculeScaleIfConnected: {}
+	recalculeScaleIfConnected: {},
+	notifyLiveProperties: {},
+	notifyLiveRead: {}
 });
 
 // Backend related

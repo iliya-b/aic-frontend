@@ -35,6 +35,18 @@ Notify.registerActions({
 		notify: LiveActions.notifyLiveMonkeyRunner,
 		stopCondition: (actionInfo, response) => NotifyStopCondition.commandShouldStop(response)
 	},
+	liveProperties: {
+		group: 'live',
+		request: Gateway.live.properties,
+		notify: LiveActions.notifyLiveProperties,
+		stopCondition: () => false
+	},
+	liveRead: {
+		group: 'live',
+		request: Gateway.live.read,
+		notify: LiveActions.notifyLiveRead,
+		stopCondition: (actionInfo, response) => NotifyStopCondition.liveReadShouldStop(response)
+	},
 	userQuota: {
 		group: 'projectSessions',
 		request: Gateway.user.quota,

@@ -76,12 +76,34 @@ const LiveStore = Reflux.createStore({
 			this.state.live.liveIsConnect = true;
 			// Load properties each x seconds
 			// TODO: should be changed once notification is done?
-			this.onClearTimeouts();
+			// this.onClearTimeouts();
 			// After ready the docker needs to boot up
 			// TODO: change to state
 			// window.intervalTimeout = setInterval(LiveActions.properties, 1000, {avmId: this.state.liveInfo.avm_id}, {showError500Dialog: false});
 			// LiveActions.properties({avmId: this.state.liveInfo.avm_id}, {showError500Dialog: false});
-			PollingActions.start('liveProperties', {avmId: this.state.liveInfo.avm_id}, {showError500Dialog: false});
+			// PollingActions.start('liveProperties', {avmId: this.state.liveInfo.avm_id}, {showError500Dialog: false});
+			Notify.startLiveProperties({avmId: this.state.liveInfo.avm_id}, {showError500Dialog: false});
+		}
+		this.updateState();
+	},
+
+	onNotifyLiveRead(actionInfo, avmInfo) {
+		debug('onNotifyLiveRead', actionInfo, avmInfo);
+		if (this.state.live.status === 'LIVE_STATUS_INITIALIZED') {
+			this.state.live.status = 'LIVE_STATUS_CHECKING';
+			this.updateState();
+		}
+		this.state.liveInfo = avmInfo;
+		if (this.state.live.status === 'LIVE_STATUS_CHECKING') {
+			this.state.live.status = 'LIVE_STATUS_CHECK_FOUND';
+			this.updateBoxes();
+			this.state.live.status = 'LIVE_STATUS_STARTING';
+			this.updateBoxes();
+		}
+		if (!this.state.live.liveIsConnect &&
+			avmInfo.avm_status === 'READY') {
+			this.state.live.liveIsConnect = true;
+			Notify.startLiveProperties({avmId: this.state.liveInfo.avm_id}, {showError500Dialog: false});
 		}
 		this.updateState();
 	},
@@ -480,6 +502,52 @@ const LiveStore = Reflux.createStore({
 		debug('onPropertiesCompleted value', properties['dev.bootcomplete'] === '1');
 		debug('onPropertiesCompleted value', !this.state.live.listPackages && properties['dev.bootcomplete'] === '1');
 		debug('onPropertiesCompleted value', !this.state.live.bootInit && (properties['init.svc.bootanim'] === '1' || properties['dev.bootcomplete'] === '1'));
+
+		// TODO: should be changed to machine state
+		// boot completed
+		if (!this.state.live.listPackages &&
+			properties['dev.bootcomplete'] === '1') {
+			// properties["aicVM.inited"] === "1") {
+			debug('onPropertiesCompleted listPackages');
+			LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
+			// Only clearTimeouts when debugging to not have span on logs
+			// this.onClearTimeouts();
+			// PollingActions.stop('liveProperties');
+		}
+
+		// docker finished (not available) boot initiate
+		if (!this.state.live.bootInit &&
+			(properties['init.svc.bootanim'] === 'running' || properties['dev.bootcomplete'] === '1')) {
+		// if (!this.state.live.bootInit) {
+			// properties["aicVM.inited"] === "1") {
+			this.state.live.status = 'LIVE_STATUS_STARTED';
+			this.updateBoxes();
+			debug('onPropertiesCompleted boot initiate');
+			this.state.live.bootInit = true;
+			LiveActions.liveConnect(this.state.liveInfo.avm_id);
+			APKActions.list({projectId: this.state.projectId});
+			CameraActions.list({projectId: this.state.projectId});
+		}
+
+		// If rotation changes need to recalculate scale
+		let shouldCalculateScale = false;
+		if ((this.state && this.state.live && this.state.live.isScaledscreen) &&
+			properties['aicd.screen_rotation'] !== this.state.live.properties['aicd.screen_rotation']) {
+			shouldCalculateScale = true;
+		}
+
+		this.state.live.properties = properties;
+
+		if (shouldCalculateScale) {
+			this.calculateScale();
+		}
+
+		this.updateState();
+		// PollingActions.stop('liveProperties');
+	},
+
+	onNotifyLiveProperties(actionInfo, properties) {
+		debug('onNotifyLiveProperties', properties);
 
 		// TODO: should be changed to machine state
 		// boot completed

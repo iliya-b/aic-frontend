@@ -38,7 +38,7 @@ const CampaignList = class extends React.Component {
 		config.projectId = this.props.params.projectId;
 		CampaignActions.create(config);
 		this.handleCloseDialog();
-		Notify.startListCampaigns({projectId: this.props.params.projectId}, {initialDelaySeconds: 1});
+		Notify.startListCampaigns({projectId: this.props.params.projectId}, null, {initialDelaySeconds: 1});
 	}
 
 	render() {
