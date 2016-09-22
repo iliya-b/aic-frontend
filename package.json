@@ -31,6 +31,7 @@
   },
   "author": "Karine Pires",
   "dependencies": {
+    "@kadira/storybook": "^2.16.1",
     "attr-accept": "1.0.3",
     "babel-cli": "6.11.4",
     "babel-core": "6.13.2",
@@ -46,6 +47,7 @@
     "material-ui": "0.15.4",
     "mdi": "1.7.22",
     "noVNC": "git+https://github.com/kanaka/noVNC.git#v0.6.1",
+    "raw-loader": "^0.5.1",
     "react": "15.3.2",
     "react-addons-css-transition-group": "15.3.2",
     "react-dom": "15.3.2",
@@ -58,7 +60,6 @@
     "webpack": "2.1.0-beta.21"
   },
   "devDependencies": {
-    "@kadira/storybook": "^2.16.1",
     "ava": "0.16.0",
     "create-json-from-env": "git+ssh://git@git.rnd.alterway.fr:UCF/create-json-from-env.git",
     "enzyme": "2.4.1",
@@ -67,7 +68,6 @@
     "eslint-plugin-react": "6.1.2",
     "http-server": "0.9.0",
     "nyc": "8.1.0",
-    "raw-loader": "^0.5.1",
     "react-addons-test-utils": "15.3.2",
     "tap-nyan": "0.0.2",
     "webpack-dev-server": "1.15.0",
