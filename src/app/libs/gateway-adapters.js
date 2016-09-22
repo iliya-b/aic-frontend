@@ -241,7 +241,7 @@ const GatewayAdapters = {
 						return {
 							image,
 							apks: frontendObject.apks,
-							packages: ['com.zenika.aic.core.libs.test/android.test.InstrumentationTestRunner', 'com.zenika.aic.demo.sensor.test/android.support.test.runner.AndroidJUnitRunner']
+							packages: frontendObject.packages
 						};
 					})
 				};

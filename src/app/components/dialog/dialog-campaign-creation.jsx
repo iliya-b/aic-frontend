@@ -9,6 +9,7 @@ import FlatButton from 'material-ui/FlatButton';
 import IconButtonApp from 'app/components/icon/icon-button-app';
 import DeviceIcon from 'app/components/icon/device-icon';
 import SelectTextField from 'app/components/form/select-text-field';
+import MultiTextField from 'app/components/form/multi-text-field';
 
 const debug = require('debug')('AiC:Components:Dialog:DialogCampaignCreation');
 
@@ -21,7 +22,8 @@ const DialogCampaignCreation = class extends React.Component {
 			config: {
 				name: '',
 				images: [],
-				apks: []
+				apks: [],
+				packages: []
 			}
 		};
 		this.refsC = {};
@@ -29,7 +31,7 @@ const DialogCampaignCreation = class extends React.Component {
 
 	udpdateConfig = (config, value) => {
 		const newStateConfig = Object.assign({}, this.state.config);
-		if (Array.isArray(newStateConfig[config]) && config !== 'apks') {
+		if (Array.isArray(newStateConfig[config]) && config !== 'apks' && config !== 'packages') {
 			const posConfig = newStateConfig[config].indexOf(value);
 			if (posConfig === -1) {
 				newStateConfig[config].push(value);
@@ -77,6 +79,10 @@ const DialogCampaignCreation = class extends React.Component {
 		this.udpdateConfig('apks', newSelection);
 	}
 
+	handleChangePackages = newSelection => {
+		this.udpdateConfig('packages', newSelection);
+	}
+
 	render() {
 		// TODO: treat all the other conflict fields inside ...other
 		const {
@@ -120,6 +126,12 @@ const DialogCampaignCreation = class extends React.Component {
 				<LabeledSpan label="devices" off style={styleLabels}/><br/>
 				{devices}
 				<br/>
+				<LabeledSpan label="packages" off style={styleLabels}/><br/>
+				<MultiTextField
+					name="startCampaignPackages"
+					onChange={this.handleChangePackages}
+					style={{position: 'initial', width: '100%'}}
+					/>
 				<LabeledSpan label="APKs" off style={styleLabels}/><br/>
 				<SelectTextField
 					name="startCampaignAPKs"
