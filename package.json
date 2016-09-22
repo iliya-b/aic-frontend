@@ -25,7 +25,8 @@
     "test:unit-verbose": "NODE_PATH=./src ava",
     "test:no-console": "echo \"Verifying for console usage. Please use debug package instead.\" && ! grep -rnw 'src' -e \"console\" && echo \"Yes! No console.something being used! Good Job!\"",
     "test:no-todos": "echo \"Verifying for TODOs.\" && ! grep -rnw 'src' -e \"TODO\" && echo \"Yes! No TODOs to do! Good Job!\"",
-    "test:code-style": "xo"
+    "test:code-style": "xo",
+    "start-story": "start-storybook -p 9001 --static-dir ./build/"
   },
   "author": "Karine Pires",
   "dependencies": {
@@ -56,6 +57,7 @@
     "webpack": "2.1.0-beta.21"
   },
   "devDependencies": {
+    "@kadira/storybook": "^2.16.1",
     "ava": "0.16.0",
     "create-json-from-env": "git+ssh://git@git.rnd.alterway.fr:UCF/create-json-from-env.git",
     "enzyme": "2.4.1",
@@ -64,6 +66,7 @@
     "eslint-plugin-react": "6.1.2",
     "http-server": "0.9.0",
     "nyc": "8.1.0",
+    "raw-loader": "^0.5.1",
     "react-addons-test-utils": "15.3.2",
     "tap-nyan": "0.0.2",
     "webpack-dev-server": "1.15.0",

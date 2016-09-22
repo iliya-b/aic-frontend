@@ -17,7 +17,6 @@ import {
 import Main from 'app/views/main';
 import Home from 'app/views/home';
 import NotFound from 'app/views/not-found';
-import Themes from 'app/views/themes';
 import ProjectWrapper from 'app/views/project/wrapper';
 import ProjectList from 'app/views/project/list';
 import ProjectPage from 'app/views/project/page';
@@ -35,7 +34,6 @@ const AppRoutes = (
 	<Router history={hashHistory}>
 		<Route path="/" component={Main}>
 			<IndexRoute component={Home}/>
-			<Route path="theme-test" component={Themes}/>
 			<Route path="projects" component={ProjectWrapper}>
 				<IndexRoute component={ProjectList}/>
 				<Route path=":projectId" component={ProjectPage}>
