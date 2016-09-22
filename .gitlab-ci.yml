@@ -13,6 +13,7 @@ job_build:
     - npm --version
     - npm install --unsafe-perm --production --quiet
     - npm run build
+    - npm run build:story
   artifacts:
     expire_in: 1 day
     paths:
