@@ -98,6 +98,8 @@ const PanelTestResults = class extends React.Component {
 			image,
 			style,
 			machine,
+			onEnter, // eslint-disable-line no-unused-vars
+			onStop, // eslint-disable-line no-unused-vars
 			...other
 		} = this.props;
 

@@ -54,14 +54,15 @@ const PanelCampaignShow = props => {
 		tests,
 		machines,
 		name,
+		onEnter,
+		onStop,
 		...others
 	} = props;
 	const progressPerc = parseInt(progress * 100, 10);
 
 	const testsList = groupByMachine(tests, machines).sort(sortName).map(t => {
-		return <div key={t.image}><PanelTestResults {...t}/><br/></div>;
+		return <div key={t.image}><PanelTestResults onEnter={onEnter} onStop={onStop} {...t}/><br/></div>;
 	});
-	//
 	return (
 		<div>
 			<Paper style={Object.assign({padding: 10}, style)} {...others}>
@@ -128,7 +129,9 @@ PanelCampaignShow.propTypes = {
 	status: React.PropTypes.string,
 	projectId: React.PropTypes.string,
 	tests: React.PropTypes.array,
-	machines: React.PropTypes.array
+	machines: React.PropTypes.array,
+	onEnter: React.PropTypes.func,
+	onStop: React.PropTypes.func
 };
 
 module.exports = PanelCampaignShow;

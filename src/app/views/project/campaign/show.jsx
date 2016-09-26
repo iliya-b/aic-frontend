@@ -4,6 +4,7 @@ import React from 'react';
 import CampaignStore from 'app/stores/campaign';
 import Notify from 'app/libs/notify';
 import PanelCampaignShow from 'app/components/panel/panel-campaign-show';
+import LiveActions from 'app/actions/live';
 
 const debug = require('debug')('AiC:Views:Campaign:CampaignShow');
 
@@ -14,11 +15,28 @@ const CampaignShow = class extends React.Component {
 		this.state = {};
 	}
 
+	handleOnEnter = avmId => {
+		debug('handleOnEnter', avmId);
+		this.context.router.push(`/projects/${this.props.params.projectId}/live/${avmId}`);
+	}
+
+	handleOnStop = avmId => {
+		debug('handleOnStop', avmId);
+		LiveActions.stop({avmId}, {includeRequest: true});
+	}
+
 	render() {
 		if (!this.state.campaign) {
 			return <div>Loading</div>;
 		}
-		return <PanelCampaignShow {...this.state.campaign.campaign} machines={this.state.campaign.machines}/>;
+		return (
+			<PanelCampaignShow
+				{...this.state.campaign.campaign}
+				machines={this.state.campaign.machines}
+				onEnter={this.handleOnEnter}
+				onStop={this.handleOnStop}
+				/>
+		);
 	}
 
 	shouldStopListSessions = () => {
