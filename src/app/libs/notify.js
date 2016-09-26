@@ -20,6 +20,9 @@ Notify.registerGroups({
 	},
 	projectCampaigns: {
 		id: 'projectId'
+	},
+	campaign: {
+		id: 'campaignId'
 	}
 });
 
@@ -65,6 +68,24 @@ Notify.registerActions({
 		request: Gateway.campaign.list,
 		notify: CampaignActions.notifyList,
 		stopCondition: (actionInfo, response) => response.every(NotifyStopCondition.campaignShouldStop)
+	},
+	userQuotaCampaign: {
+		group: 'projectCampaigns',
+		request: Gateway.user.quota,
+		notify: UserActions.notifyQuota,
+		stopCondition: () => false
+	},
+	listSessionsCampaign: {
+		group: 'campaign',
+		request: Gateway.campaign.machines,
+		notify: CampaignActions.notifySessionList,
+		stopCondition: () => false // It will stop only when campaign is ready and no machines exists (check campaign show view)
+	},
+	campaignRead: {
+		group: 'campaign',
+		request: Gateway.campaign.read,
+		notify: CampaignActions.notifyRead,
+		stopCondition: (actionInfo, response) => NotifyStopCondition.campaignShouldStop(response)
 	}
 });
 

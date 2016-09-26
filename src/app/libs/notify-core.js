@@ -44,8 +44,7 @@ class NotifyCore {
 		if (this.groups[group].activeCount[groupId] === 0) {
 			this.groups[group].children.forEach(action => {
 				if (this.isActionRunning(action, groupInfo)) {
-					this.actions[action].running[groupId].shouldStop = true;
-					clearTimeout(this.actions[action].running[groupId].timeout);
+					this.stopAction(action, groupInfo);
 				}
 				// this.actions[action].running[groupId]
 					// .filter(r => r.actionInfo[groupIdName] === groupId)
@@ -114,10 +113,15 @@ class NotifyCore {
 						debug(`not equal, notifying ${action}`);
 						this.actions[action].running[runningIndex].lastResponse = finalResponse;
 						this.actions[action].notify(actionInfo, response);
-						this.actions[action].running[runningIndex].shouldStop = this.actions[action].stopCondition(actionInfo, response);
+						if (!this.actions[action].running[runningIndex].shouldStop) {
+							const actionShouldStop = this.actions[action].stopCondition(actionInfo, response);
+							if (actionShouldStop) {
+								this.stopAction(action, actionInfo);
+							}
+						}
 					}
 					if (!this.actions[action].running[runningIndex].shouldStop) {
-						debug(`new timeout ${action}`);
+						debug(`new timeout ${action} for ${runningIndex}`);
 						this.actions[action].running[runningIndex].timeout = setTimeout(fn, timeoutSeconds * 1000);
 					}
 				});
@@ -128,10 +132,23 @@ class NotifyCore {
 		}
 	}
 
-	// stopAction(action, actionInfo) {
-	// 	debug(`stop${action}`, actionInfo);
-	// 	// this.actions[action].running[runningIndex].shouldStop = true;
-	// }
+	stopAction(action, actionInfo) {
+		const runningIndex = this.getGroupIdByAction(action, actionInfo);
+		debug(`stopping ${action} for ${runningIndex}`);
+		this.actions[action].running[runningIndex].shouldStop = true;
+		clearTimeout(this.actions[action].running[runningIndex].timeout);
+		if ('stopCascade' in this.actions[action]) {
+			this.stopCascade(this.actions[action].stopCascade, runningIndex);
+		}
+	}
+
+	stopCascade(actions, index) {
+		actions.forEach(action => {
+			if (index in this.actions[action].running) {
+				this.actions[action].running[index].shouldStop = true;
+			}
+		});
+	}
 
 	registerActions(info) {
 		const keys = Object.keys(info);

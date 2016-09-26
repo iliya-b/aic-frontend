@@ -82,7 +82,7 @@ const getColorByStatus = status => {
 	debug('status', status, (status in colorByStatus), colorByStatus);
 	return (status in colorByStatus) ? colorByStatus[status] : false;
 };
-// TODO: implement status
+// TODO: implement status !!!!!! SHOULD DISAPEAR
 const vm2Status = {
 	CREATING: 'LOADING',
 	DELETING: 'LOADING',

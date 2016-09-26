@@ -4,7 +4,15 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ## [Unreleased]
 
-## [0.7.0]
+### Added
+- Add quota panel to campaign.
+- Add machine information to tests running.
+- Add to the CI the deployment of stories at build/stories.
+
+### Changed
+- Moved all components in /#themes to storybook.
+
+## [0.7.1]
 
 Tagging v0.7.1 to keep up with backend version.
 

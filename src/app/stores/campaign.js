@@ -36,6 +36,19 @@ const CampaignStore = Reflux.createStore({
 		debug('onReadCompleted', data);
 	},
 
+	onNotifyRead(actionInfo, data) {
+		this.state.campaign.campaign = data;
+		this.state.campaign.status = 'showCompleted';
+		this.updateState();
+		debug('onNotifyRead', data);
+	},
+
+	onNotifySessionList(actionInfo, data) {
+		this.state.campaign.machines = data.filter(a => a.campaignId === this.state.campaign.campaign.id);
+		this.updateState();
+		debug('onNotifySessionList', data);
+	},
+
 	onCreateCompleted(data) {
 		debug('onCreateCompleted', data);
 	},

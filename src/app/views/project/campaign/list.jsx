@@ -4,6 +4,7 @@ import React from 'react';
 import ToolbarCampaign from 'app/components/toolbar/toolbar-campaign';
 import ListCampaignContainer from 'app/containers/list-campaign-container';
 import DialogCampaignCreation from 'app/components/dialog/dialog-campaign-creation';
+import QuotaCampaignContainer from 'app/containers/quota-campaign-container';
 import APKStore from 'app/stores/apk';
 import APKActions from 'app/actions/apk';
 import LiveStore from 'app/stores/live';
@@ -47,6 +48,7 @@ const CampaignList = class extends React.Component {
 		return (
 			<div>
 				<ToolbarCampaign onClickStart={this.handleOpenDialog}/>
+				<QuotaCampaignContainer projectId={this.props.params.projectId}/>
 				<ListCampaignContainer projectId={this.props.params.projectId} onEnter={this.handleEnterCampaign}/>
 				<DialogCampaignCreation onCancel={this.handleCloseDialog} onStart={this.handleStartCampaign} open={this.state.isDialogOpen} apks={apks} images={images}/>
 			</div>

@@ -14,7 +14,7 @@ const progress = [
 
 storiesOf('Icon', module)
 	.addDecorator(themeDecorator)
-	.add('AvatarProgress2', () => (
+	.add('AvatarProgress', () => (
 		<div>
 			<AvatarProgress
 				icon={<FontIcon className="mdi mdi-android"/>}

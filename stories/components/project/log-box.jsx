@@ -18,7 +18,7 @@ const logBoxRows = logBoxRef.map((v, i) => {
 
 storiesOf('Project', module)
 	.addDecorator(themeDecorator)
-	.add('BoxStatus', () => (
+	.add('LogBox', () => (
 		<div style={{width: '547px'}}>
 			<LogBox>
 				{logBoxRows}

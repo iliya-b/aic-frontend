@@ -246,6 +246,9 @@ const GatewayAdapters = {
 					})
 				};
 			}
+		},
+		machines: {
+			response: backendObject => backendObject.avms.map(camelizeObj)
 		}
 	}
 };

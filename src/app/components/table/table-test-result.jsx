@@ -3,7 +3,6 @@
 import React from 'react';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import CodeBox from 'app/components/shared/code-box';
-// TODO: Use context or AppPalette?
 import AppPalette from 'app/configs/app-palette';
 import SimpleStatusIcon from 'app/components/icon/simple-status-icon';
 

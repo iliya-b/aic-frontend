@@ -8,7 +8,11 @@ import PanelTestResults from 'app/components/panel/panel-test-results';
 
 const debug = require('debug')('AiC:Components:Panel:PanelCampaignShow');
 
-const groupByMachine = tests => {
+const groupByMachine = (tests, machines) => {
+	const machinesHash = {};
+	machines.forEach(m => {
+		machinesHash[m.image] = m;
+	});
 	const testsByMachine = [];
 	const machineIndex = {};
 	tests.forEach(t => {
@@ -19,11 +23,24 @@ const groupByMachine = tests => {
 			machineIndex[t.image] = testsByMachine.length;
 			testsByMachine.push({
 				image: t.image,
-				packages: [t]
+				packages: [t],
+				machine: t.image in machinesHash ? machinesHash[t.image] : false
 			});
 		}
 	});
 	return testsByMachine;
+};
+
+const sortName = (a, b) => {
+	if (a.image < a.image) {
+		return -1;
+	}
+	if (a.image > b.image) {
+		return 1;
+	}
+
+	// names must be equal
+	return 0;
 };
 
 const PanelCampaignShow = props => {
@@ -35,13 +52,14 @@ const PanelCampaignShow = props => {
 		status,
 		progress,
 		tests,
+		machines,
 		name,
 		...others
 	} = props;
 	const progressPerc = parseInt(progress * 100, 10);
 
-	const testsList = groupByMachine(tests).map((t, i) => {
-		return <div key={i}><PanelTestResults {...t}/><br/></div>;
+	const testsList = groupByMachine(tests, machines).sort(sortName).map(t => {
+		return <div key={t.image}><PanelTestResults {...t}/><br/></div>;
 	});
 	//
 	return (
@@ -80,6 +98,27 @@ const PanelCampaignShow = props => {
 //     }
 //   ],
 //   name: 'test'
+//   machines: [
+//   {
+//   "avm_id": "f8cf402e818211e69875fa163e728b77",
+//   "avm_name": "f8cf402e",
+//   "avm_owner": "karine",
+//   "image": "kitkat-phone",
+//   "novnc_host": "10.5.1.207",
+//   "novnc_port": 10093,
+//   "sound_port": 10092,
+//   "project_id": "97231e3c7f3811e69574fa163e728b77",
+//   "stack_name": "kp2-karine-f8cf402e818211e69875fa163e728b77",
+//   "status": "READY",
+//   "ts_created": "2016-09-23T11:43:40Z",
+//   "uptime": 3.978423,
+//   "campaign_id": "f8c04ccc818211e69875fa163e728b77"
+// }
+// ]
+//
+PanelCampaignShow.defaultProps = {
+	machines: []
+};
 
 PanelCampaignShow.propTypes = {
 	style: React.PropTypes.object,
@@ -88,7 +127,8 @@ PanelCampaignShow.propTypes = {
 	name: React.PropTypes.string,
 	status: React.PropTypes.string,
 	projectId: React.PropTypes.string,
-	tests: React.PropTypes.array
+	tests: React.PropTypes.array,
+	machines: React.PropTypes.array
 };
 
 module.exports = PanelCampaignShow;

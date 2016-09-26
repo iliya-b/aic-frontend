@@ -7,7 +7,7 @@ import FontIcon from 'material-ui/FontIcon';
 // APP
 const DroidPercentage = props => {
 	const baseSize = props.style && props.style.fontSize ? props.style.fontSize : 24;
-	const remainingSize = (100 - props.value) / 100 * baseSize;
+	const remainingSize = (100 - (props.value > 100 ? 100 : props.value)) / 100 * baseSize;
 
 	const styles = {
 		root: {

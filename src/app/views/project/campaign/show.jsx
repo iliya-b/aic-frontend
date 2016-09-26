@@ -2,7 +2,7 @@
 
 import React from 'react';
 import CampaignStore from 'app/stores/campaign';
-import CampaignActions from 'app/actions/campaign';
+import Notify from 'app/libs/notify';
 import PanelCampaignShow from 'app/components/panel/panel-campaign-show';
 
 const debug = require('debug')('AiC:Views:Campaign:CampaignShow');
@@ -15,35 +15,36 @@ const CampaignShow = class extends React.Component {
 	}
 
 	render() {
-		if (this.state.campaign) {
-			return (<PanelCampaignShow {...this.state.campaign.campaign}/>);
+		if (!this.state.campaign) {
+			return <div>Loading</div>;
 		}
-		return <div>Loading</div>;
+		return <PanelCampaignShow {...this.state.campaign.campaign} machines={this.state.campaign.machines}/>;
 	}
 
-	loadCampaign = () => {
-		CampaignActions.read({projectId: this.props.params.projectId, campaignId: this.props.params.campaignId});
+	shouldStopListSessions = () => {
+		return this.state.campaign && this.state.campaign.campaign.status === 'READY' &&
+			this.state.campaign.machines && this.state.campaign.machines.length === 0;
 	}
 
 	handleStateChange = newState => {
 		this.setState(newState);
-		if (newState.campaign.campaign.status === 'RUNNING') {
-			setTimeout(() => {
-				this.loadCampaign();
-			}, 1000);
+		if (this.shouldStopListSessions()) {
+			Notify.stopListSessionsCampaign({projectId: this.props.params.projectId, campaignId: this.props.params.campaignId});
 		}
 	}
 
 	componentDidMount() {
 		debug('componentDidMount');
-		this.unsubscribe = [];
-		this.unsubscribe.push(CampaignStore.listen(this.handleStateChange));
-		this.loadCampaign();
+		this.unsubscribe = CampaignStore.listen(this.handleStateChange);
+		Notify.watchCampaign({campaignId: this.props.params.campaignId});
+		Notify.startCampaignRead({projectId: this.props.params.projectId, campaignId: this.props.params.campaignId});
+		Notify.startListSessionsCampaign({projectId: this.props.params.projectId, campaignId: this.props.params.campaignId});
 	}
 
 	componentWillUnmount() {
 		debug('componentWillUnmount');
-		this.unsubscribe.map(fn => fn());
+		this.unsubscribe();
+		Notify.clearCampaign({campaignId: this.props.params.campaignId});
 	}
 };
 
