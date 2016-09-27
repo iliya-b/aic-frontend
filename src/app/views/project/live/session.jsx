@@ -27,31 +27,6 @@ const recalculeScaleThrottled = throttle(() => {
 }, 66, {trailing: false});
 
 const LiveSession = class extends React.Component {
-
-	constructor(props) {
-		super(props);
-		this._onStateChange = this._onStateChange.bind(this);
-		this.handleStopVM = this.handleStopVM.bind(this);
-		// this.handleBatteryChange = this.handleBatteryChange.bind(this);
-		// this.handleClickGPS = this.handleClickGPS.bind(this);
-		// this.handleChangeRotation = this.handleChangeRotation.bind(this);
-		this.handleChangeSensor = (sensor, e, payload) => {
-			debug('handleChangeSensor', arguments);
-			debug('handleChangeSensor', e, sensor, payload);
-			LiveActions.setSensor({avmId, sensor, payload});
-		};
-		this.handleAPKs = (e, apkId) => {
-			const refId = `${projectId}-${avmId}-${apkId}-${Date.now()}`;
-			LiveActions.installAPK({projectId, avmId, apkId, refId}, {includeRequest: true});
-		};
-		this.handleMonkeyRunner = (e, packages, eventCount, throttle) => {
-			const refId = `${avmId}-${packages.join('-')}-${eventCount}-${throttle}-${Date.now()}`;
-			LiveActions.monkeyRunner({avmId, packages, eventCount, throttle, refId}, {includeRequest: true});
-		};
-
-		fullscreen.addFullscreenchange(this.handleDocumentFullscreenChange);
-	}
-
 	handleDocumentFullscreenChange = () => {
 		const documentIsFullscreen = Boolean(fullscreen.fullscreenElement());
 		debug('onfullscreenchange', documentIsFullscreen, this.isFullscreen());
@@ -98,6 +73,41 @@ const LiveSession = class extends React.Component {
 	handleExitScaledscreen = () => {
 		debug('handleExitScaledscreen');
 		LiveActions.exitScaledscreen();
+	}
+
+	handleAPKs = (e, apkId) => {
+		const refId = `${projectId}-${avmId}-${apkId}-${Date.now()}`;
+		LiveActions.installAPK({projectId, avmId, apkId, refId}, {includeRequest: true});
+	}
+
+	handleMonkeyRunner = (e, packages, eventCount, throttle) => {
+		const refId = `${avmId}-${packages.join('-')}-${eventCount}-${throttle}-${Date.now()}`;
+		LiveActions.monkeyRunner({avmId, packages, eventCount, throttle, refId}, {includeRequest: true});
+	}
+
+	handleChangeSensor = (sensor, e, payload) => {
+		debug('handleChangeSensor', arguments);
+		debug('handleChangeSensor', e, sensor, payload);
+		LiveActions.setSensor({avmId, sensor, payload});
+	}
+
+	handleOnInputFocus() {
+		NoVNCAdapter.focus();
+	}
+
+	handleOnInputBlur() {
+		NoVNCAdapter.blur();
+	}
+
+	handleStopVM = () => {
+		this.handleOnInputFocus();
+		LiveActions.disconnectScreen();
+		LiveActions.disconnectAudio();
+		LiveActions.stop({avmId}, {includeRequest: true});
+	}
+
+	handleStateChange = state => {
+		this.setState(state);
 	}
 
 	render() {
@@ -240,32 +250,6 @@ const LiveSession = class extends React.Component {
 		);
 	}
 
-	_onStateChange(state) {
-		this.setState(state);
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		// return nextProps.rotation !== this.props.rotation;
-		debug('shouldComponentUpdate', nextProps, nextState, (nextState && nextState.live && this.state && this.state.live) ? nextState.live.status !== this.state.live.status : true);
-		// return (nextState && nextState.live && this.state && this.state.live) ? nextState.live.status !== this.state.live.status : true;
-		return true;
-	}
-
-	handleOnInputFocus() {
-		NoVNCAdapter.focus();
-	}
-
-	handleOnInputBlur() {
-		NoVNCAdapter.blur();
-	}
-
-	handleStopVM() {
-		this.handleOnInputFocus();
-		LiveActions.disconnectScreen();
-		LiveActions.disconnectAudio();
-		LiveActions.stop({avmId}, {includeRequest: true});
-	}
-
 	componentDidMount() {
 		debug('componentDidMount');
 		debug('this.props.params', this.props.params);
@@ -273,13 +257,14 @@ const LiveSession = class extends React.Component {
 		avmId = this.props.params.androId;
 		Notify.watchLive({avmId});
 		this.unsubscribe = [];
-		this.unsubscribe.push(LiveStore.listen(this._onStateChange));
-		this.unsubscribe.push(APKStore.listen(this._onStateChange));
-		this.unsubscribe.push(CameraStore.listen(this._onStateChange));
+		this.unsubscribe.push(LiveStore.listen(this.handleStateChange));
+		this.unsubscribe.push(APKStore.listen(this.handleStateChange));
+		this.unsubscribe.push(CameraStore.listen(this.handleStateChange));
 		LiveActions.liveReset();
 		LiveActions.setProjectId(projectId);
 		window.addEventListener('resize', recalculeScaleThrottled);
 		Notify.startLiveRead({avmId});
+		fullscreen.addFullscreenchange(this.handleDocumentFullscreenChange);
 	}
 
 	componentWillUnmount() {
@@ -292,6 +277,7 @@ const LiveSession = class extends React.Component {
 		this.unsubscribe.map(v => v());
 		Notify.clearLive({avmId});
 		window.removeEventListener('resize', recalculeScaleThrottled);
+		fullscreen.removeFullscreenchange(this.handleDocumentFullscreenChange);
 	}
 
 };

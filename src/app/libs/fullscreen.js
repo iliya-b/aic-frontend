@@ -55,17 +55,17 @@ const addFullscreenerror = FSerrorhandler => {
 };
 
 const removeFullscreenchange = FShandler => {
-	document.addEventListener('fullscreenchange', FShandler);
-	document.addEventListener('webkitfullscreenchange', FShandler);
-	document.addEventListener('mozfullscreenchange', FShandler);
-	document.addEventListener('MSFullscreenChange', FShandler);
+	document.removeEventListener('fullscreenchange', FShandler);
+	document.removeEventListener('webkitfullscreenchange', FShandler);
+	document.removeEventListener('mozfullscreenchange', FShandler);
+	document.removeEventListener('MSFullscreenChange', FShandler);
 };
 
 const removeFullscreenerror = FSerrorhandler => {
-	document.addEventListener('fullscreenerror', FSerrorhandler);
-	document.addEventListener('webkitfullscreenerror', FSerrorhandler);
-	document.addEventListener('mozfullscreenerror', FSerrorhandler);
-	document.addEventListener('MSFullscreenError', FSerrorhandler);
+	document.removeEventListener('fullscreenerror', FSerrorhandler);
+	document.removeEventListener('webkitfullscreenerror', FSerrorhandler);
+	document.removeEventListener('mozfullscreenerror', FSerrorhandler);
+	document.removeEventListener('MSFullscreenError', FSerrorhandler);
 };
 
 module.exports = {
