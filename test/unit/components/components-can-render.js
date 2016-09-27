@@ -2,7 +2,7 @@ import test from 'ava';
 import ReactTestUtils from 'react-addons-test-utils';
 import React from 'react';
 import {shallow} from 'enzyme';
-import getTheme from '../utils/get-theme';
+import getTheme from './get-theme';
 
 const componentsReq = {
 	// Card
@@ -12,22 +12,24 @@ const componentsReq = {
 	DialogLogin: require('app/components/dialog/dialog-login'),
 	DialogServerError: require('app/components/dialog/dialog-server-error'),
 	DialogSessionEnded: require('app/components/dialog/dialog-session-ended'),
-	// Icon
-	IconDroidDevil: require('app/components/icon/droid-devil'),
-	IconFileCancel: require('app/components/icon/file-cancel'),
-	IconFire: require('app/components/icon/fire'),
-	IconGravity: require('app/components/icon/gravity'),
-	// IconIconList: require('app/components/icon/icon-list'), // Not a component but a utility function
-	IconKitkatPhoneAudio: require('app/components/icon/kitkat-phone-audio'),
-	IconKitkatPhone: require('app/components/icon/kitkat-phone'),
-	IconKitkatTablet: require('app/components/icon/kitkat-tablet'),
-	IconKitkat: require('app/components/icon/kitkat'),
-	IconLollipopPhone: require('app/components/icon/lollipop-phone'),
-	IconLollipopTablet: require('app/components/icon/lollipop-tablet'),
-	IconLollipop: require('app/components/icon/lollipop'),
-	IconPhoneAccept: require('app/components/icon/phone-accept'),
-	// IconPhoneList: require('app/components/icon/phone-list'), // Not a component but a utility module
-	IconVoice: require('app/components/icon/voice'),
+	// // Icon
+	// IconDroidDevil: require('app/components/icon/droid-devil'),
+	// IconFileCancel: require('app/components/icon/file-cancel'),
+	// IconFire: require('app/components/icon/fire'),
+	// IconGravity: require('app/components/icon/gravity'),
+	// // IconIconList: require('app/components/icon/icon-list'), // Not a component but a utility function
+	// IconKitkatPhoneAudio: require('app/components/icon/kitkat-phone-audio'),
+	// IconKitkatPhone: require('app/components/icon/kitkat-phone'),
+	// IconKitkatTablet: require('app/components/icon/kitkat-tablet'),
+	// IconKitkat: require('app/components/icon/kitkat'),
+	// IconLollipopPhone: require('app/components/icon/lollipop-phone'),
+	// IconLollipopTablet: require('app/components/icon/lollipop-tablet'),
+	// IconLollipop: require('app/components/icon/lollipop'),
+	// IconPhoneAccept: require('app/components/icon/phone-accept'),
+	// // IconPhoneList: require('app/components/icon/phone-list'), // Not a component but a utility module
+	// IconVoice: require('app/components/icon/voice'),
+	// MachineIcon: require('app/components/icon/machine-icon'),
+	// AvatarProgress: require('app/components/icon/avatar-progress'),
 	// List
 	ListItemStatus: require('app/components/list/list-item-status'),
 	// Panel
@@ -42,13 +44,11 @@ const componentsReq = {
 	// LiveToolbox: require('app/components/project/live-toolbox'), // Live Actions
 	MachineCardLive: require('app/components/project/machine-card-live'),
 	MachineCard: require('app/components/project/machine-card'),
-	MachineIcon: require('app/components/icon/machine-icon'),
 	TestResultsBox: require('app/components/project/test-results-box'),
 	// Shared
 	// AppUtils: require('app/components/shared/app-utils'), // Not a component but a utility module
 	// AuthPage: require('app/components/shared/auth-page'), // Auth action
 	// AuthRequired: require('app/components/shared/auth-required'), // Auth action
-	AvatarProgress: require('app/components/icon/avatar-progress'),
 	CodeBox: require('app/components/shared/code-box'),
 	Dropzone: require('app/components/shared/dropzone'),
 	FullWidthSection: require('app/components/shared/full-width-section'),

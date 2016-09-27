@@ -1,14 +1,13 @@
 'use strict';
 
-// Vendor
 import React from 'react';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import {camelize} from 'app/libs/helpers';
 
-// APP
 const IconList = props => (
-	props.buttons.map(b => {
+	<div style={{display: 'inline-block'}}>
+	{props.buttons.map(b => {
 		const iconColor = b.id === props.selectedId ? 'rgba(255, 255, 255, 0.75)' : 'rgba(0, 0, 0, 0.4)';
 		const iconHoverColor = b.id === props.selectedId ? 'rgba(255, 255, 255, 0.75)' : 'rgba(0, 0, 0, 0.87)';
 		let icon;
@@ -26,7 +25,8 @@ const IconList = props => (
 				{icon}
 			</IconButton>
 		);
-	})
+	})}
+	</div>
 );
 
 IconList.propTypes = {

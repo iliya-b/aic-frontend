@@ -72,7 +72,7 @@ const DialogLogin = class extends React.Component {
 				label="Cancel"
 				title="Cancel"
 				secondary
-				onTouchTap={this.handleLoginCancel}
+				onClick={this.handleLoginCancel}
 				className="btLoginCancel"
 				/>,
 			<FlatButton
@@ -80,7 +80,7 @@ const DialogLogin = class extends React.Component {
 				label="Submit"
 				title="Submit"
 				primary
-				onTouchTap={this.handleLoginClick}
+				onClick={this.handleLoginClick}
 				disabled={this.props.formDisabled}
 				className="btLoginSubmit"
 				/>

@@ -163,7 +163,7 @@ const PanelTestResults = class extends React.Component {
 			.filter((p, i) => packages[i].status === 'READY')
 			.map((p, i) => {
 				return (
-					<div key={packages[i].apkPackage}>
+					<div key={packages[i].apkPackage || i}>
 						<LabeledSpan style={{marginLeft: 10}} label="package" value={packages[i].apkPackage}/>
 						<TableTestResult testCases={p.testCases}/>
 					</div>
@@ -210,7 +210,12 @@ const PanelTestResults = class extends React.Component {
 PanelTestResults.propTypes = {
 	style: React.PropTypes.object,
 	image: React.PropTypes.string,
-	machine: React.PropTypes.oneOf(React.PropTypes.object, React.PropTypes.bool),
+	machine: React.PropTypes.oneOfType([React.PropTypes.bool, React.PropTypes.shape({
+		status: React.PropTypes.string,
+		avmName: React.PropTypes.string,
+		avmOwner: React.PropTypes.string,
+		uptime: React.PropTypes.number
+	})]),
 	packages: React.PropTypes.arrayOf(
 		React.PropTypes.shape({
 			stdout: React.PropTypes.string,

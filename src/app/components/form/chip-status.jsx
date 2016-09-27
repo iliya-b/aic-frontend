@@ -31,14 +31,14 @@ const ChipStatus = props => {
 			labelStyle={Object.assign(styleChipLabel, labelStyle)}
 			{...others}
 			>
-			<Avatar style={styleAvatar} icon={<SimpleStatusIcon tooltip="ERROR" status={status}/>}/>
+			<Avatar style={styleAvatar} icon={<SimpleStatusIcon status={status}/>}/>
 			{children}
 		</Chip>
 	);
 };
 
 ChipStatus.propTypes = {
-	status: React.PropTypes.oneOf(SimpleStatusIcon.STATUS_LIST_ARR),
+	status: React.PropTypes.string,
 	children: React.PropTypes.node,
 	style: React.PropTypes.object,
 	labelStyle: React.PropTypes.object

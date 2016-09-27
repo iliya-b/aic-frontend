@@ -196,7 +196,7 @@ const campaignData = [
 
 storiesOf('Panel', module)
 	.addDecorator(themeDecorator)
-	.add('PanelCampaignShow2', () => (
+	.add('PanelCampaignShow', () => (
 		<div>
 			<h2>test1</h2>
 			<div style={{padding: 24}}>

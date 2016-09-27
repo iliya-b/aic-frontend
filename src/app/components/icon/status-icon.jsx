@@ -250,7 +250,7 @@ StatusIcon.contextTypes = {
 
 StatusIcon.propTypes = {
 	style: React.PropTypes.object,
-	status: React.PropTypes.oneOf(StatusIcon.STATUS_LIST),
+	status: React.PropTypes.string,
 	size: React.PropTypes.oneOf(StatusIcon.SIZE_LIST),
 	color: React.PropTypes.string,
 	shadowColor: React.PropTypes.string,

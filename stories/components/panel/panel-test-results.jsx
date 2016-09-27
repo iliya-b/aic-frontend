@@ -11,7 +11,13 @@ const panelData = {
 		apkPackage: 'com.zenika.aic.core.libs.test/android.test.InstrumentationTestRunner',
 		status: 'READY',
 		image: 'kitkat-tablet'
-	}]
+	}],
+	machine: {
+		status: 'READY',
+		avmName: 'test',
+		avmOwner: 'test',
+		uptime: 3
+	}
 };
 
 storiesOf('Panel', module)

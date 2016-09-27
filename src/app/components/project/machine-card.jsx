@@ -15,6 +15,9 @@ const MachineCard = class extends React.Component {
 			avm_status, // eslint-disable-line camelcase
 			avm_id, // eslint-disable-line camelcase
 			avm_owner, // eslint-disable-line camelcase
+			avm_novnc_port, // eslint-disable-line camelcase, no-unused-vars
+			avm_novnc_host, // eslint-disable-line camelcase, no-unused-vars
+			avm_status_reason, // eslint-disable-line camelcase, no-unused-vars
 			...otherProps
 		} = this.props;
 		const styles = {
@@ -74,6 +77,9 @@ MachineCard.propTypes = {
 	avm_status: React.PropTypes.string, // eslint-disable-line camelcase
 	avm_owner: React.PropTypes.string, // eslint-disable-line camelcase
 	avm_id: React.PropTypes.string, // eslint-disable-line camelcase
+	avm_novnc_port: React.PropTypes.string, // eslint-disable-line camelcase
+	avm_novnc_host: React.PropTypes.string, // eslint-disable-line camelcase
+	avm_status_reason: React.PropTypes.string, // eslint-disable-line camelcase
 	children: React.PropTypes.node
 };
 

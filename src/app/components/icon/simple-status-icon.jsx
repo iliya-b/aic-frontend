@@ -51,7 +51,7 @@ SimpleStatusIcon.STATUS_COLORS = statusColors;
 
 // TODO: investigate why SimpleStatusIcon.STATUS_LIST_ARR is typeof object ???
 SimpleStatusIcon.propTypes = {
-	status: React.PropTypes.oneOf(SimpleStatusIcon.STATUS_LIST_ARR)
+	status: React.PropTypes.string
 };
 
 module.exports = SimpleStatusIcon;

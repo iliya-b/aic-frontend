@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('AiC:Libs:Parser');
+const debug = require('debug')('AiC:Libs:AdbTestResultParser');
 
 // JS version of
 // https://android.googlesource.com/platform/development/+/b8747bc7b1082c273360f84f7cd0b4770613955a/tools/ddms/libs/ddmlib/src/com/android/ddmlib/testrunner/InstrumentationResultParser.java
@@ -204,7 +204,7 @@ class AdbParser {
 			this.mCurrentValue.push('\r\n');
 			this.mCurrentValue.push(line);
 		} else {
-			debug('unrecognized line', line);
+			// debug('unrecognized line', line);
 		}
 	}
 

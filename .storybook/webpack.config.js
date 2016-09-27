@@ -6,7 +6,8 @@ module.exports = {
 		alias: {
 			app: path.resolve(__dirname, '../src/app/'),
 			stories: path.resolve(__dirname, '../stories/'),
-			build: path.resolve(__dirname, '../build/')
+			build: path.resolve(__dirname, '../build/'),
+			test: path.resolve(__dirname, '../test/')
 		}
 	},
 	module: {

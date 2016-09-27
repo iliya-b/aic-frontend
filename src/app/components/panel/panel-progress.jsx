@@ -129,7 +129,7 @@ const PanelProgress = props => {
 		margin: '0 5px 5px 0'
 	};
 
-	const itemsRendered = items.map(c => <ChipStatus style={styleChip} key={c.id} {...c}/>);
+	const itemsRendered = items.map((c, i) => <ChipStatus style={styleChip} key={c.id || i} {...c}/>);
 
 	const progressTitle = <span style={{color: percentagesProgressFirst.type === 'OTHERS' ? '#000' : percentagesProgressFirst.color}}>{progressTitles[type][percentagesProgressFirst.type]}</span>;
 
@@ -157,8 +157,7 @@ PanelProgress.propTypes = {
 	children: React.PropTypes.node,
 	style: React.PropTypes.object,
 	showIcon: React.PropTypes.bool,
-	status: React.PropTypes.oneOf(PanelProgress.STATUS_LIST),
-	size: React.PropTypes.oneOf(PanelProgress.SIZE_LIST),
+	status: React.PropTypes.string,
 	items: React.PropTypes.array,
 	animation: React.PropTypes.bool,
 	type: React.PropTypes.string

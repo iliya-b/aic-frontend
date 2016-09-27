@@ -28,6 +28,8 @@ const menuItems = [
 	{payload: '4', text: 'Weekends'},
 	{payload: '5', text: 'Weekly'}
 ];
+const menuItemsRendered = menuItems.map(i => <MenuItem key={i.payload} value={i.payload} primaryText={i.text}/>);
+
 const styleGroup = {
 	float: 'left',
 	width: '33%',
@@ -125,7 +127,7 @@ storiesOf('Theme', module)
 				<div style={styleContainer}>
 					<RadioButtonGroup name="shipSpeed" defaultSelected="usd">
 						<RadioButton value="usd" label="USD"/>
-						<RadioButton value="euro" label="Euro" defaultChecked/>
+						<RadioButton value="euro" label="Euro"/>
 						<RadioButton value="mxn" label="MXN" disabled/>
 					</RadioButtonGroup>
 				</div>
@@ -159,7 +161,9 @@ storiesOf('Theme', module)
 						/>
 				</div>
 				<div style={styleContainer}>
-					<DropDownMenu menuItems={menuItems} style={{width: '100%'}}/>
+					<DropDownMenu style={{width: '100%'}}>
+						{menuItemsRendered}
+					</DropDownMenu>
 				</div>
 			</div>
 
@@ -169,7 +173,7 @@ storiesOf('Theme', module)
 
 			<div style={styleGroup}>
 				<div style={styleContainerCentered}>
-					<FlatButton label="View Dialog" onClick={openDialog} boxRef="dialog" boxOpen/>
+					<FlatButton label="View Dialog" onClick={openDialog}/>
 					<Dialog open={isDialogOpen} title="Dialog With Standard Actions" actions={standardActions}>
 						The actions in this window are created from the json that&#39;s passed in.
 					</Dialog>
