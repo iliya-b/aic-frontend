@@ -3,8 +3,8 @@ import test from 'ava';
 import ReactTestUtils from 'react-addons-test-utils';
 import React from 'react';
 import {shallow} from 'enzyme';
-import getTheme from './get-theme';
 import componentsProps from '../../prop-samples/icon';
+import getTheme from './_get-theme';
 
 const createReactComponent = (component, props, children) => {
 	if (!component) {

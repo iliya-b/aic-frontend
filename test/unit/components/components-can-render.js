@@ -2,7 +2,7 @@ import test from 'ava';
 import ReactTestUtils from 'react-addons-test-utils';
 import React from 'react';
 import {shallow} from 'enzyme';
-import getTheme from './get-theme';
+import getTheme from './_get-theme';
 
 const componentsReq = {
 	// Card
