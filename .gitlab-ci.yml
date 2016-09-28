@@ -61,6 +61,7 @@ job_test_integration:
     - echo "Saving screenshots at ${AIC_SCREENSHOT_PATH}"
     - echo "Running tests at https://${AIC_DEV_HOST}:8443/"
     - AIC_WB_HOST=karine__docker-chromedriver AIC_FRONTEND_HOST=https://${AIC_DEV_HOST}:8443/ ./run-tests.sh
+    - ls ${AIC_SCREENSHOT_PATH}
   artifacts:
     when: always
     expire_in: 1 day
