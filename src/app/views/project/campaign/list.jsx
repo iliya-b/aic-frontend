@@ -7,8 +7,8 @@ import DialogCampaignCreation from 'app/components/dialog/dialog-campaign-creati
 import QuotaCampaignContainer from 'app/containers/quota-campaign-container';
 import APKStore from 'app/stores/apk';
 import APKActions from 'app/actions/apk';
-import LiveStore from 'app/stores/live';
-import LiveActions from 'app/actions/live';
+import LiveListStore from 'app/stores/live-list';
+import LiveListActions from 'app/actions/live-list';
 import CampaignActions from 'app/actions/campaign';
 import Notify from 'app/libs/notify';
 
@@ -44,7 +44,7 @@ const CampaignList = class extends React.Component {
 
 	render() {
 		const apks = this.state && this.state.apk ? this.state.apk.apks : [];
-		const images = this.state && this.state.live ? this.state.live.images : [];
+		const images = this.state && this.state.liveList ? this.state.liveList.images : [];
 		return (
 			<div>
 				<ToolbarCampaign onClickStart={this.handleOpenDialog}/>
@@ -63,9 +63,9 @@ const CampaignList = class extends React.Component {
 		debug('componentDidMount');
 		this.unsubscribe = [];
 		this.unsubscribe.push(APKStore.listen(this.handleStateChange));
-		this.unsubscribe.push(LiveStore.listen(this.handleStateChange));
+		this.unsubscribe.push(LiveListStore.listen(this.handleStateChange));
 		APKActions.list({projectId: this.props.params.projectId});
-		LiveActions.listImages();
+		LiveListActions.listImages();
 	}
 
 	componentWillUnmount() {

@@ -1,14 +1,13 @@
-/* global window */
 'use strict';
 
 import React from 'react';
-import Snackbar from 'material-ui/Snackbar';
 import LiveStore from 'app/stores/live';
+import LiveListStore from 'app/stores/live-list';
 import UserStore from 'app/stores/user';
 import LiveActions from 'app/actions/live';
+import LiveListActions from 'app/actions/live-list';
 import LiveMachineList from 'app/components/project/live-machine-list';
 import ToolbarLive from 'app/components/toolbar/toolbar-live';
-import {variants} from 'app/configs/app-constants';
 import uuid from 'app/libs/uuid';
 import DialogLiveCreation from 'app/components/dialog/dialog-live-creation';
 import PanselSessionsInfo from 'app/components/panel/panel-sessions-info';
@@ -17,87 +16,26 @@ import Notify from 'app/libs/notify';
 const debug = require('debug')('AiC:View:Live:List');
 
 let projectId;
-let enableVariants;
-const defaultEnableVariants = ['kitkat-tablet', 'kitkat-mp', 'lollipop-tablet', 'lollipop-phone'];
-
-const snackInfo = {
-	uuid: [],
-	timings: {},
-	shouldBeOpen: false
-};
 
 const LiveList = class extends React.Component {
-
 	constructor(props) {
 		super(props);
+		this.state = {dialogCreateOpen: false};
+	}
 
-		this.handleStateChange = newState => {
-			debug('handleStateChange', newState);
-			newState = Object.assign({}, this.state, newState);
-			if (!newState.snackbar) {
-				newState.snackbar = {message: '', open: false};
-			}
-			debug('changing state', this.state.live ? this.state.live.status : '', newState);
-			debug('ids', this.state.live && this.state.live.startFailedUuid ? this.state.live.startFailedUuid : 'no state', newState.live && newState.live.startFailedUuid ? newState.live.startFailedUuid : 'no new', snackInfo);
-			if (newState.live.status === 'LIVE_STATUS_VMSTART_FAILED' && snackInfo.uuid.indexOf(newState.live.startFailedUuid) === -1) {
-				// snackInfo.open = true;
-				// snackInfo.message = newState.live.message;
-				snackInfo.uuid.push(newState.live.startFailedUuid);
-				snackInfo.shouldBeOpen = true;
-				snackInfo.timings[newState.live.startFailedUuid] = {};
-				snackInfo.timings[newState.live.startFailedUuid].start = Date.now();
-				// snackInfo.timings[newState.live.startFailedUuid].timeout = setTimeout(() => {
-				// 	snackInfo.shouldBeOpen = false;
-				// }, 3000);
+	handleStateChange = newState => {
+		debug('handleStateChange', newState);
+		newState = Object.assign({}, this.state, newState);
+		this.setState(newState);
+	}
 
-				newState.snackbar.message = this.state.live.message;
-				// newState = Object.assign(newState, {
-				// 	snackbar: {
-				// 		open: true,
-				// 		message: this.state.live.message
-				// 	}
-				// });
-			}
-			// To avoid snackbar to be open on other state update
-			newState.snackbar.open = snackInfo.shouldBeOpen;
-			debug('new new state', newState);
-			this.setState(newState);
-		};
+	onEnterSession = avmId => {
+		debug('enter session', arguments);
+		this.context.router.push(`/projects/${projectId}/live/${avmId}`);
+	}
 
-		this.handleStartSession = variant => {
-			const version = enableVariants.reduce((previous, current) => {
-				return previous === null && current.id === variant ? current.version : previous;
-			}, null);
-			const requestUuid = uuid();
-			LiveActions.start({variant, projectId, version, uuid: requestUuid}, {includeRequest: true});
-		};
-
-		this.onEnterSession = avmId => {
-			debug('enter session', arguments);
-			this.context.router.push(`/projects/${projectId}/live/${avmId}`);
-		};
-
-		this.onStopSession = avmId => {
-			LiveActions.stop({avmId}, {includeRequest: true});
-		};
-
-		this.handleSnackbarClose = () => {
-			snackInfo.shouldBeOpen = false;
-			this.setState({
-				snackbar: {
-					open: false,
-					message: ''
-				}
-			});
-		};
-
-		this.state = {
-			snackbar: {
-				open: false,
-				message: ''
-			},
-			dialogCreateOpen: false
-		};
+	onStopSession = avmId => {
+		LiveActions.stop({avmId}, {includeRequest: true});
 	}
 
 	handleOpenCreateDialog = () => {
@@ -108,24 +46,33 @@ const LiveList = class extends React.Component {
 		this.setState({dialogCreateOpen: false});
 	}
 
-	handleStartSession2 = config => {
+	handleStartSession = config => {
 		this.handleCloseCreateDialog();
-		debug('handleStartSession2', config);
+		debug('handleStartSession', config);
 		config.projectId = projectId;
 		config.uuid = uuid();
 		LiveActions.start(config, {includeRequest: true});
 	}
 
-	render() {
-		const isListLoading = !(this.state.live && this.state.live.status === 'LIVE_STATUS_LISTED');
+	getAvmList = () => {
 		let avmList = [];
-
 		// Filter VMs by projectId and only live sessions (exclude campaign machines)
-		if (this.state.live && 'avms' in this.state.live) {
-			avmList = this.state.live.avms.filter(v => {
+		if (this.state.liveList && 'avms' in this.state.liveList) {
+			avmList = this.state.liveList.avms.filter(v => {
 				return v.project_id === projectId && v.campaignId === '';
 			});
 		}
+		return avmList;
+	}
+
+	getImageList = () => {
+		return this.state.liveList && 'images' in this.state.liveList ? this.state.liveList.images : [];
+	}
+
+	render() {
+		const isListLoading = !(this.state.liveList && this.state.liveList.status === 'LIVE_STATUS_LISTED');
+		const avmList = this.getAvmList();
+		const imageList = this.getImageList();
 
 		// User quota
 		const liveCurrent = this.state.user && this.state.user.quota ? this.state.user.quota.vmLiveCurrent : 0;
@@ -135,50 +82,26 @@ const LiveList = class extends React.Component {
 			<div>
 				<ToolbarLive
 					onClickStart={this.handleOpenCreateDialog}
-					variants={enableVariants}
+					variants={imageList}
 					vmCount={liveCurrent}
 					vmMaxAllowed={liveMax}
 					/>
 				<PanselSessionsInfo vmCount={liveCurrent} vmMaxAllowed={liveMax}/>
 				<br/>
-				<DialogLiveCreation open={this.state.dialogCreateOpen} onStart={this.handleStartSession2} onCancel={this.handleCloseCreateDialog}/>
+				<DialogLiveCreation images={imageList} open={this.state.dialogCreateOpen} onStart={this.handleStartSession} onCancel={this.handleCloseCreateDialog}/>
 				<LiveMachineList avmList={avmList} isListLoading={isListLoading} actionEnter={this.onEnterSession} actionStop={this.onStopSession}/>
-				<Snackbar
-					open={this.state.snackbar.open}
-					message={this.state.snackbar.message}
-					action="close"
-					autoHideDuration={3000}
-					onRequestClose={this.handleSnackbarClose}
-					/>
 			</div>
 		);
 	}
 
-	componentWillMount() {
-		debug('componentWillMount');
-		let configEnableImages;
-		if (window.GobyAppGlobals.config.enableImages) {
-			debug('using config enable images');
-			configEnableImages = window.GobyAppGlobals.config.enableImages;
-		} else {
-			debug('using default enable images');
-			configEnableImages = defaultEnableVariants;
-		}
-		debug('configEnableImages', configEnableImages);
-		enableVariants = variants.filter(v => {
-			return configEnableImages.indexOf(v.id) !== -1;
-		});
-	}
-
 	componentDidMount() {
-		debug('this.props', this.props);
-		debug('this.context.router', this.context.router);
 		projectId = this.props.params.projectId;
 		this.unsubscribe = [];
 		this.unsubscribe.push(LiveStore.listen(this.handleStateChange));
 		this.unsubscribe.push(UserStore.listen(this.handleStateChange));
+		this.unsubscribe.push(LiveListStore.listen(this.handleStateChange));
 		LiveActions.setProjectId(projectId);
-		LiveActions.listImages();
+		LiveListActions.listImages();
 		Notify.watchProjectSessions({projectId});
 		Notify.startUserQuota({projectId});
 		Notify.startListSessions({projectId});
@@ -193,9 +116,7 @@ const LiveList = class extends React.Component {
 };
 
 LiveList.contextTypes = {
-	router: React.PropTypes.object,
-	muiTheme: React.PropTypes.object,
-	appConfig: React.PropTypes.object
+	router: React.PropTypes.object
 };
 
 LiveList.propTypes = {

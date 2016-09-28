@@ -7,6 +7,8 @@ import LabeledSpan from 'app/components/form/labeled-span';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
+import IconButtonApp from 'app/components/icon/icon-button-app';
+import DeviceIcon from 'app/components/icon/device-icon';
 
 const debug = require('debug')('AiC:Components:Dialog:DialogLiveCreation');
 
@@ -42,8 +44,7 @@ const DialogLiveCreation = class extends React.Component {
 			// Default configuration
 			config: {
 				name: '',
-				version: 'kitkat',
-				type: 'phone',
+				image: ((props.images && props.images.length) ? props.images[0].image : ''),
 				size: '800x600',
 				dpi: '120',
 				enableSensors: true,
@@ -107,6 +108,19 @@ const DialogLiveCreation = class extends React.Component {
 		this.props.onStart(this.state.config);
 	}
 
+	getButtonsDevices = () => {
+		if (this.props.images) {
+			return this.props.images.map(image => image.image).map(image => {
+				return (
+					<IconButtonApp key={image} onClick={this.handleClickConfig} data-config-key="image" data-config-value={image} tooltip={image.replace('-', ' ')}>
+						<DeviceIcon isOn={this.state.config.image === image} image={image}/>
+					</IconButtonApp>
+				);
+			});
+		}
+		return [];
+	}
+
 	render() {
 		// TODO: treat all the other conflict fields inside ...other
 		const {
@@ -116,22 +130,7 @@ const DialogLiveCreation = class extends React.Component {
 		} = this.props;
 		const colorOn = this.context.muiTheme.palette.primary1Color;
 		const colorOff = this.context.muiTheme.palette.disabledColor;
-
-		const imgOffFilter = 'grayscale(1) opacity(0.5)';
-		const imgOff = {
-			WebkitFilter: imgOffFilter,
-			MozFilter: imgOffFilter,
-			msFilter: imgOffFilter,
-			OFilter: imgOffFilter,
-			filter: imgOffFilter
-		};
-
-		const iconStyleKitkat = Object.assign({width: 23, height: 28}, this.state.config.version === 'kitkat' ? {} : imgOff);
-		const iconStyleLollipop = Object.assign({width: 32, height: 28}, this.state.config.version === 'lollipop' ? {} : imgOff);
 		const styleSizes = {textTransform: 'none'};
-
-		const iconStylePhone = {color: this.state.config.type === 'phone' ? colorOn : colorOff};
-		const iconStyleTablet = {color: this.state.config.type === 'tablet' ? colorOn : colorOff};
 
 		const actionsButtons = [
 			<RaisedButton secondary label="Start" key="start" onClick={this.handleStart}/>,
@@ -167,19 +166,14 @@ const DialogLiveCreation = class extends React.Component {
 			return <FlatButton style={styleBts} key={s} onClick={this.handleClickConfig} data-config-key="dpi" data-config-value={s} labelStyle={styleSizes} label={s}/>;
 		});
 
+		const devices = this.getButtonsDevices();
+
 		return (
 			<Dialog {...others} open={open} title="Start session" actions={actionsButtons} autoScrollBodyContent onRequestClose={onCancel}>
 				<TextField name="createLiveSessionName" data-config-key="name" ref={this.setRefC} floatingLabelFixed floatingLabelText="session name" onChange={this.handleChangeConfig} defaultValue={this.state.config.name}/><br/>
-				<LabeledSpan label="android version" off style={styleLabels}/><br/>
-				<IconButton onClick={this.handleClickConfig} data-config-key="version" data-config-value="kitkat" tooltip="kitkat" iconStyle={iconStyleKitkat}>
-					<img src="/img/kitkat.png"/>
-				</IconButton>
-				<IconButton onClick={this.handleClickConfig} data-config-key="version" data-config-value="lollipop" tooltip="lollipop" iconStyle={iconStyleLollipop}>
-					<img src="/img/lollipop.png"/>
-				</IconButton><br/>
-				<LabeledSpan label="device type" off style={styleLabels}/><br/>
-				<IconButton onClick={this.handleClickConfig} data-config-key="type" data-config-value="phone" iconStyle={iconStylePhone} tooltip="phone" iconClassName="mdi mdi-cellphone-android"/>
-				<IconButton onClick={this.handleClickConfig} data-config-key="type" data-config-value="tablet" iconStyle={iconStyleTablet} tooltip="tablet" iconClassName="mdi mdi-tablet"/><br/>
+				<LabeledSpan label="device" off style={styleLabels}/><br/>
+				{devices}
+				<br/>
 				<LabeledSpan label="screen size" off style={styleLabels}/><br/>
 				{sizeButtons}
 				{!this.state.customSize && <FlatButton label="custom" onClick={this.handleClickCustomSize}/>}
@@ -204,13 +198,15 @@ DialogLiveCreation.contextTypes = {
 DialogLiveCreation.defaultProps = {
 	open: true,
 	onCancel: () => {},
-	onStart: () => {}
+	onStart: () => {},
+	images: [{image: 'kitkat-phone'}, {image: 'kitkat-tablet'}, {image: 'lollipop-phone'}, {image: 'lollipop-tablet'}]
 };
 
 DialogLiveCreation.propTypes = {
 	open: React.PropTypes.bool,
 	onCancel: React.PropTypes.func,
-	onStart: React.PropTypes.func
+	onStart: React.PropTypes.func,
+	images: React.PropTypes.array
 };
 
 module.exports = DialogLiveCreation;

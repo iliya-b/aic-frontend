@@ -11,7 +11,6 @@ import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 import MachineIcon from 'app/components/icon/machine-icon';
 import VariantIcon from 'app/components/icon/variant-icon';
-import {variants} from 'app/configs/app-constants';
 import {getVmStatus} from 'app/libs/helpers';
 
 // const debug = require('debug')('AiC:Components:Card:CardAndroidSession');
@@ -51,12 +50,6 @@ const styles = {
 	}
 };
 
-function getVariantById(variantId) {
-	return variants.reduce((p, v) => {
-		return p || v.id !== variantId ? p : v;
-	}, false);
-}
-
 const CardAndroidSession = props => {
 	const localCreationTime = (new Date(props.ts_created)).toLocaleString();
 //			<CardMedia>
@@ -81,7 +74,7 @@ const CardAndroidSession = props => {
 				<IconButton style={styles.iconInfo} tooltip="machine type">
 					<VariantIcon variant={{id: props.image}}/>
 				</IconButton>
-				<span style={styles.textInfo} className={`spLiveVMMachineType spLiveVMMachineType${props.index} spLiveVMMachineType${props.avm_id}`}>{getVariantById(props.image).label}</span><br/>
+				<span style={styles.textInfo} className={`spLiveVMMachineType spLiveVMMachineType${props.index} spLiveVMMachineType${props.avm_id}`}>{props.image.replace('-', ' ')}</span><br/>
 
 				<IconButton style={styles.iconInfo} tooltip="creation time">
 					<FontIcon className="mdi mdi-clock" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>
@@ -91,7 +84,7 @@ const CardAndroidSession = props => {
 			</CardText>
 			<Divider/>
 			<CardActions>
-				{(props.avm_status === 'READY') ?
+				{(props.avm_status === 'READY' || props.avm_status === 'CREATING') ?
 					<IconButton className={`btEnterSession btEnterSession${props.index} btEnterSession${props.avm_id}`} label="Enter session" title={`Enter session ${props.avm_id}`} tooltip="Enter" onClick={props.actionEnter ? props.actionEnter.bind(null, props.avm_id) : null}>
 						<FontIcon className="mdi mdi-arrow-right-bold" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton> : null}

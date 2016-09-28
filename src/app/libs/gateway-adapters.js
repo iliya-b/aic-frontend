@@ -114,7 +114,7 @@ const GatewayAdapters = {
 			request: frontendObject => {
 				const size = frontendObject.size.split('x');
 				return {
-					image: `${frontendObject.version}-${frontendObject.type}`,
+					image: frontendObject.image,
 					project_id: frontendObject.projectId, // eslint-disable-line camelcase
 					avm_name: frontendObject.name, // eslint-disable-line camelcase
 					hwconfig: {

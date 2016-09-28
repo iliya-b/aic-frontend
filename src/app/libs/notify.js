@@ -4,6 +4,7 @@
 import NotifyCore from 'app/libs/notify-core';
 import Gateway from 'app/libs/gateway';
 import LiveActions from 'app/actions/live';
+import LiveListActions from 'app/actions/live-list';
 import UserActions from 'app/actions/user';
 import NotifyStopCondition from 'app/libs/notify-stop-condition';
 import CampaignActions from 'app/actions/campaign';
@@ -60,7 +61,7 @@ Notify.registerActions({
 	listSessions: {
 		group: 'projectSessions',
 		request: Gateway.live.list,
-		notify: LiveActions.notifyList,
+		notify: LiveListActions.notifyList,
 		stopCondition: (actionInfo, response) => response.every(NotifyStopCondition.machineShouldStop)
 	},
 	listCampaigns: {

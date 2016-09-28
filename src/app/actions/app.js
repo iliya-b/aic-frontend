@@ -6,7 +6,9 @@ const AppActions = Reflux.createActions({
 	displayServerError: {},
 	hideServerError: {},
 	notFound: {},
-	notFoundOff: {}
+	notFoundOff: {},
+	displaySnackBar: {},
+	closeSnackBar: {}
 });
 
 module.exports = AppActions;

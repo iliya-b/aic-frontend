@@ -1,5 +1,7 @@
 'use strict';
 
+// TODO: To be removed
+
 // React
 const React = require('react');
 

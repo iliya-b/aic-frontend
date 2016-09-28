@@ -18,7 +18,11 @@ const AuthStore = Reflux.createStore({
 					open: false,
 					message: null
 				},
-				notFound: false
+				notFound: false,
+				snackBar: {
+					open: false,
+					message: null
+				}
 			}
 		};
 		this.updateState();
@@ -47,6 +51,19 @@ const AuthStore = Reflux.createStore({
 
 	onNotFoundOff() {
 		this.state.app.notFound = false;
+		this.updateState();
+	},
+
+	onDisplaySnackBar(message) {
+		debug('onDisplaySnackBar', message);
+		this.state.app.snackBar.open = true;
+		this.state.app.snackBar.message = message;
+		this.updateState();
+	},
+
+	onCloseSnackBar() {
+		debug('onCloseSnackBar');
+		this.state.app.snackBar.open = false;
 		this.updateState();
 	},
 

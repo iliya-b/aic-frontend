@@ -32,10 +32,6 @@ const LiveStore = Reflux.createStore({
 	// Set project
 	onSetProjectId(projectId) {
 		this.state.projectId = projectId;
-
-		this.changeBoxes('load', 'enabled', false);
-		this.changeBoxes('create', 'enabled', true);
-
 		this.updateState();
 	},
 
@@ -66,9 +62,7 @@ const LiveStore = Reflux.createStore({
 		this.state.liveInfo = avmInfo;
 		if (this.state.live.status === 'LIVE_STATUS_CHECKING') {
 			this.state.live.status = 'LIVE_STATUS_CHECK_FOUND';
-			this.updateBoxes();
 			this.state.live.status = 'LIVE_STATUS_STARTING';
-			this.updateBoxes();
 		}
 		if (!this.state.live.liveIsConnect &&
 			avmInfo.avm_status === 'READY') {
@@ -93,9 +87,7 @@ const LiveStore = Reflux.createStore({
 		this.state.liveInfo = avmInfo;
 		if (this.state.live.status === 'LIVE_STATUS_CHECKING') {
 			this.state.live.status = 'LIVE_STATUS_CHECK_FOUND';
-			this.updateBoxes();
 			this.state.live.status = 'LIVE_STATUS_STARTING';
-			this.updateBoxes();
 		}
 		if (!this.state.live.liveIsConnect &&
 			avmInfo.avm_status === 'READY') {
@@ -147,19 +139,23 @@ const LiveStore = Reflux.createStore({
 	onStartFailed(errorMessage) {
 		debug('onStartFailed', errorMessage, errorMessage.response);
 
-		if (errorMessage.error && errorMessage.request && errorMessage.error.response) {
-			errorMessage.error.response.text().then(message => {
+		if (errorMessage.err && errorMessage.request && errorMessage.err.response) {
+			errorMessage.err.response.text().then(message => {
 				debug('text', message);
-				debug('state', this.state.live);
-				this.state.live.status = 'LIVE_STATUS_VMSTART_FAILED';
-				this.state.live.message = message;
-				this.state.live.startFailedUuid = errorMessage.request.uuid;
-				this.updateState();
+				// debug('state', this.state.live);
+				// this.state.live.status = 'LIVE_STATUS_VMSTART_FAILED';
+				// this.state.live.message = message;
+				// this.state.live.startFailedUuid = errorMessage.request.uuid;
+				// this.updateState();
+
+				AppActions.displaySnackBar(message);
 			});
 		} else {
-			this.state.live.status = 'LIVE_STATUS_VMSTART_FAILED';
-			this.state.live.message = typeof errorMessage === 'object' ? errorMessage.message : errorMessage;
-			this.updateState();
+			// this.state.live.status = 'LIVE_STATUS_VMSTART_FAILED';
+			// this.state.live.message = typeof errorMessage === 'object' ? errorMessage.message : errorMessage;
+			// this.updateState();
+			const message = typeof errorMessage === 'object' ? errorMessage.message : errorMessage;
+			AppActions.displaySnackBar(message);
 		}
 	},
 
@@ -173,8 +169,6 @@ const LiveStore = Reflux.createStore({
 	// onLiveCheckCompleted(sessionFound) {
 	// 	this.state.live.sessionFound = sessionFound;
 	// 	this.state.live.status = sessionFound ? 'LIVE_STATUS_CHECK_FOUND' : 'LIVE_STATUS_CHECK_NOTFOUND';
-	// 	this.changeBoxes('load', 'enabled', sessionFound);
-	// 	this.changeBoxes('create', 'enabled', !sessionFound);
 	// 	this.updateState();
 	// },
 
@@ -506,7 +500,6 @@ const LiveStore = Reflux.createStore({
 		// if (!this.state.live.bootInit) {
 			// properties["aicVM.inited"] === "1") {
 			this.state.live.status = 'LIVE_STATUS_STARTED';
-			this.updateBoxes();
 			debug('onPropertiesCompleted boot initiate');
 			this.state.live.bootInit = true;
 			LiveActions.liveConnect(this.state.liveInfo.avm_id);
@@ -548,7 +541,6 @@ const LiveStore = Reflux.createStore({
 		// if (!this.state.live.bootInit) {
 			// properties["aicVM.inited"] === "1") {
 			this.state.live.status = 'LIVE_STATUS_STARTED';
-			this.updateBoxes();
 			debug('onPropertiesCompleted boot initiate');
 			this.state.live.bootInit = true;
 			LiveActions.liveConnect(this.state.liveInfo.avm_id);
@@ -618,30 +610,30 @@ const LiveStore = Reflux.createStore({
 	// 	this.updateState();
 	// },
 
-	onNotifyList(requestInfo, avms) {
-		debug('onNotifyList', avms);
-		this.state.live.avms = avms;
-		this.state.live.status = 'LIVE_STATUS_LISTED';
-		this.updateState();
-	},
+	// onNotifyList(requestInfo, avms) {
+	// 	debug('onNotifyList', avms);
+	// 	this.state.live.avms = avms;
+	// 	this.state.live.status = 'LIVE_STATUS_LISTED';
+	// 	this.updateState();
+	// },
 
-	// Live list
-	onListImages() {
-		debug('onListImages');
-	},
+	// // Live list
+	// onListImages() {
+	// 	debug('onListImages');
+	// },
 
-	onListImagesCompleted(images) {
-		debug('onListImagesCompleted', images);
-		this.state.live.images = images;
-		this.updateState();
-	},
+	// onListImagesCompleted(images) {
+	// 	debug('onListImagesCompleted', images);
+	// 	this.state.live.images = images;
+	// 	this.updateState();
+	// },
 
-	onListImagesFailed(errorMessage) {
-		debug('onListImagesFailed');
-		this.state.live.status = 'LIVE_STATUS_LIST_IMAGES_FAILED';
-		this.state.live.message = errorMessage;
-		this.updateState();
-	},
+	// onListImagesFailed(errorMessage) {
+	// 	debug('onListImagesFailed');
+	// 	this.state.live.status = 'LIVE_STATUS_LIST_IMAGES_FAILED';
+	// 	this.state.live.message = errorMessage;
+	// 	this.updateState();
+	// },
 
 	// Fullscreen
 	onEnterFullscreen() {
@@ -713,79 +705,10 @@ const LiveStore = Reflux.createStore({
 			vertical: {x: 5.9, y: 0, z: 0, next: 'horizontal'}
 		};
 		this.state.live.recordingFileName = '';
-		this.resetBoxes();
-	},
-
-	resetBoxes() {
-		this.state.live.boxes = [
-			{typeName: 'search', status: 'disable', enabled: true, isFirst: true},
-			{typeName: 'create', status: 'disable', enabled: false},
-			{typeName: 'load', status: 'disable', enabled: true},
-			{typeName: 'connect', status: 'disable', enabled: true},
-			{typeName: 'close', status: 'disable', enabled: true, isLast: true}
-		];
-	},
-
-	changeBoxes(typeName, field, newValue) {
-		// debug(this.state);
-		// debug(arguments);
-		const replacement = {};
-		replacement[field] = newValue;
-		this.state.live.boxes = this.state.live.boxes.map(
-			item => {
-				return item.typeName === typeName ? AppUtils.extend(item, replacement) : item;
-			}
-		);
 	},
 
 	addLogMessage(message) {
 		this.state.live.logBox.unshift({time: AppUtils.getDate(), message});
-	},
-
-	// TODO: change this to a state machine
-	// http://stackoverflow.com/questions/13262392/javascript-event-state-machine
-	// https://github.com/jakesgordon/javascript-state-machine
-	// http://machina-js.org/
-	statusUpdating: {
-		LIVE_STATUS_INITIATING: {typeName: '', newStatus: ''},
-		LIVE_STATUS_INITIALIZED: {typeName: '', newStatus: ''},
-		LIVE_STATUS_INITIAL_FAILED: {typeName: '', newStatus: ''},
-
-		LIVE_STATUS_LISTING: {typeName: 'list', newStatus: 'doing'},
-		LIVE_STATUS_LISTED: {typeName: 'list', newStatus: 'success'},
-		LIVE_STATUS_LIST_FAILED: {typeName: 'list', newStatus: 'fail'},
-
-		LIVE_STATUS_VMSTARTING: {typeName: 'vmstart', newStatus: 'doing'},
-		LIVE_STATUS_VMSTARTED: {typeName: 'vmstart', newStatus: 'success'},
-		LIVE_STATUS_VMSTART_FAILED: {typeName: 'vmstart', newStatus: 'fail'},
-
-		LIVE_STATUS_CHECKING: {typeName: 'search', newStatus: 'doing'},
-		LIVE_STATUS_CHECK_FOUND: {typeName: 'search', newStatus: 'success'},
-		LIVE_STATUS_CHECK_NOTFOUND: {typeName: 'search', newStatus: 'not-found'},
-		LIVE_STATUS_CHECK_FAILED: {typeName: 'search', newStatus: 'fail'},
-
-		LIVE_STATUS_LOADING: {typeName: 'load', newStatus: 'doing'},
-		LIVE_STATUS_LOADED: {typeName: 'load', newStatus: 'success'},
-		LIVE_STATUS_LOAD_FAILED: {typeName: 'load', newStatus: 'fail'},
-
-		LIVE_STATUS_STARTING: {typeName: 'create', newStatus: 'doing'},
-		LIVE_STATUS_STARTED: {typeName: 'create', newStatus: 'success'},
-		LIVE_STATUS_START_FAILED: {typeName: 'create', newStatus: 'fail'},
-
-		LIVE_STATUS_CONNECTING: {typeName: 'connect', newStatus: 'doing'},
-		LIVE_STATUS_CONNECTED: {typeName: 'connect', newStatus: 'success'},
-		LIVE_STATUS_CONNECT_FAILED: {typeName: 'connect', newStatus: 'fail'},
-
-		LIVE_STATUS_STOPPING: {typeName: 'close', newStatus: 'doing'},
-		LIVE_STATUS_STOPPED: {typeName: 'close', newStatus: 'success'},
-		LIVE_STATUS_STOP_FAILED: {typeName: 'close', newStatus: 'fail'},
-
-		LIVE_STATUS_RESET: {typeName: '', newStatus: ''},
-
-		LIVE_STATUS_INSTALLAPK_FAILED: {typeName: 'connect', newStatus: 'fail'},
-		LIVE_STATUS_LISTPACKAGES_FAILED: {typeName: 'connect', newStatus: 'fail'},
-		LIVE_STATUS_MONKEYRUNNER_FAILED: {typeName: 'connect', newStatus: 'fail'},
-		LIVE_STATUS_PROPERTIES_FAILED: {typeName: 'connect', newStatus: 'fail'}
 	},
 
 	isRotation(set, rotation) {
@@ -805,11 +728,6 @@ const LiveStore = Reflux.createStore({
 		NoVNCAdapter.resizeByScale(value);
 	},
 
-	updateBoxes() {
-		const actualStatus = this.statusUpdating[this.state.live.status];
-		this.changeBoxes(actualStatus.typeName, 'status', actualStatus.newStatus);
-	},
-
 	updateList() {
 		if (this.state.projectId) {
 			Notify.startListSessions({projectId: this.state.projectId});
@@ -820,14 +738,11 @@ const LiveStore = Reflux.createStore({
 	// State update
 
 	updateState() {
-		debug('updateState');
-		debug('new state', this.state);
-
+		debug('updateState', 'new state', this.state);
 		// If the machine goes to any failed state we should stop all polling
 		if (this.state.live.status.substr(-6) === 'FAILED') {
 			// TODO: should it stop polling?
 		}
-		this.updateBoxes();
 		this.trigger(this.state);
 	}
 

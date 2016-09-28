@@ -5,7 +5,6 @@ import React from 'react';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
 import Spacing from 'material-ui/styles/spacing';
-import AreaStatus from 'app/components/project/area-status';
 import PanelSessionScreen from 'app/components/panel/panel-session-screen';
 import LiveToolbox from 'app/components/project/live-toolbox';
 import LiveStore from 'app/stores/live';
@@ -16,6 +15,8 @@ import NoVNCAdapter from 'app/libs/novnc-adapter';
 import fullscreen from 'app/libs/fullscreen';
 import Notify from 'app/libs/notify';
 import {throttle} from 'lodash';
+import PanelInfo from 'app/components/panel/panel-info';
+import PanelSessionStatus from 'app/components/panel/panel-session-status';
 
 const debug = require('debug')('AiC:Views:Project:Live:Session');
 
@@ -112,36 +113,25 @@ const LiveSession = class extends React.Component {
 
 	render() {
 		debug('render');
-		const style = {
-			paperCenter: {
-				textAlign: 'center',
-				padding: Spacing.desktopGutter
-			},
-			paperLive: {
-				padding: this.isFullscreen() ? 0 : (Spacing.desktopGutter - 1),
-				display: this.isFullscreen() ? 'flex' : 'block',
-				background: this.isFullscreen() ? '#000' : '#fff',
-				width: this.isFullscreen() ? '100%' : 'auto',
-				height: this.isFullscreen() ? '100%' : 'auto'
-			},
-			error: {
-				icon: {
-					color: this.context.muiTheme.palette.errorColor,
-					fontSize: '50px',
-					float: 'left'
-				},
-				message: {
-					color: this.context.muiTheme.palette.errorColor
-				},
-				status: {
-					display: 'none'
-				}
-			},
-			infoArea: {
-				width: 547,
-				margin: '0 auto',
-				paddingBottom: this.isFullscreen() ? 0 : `${Spacing.desktopGutter}px`
-			}
+
+		const stylePaperCenter = {
+			textAlign: 'center',
+			padding: Spacing.desktopGutter
+		};
+
+		const stylePaperLive = {
+			padding: this.isFullscreen() ? 0 : (Spacing.desktopGutter - 1),
+			display: this.isFullscreen() ? 'flex' : 'block',
+			background: this.isFullscreen() ? '#000' : '#fff',
+			width: this.isFullscreen() ? '100%' : 'auto',
+			height: this.isFullscreen() ? '100%' : 'auto'
+		};
+
+		const styleInfoArea = {
+			width: 547,
+			margin: '0 auto',
+			// Needed so the scale fit can calculate correctly in the transition from fullscreen to normal
+			paddingBottom: this.isFullscreen() ? 0 : `${Spacing.desktopGutter}px`
 		};
 
 		const styleScreen = {
@@ -166,27 +156,20 @@ const LiveSession = class extends React.Component {
 
 		return (
 			<div>
-
-				<div style={style.infoArea}>
-					<AreaStatus typeName="live"/>
-				</div>
+				<PanelSessionStatus style={styleInfoArea} status={this.state && this.state.live.status}/>
 
 				{this.state && this.state.live.status.substr(-6) === 'FAILED' ? (
-					<Paper style={style.paperCenter}>
-
-						<span style={style.error.icon} className="mdi mdi-android"/>
-						<p style={style.error.status}>{this.state.live.status}</p>
-						<p style={style.error.message}>{this.state.live.message}</p>
-
-					</Paper>
+					<PanelInfo status={PanelInfo.ERROR} showIcon>
+					{this.state.live.message}
+					</PanelInfo>
 				) : null}
 
 				{this.state && (this.state.live.status === 'LIVE_STATUS_CONNECTING' || this.state.live.status === 'LIVE_STATUS_CONNECTED') ? (
-					<Paper style={style.paperLive}>
+					<Paper style={stylePaperLive}>
 						<div id="liveBox" style={styleLiveBoxWrapper}>
 
 						{this.state.live.status === 'LIVE_STATUS_CONNECTING' ? (
-							<div style={style.paperCenter}>
+							<div style={stylePaperCenter}>
 								<CircularProgress mode="indeterminate" size={2}/>
 							</div>
 						) : null}
@@ -239,11 +222,9 @@ const LiveSession = class extends React.Component {
 				) : null}
 
 				{this.state && (this.state.live.status === 'LIVE_STATUS_STOPPED') ? (
-					<Paper style={style.paperCenter}>
-
-						<p>Your live session was sucessfully stopped.</p>
-
-					</Paper>
+					<PanelInfo status={PanelInfo.INFO} showIcon>
+						Your live session was sucessfully stopped.
+					</PanelInfo>
 				) : null}
 
 			</div>

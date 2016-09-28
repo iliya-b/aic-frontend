@@ -15,6 +15,8 @@ import AuthActions from 'app/actions/auth';
 import AppConfigActions from 'app/actions/app-config';
 import AppActions from 'app/actions/app';
 import ServerErrorDialog from 'app/components/dialog/dialog-server-error';
+import Snackbar from 'material-ui/Snackbar';
+import {deepAssign} from 'app/libs/helpers';
 
 const debug = require('debug')('AiC:Views:Main');
 
@@ -45,6 +47,10 @@ const Main = class extends React.Component {
 			appConfig: this.state.config ? this.state.config : {},
 			loginStatus: this.state.login ? this.state.login : {}
 		};
+	}
+
+	handleSnackbarClose = () => {
+		AppActions.closeSnackBar();
 	}
 
 	render() {
@@ -83,10 +89,18 @@ const Main = class extends React.Component {
 					<div>
 						{this.props.children}
 						<FullWidthSection useContent style={styles.footer}>
-							<p style={styles.p}>COPYRIGHT © AiC</p>
+							<p style={styles.p}>COPYRIGHT © AiC2</p>
 						</FullWidthSection>
 						<SessionEndedDialog open={this.state.sessionEndedDialogOpen} onRequestClose={this.handleSessionEndedDialogClose}/>
 						<ServerErrorDialog open={this.state.app ? this.state.app.serverError.open : false} onRequestClose={this.handleServerErrorDialogClose} message={this.state.app ? this.state.app.serverError.message : ''}/>
+						{this.state && this.state.app && <Snackbar
+							open={this.state.app.snackBar.open}
+							message={this.state.app.snackBar.message}
+							action="close"
+							autoHideDuration={10000}
+							onRequestClose={this.handleSnackbarClose}
+							onActionTouchTap={this.handleSnackbarClose}
+							/>}
 					</div>
 				</MuiThemeProvider>
 			);
@@ -119,7 +133,7 @@ const Main = class extends React.Component {
 	}
 
 	_onStateChange(newState) {
-		debug('main new state');
+		debug('main new state', newState);
 		if (newState.login) {
 			debug('this.context.router', this.context.router);
 			debug('this.props.location', this.props.location);
@@ -157,8 +171,8 @@ const Main = class extends React.Component {
 					this.context.router.replace('/not-found');
 				}
 			} else {
-				const mergedState = Object.assign({}, this.state);
-				mergedState.app = newState.app;
+				const mergedState = deepAssign({}, this.state, {app: newState.app});
+				debug('setState', mergedState);
 				this.setState(mergedState);
 			}
 		}

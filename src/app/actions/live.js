@@ -8,7 +8,7 @@ import AudioAdapter from 'app/libs/audio-adapter';
 
 const LiveActions = Reflux.createActions({
 	// list: {asyncResult: true},
-	notifyList: {},
+	// notifyList: {},
 	stop: {asyncResult: true},
 	start: {asyncResult: true},
 	listPackages: {asyncResult: true},
@@ -29,7 +29,7 @@ const LiveActions = Reflux.createActions({
 	liveConnect: {asyncResult: true},
 	liveConnectAudio: {asyncResult: true},
 
-	listImages: {asyncResult: true},
+	// listImages: {asyncResult: true},
 
 	enterFullscreen: {},
 	exitFullscreen: {},
@@ -54,7 +54,7 @@ LiveActions.loadInfo.listenAndPromise(Gateway.live.read);
 LiveActions.monkeyRunner.listenAndPromise(Gateway.live.monkeyRunner);
 LiveActions.setSensor.listenAndPromise(Gateway.live.sensor);
 LiveActions.installAPK.listenAndPromise(Gateway.live.installAPK);
-LiveActions.listImages.listenAndPromise(Gateway.live.listImages);
+// LiveActions.listImages.listenAndPromise(Gateway.live.listImages);
 LiveActions.runTest.listenAndPromise(Gateway.live.runTest);
 
 // noVNC & audio related
