@@ -107,3 +107,35 @@ module.exports = PanelSessionStatus;
 // 	LIVE_STATUS_MONKEYRUNNER_FAILED: {typeName: 'connect', newStatus: 'fail'},
 // 	LIVE_STATUS_PROPERTIES_FAILED: {typeName: 'connect', newStatus: 'fail'}
 // },
+//
+//
+// !!!!!! Boxes campaign !!!!!!
+// resetBoxes() {
+// 	this.state.campaign.boxes = [
+// 		{typeName: 'prepare', status: 'disable', enabled: true, isFirst: true},
+// 		{typeName: 'create', status: 'disable', enabled: true, objectName: 'campaign'},
+// 		{typeName: 'run', status: 'disable', enabled: true},
+// 		{typeName: 'result', status: 'disable', enabled: true, isLast: true}
+// 	];
+// },
+
+// statusUpdating: {
+// 	CAMPAIGN_STATUS_INITIATING: {typeName: '', newStatus: ''},
+// 	CAMPAIGN_STATUS_PREPARING: {typeName: 'prepare', newStatus: 'doing'},
+// 	CAMPAIGN_STATUS_PREPARED: {typeName: 'prepare', newStatus: 'success'},
+// 	CAMPAIGN_STATUS_PREPARE_FAILED: {typeName: 'prepare', newStatus: 'fail'},
+
+// 	CAMPAIGN_STATUS_CREATING: {typeName: 'create', newStatus: 'doing'},
+// 	CAMPAIGN_STATUS_CREATED: {typeName: 'create', newStatus: 'success'},
+// 	CAMPAIGN_STATUS_CREATE_FAILED: {typeName: 'create', newStatus: 'fail'},
+
+// 	CAMPAIGN_STATUS_RUNNING: {typeName: 'run', newStatus: 'doing'},
+// 	CAMPAIGN_STATUS_RAN: {typeName: 'run', newStatus: 'success'},
+// 	CAMPAIGN_STATUS_RUN_FAILED: {typeName: 'run', newStatus: 'fail'},
+
+// 	CAMPAIGN_STATUS_RESULTING: {typeName: 'result', newStatus: 'doing'},
+// 	CAMPAIGN_STATUS_RESULTED: {typeName: 'result', newStatus: 'success'},
+// 	CAMPAIGN_STATUS_RESULT_FAILED: {typeName: 'result', newStatus: 'fail'},
+
+// 	CAMPAIGN_STATUS_RESET: {typeName: '', newStatus: ''}
+// },

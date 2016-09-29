@@ -1,7 +1,6 @@
 'use strict';
 
 import Reflux from 'reflux';
-import AppUtils from 'app/components/shared/app-utils';
 import LiveActions from 'app/actions/live';
 import APKActions from 'app/actions/apk';
 import CameraActions from 'app/actions/camera';
@@ -24,12 +23,10 @@ const LiveStore = Reflux.createStore({
 		this.resetLive();
 		this.state.live.status = 'LIVE_STATUS_INITIATING';
 		this.updateState();
-		this.updateListTimeout = false;
 	},
 
 	// Actions //
 
-	// Set project
 	onSetProjectId(projectId) {
 		this.state.projectId = projectId;
 		this.updateState();
@@ -43,38 +40,6 @@ const LiveStore = Reflux.createStore({
 	onSetProjectIdFailed(errorMessage) {
 		this.state.live.message = errorMessage;
 		this.state.live.status = 'LIVE_STATUS_INITIAL_FAILED';
-		this.updateState();
-	},
-
-	// Load info
-	onLoadInfo() {
-		if (this.state.live.status === 'LIVE_STATUS_INITIALIZED') {
-			this.state.live.status = 'LIVE_STATUS_CHECKING';
-			this.updateState();
-		}
-		// this.updateState();
-	},
-
-	onLoadInfoCompleted(avmInfo) {
-		// avmInfo.avm_novnc_host
-		// window.GobyAppGlobals.config.backend.host
-		debug('avmInfo', avmInfo);
-		this.state.liveInfo = avmInfo;
-		if (this.state.live.status === 'LIVE_STATUS_CHECKING') {
-			this.state.live.status = 'LIVE_STATUS_CHECK_FOUND';
-			this.state.live.status = 'LIVE_STATUS_STARTING';
-		}
-		if (!this.state.live.liveIsConnect &&
-			avmInfo.avm_status === 'READY') {
-			this.state.live.liveIsConnect = true;
-			// Load properties each x seconds
-			// TODO: should be changed once notification is done?
-			// After ready the docker needs to boot up
-			// TODO: change to state
-			// window.intervalTimeout = setInterval(LiveActions.properties, 1000, {avmId: this.state.liveInfo.avm_id}, {showError500Dialog: false});
-			// LiveActions.properties({avmId: this.state.liveInfo.avm_id}, {showError500Dialog: false});
-			Notify.startLiveProperties({avmId: this.state.liveInfo.avm_id}, {showError500Dialog: false});
-		}
 		this.updateState();
 	},
 
@@ -97,25 +62,16 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onLoadInfoFailed(errorMessage) {
-		debug('errorMessage', errorMessage);
-		this.state.live.message = errorMessage;
-		// this.state.live.status = 'LIVE_STATUS_INITIAL_FAILED';
-		this.state.live.status = 'LIVE_STATUS_CHECK_FAILED';
-		// this.updateState();
-		debug('not found avm', this);
-		AppActions.notFound();
-	},
-
-	// Load State
-	onLoadState() {
-		this.updateState();
-	},
-
-	onSetState(newState) {
-		this.state = newState;
-		this.updateState();
-	},
+	// TODO: when vm not found
+	// onLoadInfoFailed(errorMessage) {
+	// 	debug('errorMessage', errorMessage);
+	// 	this.state.live.message = errorMessage;
+	// 	// this.state.live.status = 'LIVE_STATUS_INITIAL_FAILED';
+	// 	this.state.live.status = 'LIVE_STATUS_CHECK_FAILED';
+	// 	// this.updateState();
+	// 	debug('not found avm', this);
+	// 	AppActions.notFound();
+	// },
 
 	onLiveReset() {
 		this.resetLive();
@@ -123,7 +79,6 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	// Live list
 	onStart() {
 		this.state.live.status = 'LIVE_STATUS_VMSTARTING';
 		this.updateState();
@@ -142,94 +97,14 @@ const LiveStore = Reflux.createStore({
 		if (errorMessage.err && errorMessage.request && errorMessage.err.response) {
 			errorMessage.err.response.text().then(message => {
 				debug('text', message);
-				// debug('state', this.state.live);
-				// this.state.live.status = 'LIVE_STATUS_VMSTART_FAILED';
-				// this.state.live.message = message;
-				// this.state.live.startFailedUuid = errorMessage.request.uuid;
-				// this.updateState();
-
 				AppActions.displaySnackBar(message);
 			});
 		} else {
-			// this.state.live.status = 'LIVE_STATUS_VMSTART_FAILED';
-			// this.state.live.message = typeof errorMessage === 'object' ? errorMessage.message : errorMessage;
-			// this.updateState();
 			const message = typeof errorMessage === 'object' ? errorMessage.message : errorMessage;
 			AppActions.displaySnackBar(message);
 		}
 	},
 
-	// // Live check
-	// onLiveCheck() {
-	// 	this.addLogMessage('Searching session.');
-	// 	this.state.live.status = 'LIVE_STATUS_CHECKING';
-	// 	this.updateState();
-	// },
-
-	// onLiveCheckCompleted(sessionFound) {
-	// 	this.state.live.sessionFound = sessionFound;
-	// 	this.state.live.status = sessionFound ? 'LIVE_STATUS_CHECK_FOUND' : 'LIVE_STATUS_CHECK_NOTFOUND';
-	// 	this.updateState();
-	// },
-
-	// onLiveCheckFailed(errorMessage) {
-	// 	this.state.live.status = 'LIVE_STATUS_CHECK_FAILED';
-	// 	this.state.live.message = errorMessage;
-	// 	this.updateState();
-	// },
-
-	// // Live start
-	// onLiveStart() {
-	// 	this.state.live.status = 'LIVE_STATUS_STARTING';
-	// 	this.updateState();
-	// },
-
-	// onLiveStartCompleted(screenIP, screenPort) {
-	// 	this.state.live.screen.ip = screenIP;
-	// 	this.state.live.screen.port = screenPort;
-	// 	this.state.live.screen.rotation = 'horizontal';
-	// 	this.state.live.delayedRotation = 'horizontal';
-	// 	this.state.live.status = 'LIVE_STATUS_STARTED';
-	// 	this.updateState();
-	// },
-
-	// onLiveStartFailed(errorMessage) {
-	// 	this.state.live.status = 'LIVE_STATUS_START_FAILED';
-	// 	this.state.live.message = errorMessage;
-	// 	this.updateState();
-	// },
-
-	// Live connect
-	// onLiveConnect(vmhost, vmport) {
-	onLiveConnect() {
-		debug('onLiveConnect');
-		debug(arguments);
-		this.state.live.status = 'LIVE_STATUS_CONNECTING';
-		this.updateState();
-		LiveActions.liveConnectAudio(this.state.liveInfo.avm_id);
-		// TODO: should be enabled again one day
-		// audioEnabled === false
-		// LiveActions.tryAudioConnection(vmhost, vmport + 10000, () => {});
-	},
-
-	onLiveConnectCompleted() {
-		debug('onLiveConnectCompleted');
-		debug(arguments);
-		this.state.live.status = 'LIVE_STATUS_CONNECTED';
-		this.updateState();
-		LiveActions.enterScaledscreen();
-	},
-
-	onLiveConnectFailed(errorMessage) {
-		debug('onLiveConnectFailed');
-		debug(errorMessage);
-		debug(arguments);
-		this.state.live.status = 'LIVE_STATUS_CONNECT_FAILED';
-		this.state.live.message = typeof errorMessage === 'object' ? errorMessage.message : errorMessage;
-		this.updateState();
-	},
-
-	// Live stop v2
 	onStop(request) {
 		debug('onStop', request);
 		if (this.state.liveInfo && request.avmId !== this.state.liveInfo.avm_id) {
@@ -261,89 +136,39 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	// Live sensors
+	onLiveConnect() {
+		debug('onLiveConnect');
+		debug(arguments);
+		this.state.live.status = 'LIVE_STATUS_CONNECTING';
+		this.updateState();
+		LiveActions.liveConnectAudio(this.state.liveInfo.avm_id);
+	},
+
+	onLiveConnectCompleted() {
+		debug('onLiveConnectCompleted');
+		debug(arguments);
+		this.state.live.status = 'LIVE_STATUS_CONNECTED';
+		this.updateState();
+		LiveActions.enterScaledscreen();
+	},
+
+	onLiveConnectFailed(errorMessage) {
+		debug('onLiveConnectFailed');
+		debug(errorMessage);
+		debug(arguments);
+		this.state.live.status = 'LIVE_STATUS_CONNECT_FAILED';
+		this.state.live.message = typeof errorMessage === 'object' ? errorMessage.message : errorMessage;
+		this.updateState();
+	},
 
 	onSetSensor(params) {
 		const {sensor, payload} = params;
 		debug('onSetSensor');
 		debug('arguments', arguments);
 		this.state.live.sensors[sensor] = payload;
-		if (sensor === 'accelerometer') {
-			this.state.live.delayedRotation = this.isRotation(payload, 'horizontal') ? 'horizontal' : 'vertical';
-		}
 		this.updateState();
 	},
 
-	// onSetSensorBattery(projectId, value) {
-	// 	this.state.live.battery = value;
-	// },
-
-	// onSetSensorAccelerometer(projectId, x, y, z, newRotationName) {
-	// 	this.state.live.screen.rotation = newRotationName;
-	// 	this.updateState();
-	// },
-
-	// onSetDelayedRotation() {
-	// 	this.state.live.delayedRotation = this.state.live.screen.rotation;
-	// 	this.updateState();
-	// },
-
-	// onRecordStart() {
-	// 	this.state.live.recording = true;
-	// 	this.updateState();
-	// },
-
-	// onRecordStartCompleted(filename) {
-	// 	this.state.live.recording = true;
-	// 	this.state.live.recordingFileName = filename;
-	// 	this.updateState();
-	// },
-
-	// onRecordStop() {
-	// 	this.state.live.recording = false;
-	// 	this.updateState();
-	// },
-
-	// // Socket Message
-	// onSocketMessage(message) {
-	// 	const messageParsed = JSON.parse(message.data);
-	// 	debug('onSocketMessage', messageParsed);
-	// 	if (messageParsed.hasOwnProperty('message')) {
-	// 		this.addLogMessage(messageParsed.message);
-	// 		switch (messageParsed.message) {
-	// 			case 'Stack retrieval or creation finished':
-	// 				LiveActions.liveCheck.completed(false);
-	// 				LiveActions.liveStart();
-	// 				break;
-	// 			case 'Docker created and ready.':
-	// 				debug('docker created');
-	// 				LiveActions.liveStart.completed(messageParsed.data.vncip, messageParsed.data.vncport);
-	// 				LiveActions.liveConnect(messageParsed.data.vncip, messageParsed.data.vncport);
-	// 				break;
-	// 			default:
-	// 				// TODO: error
-	// 				break;
-	// 		}
-	// 	} else if (messageParsed.hasOwnProperty('error')) {
-	// 		switch (this.state.live.status) {
-	// 			case 'LIVE_STATUS_CHECKING':
-	// 				LiveActions.liveCheck.failed(messageParsed.error);
-	// 				break;
-	// 			case 'LIVE_STATUS_STARTING':
-	// 				LiveActions.liveStart.failed(messageParsed.error);
-	// 				break;
-	// 			default:
-	// 				// TODO: error
-	// 				break;
-	// 		}
-	// 	}
-	// },
-
-	onLogMessage(message) {
-		this.addLogMessage(message);
-	},
-
-	// List Packages
 	onListPackages() {
 		debug('onListPackages');
 		this.state.live.listPackages = true;
@@ -361,7 +186,6 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	// install APK
 	onInstallAPK(request) {
 		debug('onInstallAPK');
 		const {apkId, refId} = request;
@@ -390,19 +214,6 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onNotifyLiveInstallAPK(commandInfo, commandDetails) {
-		debug('onNotifyLiveInstallAPK', commandInfo, commandDetails);
-		const commandId = commandInfo.commandId;
-		const commandIndex = this.state.live.installedAPKs.reduce((p, c, i) => !p && c.commandId === commandId ? i : p, false);
-		if (this.state.live.installedAPKs[commandIndex].status !== commandDetails.status) {
-			this.state.live.installedAPKs[commandIndex].status = commandDetails.status;
-			this.updateState();
-			if (commandDetails.status === 'READY') {
-				LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
-			}
-		}
-	},
-
 	onInstallAPKFailed(response) {
 		debug('onInstallAPKFailure', response);
 		const refId = response.request.refId;
@@ -418,7 +229,19 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	// Monkey Runner
+	onNotifyLiveInstallAPK(commandInfo, commandDetails) {
+		debug('onNotifyLiveInstallAPK', commandInfo, commandDetails);
+		const commandId = commandInfo.commandId;
+		const commandIndex = this.state.live.installedAPKs.reduce((p, c, i) => !p && c.commandId === commandId ? i : p, false);
+		if (this.state.live.installedAPKs[commandIndex].status !== commandDetails.status) {
+			this.state.live.installedAPKs[commandIndex].status = commandDetails.status;
+			this.updateState();
+			if (commandDetails.status === 'READY') {
+				LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
+			}
+		}
+	},
+
 	onMonkeyRunner(request) {
 		const {packages, eventCount, throttle, refId} = request;
 		debug('onMoneyRunner');
@@ -448,16 +271,6 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onNotifyLiveMonkeyRunner(commandInfo, commandDetails) {
-		debug('onNotifyLiveMonkeyRunner', commandInfo, commandDetails);
-		const commandId = commandInfo.commandId;
-		const commandIndex = this.state.live.monkeyCalls.reduce((p, c, i) => !p && c.commandId === commandId ? i : p, false);
-		if (this.state.live.monkeyCalls[commandIndex].status !== commandDetails.status) {
-			this.state.live.monkeyCalls[commandIndex].status = commandDetails.status;
-			this.updateState();
-		}
-	},
-
 	onMonkeyRunnerFailed(response) {
 		debug('onMoneyRunnerFailure', response.error);
 		const refId = response.request.refId;
@@ -473,54 +286,14 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	// Properties
-	onProperties() {
-		debug('onProperties');
-	},
-
-	onPropertiesCompleted(properties) {
-		debug('onPropertiesCompleted', properties);
-
-		debug('onPropertiesCompleted value', properties['dev.bootcomplete'] === '1');
-		debug('onPropertiesCompleted value', !this.state.live.listPackages && properties['dev.bootcomplete'] === '1');
-		debug('onPropertiesCompleted value', !this.state.live.bootInit && (properties['init.svc.bootanim'] === '1' || properties['dev.bootcomplete'] === '1'));
-
-		// TODO: should be changed to machine state
-		// boot completed
-		if (!this.state.live.listPackages &&
-			properties['dev.bootcomplete'] === '1') {
-			// properties["aicVM.inited"] === "1") {
-			debug('onPropertiesCompleted listPackages');
-			LiveActions.listPackages({avmId: this.state.liveInfo.avm_id});
+	onNotifyLiveMonkeyRunner(commandInfo, commandDetails) {
+		debug('onNotifyLiveMonkeyRunner', commandInfo, commandDetails);
+		const commandId = commandInfo.commandId;
+		const commandIndex = this.state.live.monkeyCalls.reduce((p, c, i) => !p && c.commandId === commandId ? i : p, false);
+		if (this.state.live.monkeyCalls[commandIndex].status !== commandDetails.status) {
+			this.state.live.monkeyCalls[commandIndex].status = commandDetails.status;
+			this.updateState();
 		}
-
-		// docker finished (not available) boot initiate
-		if (!this.state.live.bootInit &&
-			(properties['init.svc.bootanim'] === 'running' || properties['dev.bootcomplete'] === '1')) {
-		// if (!this.state.live.bootInit) {
-			// properties["aicVM.inited"] === "1") {
-			this.state.live.status = 'LIVE_STATUS_STARTED';
-			debug('onPropertiesCompleted boot initiate');
-			this.state.live.bootInit = true;
-			LiveActions.liveConnect(this.state.liveInfo.avm_id);
-			APKActions.list({projectId: this.state.projectId});
-			CameraActions.list({projectId: this.state.projectId});
-		}
-
-		// If rotation changes need to recalculate scale
-		let shouldCalculateScale = false;
-		if ((this.state && this.state.live && this.state.live.isScaledscreen) &&
-			properties['aicd.screen_rotation'] !== this.state.live.properties['aicd.screen_rotation']) {
-			shouldCalculateScale = true;
-		}
-
-		this.state.live.properties = properties;
-
-		if (shouldCalculateScale) {
-			this.calculateScale();
-		}
-
-		this.updateState();
 	},
 
 	onNotifyLiveProperties(actionInfo, properties) {
@@ -564,78 +337,26 @@ const LiveStore = Reflux.createStore({
 		this.updateState();
 	},
 
-	onPropertiesFailed(errorMessage) {
-		// this.onPropertiesCompleted({'dev.bootcomplete': '0'});
-		// debug('onPropertiesFailure', errorMessage);
-		// this.state.live.message = errorMessage;
-		// this.state.live.status = 'LIVE_STATUS_PROPERTIES_FAILED';
-		// this.updateState();
-		this.state.live.propertiesFailureCount = this.state.live.propertiesFailureCount || 0;
-		this.state.live.propertiesFailureCount += 1;
-		debug('onPropertiesFailure', errorMessage, this.state.live.propertiesFailureCount);
-		if (this.state.live.propertiesFailureCount >= 30) {
-			// TODO: errorMessage should contain message
-			this.state.live.message = 'It was not possible to reach the Android machine.';
-			// this.state.live.status = 'LIVE_STATUS_LISTPACKAGES_FAILED';
-			this.state.live.status = 'LIVE_STATUS_START_FAILED';
-			this.updateState();
-			// TODO: should stop after x errors
-		}
-	},
-
-	// Live list
-	// onList() {
-	// 	debug('onList');
-	// 	this.state.live.status = 'LIVE_STATUS_LISTING';
-	// 	this.updateState();
-	// },
-
-	// onListCompleted(avms) {
-	// 	debug('onListCompleted', avms);
-	// 	this.state.live.avms = avms;
-	// 	this.state.live.status = 'LIVE_STATUS_LISTED';
-	// 	this.updateState();
-	// 	const statusList = ['CREATING', 'QUEUED', 'DELETING'];
-	// 	const shouldListAgain = avms.reduce((p, c) => (!p && statusList.indexOf(c.avm_status) !== -1 ? true : p), false);
-	// 	debug('shouldListAgain', shouldListAgain);
-	// 	if (shouldListAgain) {
-	// 		this.updateList();
+	// TODO properties failure
+	// onPropertiesFailed(errorMessage) {
+	// 	// this.onPropertiesCompleted({'dev.bootcomplete': '0'});
+	// 	// debug('onPropertiesFailure', errorMessage);
+	// 	// this.state.live.message = errorMessage;
+	// 	// this.state.live.status = 'LIVE_STATUS_PROPERTIES_FAILED';
+	// 	// this.updateState();
+	// 	this.state.live.propertiesFailureCount = this.state.live.propertiesFailureCount || 0;
+	// 	this.state.live.propertiesFailureCount += 1;
+	// 	debug('onPropertiesFailure', errorMessage, this.state.live.propertiesFailureCount);
+	// 	if (this.state.live.propertiesFailureCount >= 30) {
+	// 		// TODO: errorMessage should contain message
+	// 		this.state.live.message = 'It was not possible to reach the Android machine.';
+	// 		// this.state.live.status = 'LIVE_STATUS_LISTPACKAGES_FAILED';
+	// 		this.state.live.status = 'LIVE_STATUS_START_FAILED';
+	// 		this.updateState();
+	// 		// TODO: should stop after x errors
 	// 	}
 	// },
 
-	// onListFailed(errorMessage) {
-	// 	debug('onListFailed');
-	// 	this.state.live.status = 'LIVE_STATUS_LIST_FAILED';
-	// 	this.state.live.message = errorMessage;
-	// 	this.updateState();
-	// },
-
-	// onNotifyList(requestInfo, avms) {
-	// 	debug('onNotifyList', avms);
-	// 	this.state.live.avms = avms;
-	// 	this.state.live.status = 'LIVE_STATUS_LISTED';
-	// 	this.updateState();
-	// },
-
-	// // Live list
-	// onListImages() {
-	// 	debug('onListImages');
-	// },
-
-	// onListImagesCompleted(images) {
-	// 	debug('onListImagesCompleted', images);
-	// 	this.state.live.images = images;
-	// 	this.updateState();
-	// },
-
-	// onListImagesFailed(errorMessage) {
-	// 	debug('onListImagesFailed');
-	// 	this.state.live.status = 'LIVE_STATUS_LIST_IMAGES_FAILED';
-	// 	this.state.live.message = errorMessage;
-	// 	this.updateState();
-	// },
-
-	// Fullscreen
 	onEnterFullscreen() {
 		debug('onEnterFullscreen');
 		this.state.live.isFullscreen = true;
@@ -705,14 +426,6 @@ const LiveStore = Reflux.createStore({
 			vertical: {x: 5.9, y: 0, z: 0, next: 'horizontal'}
 		};
 		this.state.live.recordingFileName = '';
-	},
-
-	addLogMessage(message) {
-		this.state.live.logBox.unshift({time: AppUtils.getDate(), message});
-	},
-
-	isRotation(set, rotation) {
-		return set.x === this.state.live.rotationSets[rotation].x && set.y === this.state.live.rotationSets[rotation].y && set.z === this.state.live.rotationSets[rotation].z;
 	},
 
 	calculateScale() {

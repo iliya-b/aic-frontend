@@ -7,55 +7,35 @@ import NoVNCAdapter from 'app/libs/novnc-adapter';
 import AudioAdapter from 'app/libs/audio-adapter';
 
 const LiveActions = Reflux.createActions({
-	// list: {asyncResult: true},
-	// notifyList: {},
-	stop: {asyncResult: true},
-	start: {asyncResult: true},
-	listPackages: {asyncResult: true},
-	properties: {asyncResult: true},
-	clearTimeouts: {},
-	loadInfo: {asyncResult: true},
-	monkeyRunner: {asyncResult: true},
-	setSensor: {asyncResult: true},
-	installAPK: {asyncResult: true},
-	runTest: {asyncResult: true},
-
 	setProjectId: {asyncResult: true},
-	loadState: {},
-	setState: {},
+	notifyLiveRead: {},
 	liveReset: {},
-
-	logMessage: {},
+	start: {asyncResult: true},
+	stop: {asyncResult: true},
 	liveConnect: {asyncResult: true},
 	liveConnectAudio: {asyncResult: true},
-
-	// listImages: {asyncResult: true},
-
+	setSensor: {asyncResult: true},
+	listPackages: {asyncResult: true},
+	installAPK: {asyncResult: true},
+	notifyLiveInstallAPK: {},
+	monkeyRunner: {asyncResult: true},
+	notifyLiveMonkeyRunner: {},
+	notifyLiveProperties: {},
 	enterFullscreen: {},
 	exitFullscreen: {},
 	enterScaledscreen: {},
 	exitScaledscreen: {},
 	recalculeScale: {},
-	notifyLiveInstallAPK: {},
-	notifyLiveMonkeyRunner: {},
-
-	recalculeScaleIfConnected: {},
-	notifyLiveProperties: {},
-	notifyLiveRead: {}
+	recalculeScaleIfConnected: {}
 });
 
 // Backend related
-// LiveActions.list.listenAndPromise(Gateway.live.list);
-LiveActions.stop.listenAndPromise(Gateway.live.delete);
 LiveActions.start.listenAndPromise(Gateway.live.create);
-LiveActions.listPackages.listenAndPromise(Gateway.live.listPackages);
-LiveActions.properties.listenAndPromise(Gateway.live.properties);
-LiveActions.loadInfo.listenAndPromise(Gateway.live.read);
-LiveActions.monkeyRunner.listenAndPromise(Gateway.live.monkeyRunner);
+LiveActions.stop.listenAndPromise(Gateway.live.delete);
 LiveActions.setSensor.listenAndPromise(Gateway.live.sensor);
+LiveActions.listPackages.listenAndPromise(Gateway.live.listPackages);
 LiveActions.installAPK.listenAndPromise(Gateway.live.installAPK);
-// LiveActions.listImages.listenAndPromise(Gateway.live.listImages);
-LiveActions.runTest.listenAndPromise(Gateway.live.runTest);
+LiveActions.monkeyRunner.listenAndPromise(Gateway.live.monkeyRunner);
 
 // noVNC & audio related
 LiveActions.setProjectId.listenAndPromise(NoVNCAdapter.loadUtil);

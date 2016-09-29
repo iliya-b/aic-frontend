@@ -122,6 +122,7 @@ test.cb(`Can stop action when clear group`, t => {
 				});
 			},
 			notify: (actionInfo, response) => {
+				console.warn('being notified');
 				counter++;
 				t.is(counter, 1);
 				t.is(response.myGroupId, actionInfo.myGroupId);
@@ -176,3 +177,37 @@ test.cb(`Ignores multiple start action (call once at most)`, t => {
 		t.end();
 	}, 13000);
 });
+
+test.cb(`Call multiple start action with same group but different id`, t => {
+	let counter = 0;
+	const Notify = new NotifyCore();
+	Notify.registerGroups({
+		groupX7: {
+			id: 'myGroupId7'
+		}
+	});
+
+	Notify.registerActions({
+		actionY7: {
+			group: 'groupX7',
+			id: 'specifId7',
+			request: () => Promise.resolve({x: Math.random(), y: 123}),
+			notify: (actionInfo, response) => {
+				counter++;
+				t.is(response.y, 123);
+			},
+			stopCondition: () => false
+		}
+	});
+
+	Notify.watchGroupX7({myGroupId7: 'groupId7'});
+	Notify.startActionY7({myGroupId7: 'groupId7', specifId7: 'specifId7-1', otherInfo: 'toto'}); // Should call !
+	Notify.startActionY7({myGroupId7: 'groupId7', specifId7: 'specifId7-2', otherInfo: 'toto'}); // Should call !
+	Notify.startActionY7({myGroupId7: 'groupId7', specifId7: 'specifId7-1', otherInfo: 'toto'}); // Should not call
+	Notify.startActionY7({myGroupId7: 'groupId7', specifId7: 'specifId7-1', otherInfo: 'toto'}); // Should not call
+	setTimeout(() => {
+		t.is(counter, 6);
+		t.end();
+	}, 13000);
+});
+

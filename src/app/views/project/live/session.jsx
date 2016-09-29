@@ -250,7 +250,6 @@ const LiveSession = class extends React.Component {
 
 	componentWillUnmount() {
 		debug('componentWillUnmount');
-		LiveActions.clearTimeouts();
 		this.handleOnInputFocus();
 		LiveActions.disconnectScreen();
 		LiveActions.disconnectAudio();

@@ -30,12 +30,14 @@ Notify.registerGroups({
 Notify.registerActions({
 	liveInstallAPK: {
 		group: 'live',
+		id: 'commandId',
 		request: Gateway.live.command,
 		notify: LiveActions.notifyLiveInstallAPK,
 		stopCondition: (actionInfo, response) => NotifyStopCondition.commandShouldStop(response)
 	},
 	liveMonkeyRunner: {
 		group: 'live',
+		id: 'commandId',
 		request: Gateway.live.command,
 		notify: LiveActions.notifyLiveMonkeyRunner,
 		stopCondition: (actionInfo, response) => NotifyStopCondition.commandShouldStop(response)
