@@ -6,6 +6,7 @@ import ToolbarFileUpload from 'app/components/toolbar/toolbar-file-upload';
 import TableFiles from 'app/components/table/table-files';
 import TableProgress from 'app/components/table/table-progress';
 import Dropzone from 'app/components/shared/dropzone';
+import XtextPlayground from 'app/components/project/xtext-playground';
 import TestActions from 'app/actions/test';
 import TestStore from 'app/stores/test';
 
@@ -159,6 +160,8 @@ const TestManager = class extends React.Component {
 					/>
 				{uploadDropzone}
 				{table}
+
+				<XtextPlayground/>
 			</div>
 		);
 	}

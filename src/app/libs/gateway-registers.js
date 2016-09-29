@@ -221,6 +221,22 @@ const GatewayRegisters = function () {
 			}
 		]
 	});
+
+	// Xtext
+	Gateway.register({
+		namespace: 'xtext',
+		actions: [
+			{
+				action: {name: 'validate', method: 'GET'},
+				pathname: '/xtext/validate',
+				search: 'resource={resourceId}'
+			}, {
+				action: {name: 'update', method: 'PUT'},
+				pathname: '/xtext/update',
+				search: 'resource={resourceId}'
+			}
+		]
+	});
 };
 
 module.exports = GatewayRegisters;

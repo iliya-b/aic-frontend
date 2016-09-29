@@ -250,6 +250,16 @@ const GatewayAdapters = {
 		machines: {
 			response: backendObject => backendObject.avms.map(camelizeObj)
 		}
+	},
+	xtext: {
+		validate: {
+			response: backendObject => backendObject.issues.map(issue => ({
+				row: issue.line,
+				column: issue.column,
+				type: issue.severity,
+				text: issue.description
+			}))
+		}
 	}
 };
 

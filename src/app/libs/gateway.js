@@ -86,6 +86,9 @@ const Gateway = {
 		if (options.pathname) {
 			optionsAPI.pathname = template(options.pathname, obj);
 		}
+		if (options.search) {
+			optionsAPI.search = template(options.search, obj);
+		}
 		if (options.url) {
 			optionsAPI.url = options.url;
 		}
@@ -100,7 +103,10 @@ const Gateway = {
 				schema: schemaAdapter ? schemaAdapter(options, obj) : options.schema
 			};
 		}
-		debug(optionsAPI);
+		if (!optionsAPI.rawData && !optionsAPI.data && obj && obj.rawData) {
+			optionsAPI.rawData = obj.rawData;
+		}
+		debug('optionsAPI', optionsAPI);
 		if (responseAdapter) {
 			return requestCaller(optionsAPI).then(responseAdapter);
 		}

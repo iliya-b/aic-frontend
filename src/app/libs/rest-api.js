@@ -30,7 +30,7 @@ const RestAPI = {
 
 	// Core functions
 
-	backendURL(pathname) {
+	backendURL(pathname, search) {
 		// TODO: Not the best to have globals
 		const options = {
 			protocol: window.GobyAppGlobals.config.backend.protocol,
@@ -40,6 +40,10 @@ const RestAPI = {
 
 		if (typeof pathname !== 'undefined') {
 			options.pathname = pathname;
+		}
+
+		if (typeof search !== 'undefined' && search) {
+			options.search = search;
 		}
 
 		return url.format(options);
@@ -60,7 +64,7 @@ const RestAPI = {
 		}
 
 		if (options.pathname) {
-			options.url = this.backendURL(options.pathname);
+			options.url = this.backendURL(options.pathname, options.search);
 		}
 
 		if (!options.url) {
@@ -145,7 +149,8 @@ const RestAPI = {
 			method: options.method,
 			headers: options.headers,
 			mode: 'cors',
-			cache: 'default'
+			cache: 'default',
+			credentials: 'include'
 		};
 
 		if (options.body) {
