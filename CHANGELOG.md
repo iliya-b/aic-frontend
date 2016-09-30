@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 - Add to the CI the deployment of stories at build/stories.
 - Add hwconfig to live info.
 - Add rotation buttons to live.
+- Add drag toolbar on live fullscreen.
 
 ### Changed
 - Moved all components in /#themes to storybook.

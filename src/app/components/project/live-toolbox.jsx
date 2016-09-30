@@ -3,6 +3,7 @@
 import React from 'react';
 import LiveActions from 'app/actions/live';
 import {throttle} from 'lodash';
+import FontIcon from 'material-ui/FontIcon';
 
 const debug = require('debug')('AiC:Components:Project:Live:LiveToolbox');
 
@@ -108,7 +109,8 @@ const LiveToolbox = class extends React.Component {
 		super(props);
 		this.state = {
 			activeBar: TOOLBAR_ANDROID,
-			activeSecondBar: null
+			activeSecondBar: null,
+			toolbarPosition: [0, 0]
 		};
 
 		// Secondary toolbars
@@ -174,6 +176,10 @@ const LiveToolbox = class extends React.Component {
 			this.listPackages();
 			this.props.onInputFocus(e);
 		};
+
+		this.handleDragThrottled = throttle(e => {
+			this.handleDrag(e);
+		}, 66, {trailing: false});
 	}
 
 	changeActiveToolbar(toolbar) {
@@ -190,6 +196,22 @@ const LiveToolbox = class extends React.Component {
 
 	handleChangeSensors(sensorType, e, payload) {
 		this.props.onChangeSensor(sensorType, e, payload);
+	}
+
+	handleDrag = e => {
+		if (e.pageX) {
+			debug('handleDrag', Object.keys(e), e.clientX, e.screenX, e.pageX);
+			debug('handleDrag ct', Object.keys(e.currentTarget));
+			this.setState({toolbarPosition: [e.pageX + this.offSetX, e.pageY + this.offSetY]});
+		}
+	}
+
+	handleDragStart = e => {
+		debug('handleDragStart', Object.keys(e));
+		debug('handleDrag ct', Object.keys(e.currentTarget));
+		this.offSetX = this.state.toolbarPosition[0] - e.pageX;
+		this.offSetY = this.state.toolbarPosition[1] - e.pageY;
+		debug('handleDrag st off', this.offSetX, this.offSetY);
 	}
 
 	render() {
@@ -286,8 +308,23 @@ const LiveToolbox = class extends React.Component {
 			debug('could not find second toolbar', this.state.activeSecondBar);
 		}
 
+		const styleDrag = {
+			background: 'rgb(98, 151, 53)', // TODO: change to palette
+			padding: '14px 0 14px 6px',
+			cursor: 'move',
+			float: 'left'
+		};
+
+		const styleLiveToolBox = {
+			position: this.props.isFullscreen ? 'absolute' : 'initial',
+			top: this.state.toolbarPosition[1],
+			left: this.state.toolbarPosition[0],
+			width: this.props.isFullscreen ? 800 : 'auto'
+		};
+
 		return (
-			<div style={this.props.style}>
+			<div style={styleLiveToolBox}>
+				{this.props.isFullscreen && <FontIcon style={styleDrag} draggable onDragStart={this.handleDragStart} onDrag={this.handleDragThrottled} className="mdi mdi-drag" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>}
 				{currentBar}
 				{currentSecondBar}
 			</div>

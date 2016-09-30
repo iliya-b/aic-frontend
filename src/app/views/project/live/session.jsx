@@ -140,13 +140,6 @@ const LiveSession = class extends React.Component {
 			background: '#fff'
 		};
 
-		const styleLiveToolBox = {
-			position: this.isFullscreen() ? 'absolute' : 'initial',
-			top: 0,
-			left: 0,
-			width: this.isFullscreen() ? 800 : 'auto'
-		};
-
 		const styleLiveBoxWrapper = {
 			width: '100%',
 			height: '100%',
@@ -214,7 +207,6 @@ const LiveSession = class extends React.Component {
 								onEnterScaledscreen={this.handleEnterScaledscreen}
 								onExitScaledscreen={this.handleExitScaledscreen}
 								isScaledscreen={this.state.live.isScaledscreen}
-								style={styleLiveToolBox}
 								/>
 						) : null}
 						</div>
