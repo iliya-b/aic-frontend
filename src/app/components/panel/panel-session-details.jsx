@@ -1,16 +1,14 @@
 'use strict';
 
-// Vendor
 import React from 'react';
 import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
 import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import {capimelize} from 'app/libs/helpers';
-
-// APP
 import VoiceSVG from 'app/components/icon/voice';
 import GravitySVG from 'app/components/icon/gravity';
+import {sensors} from 'app/libs/constants';
 
 // TODO: use LabeledSpan
 // import LabeledSpan from 'app/components/form/labeled-span';
@@ -51,7 +49,7 @@ const infos = [
 		fields: [
 			{
 				label: 'screen rotation',
-				value: properties => properties['aicd.screen_rotation']
+				value: properties => `${properties['aicd.screen_rotation']}°`
 			}, {
 				label: 'x',
 				value: properties => properties['aicd.accelerometer.x']
@@ -65,7 +63,7 @@ const infos = [
 		]
 	},
 	{
-		id: '²',
+		id: 'light',
 		tooltip: 'Light',
 		fontIcon: 'mdi mdi-white-balance-incandescent',
 		fields: [
@@ -206,6 +204,16 @@ const infos = [
 	}
 ];
 
+const getEnabledSensors = info => {
+	const enabled = [];
+	sensors.forEach(sensor => {
+		if (info.hwconfig[sensor.key] === 1) {
+			enabled.push(sensor.tooltip);
+		}
+	});
+	return enabled.join(', ');
+};
+
 const avmInfoOrder = [
 	{
 		label: 'id',
@@ -225,6 +233,15 @@ const avmInfoOrder = [
 	}, {
 		label: 'creation time',
 		value: info => (new Date(info.ts_created)).toLocaleString()
+	}, {
+		label: 'screen size',
+		value: info => `${info.hwconfig.width}x${info.hwconfig.height}`
+	}, {
+		label: 'screen dpi',
+		value: info => info.hwconfig.dpi
+	}, {
+		label: 'enabled sensors',
+		value: getEnabledSensors
 	}
 ];
 

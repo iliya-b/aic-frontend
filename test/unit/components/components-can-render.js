@@ -56,7 +56,6 @@ const componentsReq = {
 	LogBoxRow: require('app/components/shared/log-box-row'),
 	LogBox: require('app/components/shared/log-box'),
 	Nl2br: require('app/components/shared/nl2br'),
-	TogglableIcon: require('app/components/shared/togglable-icon'),
 	// Table
 	TableFiles: require('app/components/table/table-files'),
 	TableProgress: require('app/components/table/table-progress'),

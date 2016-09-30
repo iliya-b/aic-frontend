@@ -98,6 +98,10 @@ class NotifyActionRunning {
 	isRunning() {
 		return !this.shouldStop;
 	}
+
+	isSameGroup(otherInfo) {
+		return this.action.group.getGroupInfoId(this.info) === this.action.group.getGroupInfoId(otherInfo);
+	}
 }
 
 class NotifyAction {
@@ -165,10 +169,13 @@ class NotifyAction {
 	}
 
 	stopAllRunning(info) {
-		// TODO: info
 		const allRunning = Object.keys(this.running);
-		allRunning.forEach(runningIndex => this.running[runningIndex].stop());
-		this.running = {};
+		allRunning
+			.filter(runningIndex => this.running[runningIndex].isSameGroup(info))
+			.forEach(runningIndex => {
+				this.running[runningIndex].stop();
+				delete this.running[runningIndex];
+			});
 	}
 }
 

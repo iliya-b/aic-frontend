@@ -8,9 +8,13 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 - Add quota panel to campaign.
 - Add machine information to tests running.
 - Add to the CI the deployment of stories at build/stories.
+- Add hwconfig to live info.
+- Add rotation buttons to live.
 
 ### Changed
 - Moved all components in /#themes to storybook.
+- Live code cleanup.
+- Fix bugs with 180° rotation.
 
 ## [0.7.1]
 

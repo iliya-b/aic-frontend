@@ -9,22 +9,13 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import IconButtonApp from 'app/components/icon/icon-button-app';
 import DeviceIcon from 'app/components/icon/device-icon';
+import {sensors} from 'app/libs/constants';
 
 const debug = require('debug')('AiC:Components:Dialog:DialogLiveCreation');
 
 // References:
 // https://developer.android.com/about/dashboards/index.html
 // https://developer.android.com/guide/practices/screens_support.html
-
-const sensors = [
-	{key: 'Sensors', tooltip: 'sensors', iconClassName: 'mdi mdi-compass'},
-	{key: 'Battery', tooltip: 'battery', iconClassName: 'mdi mdi-battery'},
-	{key: 'Gps', tooltip: 'GPS', iconClassName: 'mdi mdi-map-marker'},
-	{key: 'Camera', tooltip: 'camera', iconClassName: 'mdi mdi-camera'},
-	// {key: 'Record', tooltip: 'screen capture', iconClassName: 'mdi mdi-file-video'},
-	{key: 'Gsm', tooltip: 'GSM', iconClassName: 'mdi mdi-phone'},
-	{key: 'Nfc', tooltip: 'NFC', iconClassName: 'mdi mdi-nfc'}
-];
 
 const sizes = [
 	'320x480', '480x800', '800x600', '1280x800'
@@ -33,8 +24,6 @@ const sizes = [
 const dpis = [
 	'120', '160', '240', '320'
 ];
-
-const configSensorKey = key => `enable${key}`;
 
 const DialogLiveCreation = class extends React.Component {
 
@@ -69,7 +58,7 @@ const DialogLiveCreation = class extends React.Component {
 	}
 
 	handleClickSensors = e => {
-		const sensorKey = configSensorKey(e.currentTarget.dataset.sensorKey);
+		const sensorKey = e.currentTarget.dataset.sensorKey;
 		const sensorValue = !this.state.config[sensorKey];
 		this.udpdateConfig(sensorKey, sensorValue);
 	}
@@ -142,7 +131,7 @@ const DialogLiveCreation = class extends React.Component {
 					key={s.key}
 					data-sensor-key={s.key}
 					onClick={this.handleClickSensors}
-					iconStyle={{color: this.state.config[configSensorKey(s.key)] ? colorOn : colorOff}}
+					iconStyle={{color: this.state.config[s.key] ? colorOn : colorOff}}
 					tooltip={s.tooltip}
 					iconClassName={s.iconClassName}
 					/>
