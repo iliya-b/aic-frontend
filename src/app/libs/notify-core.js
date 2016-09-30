@@ -35,7 +35,7 @@ class NotifyGroup {
 		// Nobody is watching this group, all calls should be removed
 		if (!this.isBeingWatched(info)) {
 			// Should stop only the ones connected to info
-			this.actions.forEach(action => action.stopAllRunning()); // Stop actions
+			this.actions.forEach(action => action.stopAllRunning(info)); // Stop actions
 		}
 	}
 
@@ -164,7 +164,8 @@ class NotifyAction {
 		this.running[runningIndex] = actionRunning;
 	}
 
-	stopAllRunning() {
+	stopAllRunning(info) {
+		// TODO: info
 		const allRunning = Object.keys(this.running);
 		allRunning.forEach(runningIndex => this.running[runningIndex].stop());
 		this.running = {};

@@ -1,6 +1,5 @@
 'use strict';
 
-// Vendor
 import React from 'react';
 import Toolbar from 'material-ui/Toolbar/Toolbar';
 import ToolbarGroup from 'material-ui/Toolbar/ToolbarGroup';
@@ -8,11 +7,9 @@ import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
 import ToolbarTitle from 'material-ui/Toolbar/ToolbarTitle';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
-
-// APP
 import VoiceSVG from 'app/components/icon/voice';
 import GravitySVG from 'app/components/icon/gravity';
-import iconList from 'app/components/icon/icon-list';
+import IconList from 'app/components/icon/icon-list';
 
 const ToolbarSensors = class extends React.Component {
 
@@ -97,13 +94,14 @@ const ToolbarSensors = class extends React.Component {
 			}
 		];
 
-		const renderedButtons = iconList({
+		const iconListProps = {
 			buttons,
 			style: styles.button,
 			onClick: this.props.onClick,
 			iconClassNamePrefix: 'btLiveSensor',
 			selectedId: this.props.secondBar
-		});
+		};
+		const renderedButtons = <IconList {...iconListProps}/>;
 
 		return (
 			<Toolbar style={Object.assign(this.props.style || {}, styles.toolbar)}>

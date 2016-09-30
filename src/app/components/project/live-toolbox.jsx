@@ -235,6 +235,9 @@ const LiveToolbox = class extends React.Component {
 			};
 			props[this.state.activeSecondBar] = this.props.sensorsValues[this.state.activeSecondBar];
 			debug('currentSecondBar props', props);
+			if (this.state.activeSecondBar === 'accelerometer') {
+				props.rotation = this.props.properties['aicd.screen_rotation'];
+			}
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
 		} else if (this.state.activeSecondBar === 'apks') { // eslint-disable-line no-negated-condition
 			const props = {

@@ -1,6 +1,5 @@
 'use strict';
 
-// Vendor
 import React from 'react';
 import Toolbar from 'material-ui/Toolbar/Toolbar';
 import ToolbarGroup from 'material-ui/Toolbar/ToolbarGroup';
@@ -8,10 +7,8 @@ import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
 import ToolbarTitle from 'material-ui/Toolbar/ToolbarTitle';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
-
-// APP
 import PhoneAcceptSVG from 'app/components/icon/phone-accept';
-import iconList from 'app/components/icon/icon-list';
+import IconList from 'app/components/icon/icon-list';
 
 const ToolbarGSM = class extends React.Component {
 
@@ -62,13 +59,14 @@ const ToolbarGSM = class extends React.Component {
 			}
 		];
 
-		const renderedButtons = iconList({
+		const iconListProps = {
 			buttons,
 			style: styles.button,
 			onClick: this.props.onClick,
 			iconClassNamePrefix: 'btLiveGSM',
 			selectedId: this.props.secondBar
-		});
+		};
+		const renderedButtons = <IconList {...iconListProps}/>;
 
 		return (
 			<Toolbar style={this.props.style}>

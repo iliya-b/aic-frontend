@@ -6,7 +6,7 @@ import ToolbarGroup from 'material-ui/Toolbar/ToolbarGroup';
 import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
 import ToolbarTitle from 'material-ui/Toolbar/ToolbarTitle';
 import FontIcon from 'material-ui/FontIcon';
-import iconList from 'app/components/icon/icon-list';
+import IconList from 'app/components/icon/icon-list';
 
 const ToolbarCampaign = props => {
 	const styleToolbar = {justifyContent: 'initial'};
@@ -26,7 +26,7 @@ const ToolbarCampaign = props => {
 		}
 	];
 
-	const renderedButtons = iconList({
+	const iconListProps = {
 		buttons,
 		style: styleButtons,
 		onClick: {
@@ -34,7 +34,8 @@ const ToolbarCampaign = props => {
 		},
 		iconClassNamePrefix: 'btCampaign',
 		selectedId: null
-	});
+	};
+	const renderedButtons = <IconList {...iconListProps}/>;
 
 	return (
 		<Toolbar style={Object.assign(props.style || {}, styleToolbar)}>

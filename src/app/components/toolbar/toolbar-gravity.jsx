@@ -1,14 +1,10 @@
 'use strict';
 
-// Vendor
 import React from 'react';
 import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
-// import ToolbarTitle from 'material-ui/Toolbar/ToolbarTitle';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
-
-// APP
 import GravityIcon from 'app/components/icon/gravity';
 
 const ToolbarGravity = class extends React.Component {

@@ -7,7 +7,7 @@ import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
 import ToolbarTitle from 'material-ui/Toolbar/ToolbarTitle';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
-import iconList from 'app/components/icon/icon-list';
+import IconList from 'app/components/icon/icon-list';
 
 const ToolbarScreen = class extends React.Component {
 
@@ -34,13 +34,14 @@ const ToolbarScreen = class extends React.Component {
 			}
 		];
 
-		const renderedButtons = iconList({
+		const iconListProps = {
 			buttons,
 			style: styles.button,
 			onClick: this.props.onClick,
 			iconClassNamePrefix: 'btLiveScreen',
 			selectedId: this.props.secondBar
-		});
+		};
+		const renderedButtons = <IconList {...iconListProps}/>;
 
 		return (
 			<Toolbar style={this.props.style}>

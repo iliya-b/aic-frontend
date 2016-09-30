@@ -122,7 +122,6 @@ test.cb(`Can stop action when clear group`, t => {
 				});
 			},
 			notify: (actionInfo, response) => {
-				console.warn('being notified');
 				counter++;
 				t.is(counter, 1);
 				t.is(response.myGroupId, actionInfo.myGroupId);
@@ -211,3 +210,43 @@ test.cb(`Call multiple start action with same group but different id`, t => {
 	}, 13000);
 });
 
+test.cb(`Call stop action only on same group id, not all the actions of group`, t => {
+	const g1 = 'groupId8-1';
+	const g2 = 'groupId8-2';
+	const counter = {};
+	counter[g1] = 0;
+	counter[g2] = 0;
+	const Notify = new NotifyCore();
+	Notify.registerGroups({
+		groupX8: {
+			id: 'myGroupId8'
+		}
+	});
+
+	Notify.registerActions({
+		actionY8: {
+			group: 'groupX8',
+			request: () => Promise.resolve({x: Math.random(), y: 123}),
+			notify: (actionInfo, response) => {
+				counter[actionInfo.myGroupId8]++;
+				t.is(response.y, 123);
+			},
+			stopCondition: () => false
+		}
+	});
+
+	Notify.watchGroupX8({myGroupId8: g1});
+	Notify.watchGroupX8({myGroupId8: g2});
+	Notify.startActionY8({myGroupId8: g1, otherInfo: 'toto'}); // Should call one time! at 0 sec
+	Notify.startActionY8({myGroupId8: g2, otherInfo: 'toto'}); // Should call two times! at 0 and 5 sec
+
+	setTimeout(() => {
+		Notify.clearGroupX8({myGroupId8: g1});
+	}, 200);
+
+	setTimeout(() => {
+		t.is(counter[g1], 1);
+		t.is(counter[g2], 2);
+		t.end();
+	}, 6000);
+});

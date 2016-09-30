@@ -24,7 +24,7 @@ const scale2Fit = (originalWidth, originalHeight, targetWidth, targetHeight) => 
 
 const calcScreenScale = (width, height, rotation) => {
 	let androidSize;
-	if (rotation === '0') {
+	if (rotation === '0' || rotation === '180') {
 		androidSize = {
 			width,
 			height
