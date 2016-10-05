@@ -77,6 +77,17 @@ const GatewayAdapters = {
 			}
 		}
 	},
+	// test: {
+	// 	download: {
+	// 		response: data => {
+	// 			return data.testsources.map(test => {
+	// 				return {
+	// 					content: test.content
+	// 				};
+	// 			});
+	// 		}
+	// 	}
+	// },
 	camera: {
 		list: {
 			response: data => {
