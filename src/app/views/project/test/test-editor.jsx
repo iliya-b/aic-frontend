@@ -1,15 +1,12 @@
 /* global URLSearchParams */
+/* global File */
 'use strict';
 
 import React from 'react';
-import brace from 'brace';
 import AceEditor from 'react-ace';
 import ToolbarEditFile from 'app/components/toolbar/toolbar-edit-file';
 import TestActions from 'app/actions/test';
 import Gateway from 'app/libs/gateway';
-import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
-import LabeledSpan from 'app/components/form/labeled-span';
 import 'brace/theme/github';
 import 'app/libs/mode-aicdsl';
 
@@ -22,13 +19,12 @@ const TestEditor = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		let count = 0;
 		this.state = {
-			contents: 'Loading...',
+			contents: '',
 			filename: 'test123.aicdsl',
 			issues: {},
 			notes: [],
-			file: 'Loading...'
+			isSaveFileVisible: false
 		};
 	}
 
@@ -48,10 +44,30 @@ const TestEditor = class extends React.Component {
 		this.setState({contents: e});
 		this.handleCreateFile();
 		this.handleUpdateFile();
+		if (!this.state.isSaveFileVisible) {
+			const newState = Object.assign({}, this.state);
+			newState.isSaveFileVisible = true;
+			this.setState(newState);
+		}
 	}
 
 	handleFilenameChange = e => {
 		this.setState({filename: e});
+	}
+
+	handleSaveFile = () => {
+		const file = this.makeAsFile(this.state.contents);
+		const filesArray = Array({projectId, file, progress: event => TestActions.uploadProgress(file, event)});
+		TestActions.upload(filesArray, {includeRequest: true});
+
+		const newState = Object.assign({}, this.state);
+		newState.isSaveFileVisible = false;
+		this.setState(newState);
+	}
+
+	makeAsFile = s => {
+		const d = new Date();
+		return new File([s], this.state.filename, {type: 'text/plain', lastModified: d});
 	}
 
 	render() {
@@ -60,8 +76,11 @@ const TestEditor = class extends React.Component {
 				<ToolbarEditFile
 					title="Test Editor"
 					icon="mdi mdi-puzzle"
+					saveFileVisible={this.state.isSaveFileVisible}
+					onClickSaveFile={this.handleSaveFile}
 					/>
 				<AceEditor
+					id="TE"
 					mode="aicdsl"
 					theme="github"
 					annotations={this.state.issues}
@@ -86,7 +105,6 @@ const TestEditor = class extends React.Component {
 		testId = this.props.params.testId;
 		if (this.isEdit()) {
 			TestActions.download({projectId, testId}).then(data => this.setState({contents: data}));
-			// return 'Edited test file: ' + this.props.params.testId;
 		}
 	}
 

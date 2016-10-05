@@ -34,8 +34,16 @@ const ToolbarEditFile = class extends React.Component {
 		const buttons = [];
 		if (this.props.deleteFileVisible) {
 			buttons.push(
-				<IconButton title="Delete selected files" className="btDeleteSelected" key={5} style={styles.button} onClick={this.props.onClickDeleteFile}>
+				<IconButton title="Delete file" className="btDeleteSelected" key={5} style={styles.button} onClick={this.props.onClickDeleteFile}>
 					<FontIcon className="mdi mdi-delete" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+				</IconButton>
+			);
+		}
+
+		if (this.props.saveFileVisible) {
+			buttons.push(
+				<IconButton title="Save file" className="btSaveSelected" key={5} style={styles.button} onClick={this.props.onClickSaveFile}>
+					<FontIcon className="mdi mdi-settings" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 				</IconButton>
 			);
 		}
@@ -62,6 +70,8 @@ ToolbarEditFile.propTypes = {
 	style: React.PropTypes.object,
 	onClickDeleteFile: React.PropTypes.func,
 	deleteFileVisible: React.PropTypes.bool,
+	onClickSaveFile: React.PropTypes.func,
+	saveFileVisible: React.PropTypes.bool,
 	icon: React.PropTypes.string,
 	title: React.PropTypes.string.isRequired
 };

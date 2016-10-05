@@ -172,7 +172,7 @@ const TestManager = class extends React.Component {
 					uploadCloseVisible={this.state.dialogUploadTestOpen}
 					deleteFileVisible={this.state.selectFileIndexes.length > 0}
 					editFileVisible={this.state.selectFileIndexes.length === 1}
-					createFileVisible={true}
+					createFileVisible
 					onClickUploadOpen={this.handleClickUploadOpen}
 					onClickUploadClose={this.handleClickUploadClose}
 					onClickDeleteFile={this.handleDeleteSelected}
