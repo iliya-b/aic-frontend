@@ -20,6 +20,8 @@ const TestManager = class extends React.Component {
 		super(props);
 		this.state = {
 			dialogUploadTestOpen: false,
+			textEditorOpen: false,
+			testsTableVisible: true,
 			selectFileIndexes: []
 		};
 		this.handleClickUploadOpen = this.toogleDialogUploadTest.bind(this, true);
@@ -42,6 +44,7 @@ const TestManager = class extends React.Component {
 		};
 		this.handleSelectFiles = this.handleSelectFiles.bind(this);
 		this.handleStateChange = this.handleStateChange.bind(this);
+		this.onChange = editorState => this.setState({editorState});
 	}
 
 	toogleDialogUploadTest(open) {
@@ -81,6 +84,20 @@ const TestManager = class extends React.Component {
 				break;
 		}
 		this.setState(mergedState);
+	}
+
+	handleClickCreateFile = () => {
+		this.context.router.push(`/projects/${this.props.params.projectId}/tests/create/editor`);
+	}
+
+	handleEnterEditFile = testId => {
+		this.context.router.push(`/projects/${this.props.params.projectId}/tests/${testId}/editor`);
+	}
+
+	handleClickEditFile = () => {
+		this.handleEnterEditFile(this.state.selectFileIndexes.map(i => {
+			return this.state.test.tests[i].id;
+		}));
 	}
 
 	render() {
@@ -154,11 +171,13 @@ const TestManager = class extends React.Component {
 					uploadOpenVisible={!this.state.dialogUploadTestOpen}
 					uploadCloseVisible={this.state.dialogUploadTestOpen}
 					deleteFileVisible={this.state.selectFileIndexes.length > 0}
+					editFileVisible={this.state.selectFileIndexes.length === 1}
 					createFileVisible={true}
-					editFileVisible={this.state.selectFileIndexes.length > 0}
 					onClickUploadOpen={this.handleClickUploadOpen}
 					onClickUploadClose={this.handleClickUploadClose}
 					onClickDeleteFile={this.handleDeleteSelected}
+					onClickCreateFile={this.handleClickCreateFile}
+					onClickEditFile={this.handleClickEditFile}
 					/>
 				{uploadDropzone}
 				{table}
@@ -177,6 +196,11 @@ const TestManager = class extends React.Component {
 	componentWillUnmount() {
 		this.unsubscribe();
 	}
+
+	// ReactDOM.render(
+	// 	<TestManager />,
+	// 	document.getElementById('container')
+	// );
 };
 
 TestManager.contextTypes = {

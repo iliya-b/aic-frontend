@@ -21,7 +21,9 @@ import ProjectWrapper from 'app/views/project/wrapper';
 import ProjectList from 'app/views/project/list';
 import ProjectPage from 'app/views/project/page';
 import ProjectApkManager from 'app/views/project/apk-manager';
-import ProjectTestManager from 'app/views/project/test-manager';
+import ProjectTestWrapper from 'app/views/project/test/wrapper';
+import ProjectTestManager from 'app/views/project/test/test-manager';
+import ProjectTestEditor from 'app/views/project/test/test-editor';
 import ProjectLiveWrapper from 'app/views/project/live/wrapper';
 import ProjectLiveSession from 'app/views/project/live/session';
 import ProjectLiveList from 'app/views/project/live/list';
@@ -38,7 +40,11 @@ const AppRoutes = (
 				<IndexRoute component={ProjectList}/>
 				<Route path=":projectId" component={ProjectPage}>
 					<IndexRoute component={ProjectApkManager}/>
-					<Route path="test" component={ProjectTestManager}/>
+					<Route path="tests" component={ProjectTestWrapper}>
+						<IndexRoute component={ProjectTestManager}/>
+						<Route path=":testId/editor" component={ProjectTestEditor}/>
+						<Route path="create/editor" component={ProjectTestEditor}/>
+					</Route>
 					<Route path="campaign" component={ProjectLiveWrapper}>
 						<IndexRoute component={ProjectCampaignList}/>
 						<Route path=":campaignId" component={ProjectCampaignShow}/>

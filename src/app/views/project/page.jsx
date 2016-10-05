@@ -12,7 +12,7 @@ const debug = require('debug')('AiC:Views:Project:Page');
 const menuItems = [
 	{path: '', text: 'APK Manager'},
 	{path: 'camera', text: 'Camera Assets'},
-	{path: 'test', text: 'Test Manager'},
+	{path: 'tests', text: 'Test Manager'},
 	{path: 'live', text: 'Live Mode'},
 	{path: 'campaign', text: 'Test Campaigns'}
 ];

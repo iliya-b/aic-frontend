@@ -62,12 +62,12 @@ const ToolbarFileUpload = class extends React.Component {
 		}
 		if (this.props.deleteFileVisible) {
 			buttons.push(
-				<IconButton title="Delete selected files" className="btDeleteSelected" key={5} style={styles.button} onClick={this.props.onClickEditFile}>
+				<IconButton title="Delete selected files" className="btDeleteSelected" key={5} style={styles.button} onClick={this.props.onClickDeleteFile}>
 					<FontIcon className="mdi mdi-delete" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 				</IconButton>
 			);
 		}
-		
+
 		return (
 			<Toolbar style={Object.assign(this.props.style || {}, styles.toolbar)}>
 				<FontIcon style={styles.icon} className={this.props.icon} color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>

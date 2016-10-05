@@ -80,6 +80,11 @@ const GatewayActions = {
 		name: 'execStatus',
 		method: 'GET'
 	}
+	// },
+	// downloadTest: {
+	// 	name: 'downloadTest',
+	// 	method: 'GET'
+	// }
 };
 
 module.exports = GatewayActions;
