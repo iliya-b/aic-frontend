@@ -117,7 +117,8 @@ const GatewayRegisters = function () {
 				allowMany: true
 			}, {
 				action: GatewayActions.download,
-				pathname: '/projects/{projectId}/testsources/{testId}'
+				pathname: '/projects/{projectId}/testsources/{testId}',
+				responseType: 'text'
 			}
 		]
 	});

@@ -16,10 +16,10 @@ const TestEditor = class extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {file: 'Loading...'};
 	}
 
 	render() {
-		const testFile = this.importFile();
 		return (
 			<div>
 				<ToolbarEditFile
@@ -32,7 +32,7 @@ const TestEditor = class extends React.Component {
 					onChange={onChange}
 					name="Test-Editor"
 					editorProps={{$blockScrolling: true}}
-					value={String(testFile)}
+					value={this.state.file}
 					/>
 			</div>
 		);
@@ -49,14 +49,14 @@ const TestEditor = class extends React.Component {
 		projectId = this.props.params.projectId;
 		testId = this.props.params.testId;
 		if (this.isEdit()) {
-			return TestActions.download({projectId, testId});
+			TestActions.download({projectId, testId}).then(data => this.setState({file: data}));
 			// return 'Edited test file: ' + this.props.params.testId;
 		}
-		return 'New test file';
 	}
 
 	componentDidMount() {
 		TestActions.initiate();
+		this.importFile();
 	}
 };
 

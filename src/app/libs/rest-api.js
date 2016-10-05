@@ -18,6 +18,13 @@ function parseJSON(response) {
 	});
 }
 
+function parseText(response) {
+	debug('response parseText', response);
+	return response.text().then(text => {
+		return text;
+	});
+}
+
 function parseJSONXHR(xhr) {
 	debug('response parseJSON', xhr);
 	if (xhr.statusText === 'No Content') {
@@ -183,10 +190,15 @@ const RestAPI = {
 				throw error;
 			})
 			// .then(checkStatus)
-			.then(parseJSON)
+			.then(response => {
+				if (options.responseType === 'text') {
+					return parseText(response);
+				}
+				return parseJSON(response);
+			})
 			.then(data => {
 				debug('return ajax', arguments, data);
-				debug('request succeeded with JSON response', data);
+				debug(`request succeeded with ${options.responseType} response`, data);
 				let result = {};
 				if (options.includeRequest) {
 					result = {request: options.requestObj, response: data};
