@@ -3,7 +3,7 @@
 import React from 'react';
 import Paper from 'material-ui/Paper';
 import ToolbarFileUpload from 'app/components/toolbar/toolbar-file-upload';
-import TableFiles from 'app/components/table/table-files';
+import TableTestFiles from 'app/components/table/table-test-files';
 import TableProgress from 'app/components/table/table-progress';
 import Dropzone from 'app/components/shared/dropzone';
 import XtextPlayground from 'app/components/project/xtext-playground';
@@ -148,7 +148,7 @@ const TestManager = class extends React.Component {
 		let table;
 		if (this.state.test && this.state.test.tests && this.state.test.tests.length) {
 			table = (
-				<TableFiles
+				<TableTestFiles
 					onRowSelection={this.handleSelectFiles}
 					list={this.state.test.tests}
 					selected={this.state.selectFileIndexes}
