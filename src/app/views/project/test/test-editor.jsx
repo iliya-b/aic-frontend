@@ -22,12 +22,14 @@ const TestEditor = class extends React.Component {
 		super(props);
 		this.state = {
 			contents: '',
-			filename: 'test123.aicdsl',
+			metadata: {filename: 'coucou.aicdsl'},
+			filename: 'test.aicdsl',
 			issues: {},
 			notes: [],
 			saving: false,
 			isSaveFileVisible: false
 		};
+		this.state.filename = this.state.metadata.filename;
 	}
 
 	handleCreateFile = () => {
@@ -65,10 +67,16 @@ const TestEditor = class extends React.Component {
 	}
 
 	handleSaveFile = () => {
-
-		const file = this.makeAsFile(this.state.contents);
-		const filesArray = Array({projectId, file, progress: event => TestActions.uploadProgress(file, event)});
-		TestActions.upload(filesArray, {includeRequest: true});
+		debug(this.state.filename, this.state.metadata.filename);
+		if (this.props.params.testId === 'create' || this.state.filename !== this.state.metadata.filename) {
+			const file = this.makeAsFile(this.state.contents);
+			const filesArray = Array({projectId, file, progress: event => TestActions.uploadProgress(file, event)});
+			TestActions.upload(filesArray, {includeRequest: true});
+		} else {
+			const filename = this.state.filename;
+			const file = this.makeAsFile(this.state.contents);
+			TestActions.update({projectId, file, filename, testId}, {includeRequest: true});
+		}
 		const newState = Object.assign({}, this.state);
 		newState.isSaveFileVisible = false;
 		newState.saving = true;
@@ -97,12 +105,11 @@ const TestEditor = class extends React.Component {
 					/>
 				<br/><input type="text" name="Filemame" placeholder={this.state.filename} onChange={this.handleFilenameChange}/><br/>
 				<br/>
-				<p>{this.state.filename}</p>
 				<AceEditor
 					id="TE"
 					mode="aicdsl"
 					theme="github"
-					annotations={Array(this.state.issues)}
+					annotations={this.state.issues}
 					onChange={this.handleContentsChange}
 					name="Test-Editor"
 					editorProps={{$blockScrolling: true}}
@@ -125,6 +132,7 @@ const TestEditor = class extends React.Component {
 		testId = this.props.params.testId;
 		if (this.isEdit()) {
 			TestActions.download({projectId, testId}).then(data => this.setState({contents: data}));
+			// TestActions.show({projectId, testId}).then(data => this.setState({metadata: data}));
 		}
 	}
 

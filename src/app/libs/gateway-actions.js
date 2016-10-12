@@ -83,6 +83,10 @@ const GatewayActions = {
 	download: {
 		name: 'download',
 		method: 'GET'
+	},
+	show: {
+		name: 'show',
+		method: 'GET'
 	}
 };
 

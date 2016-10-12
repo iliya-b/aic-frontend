@@ -27,7 +27,6 @@ const TestManager = class extends React.Component {
 		this.handleClickUploadOpen = this.toogleDialogUploadTest.bind(this, true);
 		this.handleClickUploadClose = this.toogleDialogUploadTest.bind(this, false);
 		this.handleDropFiles = files => {
-			debug("TOTOTOTOTOTO", files);
 			const filesArray = files.map(file => {
 				return {projectId, file, progress: event => TestActions.uploadProgress(file, event)};
 			});
@@ -129,7 +128,14 @@ const TestManager = class extends React.Component {
 		if (this.state.dialogUploadTestOpen) {
 			uploadDropzone = (
 				<div>
-					<Dropzone onDrop={this.handleDropFiles} style={styles.dropzone.style} activeStyle={styles.dropzone.activeStyle} id="fieldTestUpload" name="fieldTestUpload" title="fieldTestUpload">
+					<Dropzone
+						onDrop={this.handleDropFiles}
+						style={styles.dropzone.style}
+						activeStyle={styles.dropzone.activeStyle}
+						id="fieldTestUpload"
+						name="fieldTestUpload"
+						title="fieldTestUpload"
+						>
 						<div>You can drop some files here, or click to select files to upload.</div>
 					</Dropzone>
 					<TableProgress

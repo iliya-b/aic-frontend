@@ -43,7 +43,7 @@ const ToolbarEditFile = class extends React.Component {
 		if (this.props.saveFileVisible) {
 			buttons.push(
 				<IconButton title="Save file" className="btSaveSelected" key={5} style={styles.button} onClick={this.props.onClickSaveFile}>
-					<FontIcon className="mdi mdi-settings" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+					<FontIcon className="mdi mdi-arrow-down-bold-hexagon-outline" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 				</IconButton>
 			);
 		}
