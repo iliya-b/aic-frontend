@@ -27,6 +27,7 @@ const TestManager = class extends React.Component {
 		this.handleClickUploadOpen = this.toogleDialogUploadTest.bind(this, true);
 		this.handleClickUploadClose = this.toogleDialogUploadTest.bind(this, false);
 		this.handleDropFiles = files => {
+			debug("TOTOTOTOTOTO", files);
 			const filesArray = files.map(file => {
 				return {projectId, file, progress: event => TestActions.uploadProgress(file, event)};
 			});
@@ -196,11 +197,6 @@ const TestManager = class extends React.Component {
 	componentWillUnmount() {
 		this.unsubscribe();
 	}
-
-	// ReactDOM.render(
-	// 	<TestManager />,
-	// 	document.getElementById('container')
-	// );
 };
 
 TestManager.contextTypes = {

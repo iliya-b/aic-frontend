@@ -7,6 +7,7 @@ import AceEditor from 'react-ace';
 import ToolbarEditFile from 'app/components/toolbar/toolbar-edit-file';
 import TestActions from 'app/actions/test';
 import Gateway from 'app/libs/gateway';
+import DialogTestSaved from 'app/components/dialog/dialog-test-saved';
 import 'brace/theme/github';
 import 'app/libs/mode-aicdsl';
 
@@ -24,6 +25,7 @@ const TestEditor = class extends React.Component {
 			filename: 'test123.aicdsl',
 			issues: {},
 			notes: [],
+			saving: false,
 			isSaveFileVisible: false
 		};
 	}
@@ -52,22 +54,36 @@ const TestEditor = class extends React.Component {
 	}
 
 	handleFilenameChange = e => {
-		this.setState({filename: e});
+		const newState = Object.assign({}, this.state);
+		newState.filename = e.target.value;
+		this.setState(newState);
+		if (!this.state.isSaveFileVisible) {
+			const newState = Object.assign({}, this.state);
+			newState.isSaveFileVisible = true;
+			this.setState(newState);
+		}
 	}
 
 	handleSaveFile = () => {
+
 		const file = this.makeAsFile(this.state.contents);
 		const filesArray = Array({projectId, file, progress: event => TestActions.uploadProgress(file, event)});
 		TestActions.upload(filesArray, {includeRequest: true});
-
 		const newState = Object.assign({}, this.state);
 		newState.isSaveFileVisible = false;
+		newState.saving = true;
 		this.setState(newState);
 	}
 
 	makeAsFile = s => {
 		const d = new Date();
 		return new File([s], this.state.filename, {type: 'text/plain', lastModified: d});
+	}
+
+	handleCloseDialog = () => {
+		const newState = Object.assign({}, this.state);
+		newState.saving = false;
+		this.setState(newState);
 	}
 
 	render() {
@@ -79,16 +95,20 @@ const TestEditor = class extends React.Component {
 					saveFileVisible={this.state.isSaveFileVisible}
 					onClickSaveFile={this.handleSaveFile}
 					/>
+				<br/><input type="text" name="Filemame" placeholder={this.state.filename} onChange={this.handleFilenameChange}/><br/>
+				<br/>
+				<p>{this.state.filename}</p>
 				<AceEditor
 					id="TE"
 					mode="aicdsl"
 					theme="github"
-					annotations={this.state.issues}
+					annotations={Array(this.state.issues)}
 					onChange={this.handleContentsChange}
 					name="Test-Editor"
 					editorProps={{$blockScrolling: true}}
 					value={this.state.contents}
 					/>
+				<DialogTestSaved open={this.state.saving} onRequestClose={this.handleCloseDialog}/>
 			</div>
 		);
 	}
