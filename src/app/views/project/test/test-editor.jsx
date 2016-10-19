@@ -106,7 +106,7 @@ const TestEditor = class extends React.Component {
 				<br/><input type="text" name="Filemame" placeholder={this.state.filename} onChange={this.handleFilenameChange}/><br/>
 				<br/>
 				<AceEditor
-					id="TE"
+					id="test-editor"
 					mode="aicdsl"
 					theme="github"
 					annotations={this.state.issues}

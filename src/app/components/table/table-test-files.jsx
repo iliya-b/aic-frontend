@@ -9,7 +9,6 @@ import TableHeader from 'material-ui/Table/TableHeader';
 import TableRowColumn from 'material-ui/Table/TableRowColumn';
 import TableBody from 'material-ui/Table/TableBody';
 
-// APP
 const TableTestFiles = class extends React.Component {
 
 	render() {
