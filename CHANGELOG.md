@@ -11,11 +11,15 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 - Add hwconfig to live info.
 - Add rotation buttons to live.
 - Add drag toolbar on live fullscreen.
+- Add charging options to battery sensor on live.
+--
 
 ### Changed
 - Moved all components in /#themes to storybook.
 - Live code cleanup.
 - Fix bugs with 180° rotation.
+- Initiate all sensors when load live.
+--
 
 ## [0.7.1]
 

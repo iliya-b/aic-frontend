@@ -334,6 +334,8 @@ const LiveStore = Reflux.createStore({
 			this.calculateScale();
 		}
 
+		this.updateSensors();
+
 		this.updateState();
 	},
 
@@ -408,8 +410,8 @@ const LiveStore = Reflux.createStore({
 		this.state.live.battery = 100;
 		// TODO: initial state of sensors should come from live status
 		this.state.live.sensors = {};
-		this.state.live.sensors.accelerometer = {x: 0, y: 5.9, z: 0};
-		this.state.live.sensors.battery = {level_percent: 100, ac_online: 1}; // eslint-disable-line camelcase
+		// this.state.live.sensors.accelerometer = {x: 0, y: 5.9, z: 0};
+		// this.state.live.sensors.battery = {level_percent: 100, ac_online: 1}; // eslint-disable-line camelcase
 	},
 
 	resetLive() {
@@ -446,6 +448,66 @@ const LiveStore = Reflux.createStore({
 			Notify.startListSessions({projectId: this.state.projectId});
 			Notify.startUserQuota({projectId: this.state.projectId});
 		}
+	},
+
+	updateSensors() {
+		// "aicd.ac.online": "1",
+  //   "aicd.accelerometer.x": "0.000000",
+  //   "aicd.accelerometer.y": "-5.900000",
+  //   "aicd.accelerometer.z": "0.000000",
+  //   "aicd.barometer.pressure": "999.000000",
+  //   "aicd.battery.full": "50000000",
+  //   "aicd.battery.level": "22500000",
+  //   "aicd.battery.mode": "manual",
+  //   "aicd.battery.status": "Charging",
+  //   "aicd.device.id": "00000000000000",
+  //   "aicd.gps.altitude": "0",
+  //   "aicd.gps.bearing": "0",
+  //   "aicd.gps.latitude": "0",
+  //   "aicd.gps.longitude": "0",
+  //   "aicd.gravity.x": "0.000000",
+  //   "aicd.gravity.y": "9.776219",
+  //   "aicd.gravity.z": "0.813417",
+  //   "aicd.gyroscope.azimuth": "0.000000",
+  //   "aicd.gyroscope.pitch": "0.000000",
+  //   "aicd.gyroscope.roll": "0.000000",
+  //   "aicd.hygrometer.humidity": "88.000000",
+  //   "aicd.linearacc.x": "0.000000",
+  //   "aicd.linearacc.y": "0.000000",
+  //   "aicd.linearacc.z": "0.000000",
+  //   "aicd.luxmeter.light": "88.000000",
+  //   "aicd.magnetometer.x": "7.000000",
+  //   "aicd.magnetometer.y": "8.000000",
+  //   "aicd.magnetometer.z": "9.000000",
+  //   "aicd.orientation.azimuth": "0.000000",
+  //   "aicd.orientation.pitch": "0.000000",
+  //   "aicd.orientation.roll": "0.000000",
+  //   "aicd.screen_rotation": "270",
+  //   "aicd.telemeter.distance": "8.000000",
+  //   "aicd.thermometer.temperature": "9.000000",
+		this.state.live.sensors.accelerometer = {
+			x: this.state.live.properties['aicd.accelerometer.x'],
+			y: this.state.live.properties['aicd.accelerometer.y'],
+			z: this.state.live.properties['aicd.accelerometer.z']
+		};
+		this.state.live.sensors.battery = {
+			level_percent: parseInt(this.state.live.properties['aicd.battery.level'], 10) / parseInt(this.state.live.properties['aicd.battery.full'], 10), // eslint-disable-line camelcase
+			ac_online: this.state.live.properties['aicd.ac.online'] // eslint-disable-line camelcase
+		};
+		this.state.live.sensors.pressure = {
+			pressure: this.state.live.properties['aicd.barometer.pressure']
+		};
+		this.state.live.sensors.gps = {
+			latitude: this.state.live.properties['aicd.gps.latitude'],
+			longitude: this.state.live.properties['aicd.gps.longitude'],
+			altitude: this.state.live.properties['aicd.gps.altitude'],
+			bearing: this.state.live.properties['aicd.gps.bearing']
+		};
+		this.state.live.sensors.gravity = {
+			x: this.state.live.properties['aicd.gravity.x'],
+			y: this.state.live.properties['aicd.gravity.y'],
+			z: this.state.live.properties['aicd.gravity.z']
+		};
 	},
 
 	// State update
