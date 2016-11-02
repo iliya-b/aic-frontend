@@ -335,7 +335,6 @@ const LiveStore = Reflux.createStore({
 		}
 
 		this.updateSensors();
-
 		this.updateState();
 	},
 

@@ -112,6 +112,9 @@ const GatewayRegisters = function () {
 				pathname: '/projects/{projectId}/testsources',
 				allowMany: true
 			}, {
+				action: GatewayActions.update,
+				pathname: '/projects/{projectId}/testsources/{testId}'
+			}, {
 				action: GatewayActions.delete,
 				pathname: '/projects/{projectId}/testsources/{testId}',
 				allowMany: true
