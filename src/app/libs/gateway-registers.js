@@ -118,6 +118,13 @@ const GatewayRegisters = function () {
 				action: GatewayActions.delete,
 				pathname: '/projects/{projectId}/testsources/{testId}',
 				allowMany: true
+			}, {
+				action: GatewayActions.download,
+				pathname: '/projects/{projectId}/testsources/{testId}',
+				responseType: 'text'
+			}, {
+				action: GatewayActions.show,
+				pathname: '/projects/{projectId}/testsources/{testId}/metadata'
 			}
 		]
 	});

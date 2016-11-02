@@ -254,7 +254,7 @@ const GatewayAdapters = {
 	xtext: {
 		validate: {
 			response: backendObject => backendObject.issues.map(issue => ({
-				row: issue.line,
+				row: (issue.line - 1),
 				column: issue.column,
 				type: issue.severity,
 				text: issue.description

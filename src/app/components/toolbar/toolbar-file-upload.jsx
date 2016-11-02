@@ -46,9 +46,23 @@ const ToolbarFileUpload = class extends React.Component {
 				</IconButton>
 			);
 		}
+		if (this.props.createFileVisible) {
+			buttons.push(
+				<IconButton title="Create file" className="btCreateFile" key={3} style={styles.button} onClick={this.props.onClickCreateFile}>
+					<FontIcon className="mdi mdi-plus" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+				</IconButton>
+			);
+		}
+		if (this.props.editFileVisible) {
+			buttons.push(
+				<IconButton title="Edit selected file" className="btEditSelected" key={4} style={styles.button} onClick={this.props.onClickEditFile}>
+					<FontIcon className="mdi mdi-pencil" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+				</IconButton>
+			);
+		}
 		if (this.props.deleteFileVisible) {
 			buttons.push(
-				<IconButton title="Delete selected files" className="btDeleteSelected" key={3} style={styles.button} onClick={this.props.onClickDeleteFile}>
+				<IconButton title="Delete selected files" className="btDeleteSelected" key={5} style={styles.button} onClick={this.props.onClickDeleteFile}>
 					<FontIcon className="mdi mdi-delete" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
 				</IconButton>
 			);
@@ -77,9 +91,13 @@ ToolbarFileUpload.propTypes = {
 	onClickUploadOpen: React.PropTypes.func,
 	onClickUploadClose: React.PropTypes.func,
 	onClickDeleteFile: React.PropTypes.func,
+	onClickCreateFile: React.PropTypes.func,
+	onClickEditFile: React.PropTypes.func,
 	uploadOpenVisible: React.PropTypes.bool,
 	uploadCloseVisible: React.PropTypes.bool,
 	deleteFileVisible: React.PropTypes.bool,
+	createFileVisible: React.PropTypes.bool,
+	editFileVisible: React.PropTypes.bool,
 	icon: React.PropTypes.string,
 	title: React.PropTypes.string.isRequired
 };

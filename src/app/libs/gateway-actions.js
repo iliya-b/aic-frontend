@@ -79,6 +79,14 @@ const GatewayActions = {
 	execStatus: {
 		name: 'execStatus',
 		method: 'GET'
+	},
+	download: {
+		name: 'download',
+		method: 'GET'
+	},
+	show: {
+		name: 'show',
+		method: 'GET'
 	}
 };
 

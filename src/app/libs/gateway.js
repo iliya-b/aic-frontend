@@ -73,7 +73,8 @@ const Gateway = {
 		const schemaAdapter = this.getAdapter(options.namespace, options.action.name, 'schema');
 		let optionsAPI = {
 			method: options.action.method,
-			requestObj: obj
+			requestObj: obj,
+			responseType: options.responseType || 'json'
 		};
 		if (extraOptions) {
 			optionsAPI = Object.assign({}, optionsAPI, extraOptions);
