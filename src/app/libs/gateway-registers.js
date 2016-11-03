@@ -125,6 +125,12 @@ const GatewayRegisters = function () {
 			}, {
 				action: GatewayActions.show,
 				pathname: '/projects/{projectId}/testsources/{testId}/metadata'
+			}, {
+				action: {
+					name: 'compile',
+					method: 'POST'
+				},
+				pathname: '/projects/{projectId}/testsources/{testId}/apk'
 			}
 		]
 	});

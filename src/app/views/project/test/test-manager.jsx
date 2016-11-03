@@ -6,7 +6,6 @@ import ToolbarFileUpload from 'app/components/toolbar/toolbar-file-upload';
 import TableTestFiles from 'app/components/table/table-test-files';
 import TableProgress from 'app/components/table/table-progress';
 import Dropzone from 'app/components/shared/dropzone';
-import XtextPlayground from 'app/components/project/xtext-playground';
 import TestActions from 'app/actions/test';
 import TestStore from 'app/stores/test';
 
@@ -24,36 +23,31 @@ const TestManager = class extends React.Component {
 			testsTableVisible: true,
 			selectFileIndexes: []
 		};
-		this.handleClickUploadOpen = this.toogleDialogUploadTest.bind(this, true);
-		this.handleClickUploadClose = this.toogleDialogUploadTest.bind(this, false);
-		this.handleDropFiles = files => {
-			const filesArray = files.map(file => {
-				return {projectId, file, progress: event => TestActions.uploadProgress(file, event)};
-			});
-			TestActions.upload(filesArray, {includeRequest: true});
-		};
-		this.handleDeleteSelected = () => {
-			debug('handleDeleteSelected');
-			const testsToDelete = this.state.selectFileIndexes.map(i => {
-				return {projectId, testId: this.state.test.tests[i].id};
-			});
-			const newState = Object.assign({}, this.state);
-			newState.selectFileIndexes = [];
-			this.setState(newState);
-			TestActions.delete(testsToDelete, {includeRequest: true});
-		};
-		this.handleSelectFiles = this.handleSelectFiles.bind(this);
-		this.handleStateChange = this.handleStateChange.bind(this);
-		this.onChange = editorState => this.setState({editorState});
 	}
 
-	toogleDialogUploadTest(open) {
+	onChange = editorState => this.setState({editorState})
+	handleClickUploadOpen = () => this.setState({dialogUploadTestOpen: true})
+	handleClickUploadClose = () => this.setState({dialogUploadTestOpen: false})
+
+	handleDeleteSelected = () => {
+		debug('handleDeleteSelected');
+		const testsToDelete = this.state.selectFileIndexes.map(i => {
+			return {projectId, testId: this.state.test.tests[i].id};
+		});
 		const newState = Object.assign({}, this.state);
-		newState.dialogUploadTestOpen = open;
+		newState.selectFileIndexes = [];
 		this.setState(newState);
+		TestActions.delete(testsToDelete, {includeRequest: true});
 	}
 
-	handleSelectFiles(fileIndexes) {
+	handleDropFiles = files => {
+		const filesArray = files.map(file => {
+			return {projectId, file, progress: event => TestActions.uploadProgress(file, event)};
+		});
+		TestActions.upload(filesArray, {includeRequest: true});
+	}
+
+	handleSelectFiles = fileIndexes => {
 		let finalFileIndexes;
 
 		if (fileIndexes === 'all') {
@@ -71,13 +65,14 @@ const TestManager = class extends React.Component {
 		this.setState(newState);
 	}
 
-	handleStateChange(newState) {
+	handleStateChange = newState => {
 		const mergedState = Object.assign({}, this.state, newState);
 		debug('handleStateChange', newState, mergedState);
 		switch (mergedState.test.status) {
 			case 'initCompleted':
 			case 'uploadCompleted':
 			case 'deleteCompleted':
+			case 'compileCompleted':
 				TestActions.list({projectId});
 				break;
 			default:
@@ -87,17 +82,25 @@ const TestManager = class extends React.Component {
 	}
 
 	handleClickCreateFile = () => {
-		this.context.router.push(`/projects/${this.props.params.projectId}/tests/create/editor`);
+		this.context.router.push(`/projects/${projectId}/tests/create/editor`);
 	}
 
 	handleEnterEditFile = testId => {
-		this.context.router.push(`/projects/${this.props.params.projectId}/tests/${testId}/editor`);
+		this.context.router.push(`/projects/${projectId}/tests/${testId}/editor`);
 	}
 
 	handleClickEditFile = () => {
-		this.handleEnterEditFile(this.state.selectFileIndexes.map(i => {
-			return this.state.test.tests[i].id;
-		}));
+		const testId = this.getSelectedId();
+		this.handleEnterEditFile(testId);
+	}
+
+	getSelectedId = () => {
+		return this.state.test.tests[this.state.selectFileIndexes[0]].id;
+	}
+
+	handleClickCompileFile = () => {
+		const testId = this.getSelectedId();
+		TestActions.compile({projectId, testId});
 	}
 
 	render() {
@@ -179,17 +182,17 @@ const TestManager = class extends React.Component {
 					uploadCloseVisible={this.state.dialogUploadTestOpen}
 					deleteFileVisible={this.state.selectFileIndexes.length > 0}
 					editFileVisible={this.state.selectFileIndexes.length === 1}
+					compileFileVisible={this.state.selectFileIndexes.length === 1}
 					createFileVisible
 					onClickUploadOpen={this.handleClickUploadOpen}
 					onClickUploadClose={this.handleClickUploadClose}
 					onClickDeleteFile={this.handleDeleteSelected}
 					onClickCreateFile={this.handleClickCreateFile}
 					onClickEditFile={this.handleClickEditFile}
+					onClickCompileFile={this.handleClickCompileFile}
 					/>
 				{uploadDropzone}
 				{table}
-
-				<XtextPlayground/>
 			</div>
 		);
 	}

@@ -60,6 +60,12 @@ const TestStore = Reflux.createStore({
 		this.updateState();
 	},
 
+	onCompileCompleted(result) {
+		debug('onCompileCompleted', result);
+		this.state.test.status = 'compiledCompleted';
+		this.updateState();
+	},
+
 	// onToggleDelete(apkId) {
 	// 	this.state.apk.apks = this.state.apk.apks.map(item => {
 	// 		return (item.id === apkId) ? AppUtils.extend(item, {toDelete: !item.toDelete, checked: !item.toDelete}) : item;

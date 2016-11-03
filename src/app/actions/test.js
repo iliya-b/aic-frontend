@@ -12,7 +12,8 @@ const TestActions = Reflux.createActions({
 	delete: {asyncResult: true},
 	toggleDelete: {},
 	download: {asyncResult: true},
-	show: {asyncResult: true}
+	show: {asyncResult: true},
+	compile: {asyncResult: true}
 });
 
 TestActions.list.listenAndPromise(Gateway.tests.list);
@@ -21,5 +22,6 @@ TestActions.update.listenAndPromise(Gateway.tests.update);
 TestActions.delete.listenAndPromise(Gateway.tests.deleteMany);
 TestActions.download.listenAndPromise(Gateway.tests.download);
 TestActions.show.listenAndPromise(Gateway.tests.show);
+TestActions.compile.listenAndPromise(Gateway.tests.compile);
 
 module.exports = TestActions;
