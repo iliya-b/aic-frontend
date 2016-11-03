@@ -110,7 +110,8 @@ const LiveToolbox = class extends React.Component {
 		this.state = {
 			activeBar: TOOLBAR_ANDROID,
 			activeSecondBar: null,
-			toolbarPosition: [0, 0]
+			toolbarPosition: [0, 0],
+			toolbarCollapsed: false
 		};
 
 		// Secondary toolbars
@@ -214,6 +215,14 @@ const LiveToolbox = class extends React.Component {
 		debug('handleDrag st off', this.offSetX, this.offSetY);
 	}
 
+	handleToggleToolbar = () => {
+		this.setState({toolbarCollapsed: !this.state.toolbarCollapsed});
+	}
+
+	showCurrentBar = () => {
+		return !this.props.isFullscreen || !this.state.toolbarCollapsed;
+	}
+
 	render() {
 		debug('render');
 		const styles = {
@@ -310,8 +319,15 @@ const LiveToolbox = class extends React.Component {
 
 		const styleDrag = {
 			background: 'rgb(98, 151, 53)', // TODO: change to palette
-			padding: '14px 0 14px 6px',
+			padding: '14px 0 14px 0',
 			cursor: 'move',
+			float: 'left'
+		};
+
+		const styleToggle = {
+			background: 'rgb(98, 151, 53)', // TODO: change to palette
+			padding: '14px 0 14px 0',
+			cursor: 'pointer',
 			float: 'left'
 		};
 
@@ -319,14 +335,15 @@ const LiveToolbox = class extends React.Component {
 			position: this.props.isFullscreen ? 'absolute' : 'initial',
 			top: this.state.toolbarPosition[1],
 			left: this.state.toolbarPosition[0],
-			width: this.props.isFullscreen ? 800 : 'auto'
+			width: this.props.isFullscreen ? 820 : 'auto'
 		};
 
 		return (
 			<div style={styleLiveToolBox}>
+				{this.props.isFullscreen && <FontIcon style={styleToggle} onClick={this.handleToggleToolbar} className={`mdi mdi-menu-${this.state.toolbarCollapsed ? 'right' : 'left'}`} color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>}
 				{this.props.isFullscreen && <FontIcon style={styleDrag} draggable onDragStart={this.handleDragStart} onDrag={this.handleDragThrottled} className="mdi mdi-drag" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>}
-				{currentBar}
-				{currentSecondBar}
+				{this.showCurrentBar() && currentBar}
+				{this.showCurrentBar() && currentSecondBar}
 			</div>
 		);
 	}
