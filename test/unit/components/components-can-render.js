@@ -5,8 +5,6 @@ import {shallow} from 'enzyme';
 import getTheme from './_get-theme';
 
 const componentsReq = {
-	// Card
-	CardAndroidSession: require('app/components/card/card-android-session'),
 	// Dialog
 	DialogConfirmDelete: require('app/components/dialog/dialog-confirm-delete'),
 	DialogLogin: require('app/components/dialog/dialog-login'),
@@ -32,10 +30,6 @@ const componentsReq = {
 	// AvatarProgress: require('app/components/icon/avatar-progress'),
 	// List
 	ListItemStatus: require('app/components/list/list-item-status'),
-	// Panel
-	PanelCamera: require('app/components/panel/panel-camera'),
-	PanelSessionDetails: require('app/components/panel/panel-session-details'),
-	PanelSessionScreen: require('app/components/panel/panel-session-screen'),
 	// Project
 	// AreaStatus: require('app/components/project/area-status'), // Live store
 	BoxStatus: require('app/components/project/box-status'),
@@ -95,14 +89,11 @@ test.before(() => {
 });
 
 const componentsProps = {
-	CardAndroidSession: {image: 'kitkat-phone'},
 	DialogConfirmDelete: {open: true, onRequestClose: () => {},	onCancel: () => {},	onConfirm: () => {}},
 	DialogLogin: {open: true},
 	DialogServerError: {open: true, onRequestClose: () => {}},
 	DialogSessionEnded: {open: true, onRequestClose: () => {}},
 	// IconIconList: {buttons: [{id: 'a', tooltip: '', fontIcon: 'help'}], onClick: {a: () => {}}},
-	PanelCamera: {fileList: []},
-	PanelSessionDetails: {properties: {}},
 	MachineCardLive: {avm_status: componentsReq.MachineCard.VMSTATE.READY}, // eslint-disable-line camelcase
 	TestResultsBox: {results: []},
 	ToolbarAccelerometer: {accelerometer: {x: 0, y: 0, z: 0}, onChange: () => {}},

@@ -8,7 +8,7 @@ import IconButton from 'material-ui/IconButton';
 import {capimelize, moveCaretToEnd} from 'app/libs/helpers';
 import CampaignIcon from 'app/components/icon/campaign-icon';
 
-const CardProject = class extends React.Component {
+const CardCampaign = class extends React.Component {
 	handleClickEnter = () => {
 		this.props.onEnter(this.props.id);
 	}
@@ -51,7 +51,7 @@ const CardProject = class extends React.Component {
 	}
 };
 
-CardProject.propTypes = {
+CardCampaign.propTypes = {
 	id: React.PropTypes.string,
 	index: React.PropTypes.number,
 	name: React.PropTypes.string,
@@ -59,4 +59,4 @@ CardProject.propTypes = {
 	onEnter: React.PropTypes.func
 };
 
-module.exports = CardProject;
+module.exports = CardCampaign;

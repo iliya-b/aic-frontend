@@ -1,7 +1,7 @@
 import fs from 'fs';
 import {buildComponentTests} from './_auto-render';
 
-const componentsToLoad = ['icon', 'toolbar'];
+const componentsToLoad = ['icon', 'toolbar', 'card', 'panel'];
 
 componentsToLoad.forEach(c => {
 	const componentsProps = require(`../../prop-samples/${c}`);

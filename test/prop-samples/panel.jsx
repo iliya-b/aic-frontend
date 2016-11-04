@@ -1,10 +1,15 @@
 import React from 'react';
-import {storiesOf} from '@kadira/storybook';
-import {themeDecorator} from 'stories/_helpers';
-import PanelCampaignShow from 'app/components/panel/panel-campaign-show';
+import PanelInfo from 'app/components/panel/panel-info';
+import SimpleStatusIcon from 'app/components/icon/simple-status-icon';
+import PanelSessionStatus from 'app/components/panel/panel-session-status';
+import FontIcon from 'material-ui/FontIcon';
 
-const campaignData = [
-	{
+const PanelAndroidConfigProps = [{
+	props: {}
+}];
+
+const PanelCampaignShowProps = [{
+	props: {
 		id: '09c40102703b11e69df2fa163e728b77',
 		projectId: 'eb8ef796703a11e69df2fa163e728b77',
 		status: 'READY',
@@ -24,7 +29,9 @@ const campaignData = [
 			}
 		],
 		name: 'test'
-	}, {
+	}
+}, {
+	props: {
 		id: '165e4df0710311e69df3fa163e728b77',
 		projectId: 'eb8ef796703a11e69df2fa163e728b77',
 		status: 'RUNNING',
@@ -56,7 +63,9 @@ const campaignData = [
 			}
 		],
 		name: '654'
-	}, {
+	}
+}, {
+	props: {
 		id: 'f8c04ccc818211e69875fa163e728b77',
 		tests: [
 			{
@@ -135,7 +144,9 @@ const campaignData = [
 				campaignId: 'f8c04ccc818211e69875fa163e728b77'
 			}
 		]
-	}, {
+	}
+}, {
+	props: {
 		id: 'eeda777c7fe411e69576fa163e728b77',
 		tests: [
 			{
@@ -192,27 +203,162 @@ const campaignData = [
 		name: 'test2 - all',
 		projectId: '97231e3c7f3811e69574fa163e728b77'
 	}
+}];
+
+const items1 = [
+	{status: SimpleStatusIcon.STATUS_LIST.ERROR, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.READY, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.RUNNING, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.QUEUED, children: 'com.aic.bla'}
 ];
 
-storiesOf('Panel', module)
-	.addDecorator(themeDecorator)
-	.add('PanelCampaignShow', () => (
-		<div>
-			<h2>test1</h2>
-			<div style={{padding: 24}}>
-				<PanelCampaignShow {...campaignData[0]}/>
-			</div>
-			<h2>test2</h2>
-			<div style={{padding: 24}}>
-				<PanelCampaignShow {...campaignData[1]}/>
-			</div>
-			<h2>test3</h2>
-			<div style={{padding: 24}}>
-				<PanelCampaignShow {...campaignData[2]}/>
-			</div>
-			<h2>test4</h2>
-			<div style={{padding: 24}}>
-				<PanelCampaignShow {...campaignData[3]}/>
-			</div>
-		</div>
-	));
+const items2 = [
+	{status: SimpleStatusIcon.STATUS_LIST.READY, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.READY, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.READY, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.READY, children: 'com.aic.bla'}
+];
+
+const items3 = [
+	{status: SimpleStatusIcon.STATUS_LIST.ERROR, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.READY, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.RUNNING, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.RUNNING, children: 'com.aic.bla'}
+];
+
+const items4 = [
+	{status: SimpleStatusIcon.STATUS_LIST.ERROR, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.ERROR, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.READY, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.READY, children: 'com.aic.bla'}
+];
+
+const items5 = [
+	{status: 'TOTO', children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.ERROR, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.READY, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.RUNNING, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.QUEUED, children: 'com.aic.bla'}
+];
+
+const items6 = [
+	{status: SimpleStatusIcon.STATUS_LIST.REQUESTED, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.ERROR, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.READY, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.RUNNING, children: 'com.aic.bla'},
+	{status: SimpleStatusIcon.STATUS_LIST.QUEUED, children: 'com.aic.bla'}
+];
+
+const PanelProgressProps = [{
+	props: {type: 'apk', style: {margin: 10, width: 800}, items: items1}
+}, {
+	props: {type: 'apk', style: {margin: 10, width: 400}, items: items1}
+}, {
+	props: {type: 'apk', style: {margin: 10, width: '95%'}, items: items1}
+}, {
+	props: {type: 'apk', style: {margin: 10, width: 800}, items: items2}
+}, {
+	props: {type: 'apk', style: {margin: 10, width: 800}, items: items3}
+}, {
+	props: {type: 'apk', style: {margin: 10, width: 800}, items: items4}
+}, {
+	props: {type: 'apk', style: {margin: 10, width: 800}, items: items5}
+}, {
+	props: {type: 'apk', style: {margin: 10, width: 800}, items: []}
+}, {
+	props: {type: 'apk', style: {margin: 10, width: 800}, items: items6}
+}];
+
+const PanelSessionScreenProps = [{
+	props: {}
+}];
+
+const PanelSessionsInfoProps = [{
+	props: {}
+}];
+
+const PanelToolbarBaseProps = [{
+	props: {
+		icon: <FontIcon className="mdi mdi-screen-rotation"/>
+	}
+}];
+
+const PanelCameraProps = [{
+	props: {
+		fileList: [{filename: 'file.ext', id: 1}]
+	}
+}];
+
+const PanelInfoProps = [];
+const infoShowIcon = [true, false];
+const statuses = PanelInfo.STATUS_LIST.slice();
+statuses.push(false);
+
+infoShowIcon.forEach((showIcon, si) => {
+	PanelInfo.SIZE_LIST.forEach((size, ti) => {
+		statuses.forEach((status, bi) => {
+			const statusProp = {
+				style: {margin: '10px'},
+				key: `${si}-${ti}-${bi}`,
+				showIcon,
+				size
+			};
+			if (status) {
+				statusProp.status = status;
+			}
+			PanelInfoProps.push({props: statusProp, children: `${status ? status : 'DEFAULT'} ${showIcon ? 'with icon' : 'no icon'} ${size} message.`});
+		});
+	});
+});
+
+const avmInfo1 = {avm_id: 'cfaamg4e', avm_name: 'cfaamg4e', avm_novnc_host: '10.50.0.86', avm_novnc_port: 19623, avm_owner: 'karine', avm_status: 'CREATING', image: 'kitkat-phone', index: 1, project_id: '0602b27748484b249244ab471a9142d7', stack_name: 'karine-cfaamg4e', ts_created: '2016-03-29T12:25:10.687575', hwconfig: {dpi: 120, enableBattery: 1, enableCamera: 1, enableGps: 1, enableGsm: 1, enableNfc: 1, enableRecord: 0, enableSensors: 1, height: 600, width: 800}}; // eslint-disable-line camelcase
+const packageList = ['package1', 'package1', 'package1', 'package1 long name file pack', 'package1', 'package1', 'package1'];
+const vmproperties = {'dhcp.eth1.pid': '802', 'ro.aicd.caps.scr': 'on', 'aicd.gyroscope.roll': '0.000000', 'init.svc.drm': 'running', 'ro.board.platform': '', 'init.svc.healthd': 'running', 'ro.factorytest': '0', 'gsm.sim.operator.iso-country': 'us', 'aicd.thermometer.temperature': '9.000000', 'dhcp.eth1.dns4': '', 'dhcp.eth1.ipaddress': '10.7.2.209', 'init.svc.dns-setup': 'stopped', 'gsm.version.ril-impl': 'android reference-ril 1.0', 'ro.aicd.caps.cam': 'on', 'init.svc.wpa_supplicant': 'running', 'dhcp.eth1.leasetime': '600', 'ro.aicd.caps.acc': 'on', 'init.svc.adbd': 'running', 'aicd.battery.full': '50000000', 'init.svc.ril-daemon': 'running', 'aicd.gyroscope.azymuth': '0.000000', 'init.svc.keystore': 'running', 'persist.service.adb.enable': '1', 'ro.build.tags': 'test-keys', 'aicd.gps.longitude': '4.000000', 'aicd.hygrometer.humidity': '88.000000', 'aicd.battery.mode': 'manual', 'init.svc.vinput_seamless': 'running', 'ro.build.version.incremental': 'eng.mathieu.20160310.112404', 'ro.aicd.caps.gps': 'on', 'aicd.magnetometer.y': '8.000000', 'debug.force_rtl': '0', 'ro.product.device': 'gobyp', 'ro.build.fingerprint': 'generic/gobyp/gobyp:4.4.4/R3_CRB01-00/eng.mathieu.20160310.112404:eng/test-keys', 'net.hostname': 'android-ffe361cf7d8610c9', 'ro.hardware': 'goby', 'gsm.defaultpdpcontext.active': 'true', 'init.svc.surfaceflinger': 'running', 'ro.com.android.dateformat': 'MM-dd-yyyy', 'init.svc.vold': 'running', 'aicd.orientation.roll': '0.000000', 'persist.sys.localevar': '', 'ro.build.version.codename': 'REL', 'init.svc.local_gps': 'running', 'ro.opengles.version': '131072', 'aicd.device.id': '00000000000000', 'ro.product.locale.region': 'US', 'gsm.operator.numeric': '310260', 'aicd.linearacc.x': '0.000000', 'init.svc.back_camera': 'running', 'wlan.driver.status': 'ok', 'net.dns2': '8.8.8.8', 'gsm.operator.iso-country': 'us', 'net.change': 'net.dns2', 'net.tcp.buffersize.hsupa': '4094,87380,262144,4096,16384,262144', 'rild.libpath': '/system/lib/libreference-ril.so', 'net.eth0.dns2': '8.8.8.8', 'aicd.linearacc.y': '0.000000', 'init.svc.zygote': 'running', 'ro.product.cpu.abi': 'x86', 'ro.zygote.disable_gl_preload': 'true', 'aicd.barometer.pressure': '999.000000', 'dhcp.eth1.dns1': '8.8.4.4', 'aicd.magnetometer.z': '9.000000', 'persist.sys.profiler_ms': '0', 'ro.build.product': 'gobyp', 'ro.product.locale.language': 'en', 'net.eth2.dns1': '8.8.4.4', 'init.svc.debuggerd': 'running', 'wifi.interface': 'eth1', 'init.svc.servicemanager': 'running', 'init.svc.bootanim': 'stopped', 'init.svc.media': 'running', 'gsm.current.phone-type': '1', 'ARGH': 'ARGH', 'ro.config.ringtone': 'Ring_Synth_04.ogg', 'ro.secure': '0', 'persist.sys.dalvik.vm.lib': 'libdvm.so', 'persist.sys.country': 'US', 'ro.wifi.channels': '', 'ro.aicd.caps.bat': 'on', 'wifi.interface.mac': 'fa:16:3e:a8:16:64', 'service.bootanim.exit': '1', 'dhcp.eth1.mask': '255.255.0.0', 'aicd.telemeter.distance': '8.000000', 'ro.crypto.state': 'unencrypted', 'net.tcp.buffersize.umts': '4094,87380,110208,4096,16384,110208', 'ro.boot.hardware': 'goby', 'ro.sf.lcd_density': '160', 'init.svc.front_camera': 'running', 'rild.libargs': '-d /dev/ttyS0', 'gsm.sim.operator.numeric': '310260', 'aicd.gravity.x': '0.000000', 'dhcp.eth1.dns3': '', 'ro.serialno': '', 'aicd.gravity.y': '9.776219', 'ro.com.google.locationfeatures': '1', 'sys.sysctl.extra_free_kbytes': '5625', 'net.qtaguid_enabled': '1', 'ro.kernel.android.checkjni': '1', 'sys.settings_secure_version': '10', 'ro.radio.use-ppp': 'no', 'ro.allow.mock.location': '1', 'ro.build.date': 'jeudi 10 mars 2016, 11:25:06 (UTC+0100)', 'ro.build.version.sdk': '19', 'init.svc.packages-setup': 'stopped', 'init.svc.installd': 'running', 'ro.config.alarm_alert': 'Alarm_Classic.ogg', 'net.tcp.buffersize.evdo': '4094,87380,262144,4096,16384,262144', 'gsm.sim.state': 'READY', 'ro.build.date.utc': '1457605506', 'ro.ril.gprsclass': '10', 'aicd.accelerometer.z': '0.813417', 'gsm.network.type': 'UMTS', 'init.svc.gsm-daemon': 'running', 'ro.build.characteristics': 'default', 'ro.debuggable': '1', 'ro.ril.hsxpa': '1', 'dhcp.eth1.domain': 'openstacklocal', 'net.tcp.buffersize.hsdpa': '4094,87380,262144,4096,16384,262144', 'aicd.gravity.z': '0.813417', 'net.tcp.default_init_rwnd': '60', 'net.tcp.buffersize.hspa': '4094,87380,262144,4096,16384,262144', 'aicd.battery.level': '50000000', 'dev.bootcomplete': '1', 'ro.revision': '0', 'dhcp.eth1.mtu': '1450', 'aicd.battery.status': 'Not charging', 'aicd.gps.bearing': '0.000000', 'init.svc.goby-setup': 'stopped', 'ro.bootloader': 'unknown', 'persist.sys.timezone': 'America/New_York', 'aicVM.gles.renderer': '1', 'sys.usb.config': 'adb', 'aicd.orientation.azimuth': '0.000000', 'net.tcp.buffersize.wifi': '524288,1048576,2097152,262144,524288,1048576', 'dhcp.eth1.server': '10.7.0.3', 'ro.bootmode': 'unknown', 'aicd.screen_rotation': '0', 'ro.build.host': 'Ontoset', 'ro.build.user': 'mathieu', 'aicd.gyroscope.pitch': '0.000000', 'init.svc.ueventd': 'running', 'net.bt.name': 'Android', 'sys.boot_completed': '1', 'aicVM.inited': '1', 'ro.product.board': '', 'ro.aicd.caps.did': 'on', 'ro.build.id': 'R3_CRB01-00', 'aicd.accelerometer.x': '0.000000', 'aicd.linearacc.z': '0.000000', 'ro.build.type': 'eng', 'aicd.gps.altitude': '0.000000', 'net.dns1': '8.8.4.4', 'sys.settings_global_version': '3', 'ro.product.brand': 'generic', 'ro.carrier': 'unknown', 'net.tcp.buffersize.edge': '4093,26280,35040,4096,16384,35040', 'dalvik.vm.stack-trace-file': '/data/anr/traces.txt', 'aicd.luxmeter.light': '88.000000', 'net.tcp.buffersize.gprs': '4092,8760,11680,4096,8760,11680', 'dhcp.eth1.reason': 'RENEW', 'keyguard.no_require_sim': 'true', 'ro.androidincloud.version': '2.2.0', 'ro.build.description': 'gobyp-eng 4.4.4 R3_CRB01-00 eng.mathieu.20160310.112404 test-keys', 'init.svc.iprenew_eth1': 'stopped', 'net.tcp.buffersize.hspap': '4094,87380,1220608,4096,16384,1220608', 'aicd.ac.online': '1', 'persist.sys.usb.config': 'adb', 'ro.product.name': 'gobyp', 'ro.build.version.release': '4.4.4', 'net.eth2.dns2': '8.8.8.8', 'dalvik.vm.heapsize': '256m', 'persist.sys.language': 'en', 'ro.product.manufacturer': 'Androidincloud', 'ro.config.notification_sound': 'pixiedust.ogg', 'net.tcp.buffersize.default': '4096,87380,110208,4096,16384,110208', 'gsm.sim.operator.alpha': 'Android', 'sys.settings_system_version': '6', 'aicd.gps.latitude': '5.000000', 'gsm.operator.isroaming': 'false', 'net.tcp.buffersize.lte': '524288,1048576,2097152,262144,524288,1048576', 'sys.sysctl.tcp_def_init_rwnd': '60', 'gsm.operator.alpha': 'Android', 'dhcp.eth1.dns2': '8.8.8.8', 'aicd.orientation.pitch': '0.000000', 'init.svc.local_opengl': 'running', 'ro.bq.gpu_to_cpu_unsupported': '1', 'ro.runtime.firstboot': '1458837060064', 'qemu.hw.mainkeys': '0', 'sys.usb.state': 'adb', 'dhcp.eth1.vendorInfo': '', 'init.svc.vinput': 'running', 'init.svc.netd': 'running', 'init.svc.dhcpcd_eth1': 'running', 'aicd.magnetometer.x': '7.000000', 'net.eth0.dns1': '8.8.4.4', 'dhcp.eth1.gateway': '10.7.0.1', 'aicd.gps.status': 'enabled', 'aicVM.gles': '1', 'aicd.accelerometer.y': '9.776219', 'ro.aicd.caps.rmt': 'on', 'dhcp.eth1.result': 'ok', 'ro.com.android.dataroaming': 'true', 'ro.baseband': 'unknown', 'ro.build.display.id': 'gobyp-eng 4.4.4 R3_CRB01-00 eng.mathieu.20160310.112404 test-keys'};
+
+const PanelSessionDetailsProps = [{
+	props: {avmInfo: avmInfo1, apkList: packageList, properties: vmproperties}
+}];
+
+const PanelSessionStatusProps = PanelSessionStatus.STATUS_LIST.map(s => {
+	return {
+		title: s,
+		components: [{
+			props: {status: s}
+		}]
+	};
+});
+
+const PanelTestResultsProps = [{
+	props: {
+		style: {margin: '10px'},
+		image: 'kitkat-tablet',
+		packages: [{
+			stdout: 'INSTRUMENTATION_STATUS: numtests=2\nINSTRUMENTATION_STATUS: stream=\ncom.zenika.aic.core.libs.ParserTest:\nINSTRUMENTATION_STATUS: id=InstrumentationTestRunner\nINSTRUMENTATION_STATUS: test=testAndroidTestCaseSetupProperly\nINSTRUMENTATION_STATUS: class=com.zenika.aic.core.libs.ParserTest\nINSTRUMENTATION_STATUS: current=1\nINSTRUMENTATION_STATUS_CODE: 1\nINSTRUMENTATION_STATUS: numtests=2\nINSTRUMENTATION_STATUS: stream=.\nINSTRUMENTATION_STATUS: id=InstrumentationTestRunner\nINSTRUMENTATION_STATUS: test=testAndroidTestCaseSetupProperly\nINSTRUMENTATION_STATUS: class=com.zenika.aic.core.libs.ParserTest\nINSTRUMENTATION_STATUS: current=1\nINSTRUMENTATION_STATUS_CODE: 0\nINSTRUMENTATION_STATUS: numtests=2\nINSTRUMENTATION_STATUS: stream=\nINSTRUMENTATION_STATUS: id=InstrumentationTestRunner\nINSTRUMENTATION_STATUS: test=testApplicationTestCaseSetUpProperly\nINSTRUMENTATION_STATUS: class=com.zenika.aic.core.libs.ParserTest\nINSTRUMENTATION_STATUS: current=2\nINSTRUMENTATION_STATUS_CODE: 1\nINSTRUMENTATION_STATUS: numtests=2\nINSTRUMENTATION_STATUS: stream=.\nINSTRUMENTATION_STATUS: id=InstrumentationTestRunner\nINSTRUMENTATION_STATUS: test=testApplicationTestCaseSetUpProperly\nINSTRUMENTATION_STATUS: class=com.zenika.aic.core.libs.ParserTest\nINSTRUMENTATION_STATUS: current=2\nINSTRUMENTATION_STATUS_CODE: 0\nINSTRUMENTATION_RESULT: stream=\nTest results for InstrumentationTestRunner=..\nTime: 0.005\n\nOK (2 tests)\n\n\nINSTRUMENTATION_CODE: -1',
+			apkPackage: 'com.zenika.aic.core.libs.test/android.test.InstrumentationTestRunner',
+			status: 'READY',
+			image: 'kitkat-tablet'
+		}],
+		machine: {
+			status: 'READY',
+			avmName: 'test',
+			avmOwner: 'test',
+			uptime: 3
+		}
+	}
+}];
+
+const componentsProps = {
+	PanelAndroidConfig: PanelAndroidConfigProps,
+	PanelCampaignShow: PanelCampaignShowProps,
+	PanelProgress: PanelProgressProps,
+	PanelSessionScreen: PanelSessionScreenProps,
+	PanelSessionsInfo: PanelSessionsInfoProps,
+	PanelToolbarBase: PanelToolbarBaseProps,
+	PanelCamera: PanelCameraProps,
+	PanelInfo: PanelInfoProps,
+	PanelSessionDetails: PanelSessionDetailsProps,
+	PanelSessionStatus: PanelSessionStatusProps,
+	PanelTestResults: PanelTestResultsProps
+};
+
+module.exports = componentsProps;
