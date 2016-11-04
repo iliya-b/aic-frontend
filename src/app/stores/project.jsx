@@ -14,6 +14,7 @@ const ProjectStore = Reflux.createStore({
 		this.state.project.list = [];
 		this.state.project.status = 'init';
 		this.state.project.errorMessage = null;
+		this.state.project.project = null;
 	},
 
 	// Actions //
@@ -65,6 +66,23 @@ const ProjectStore = Reflux.createStore({
 	},
 
 	onUpdateFailed(errorMessage) {
+		this.state.project.status = 'error';
+		this.state.project.errorMessage = errorMessage;
+		this.updateState();
+	},
+
+	onLoad() {
+		this.state.project.status = 'loading';
+		this.updateState();
+	},
+
+	onLoadCompleted(result) {
+		this.state.project.status = 'loaded';
+		this.state.project.project = result;
+		this.updateState();
+	},
+
+	onLoadFailed(errorMessage) {
 		this.state.project.status = 'error';
 		this.state.project.errorMessage = errorMessage;
 		this.updateState();

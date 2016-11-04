@@ -47,6 +47,9 @@ const GatewayAdapters = {
 					project_name: frontendObject.name // eslint-disable-line camelcase
 				};
 			}
+		},
+		read: {
+			response: result => camelizeObj(result.project)
 		}
 	},
 	apks: {

@@ -10,13 +10,15 @@ const ProjectActions = Reflux.createActions({
 	list: {asyncResult: true},
 	create: {asyncResult: true},
 	update: {asyncResult: true},
-	delete: {asyncResult: true}
+	delete: {asyncResult: true},
+	load: {asyncResult: true}
 });
 
 ProjectActions.list.listenAndPromise(Gateway.projects.list);
 ProjectActions.create.listenAndPromise(Gateway.projects.create);
 ProjectActions.update.listenAndPromise(Gateway.projects.update);
 ProjectActions.delete.listenAndPromise(Gateway.projects.delete);
+ProjectActions.load.listenAndPromise(Gateway.projects.read);
 
 // TODO: change to state ?
 ProjectActions.getNameById = function (projectId) {

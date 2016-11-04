@@ -20,6 +20,7 @@ import NotFound from 'app/views/not-found';
 import ProjectWrapper from 'app/views/project/wrapper';
 import ProjectList from 'app/views/project/list';
 import ProjectPage from 'app/views/project/page';
+import ProjectDetails from 'app/views/project/details';
 import ProjectApkManager from 'app/views/project/apk-manager';
 import ProjectTestWrapper from 'app/views/project/test/wrapper';
 import ProjectTestManager from 'app/views/project/test/test-manager';
@@ -39,7 +40,8 @@ const AppRoutes = (
 			<Route path="projects" component={ProjectWrapper}>
 				<IndexRoute component={ProjectList}/>
 				<Route path=":projectId" component={ProjectPage}>
-					<IndexRoute component={ProjectApkManager}/>
+					<IndexRoute component={ProjectDetails}/>
+					<Route path="apks" component={ProjectApkManager}/>
 					<Route path="tests" component={ProjectTestWrapper}>
 						<IndexRoute component={ProjectTestManager}/>
 						<Route path=":testId/editor" component={ProjectTestEditor}/>

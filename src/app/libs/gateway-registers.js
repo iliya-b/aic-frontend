@@ -68,11 +68,14 @@ const GatewayRegisters = function () {
 				schema: GatewaySchemas.projects
 			}, {
 				action: GatewayActions.update,
-				pathname: '/projects/{id}',
+				pathname: '/projects/{id}', // TODO: change to projectId
 				schema: GatewaySchemas.projects
 			}, {
 				action: GatewayActions.delete,
 				pathname: '/projects/{id}'
+			}, {
+				action: GatewayActions.read,
+				pathname: '/projects/{projectId}'
 			}
 		]
 	});
