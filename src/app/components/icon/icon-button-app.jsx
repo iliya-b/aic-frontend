@@ -13,10 +13,16 @@ const IconButtonApp = (props, context) => {
 		...others
 	} = props;
 	let calcIconStyle = {};
+
+	// Check for inconsistent properties
 	if (primary && secondary) {
 		throw new Error('Please define only one property, either primary or secondary');
 	}
-	if (primary) {
+	if (on && off) {
+		throw new Error('Please define only one property, either on or off');
+	}
+
+	if (primary || (on && !primary && !secondary)) {
 		calcIconStyle = {color: context.muiTheme.palette.primary1Color};
 	}
 	if (secondary) {
@@ -24,15 +30,14 @@ const IconButtonApp = (props, context) => {
 	}
 
 	if (off) {
-		calcIconStyle = {color: context.muiTheme.palette.textLightColor};
+		calcIconStyle = {color: context.muiTheme.palette.disabledColor};
 	}
 
-	if (on) {
-		calcIconStyle = {color: context.muiTheme.palette.accent3Color};
-	}
+	// Like this others can override color property
+	const finalProps = Object.assign({}, calcIconStyle, others);
 
 	return (
-		<IconButton color={calcIconStyle.color} iconStyle={Object.assign(calcIconStyle, iconStyle)} {...others}/>
+		<IconButton iconStyle={Object.assign(calcIconStyle, iconStyle)} {...finalProps}/>
 	);
 };
 

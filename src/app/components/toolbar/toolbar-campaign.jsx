@@ -8,8 +8,8 @@ import ToolbarTitle from 'material-ui/Toolbar/ToolbarTitle';
 import FontIcon from 'material-ui/FontIcon';
 import IconList from 'app/components/icon/icon-list';
 
-const ToolbarCampaign = props => {
-	const styleToolbar = {justifyContent: 'initial'};
+const ToolbarCampaign = (props, context) => {
+	const styleToolbar = {justifyContent: 'initial', background: context.muiTheme.palette.toolbarBGColor};
 	const styleSeparator = {margin: '0 5px 0 0px'};
 	const styleButtons = {marginTop: 5};
 	const styleIcon = {
@@ -47,6 +47,10 @@ const ToolbarCampaign = props => {
 			</ToolbarGroup>
 		</Toolbar>
 	);
+};
+
+ToolbarCampaign.contextTypes = {
+	muiTheme: React.PropTypes.object
 };
 
 ToolbarCampaign.propTypes = {

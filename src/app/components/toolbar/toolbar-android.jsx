@@ -13,7 +13,8 @@ const ToolbarAndroid = class extends React.Component {
 	render() {
 		const styles = {
 			toolbar: {
-				justifyContent: 'initial'
+				justifyContent: 'initial',
+				background: this.context.muiTheme.palette.toolbarBGColor
 			},
 			button: {
 				marginTop: 5
