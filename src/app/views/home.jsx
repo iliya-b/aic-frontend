@@ -50,14 +50,13 @@ const Home = class extends AuthPage {
 		const palette = this.context.muiTheme.palette;
 		const styles = {
 			root: {
-				backgroundColor: palette.logo1Color,
 				overflow: 'hidden',
 				backgroundImage: 'url(img/logo.png)',
 				height: '70vh',
-				backgroundSize: 'cover',
+				backgroundSize: 'auto 70vh',
 				position: 'relative',
 				backgroundRepeat: 'no-repeat',
-				backgroundPosition: '50% 50%'
+				backgroundPosition: 'center'
 			},
 			svgLogo: {
 				width: '420px'
@@ -100,25 +99,27 @@ const Home = class extends AuthPage {
 		};
 
 		return (
-			<FullWidthSection style={styles.root}>
-				<div style={styles.tagline}>
-					<RaisedButton
-						label="Login"
-						title="Login"
-						onClick={this.handleLoginOpen}
-						style={styles.buttonStyle}
-						primary
-						/>
-					<LoginDialog
-						open={this.state.loginDialogOpen}
-						onRequestClose={this.handleLoginClose}
-						onLoginSubmit={this.handleLoginSubmit}
-						location={this.props.location}
-						error={this.state.loginErrorMessage}
-						formDisabled={this.state && this.state.login && this.state.login.status === 'LOGIN_STATUS_CONNECTING'}
-						/>
-				</div>
+			<div style={{background: 'linear-gradient(to bottom, #c7e3f1 0%,#ffffff 100%)'}}>
+				<FullWidthSection style={styles.root}>
+					<div style={styles.tagline}>
+						<RaisedButton
+							label="Login"
+							title="Login"
+							onClick={this.handleLoginOpen}
+							style={styles.buttonStyle}
+							primary
+							/>
+						<LoginDialog
+							open={this.state.loginDialogOpen}
+							onRequestClose={this.handleLoginClose}
+							onLoginSubmit={this.handleLoginSubmit}
+							location={this.props.location}
+							error={this.state.loginErrorMessage}
+							formDisabled={this.state && this.state.login && this.state.login.status === 'LOGIN_STATUS_CONNECTING'}
+							/>
+					</div>
 			</FullWidthSection>
+			</div>
 		);
 	}
 

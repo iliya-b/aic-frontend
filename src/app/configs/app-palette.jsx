@@ -11,10 +11,12 @@ import * as ColorManipulator from 'material-ui/utils/colorManipulator';
 // const oldSecondaryColor = Colors.lightGreen*;
 
 const newLogoBlue = '#10598a';
-const newLogoGreen = '#a2c646';
+// const newLogoGreen = '#a2c646';
+const anotherGreen = '#85ac1f';
 
 const primaryColor500 = newLogoBlue;
-const secondaryColor500 = newLogoGreen;
+// const secondaryColor500 = newLogoGreen;
+const secondaryColor500 = anotherGreen;
 
 const secondaryColor700 = ColorManipulator.darken(secondaryColor500, 0.7);
 // const secondaryColor500 = ColorManipulator.fade(secondaryColor700, 0.7);
@@ -23,6 +25,10 @@ const secondaryColor300 = ColorManipulator.fade(secondaryColor700, 0.5);
 const primaryColor700 = ColorManipulator.darken(primaryColor500, 0.7);
 // const primaryColor500 = ColorManipulator.fade(primaryColor700, 0.7);
 const primaryColor300 = ColorManipulator.fade(primaryColor700, 0.5);
+
+// const secondaryColor700 = Colors.green700;
+// const secondaryColor500 = Colors.green500;
+// const secondaryColor300 = Colors.green300;
 
 const textColor = 'rgba(0, 0, 0, 0.6)';
 
