@@ -61,8 +61,7 @@ const ToolbarLinearAcceleration = class extends React.Component {
 		};
 		return (
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
-				<FontIcon style={styles.icon} className="mdi mdi-run" color="rgba(0, 0, 0, 0.4)"/>
-				<ToolbarSeparator style={styles.separator}/>
+				<FontIcon style={styles.icon} className="mdi mdi-run"/>
 				<ToolbarSeparator style={styles.separator}/>
 				<TextField name="fieldLiveSensorLinearAccelerationX" style={styles.items} ref={this.setRefX} hintText="x" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<TextField name="fieldLiveSensorLinearAccelerationY" style={styles.items} ref={this.setRefY} hintText="y" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>

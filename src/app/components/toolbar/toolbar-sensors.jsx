@@ -107,7 +107,7 @@ const ToolbarSensors = class extends React.Component {
 			<Toolbar style={Object.assign(this.props.style || {}, styles.toolbar)}>
 				<ToolbarGroup firstChild lastChild>
 					<IconButton className="btLiveBack" tooltip="Back to toolbar" tooltipPosition="bottom-right" style={styles.button} onClick={this.props.onClick.android}>
-						<FontIcon className="mdi mdi-arrow-left-bold" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+						<FontIcon className="mdi mdi-arrow-left-bold" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
 					<ToolbarTitle text="Sensors" style={styles.title}/>
 					<ToolbarSeparator style={styles.separator}/>
@@ -116,11 +116,6 @@ const ToolbarSensors = class extends React.Component {
 			</Toolbar>
 		);
 	}
-};
-
-ToolbarSensors.contextTypes = {
-	muiTheme: React.PropTypes.object,
-	router: React.PropTypes.object
 };
 
 ToolbarSensors.propTypes = {

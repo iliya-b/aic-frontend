@@ -13,8 +13,7 @@ const ToolbarAndroid = class extends React.Component {
 	render() {
 		const styles = {
 			toolbar: {
-				justifyContent: 'initial',
-				background: this.context.muiTheme.palette.toolbarBGColor
+				justifyContent: 'initial'
 			},
 			button: {
 				marginTop: 5
@@ -76,7 +75,7 @@ const ToolbarAndroid = class extends React.Component {
 
 		return (
 			<Toolbar style={Object.assign(this.props.style || {}, styles.toolbar)}>
-				<FontIcon style={styles.icon} className="mdi mdi-android" color="rgba(0, 0, 0, 0.4)"/>
+				<FontIcon style={styles.icon} className="mdi mdi-android"/>
 				<ToolbarGroup firstChild lastChild>
 					<ToolbarTitle text="Toolbar"/>
 					<ToolbarSeparator style={styles.separator}/>

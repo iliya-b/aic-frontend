@@ -55,7 +55,7 @@ const ToolbarGSMRoaming = class extends React.Component {
 
 		return (
 			<Paper style={styles.paper} zDepth={1}>
-				<FontIcon style={styles.icon} className="mdi mdi-home" color="rgba(0, 0, 0, 0.4)"/>
+				<FontIcon style={styles.icon} className="mdi mdi-home"/>
 				<ToolbarSeparator style={styles.separator}/>
 				<SelectTextField
 					name="inputLiveGSMRoaming"

@@ -3,6 +3,7 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import Formsy from 'formsy-react';
 import FormsyTextField from 'app/components/form/formsy-text-field';
 
@@ -67,22 +68,21 @@ const DialogLogin = class extends React.Component {
 
 	render() {
 		const loginActions = [
+			<RaisedButton
+				key="loginActionSubmit"
+				label="Submit"
+				title="Submit"
+				secondary
+				onClick={this.handleLoginClick}
+				disabled={this.props.formDisabled}
+				className="btLoginSubmit"
+				/>,
 			<FlatButton
 				key="loginActionCancel"
 				label="Cancel"
 				title="Cancel"
-				secondary
 				onClick={this.handleLoginCancel}
 				className="btLoginCancel"
-				/>,
-			<FlatButton
-				key="loginActionSubmit"
-				label="Submit"
-				title="Submit"
-				primary
-				onClick={this.handleLoginClick}
-				disabled={this.props.formDisabled}
-				className="btLoginSubmit"
 				/>
 		];
 

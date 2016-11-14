@@ -52,7 +52,7 @@ const ToolbarHumidity = class extends React.Component {
 		};
 		return (
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
-				<FontIcon style={styles.icon} className="mdi mdi-water" color="rgba(0, 0, 0, 0.4)"/>
+				<FontIcon style={styles.icon} className="mdi mdi-water"/>
 				<ToolbarSeparator style={styles.separator}/>
 				<TextField name="fieldLiveSensorHumidity" style={styles.items} ref={this.setRefHumidity} hintText="humidity" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<RaisedButton

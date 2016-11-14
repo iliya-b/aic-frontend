@@ -5,7 +5,7 @@ import React from 'react';
 import FontIcon from 'material-ui/FontIcon';
 
 // APP
-const DroidPercentage = props => {
+const DroidPercentage = (props, context) => {
 	const baseSize = props.style && props.style.fontSize ? props.style.fontSize : 24;
 	const remainingSize = (100 - (props.value > 100 ? 100 : props.value)) / 100 * baseSize;
 
@@ -28,17 +28,19 @@ const DroidPercentage = props => {
 		}
 	};
 
+	const bgColor = props.bgColor ? props.bgColor : context.muiTheme.palette.primary1Color;
+	const fgColor = props.fgColor ? props.fgColor : 'rgba(255, 255, 255, 0.75)';
+
 	return (
 		<div style={styles.root}>
-			<FontIcon style={styles.base} className="mdi mdi-android" color={props.bgColor} hoverColor={props.bgColor}/>
-			<FontIcon style={styles.remaining} className="mdi mdi-android" color={props.fgColor} hoverColor={props.fgColor}/>
+			<FontIcon style={styles.base} className="mdi mdi-android" color={bgColor} hoverColor={bgColor}/>
+			<FontIcon style={styles.remaining} className="mdi mdi-android" color={fgColor} hoverColor={fgColor}/>
 		</div>
 	);
 };
 
-DroidPercentage.defaultProps = {
-	fgColor: 'rgba(255, 255, 255, 0.75)',
-	bgColor: 'rgba(0, 158, 234, 1)'
+DroidPercentage.contextTypes = {
+	muiTheme: React.PropTypes.object
 };
 
 DroidPercentage.propTypes = {

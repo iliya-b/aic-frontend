@@ -9,7 +9,7 @@ import FontIcon from 'material-ui/FontIcon';
 import IconList from 'app/components/icon/icon-list';
 
 const ToolbarLive = (props, context) => {
-	const styleToolbar = {justifyContent: 'initial', background: context.muiTheme.palette.toolbarBGColor};
+	const styleToolbar = {justifyContent: 'initial'};
 	const styleSeparator = {margin: '0 5px 0 0px'};
 	const styleButtons = {marginTop: 5};
 	const styleIcon = {
@@ -24,6 +24,7 @@ const ToolbarLive = (props, context) => {
 		{
 			id: 'start',
 			tooltip: canUserCreateVm ? 'Start session' : 'quota reached',
+			tooltipPosition: 'top-center',
 			fontIcon: 'mdi mdi-play',
 			disabled: !canUserCreateVm
 		}
@@ -42,7 +43,7 @@ const ToolbarLive = (props, context) => {
 
 	return (
 		<Toolbar style={Object.assign(props.style || {}, styleToolbar)}>
-			<FontIcon style={styleIcon} className="mdi mdi-android" color="rgba(0, 0, 0, 0.4)"/>
+			<FontIcon style={styleIcon} className="mdi mdi-android"/>
 			<ToolbarGroup firstChild lastChild>
 				<ToolbarTitle className="txtLiveTitle" text="Live sessions"/>
 				<ToolbarSeparator style={styleSeparator}/>

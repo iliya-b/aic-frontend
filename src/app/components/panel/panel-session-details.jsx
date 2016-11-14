@@ -278,7 +278,7 @@ const PanelSessionDetails = class extends React.Component {
 			styles.paper = Object.assign({}, styles.paper, this.props.style);
 		}
 
-		const iconColor = 'rgba(0, 0, 0, 0.4)';
+		const iconColor = this.context.muiTheme.palette.textColor;
 		const iconHoverColor = 'rgba(0, 0, 0, 0.4)';
 		const infoRendered = infos.map(info => {
 			const infoCamel = capimelize(info.tooltip);
@@ -293,7 +293,7 @@ const PanelSessionDetails = class extends React.Component {
 			}) : null;
 			let icon;
 			if (info.fontIcon) {
-				icon = <FontIcon style={styles.icon} className={info.fontIcon} color={iconColor} hoverColor={iconHoverColor}/>;
+				icon = <FontIcon style={styles.icon} className={info.fontIcon} hoverColor={iconHoverColor}/>;
 			} else if (info.svgIcon) {
 				icon = React.createElement(info.svgIcon, {style: styles.icon, color: iconColor, hoverColor: iconHoverColor});
 			}
@@ -331,14 +331,14 @@ const PanelSessionDetails = class extends React.Component {
 			<Paper style={styles.paper} zDepth={1}>
 				<div style={styles.infoBlock}>
 					<IconButton tooltip="machine information">
-						<FontIcon style={styles.icon} className="mdi mdi-information" color="rgba(0, 0, 0, 0.4)"/>
+						<FontIcon style={styles.icon} className="mdi mdi-information"/>
 					</IconButton>
 					<ToolbarSeparator style={styles.separator}/>
 					{avmInfoRendered}
 				</div>
 				<div style={styles.infoBlock}>
 					<IconButton tooltip="sensors">
-						<FontIcon style={styles.icon} className="mdi mdi-map-marker" color="rgba(0, 0, 0, 0.4)"/>
+						<FontIcon style={styles.icon} className="mdi mdi-map-marker"/>
 					</IconButton>
 					<ToolbarSeparator style={styles.separator}/>
 					<div style={styles.insetBlock}>
@@ -347,7 +347,7 @@ const PanelSessionDetails = class extends React.Component {
 				</div>
 				<div style={styles.infoBlock}>
 					<IconButton tooltip="installed APKs">
-						<FontIcon style={styles.icon} className="mdi mdi-puzzle" color="rgba(0, 0, 0, 0.4)"/>
+						<FontIcon style={styles.icon} className="mdi mdi-puzzle"/>
 					</IconButton>
 					<ToolbarSeparator style={styles.separator}/>
 					<div style={styles.insetBlockAPK}>

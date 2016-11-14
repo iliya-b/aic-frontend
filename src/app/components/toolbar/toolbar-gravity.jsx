@@ -59,7 +59,7 @@ const ToolbarGravity = class extends React.Component {
 		};
 		return (
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
-				<GravityIcon style={styles.icon} color="rgba(0, 0, 0, 0.4)"/>
+				<GravityIcon style={styles.icon}/>
 				<ToolbarSeparator style={styles.separator}/>
 				<TextField name="fieldLiveSensorGravityX" style={styles.items} ref={this.setRefX} hintText="x" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<TextField name="fieldLiveSensorGravityY" style={styles.items} ref={this.setRefY} hintText="y" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>

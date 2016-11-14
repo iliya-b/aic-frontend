@@ -16,8 +16,7 @@ const ToolbarFileUpload = class extends React.Component {
 	render() {
 		const styles = {
 			toolbar: {
-				justifyContent: 'initial',
-				background: this.context.muiTheme.palette.toolbarBGColor
+				justifyContent: 'initial'
 			},
 			button: {
 				marginTop: 5
@@ -36,49 +35,49 @@ const ToolbarFileUpload = class extends React.Component {
 		if (this.props.uploadOpenVisible) {
 			buttons.push(
 				<IconButton title="Upload file" className="btUploadOpen" key={1} style={styles.button} onClick={this.props.onClickUploadOpen}>
-					<FontIcon className="mdi mdi-cloud-upload" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+					<FontIcon className="mdi mdi-cloud-upload" hoverColor="rgba(0, 0, 0, 0.87)"/>
 				</IconButton>
 			);
 		}
 		if (this.props.uploadCloseVisible) {
 			buttons.push(
 				<IconButton title="Close upload" className="btUploadClose" key={2} style={styles.button} onClick={this.props.onClickUploadClose}>
-					<FontIcon className="mdi mdi-close-circle" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+					<FontIcon className="mdi mdi-close-circle" hoverColor="rgba(0, 0, 0, 0.87)"/>
 				</IconButton>
 			);
 		}
 		if (this.props.createFileVisible) {
 			buttons.push(
 				<IconButton title="Create file" className="btCreateFile" key={3} style={styles.button} onClick={this.props.onClickCreateFile}>
-					<FontIcon className="mdi mdi-plus" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+					<FontIcon className="mdi mdi-plus" hoverColor="rgba(0, 0, 0, 0.87)"/>
 				</IconButton>
 			);
 		}
 		if (this.props.editFileVisible) {
 			buttons.push(
 				<IconButton title="Edit selected file" className="btEditSelected" key={4} style={styles.button} onClick={this.props.onClickEditFile}>
-					<FontIcon className="mdi mdi-pencil" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+					<FontIcon className="mdi mdi-pencil" hoverColor="rgba(0, 0, 0, 0.87)"/>
 				</IconButton>
 			);
 		}
 		if (this.props.deleteFileVisible) {
 			buttons.push(
 				<IconButton title="Delete selected files" className="btDeleteSelected" key={5} style={styles.button} onClick={this.props.onClickDeleteFile}>
-					<FontIcon className="mdi mdi-delete" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+					<FontIcon className="mdi mdi-delete" hoverColor="rgba(0, 0, 0, 0.87)"/>
 				</IconButton>
 			);
 		}
 		if (this.props.compileFileVisible) {
 			buttons.push(
 				<IconButton title="Compile selected file" className="btCompileSelected" key={6} style={styles.button} onClick={this.props.onClickCompileFile}>
-					<FontIcon className="mdi mdi-settings-box" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+					<FontIcon className="mdi mdi-settings-box" hoverColor="rgba(0, 0, 0, 0.87)"/>
 				</IconButton>
 			);
 		}
 
 		return (
 			<Toolbar style={Object.assign(this.props.style || {}, styles.toolbar)}>
-				<FontIcon style={styles.icon} className={this.props.icon} color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>
+				<FontIcon style={styles.icon} className={this.props.icon}/>
 				<ToolbarGroup firstChild lastChild>
 					<ToolbarTitle className={`txt${capimelize(this.props.title)}Title`} text={this.props.title} style={styles.title}/>
 					<ToolbarSeparator style={styles.separator}/>

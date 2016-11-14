@@ -32,7 +32,7 @@ const ToolbarLight = class extends React.Component {
 		};
 		return (
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
-				<FontIcon style={styles.icon} className="mdi mdi-white-balance-incandescent" color="rgba(0, 0, 0, 0.4)"/>
+				<FontIcon style={styles.icon} className="mdi mdi-white-balance-incandescent"/>
 				<ToolbarSeparator style={styles.separator}/>
 				<Slider className="inputLiveSensorLight" style={styles.items} name="light" max={100} min={0} step={1} onChange={onChange}/>
 			</Paper>

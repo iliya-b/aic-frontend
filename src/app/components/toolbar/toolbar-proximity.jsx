@@ -53,7 +53,7 @@ const ToolbarProximity = class extends React.Component {
 		};
 		return (
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
-				<VoiceIcon style={styles.icon} color="rgba(0, 0, 0, 0.4)"/>
+				<VoiceIcon style={styles.icon}/>
 				<ToolbarSeparator style={styles.separator}/>
 				<TextField name="fieldLiveSensorProximityDistance" style={styles.items} ref={this.setRefProximity} hintText="distance" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<RaisedButton

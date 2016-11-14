@@ -8,8 +8,8 @@ import ToolbarTitle from 'material-ui/Toolbar/ToolbarTitle';
 import FontIcon from 'material-ui/FontIcon';
 import IconList from 'app/components/icon/icon-list';
 
-const ToolbarCampaign = (props, context) => {
-	const styleToolbar = {justifyContent: 'initial', background: context.muiTheme.palette.toolbarBGColor};
+const ToolbarCampaign = props => {
+	const styleToolbar = {justifyContent: 'initial'};
 	const styleSeparator = {margin: '0 5px 0 0px'};
 	const styleButtons = {marginTop: 5};
 	const styleIcon = {
@@ -22,6 +22,7 @@ const ToolbarCampaign = (props, context) => {
 		{
 			id: 'start',
 			tooltip: 'Start campaign',
+			tooltipPosition: 'top-center',
 			fontIcon: 'mdi mdi-play'
 		}
 	];
@@ -39,7 +40,7 @@ const ToolbarCampaign = (props, context) => {
 
 	return (
 		<Toolbar style={Object.assign(props.style || {}, styleToolbar)}>
-			<FontIcon style={styleIcon} className="mdi mdi-settings" color="rgba(0, 0, 0, 0.4)"/>
+			<FontIcon style={styleIcon} className="mdi mdi-settings"/>
 			<ToolbarGroup firstChild lastChild>
 				<ToolbarTitle className="txtLiveTitle" text="Test Campaigns"/>
 				<ToolbarSeparator style={styleSeparator}/>
@@ -47,10 +48,6 @@ const ToolbarCampaign = (props, context) => {
 			</ToolbarGroup>
 		</Toolbar>
 	);
-};
-
-ToolbarCampaign.contextTypes = {
-	muiTheme: React.PropTypes.object
 };
 
 ToolbarCampaign.propTypes = {

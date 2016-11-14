@@ -57,14 +57,15 @@ const Main = class extends React.Component {
 		const styles = {
 			footer: {
 				backgroundColor: Colors.grey900,
-				textAlign: 'center'
+				textAlign: 'center',
+				padding: 24
 			},
 			a: {
 				color: Colors.darkWhite
 			},
 			p: {
 				margin: '0 auto',
-				padding: '0 0 24px 0',
+				padding: '0',
 				color: Colors.lightWhite,
 				maxWidth: '335px'
 			},
@@ -87,10 +88,12 @@ const Main = class extends React.Component {
 			return (
 				<MuiThemeProvider muiTheme={AppTheme}>
 					<div>
+						<div style={{background: '#fff'}}>
 						{this.props.children}
-						<FullWidthSection useContent style={styles.footer}>
-							<p style={styles.p}>COPYRIGHT © AiC2</p>
-						</FullWidthSection>
+						</div>
+						<div style={styles.footer}>
+							<p style={styles.p}>COPYRIGHT © AiC 2.0</p>
+						</div>
 						<SessionEndedDialog open={this.state.sessionEndedDialogOpen} onRequestClose={this.handleSessionEndedDialogClose}/>
 						<ServerErrorDialog open={this.state.app ? this.state.app.serverError.open : false} onRequestClose={this.handleServerErrorDialogClose} message={this.state.app ? this.state.app.serverError.message : ''}/>
 						{this.state && this.state.app && <Snackbar

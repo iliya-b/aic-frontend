@@ -72,7 +72,7 @@ const ToolbarGSM = class extends React.Component {
 			<Toolbar style={this.props.style}>
 				<ToolbarGroup firstChild lastChild>
 					<IconButton className="btLiveBack" tooltip="Back to toolbar" tooltipPosition="bottom-right" style={styles.button} onClick={this.props.onClick.android}>
-						<FontIcon className="mdi mdi-arrow-left-bold" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
+						<FontIcon className="mdi mdi-arrow-left-bold" hoverColor="rgba(0, 0, 0, 0.87)"/>
 					</IconButton>
 					<ToolbarTitle text="GSM" style={styles.title}/>
 					<ToolbarSeparator style={styles.separator}/>
@@ -81,11 +81,6 @@ const ToolbarGSM = class extends React.Component {
 			</Toolbar>
 		);
 	}
-};
-
-ToolbarGSM.contextTypes = {
-	muiTheme: React.PropTypes.object,
-	router: React.PropTypes.object
 };
 
 ToolbarGSM.propTypes = {

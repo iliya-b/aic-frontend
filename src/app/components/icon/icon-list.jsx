@@ -4,6 +4,7 @@ import React from 'react';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import {camelize} from 'app/libs/helpers';
+import AppPalette from 'app/configs/app-palette';
 
 const IconList = class extends React.Component {
 	render() {
@@ -18,12 +19,15 @@ const IconList = class extends React.Component {
 				} else if (b.svgIcon) {
 					icon = React.createElement(b.svgIcon, {color: iconColor, hoverColor: iconHoverColor});
 				}
-				const disabled = {};
+				const extraProps = {};
 				if (b.disabled) {
-					disabled.disabled = true;
+					extraProps.disabled = true;
+				}
+				if (b.tooltipPosition) {
+					extraProps.tooltipPosition = b.tooltipPosition;
 				}
 				return (
-					<IconButton iconStyle={b.iconStyle} {...disabled} className={`${this.props.iconClassNamePrefix}${camelize(b.tooltip)}`} key={b.id} tooltip={b.tooltip} style={this.props.style} onClick={this.props.onClick[b.id]}>
+					<IconButton iconStyle={b.iconStyle} {...extraProps} className={`${this.props.iconClassNamePrefix}${camelize(b.tooltip)}`} key={b.id} tooltip={b.tooltip} style={this.props.style} onClick={this.props.onClick[b.id]}>
 						{icon}
 					</IconButton>
 				);
@@ -34,9 +38,9 @@ const IconList = class extends React.Component {
 };
 
 IconList.defaultProps = {
-	selectColor: 'rgba(255, 255, 255, 0.75)',
-	hoverColor: 'rgba(0, 0, 0, 0.87)',
-	defaultColor: 'rgba(0, 0, 0, 0.4)',
+	selectColor: AppPalette.primary1Color,
+	hoverColor: AppPalette.primary1Color,
+	defaultColor: AppPalette.textColor,
 	styleRoot: {}
 };
 

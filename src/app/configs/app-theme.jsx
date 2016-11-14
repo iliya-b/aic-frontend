@@ -10,7 +10,13 @@ import AppPalette from 'app/configs/app-palette';
 const AppTheme = getMuiTheme({
 	spacing: Spacing,
 	fontFamily: 'Roboto, sans-serif',
-	palette: AppPalette
+	palette: AppPalette,
+	toolbar: {
+		color: AppPalette.textColor,
+		separatorColor: AppPalette.textColor,
+		backgroundColor: AppPalette.toolbarBGColor,
+		iconColor: AppPalette.textColor
+	}
 });
 
 module.exports = AppTheme;

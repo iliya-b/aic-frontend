@@ -8,7 +8,6 @@ import LabeledSpan from 'app/components/form/labeled-span';
 const PanelSessionsInfo = props => {
 	const stylePaper = {
 		padding: '10px 10px 0 10px',
-		zIndex: -100,
 		position: 'relative'
 	};
 

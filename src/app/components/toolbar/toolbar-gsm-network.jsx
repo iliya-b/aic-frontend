@@ -55,7 +55,7 @@ const ToolbarGSMNetwork = class extends React.Component {
 
 		return (
 			<Paper style={styles.paper} zDepth={1}>
-				<FontIcon style={styles.icon} className="mdi mdi-radio-tower" color="rgba(0, 0, 0, 0.4)"/>
+				<FontIcon style={styles.icon} className="mdi mdi-radio-tower"/>
 				<ToolbarSeparator style={styles.separator}/>
 				<SelectTextField
 					name="inputLiveGSMNetwork"

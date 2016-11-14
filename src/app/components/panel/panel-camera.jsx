@@ -49,7 +49,7 @@ const PanelCamera = class extends React.Component {
 
 		return (
 			<Paper style={styles.paper} zDepth={1}>
-				<FontIcon style={styles.icon} className="mdi mdi-camera" color="rgba(0, 0, 0, 0.4)"/>
+				<FontIcon style={styles.icon} className="mdi mdi-camera"/>
 				<ToolbarSeparator style={styles.separator}/>
 				<SelectTextField
 					name="inputLiveCameraFilename"

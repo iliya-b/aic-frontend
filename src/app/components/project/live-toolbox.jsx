@@ -4,6 +4,7 @@ import React from 'react';
 import LiveActions from 'app/actions/live';
 import {throttle} from 'lodash';
 import FontIcon from 'material-ui/FontIcon';
+import AppPalette from 'app/configs/app-palette';
 
 const debug = require('debug')('AiC:Components:Project:Live:LiveToolbox');
 
@@ -318,14 +319,14 @@ const LiveToolbox = class extends React.Component {
 		}
 
 		const styleDrag = {
-			background: 'rgb(98, 151, 53)', // TODO: change to palette
+			background: AppPalette.toolbarBGColor,
 			padding: '14px 0 14px 0',
 			cursor: 'move',
 			float: 'left'
 		};
 
 		const styleToggle = {
-			background: 'rgb(98, 151, 53)', // TODO: change to palette
+			background: AppPalette.toolbarBGColor,
 			padding: '14px 0 14px 0',
 			cursor: 'pointer',
 			float: 'left'
@@ -340,8 +341,8 @@ const LiveToolbox = class extends React.Component {
 
 		return (
 			<div style={styleLiveToolBox}>
-				{this.props.isFullscreen && <FontIcon style={styleToggle} onClick={this.handleToggleToolbar} className={`mdi mdi-menu-${this.state.toolbarCollapsed ? 'right' : 'left'}`} color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>}
-				{this.props.isFullscreen && <FontIcon style={styleDrag} draggable onDragStart={this.handleDragStart} onDrag={this.handleDragThrottled} className="mdi mdi-drag" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.4)"/>}
+				{this.props.isFullscreen && <FontIcon style={styleToggle} onClick={this.handleToggleToolbar} className={`mdi mdi-menu-${this.state.toolbarCollapsed ? 'right' : 'left'}`}/>}
+				{this.props.isFullscreen && <FontIcon style={styleDrag} draggable onDragStart={this.handleDragStart} onDrag={this.handleDragThrottled} className="mdi mdi-drag"/>}
 				{this.showCurrentBar() && currentBar}
 				{this.showCurrentBar() && currentSecondBar}
 			</div>

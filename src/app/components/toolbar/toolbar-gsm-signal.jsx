@@ -34,7 +34,7 @@ const ToolbarGSMSignal = class extends React.Component {
 		};
 		return (
 			<Paper style={Object.assign(this.props.style || {}, styles.paper)} zDepth={1}>
-				<FontIcon style={styles.icon} className="mdi mdi-signal" color="rgba(0, 0, 0, 0.4)"/>
+				<FontIcon style={styles.icon} className="mdi mdi-signal"/>
 				<ToolbarSeparator style={styles.separator}/>
 				<Slider className="inputLiveGSMSignal" style={styles.items} name="signal" max={4} min={0} step={1} onChange={onChange}/>
 			</Paper>

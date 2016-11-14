@@ -52,7 +52,7 @@ const ToolbarTemperature = class extends React.Component {
 		};
 		return (
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
-				<FontIcon style={styles.icon} className="mdi mdi-thermometer-lines" color="rgba(0, 0, 0, 0.4)"/>
+				<FontIcon style={styles.icon} className="mdi mdi-thermometer-lines"/>
 				<ToolbarSeparator style={styles.separator}/>
 				<TextField name="fieldLiveSensorTemperature" style={styles.items} ref={this.setRefTemperature} hintText="temperature" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<RaisedButton

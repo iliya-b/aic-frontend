@@ -52,7 +52,7 @@ const ToolbarPressure = class extends React.Component {
 		};
 		return (
 			<Paper style={Object.assign(this.props.style, styles.paper)} zDepth={1}>
-				<FontIcon style={styles.icon} className="mdi mdi-speedometer" color="rgba(0, 0, 0, 0.4)"/>
+				<FontIcon style={styles.icon} className="mdi mdi-speedometer"/>
 				<ToolbarSeparator style={styles.separator}/>
 				<TextField name="fieldLiveSensorPressure" style={styles.items} ref={this.setRefPressure} hintText="pressure" onFocus={this.props.onInputFocus} onBlur={this.props.onInputBlur}/>
 				<RaisedButton

@@ -85,7 +85,7 @@ const PanelMonkeyRunner = class extends React.Component {
 
 		return (
 			<Paper style={styles.paper} zDepth={1}>
-				<FontIcon style={styles.icon} className="mdi mdi-panda" color="rgba(0, 0, 0, 0.4)"/>
+				<FontIcon style={styles.icon} className="mdi mdi-panda"/>
 				<ToolbarSeparator style={styles.separator}/>
 				<SelectTextField
 					name="inputLiveAPKInstallFilename"

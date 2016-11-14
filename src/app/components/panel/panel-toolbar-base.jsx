@@ -3,6 +3,7 @@
 import React from 'react';
 import Paper from 'material-ui/Paper';
 import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
+import AppPalette from 'app/configs/app-palette';
 
 const PanelToolbarBase = props => {
 	const {
@@ -23,7 +24,7 @@ const PanelToolbarBase = props => {
 	};
 
 	const iconStyleMerged = Object.assign({}, styleIcon, icon.props.style);
-	const styledIcon = React.cloneElement(icon, {style: iconStyleMerged, color: icon.props.color ? icon.props.color : 'rgba(0, 0, 0, 0.4)'});
+	const styledIcon = React.cloneElement(icon, {style: iconStyleMerged, color: icon.props.color ? icon.props.color : AppPalette.panelbarIconColor});
 
 	return (
 		<Paper style={Object.assign(stylePaper, style)} {...other}>

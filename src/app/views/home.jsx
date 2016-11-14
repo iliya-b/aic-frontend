@@ -51,15 +51,22 @@ const Home = class extends AuthPage {
 		const styles = {
 			root: {
 				backgroundColor: palette.logo1Color,
-				overflow: 'hidden'
+				overflow: 'hidden',
+				backgroundImage: 'url(img/logo.png)',
+				height: '70vh',
+				backgroundSize: 'cover',
+				position: 'relative',
+				backgroundRepeat: 'no-repeat',
+				backgroundPosition: '50% 50%'
 			},
 			svgLogo: {
 				width: '420px'
 			},
 			tagline: {
-				margin: '16px auto 0 auto',
 				textAlign: 'center',
-				maxWidth: '575px'
+				bottom: 45,
+				position: 'absolute',
+				width: '100%'
 			},
 			label: {
 				color: palette.accent1Color
@@ -68,7 +75,6 @@ const Home = class extends AuthPage {
 				margin: '16px 16px 0px 16px'
 			},
 			h2: {
-				// .mui-font-style-title
 				color: palette.textLightColor,
 				fontWeight: Typography.fontWeightLight,
 				fontSize: '20px',
@@ -86,7 +92,6 @@ const Home = class extends AuthPage {
 				fontSize: '56px'
 			},
 			h2WhenLarge: {
-				// .mui-font-style-headline;
 				fontSize: '24px',
 				lineHeight: '32px',
 				paddingTop: '16px',
@@ -97,16 +102,12 @@ const Home = class extends AuthPage {
 		return (
 			<FullWidthSection style={styles.root}>
 				<div style={styles.tagline}>
-					<h1 style={styles.h1}><img style={styles.svgLogo} src="img/logo.png"/></h1>
-					<h2 style={styles.h2}>
-						A platform for testing Android applications in the Cloud
-					</h2>
 					<RaisedButton
 						label="Login"
 						title="Login"
 						onClick={this.handleLoginOpen}
 						style={styles.buttonStyle}
-						secondary
+						primary
 						/>
 					<LoginDialog
 						open={this.state.loginDialogOpen}
