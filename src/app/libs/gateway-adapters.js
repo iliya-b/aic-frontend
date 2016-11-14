@@ -49,7 +49,10 @@ const GatewayAdapters = {
 			}
 		},
 		read: {
-			response: result => camelizeObj(result.project)
+			response: result => {
+				result.project.sum_avms_uptime = typeof result.project.sum_avms_uptime === 'number' ? result.project.sum_avms_uptime : 0; // eslint-disable-line camelcase
+				return camelizeObj(result.project);
+			}
 		}
 	},
 	apks: {
