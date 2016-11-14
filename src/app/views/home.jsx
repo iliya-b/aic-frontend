@@ -118,7 +118,7 @@ const Home = class extends AuthPage {
 							formDisabled={this.state && this.state.login && this.state.login.status === 'LOGIN_STATUS_CONNECTING'}
 							/>
 					</div>
-			</FullWidthSection>
+				</FullWidthSection>
 			</div>
 		);
 	}
