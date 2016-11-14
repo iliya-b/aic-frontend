@@ -32,7 +32,7 @@ const ProjectDetails = class extends React.Component {
 					{project.statusReason && <div><LabeledSpan style={styleLabel} label="Status Message" value={project.statusReason}/><br/><br/></div>}
 					<LabeledSpan style={styleLabel} label="Last Status Update" value={project.statusTs}/><br/><br/>
 					<LabeledSpan style={styleLabel} label="Total Machines Used" value={project.countAvms}/><br/><br/>
-					<LabeledSpan style={styleLabel} label="Total Machines Uptime" value={timeHumanize(project.sumAvmsUptime)}/><br/><br/>
+					<LabeledSpan style={styleLabel} label="Total Machines Uptime" value={timeHumanize(project.sumAvmsUptime * 1000)}/><br/><br/>
 					<LabeledSpan style={styleLabel} label="Total Machines Uptime (seconds)" value={Math.round(project.sumAvmsUptime)}/><br/><br/>
 					<LabeledSpan style={styleLabel} label={`Total in Euros (1 second = € ${vmtime2Euros})`} value={Math.round(project.sumAvmsUptime * vmtime2Euros)}/><br/><br/>
 				</div>
