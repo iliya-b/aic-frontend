@@ -7,9 +7,9 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import IconButtonApp from 'app/components/icon/icon-button-app';
-import DeviceIcon from 'app/components/icon/device-icon';
 import SelectTextField from 'app/components/form/select-text-field';
-import MultiTextField from 'app/components/form/multi-text-field';
+import PanelAndroidCreateConfig from 'app/components/panel/panel-android-create-config';
+import PanelAndroidConfig from 'app/components/panel/panel-android-config';
 
 const debug = require('debug')('AiC:Components:Dialog:DialogCampaignCreation');
 
@@ -21,10 +21,12 @@ const DialogCampaignCreation = class extends React.Component {
 			// Default configuration
 			config: {
 				name: '',
-				images: [],
+				devices: [],
 				apks: [],
 				packages: []
-			}
+			},
+			isChosingDevice: false,
+			deviceConfig: null
 		};
 		this.refsC = {};
 	}
@@ -83,6 +85,24 @@ const DialogCampaignCreation = class extends React.Component {
 		this.udpdateConfig('packages', newSelection);
 	}
 
+	handleClickDeviceOpen = () => {
+		this.setState({isChosingDevice: true});
+	}
+
+	handleClickDeviceClose = () => {
+		this.setState({isChosingDevice: false});
+	}
+
+	handleClickDeviceSelect = () => {
+		this.udpdateConfig('devices', this.state.deviceConfig);
+		this.setState({isChosingDevice: false});
+	}
+
+	handleChangeDeviceConfig = newConfig => {
+		debug('newConfig', newConfig);
+		this.setState({deviceConfig: newConfig});
+	}
+
 	render() {
 		// TODO: treat all the other conflict fields inside ...other
 		const {
@@ -94,54 +114,61 @@ const DialogCampaignCreation = class extends React.Component {
 			...others
 		} = this.props;
 
-		const actionsButtons = [
-			<RaisedButton secondary label="Start" key="start" onClick={this.handleStart}/>,
-			<FlatButton style={{marginLeft: 10}} label="Cancel" key="cancel" onClick={onCancel}/>];
+		const actionsButtons = [];
+
+		if (this.state.isChosingDevice) {
+			actionsButtons.push([
+				<RaisedButton secondary label="Select" key="select" onClick={this.handleClickDeviceSelect}/>,
+				<FlatButton style={{marginLeft: 10}} label="Return" key="Return" onClick={this.handleClickDeviceClose}/>
+			]);
+		} else {
+			actionsButtons.push([
+				<RaisedButton secondary label="Start" key="start" onClick={this.handleStart}/>,
+				<FlatButton style={{marginLeft: 10}} label="Cancel" key="cancel" onClick={onCancel}/>
+			]);
+		}
 
 		const styleLabels = {paddingTop: 14, width: 256};
 
-		const devices = this.props.images.map(image => image.image).map(image => {
-			return (
-				<IconButtonApp key={image} onClick={this.handleClickConfig} data-config-key="images" data-config-value={image} tooltip={image.replace('-', ' ')}>
-					<DeviceIcon isOn={this.state.config.images.indexOf(image) !== -1} image={image}/>
-				</IconButtonApp>
-			);
-		});
+		const devices = this.state.config.devices.map((deviceInfo, i) => <PanelAndroidConfig key={i} {...deviceInfo}/>);
 
 		const apksMenu = this.props.apks
 			.filter(apk => apk.status === 'READY')
 			.map(apk => ({value: apk.id, label: apk.filename}));
 
 		return (
-			<Dialog {...others} open={open} title="Start campaign" actions={actionsButtons} autoScrollBodyContent onRequestClose={onCancel}>
-				<TextField
-					name="createCampaignName"
-					data-config-key="name"
-					ref={this.setRefC}
-					floatingLabelFixed
-					floatingLabelText="campaign name"
-					onChange={this.handleChangeConfig}
-					defaultValue={this.state.config.name}
-					/><br/>
-				<LabeledSpan label="devices" off style={styleLabels}/><br/>
-				{devices}
-				<br/>
-				<LabeledSpan label="packages" off style={styleLabels}/><br/>
-				<MultiTextField
-					name="startCampaignPackages"
-					onChange={this.handleChangePackages}
-					style={{position: 'initial', width: '100%'}}
-					/>
-				<LabeledSpan label="APKs" off style={styleLabels}/><br/>
-				<SelectTextField
-					name="startCampaignAPKs"
-					onChange={this.handleChangeAPKs}
-					hintText="Select APKs"
-					style={{position: 'initial', width: '100%'}}
-					menuStyle={{width: 'calc(100% - 50px)'}}
-					items={apksMenu}
-					multiple
-					/>
+			<Dialog {...others} open={open} title={`${this.state.isChosingDevice ? 'Choose device' : 'Start campaign'}`} actions={actionsButtons} autoScrollBodyContent onRequestClose={onCancel}>
+				{!this.state.isChosingDevice &&
+					<div>
+						<TextField
+							name="createCampaignName"
+							data-config-key="name"
+							ref={this.setRefC}
+							floatingLabelFixed
+							floatingLabelText="campaign name"
+							onChange={this.handleChangeConfig}
+							defaultValue={this.state.config.name}
+							/><br/>
+						<LabeledSpan label="devices" off style={styleLabels}/><br/>
+						<div>
+						{devices} <IconButtonApp primary iconClassName="mdi mdi-plus" onClick={this.handleClickDeviceOpen}/>
+						</div>
+						<br/>
+						<LabeledSpan label="APKs" off style={styleLabels}/><br/>
+						<SelectTextField
+							name="startCampaignAPKs"
+							onChange={this.handleChangeAPKs}
+							hintText="Select APKs"
+							style={{position: 'initial', width: '100%'}}
+							menuStyle={{width: 'calc(100% - 50px)'}}
+							items={apksMenu}
+							multiple
+							/>
+					</div>}
+				{this.state.isChosingDevice &&
+					<div>
+						<PanelAndroidCreateConfig images={images} onChange={this.handleChangeDeviceConfig}/>
+					</div>}
 			</Dialog>
 		);
 	}

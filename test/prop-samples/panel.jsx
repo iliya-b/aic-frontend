@@ -5,7 +5,18 @@ import PanelSessionStatus from 'app/components/panel/panel-session-status';
 import FontIcon from 'material-ui/FontIcon';
 
 const PanelAndroidConfigProps = [{
-	props: {}
+	props: {
+		image: 'kitkat-tablet',
+		size: '800x600',
+		dpi: '120',
+		enableSensors: true,
+		enableBattery: true,
+		enableGps: true,
+		enableCamera: true,
+		enableRecord: true,
+		enableGsm: true,
+		enableNfc: true
+	}
 }];
 
 const PanelCampaignShowProps = [{
