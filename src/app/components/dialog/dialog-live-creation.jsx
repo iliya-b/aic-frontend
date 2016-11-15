@@ -22,7 +22,7 @@ const sizes = [
 ];
 
 const dpis = [
-	'120', '160', '240', '320'
+	'160', '240', '320', '480'
 ];
 
 const DialogLiveCreation = class extends React.Component {
@@ -35,7 +35,7 @@ const DialogLiveCreation = class extends React.Component {
 				name: '',
 				image: ((props.images && props.images.length) ? props.images[0].image : ''),
 				size: '800x600',
-				dpi: '120',
+				dpi: '160',
 				enableSensors: true,
 				enableBattery: true,
 				enableGps: true,
