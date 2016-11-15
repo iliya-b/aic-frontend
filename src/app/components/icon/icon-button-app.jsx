@@ -10,6 +10,7 @@ const IconButtonApp = (props, context) => {
 		iconStyle,
 		on,
 		off,
+		raised,
 		...others
 	} = props;
 	let calcIconStyle = {};
@@ -33,6 +34,13 @@ const IconButtonApp = (props, context) => {
 		calcIconStyle = {color: context.muiTheme.palette.disabledColor};
 	}
 
+	if (raised) {
+		calcIconStyle = {
+			color: context.muiTheme.palette.primary1Color,
+			textShadow: '1px 1px 0 rgba(0, 0, 0, 0.25), -1px -1px 0 #fff'
+		};
+	}
+
 	// Like this others can override color property
 	const finalProps = Object.assign({}, calcIconStyle, others);
 
@@ -50,7 +58,8 @@ IconButtonApp.propTypes = {
 	secondary: React.PropTypes.bool,
 	iconStyle: React.PropTypes.object,
 	on: React.PropTypes.bool,
-	off: React.PropTypes.bool
+	off: React.PropTypes.bool,
+	raised: React.PropTypes.bool
 };
 
 module.exports = IconButtonApp;

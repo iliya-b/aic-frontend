@@ -3,11 +3,10 @@
 import React from 'react';
 import Card from 'material-ui/Card/Card';
 import CardActions from 'material-ui/Card/CardActions';
-import FontIcon from 'material-ui/FontIcon';
-import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
 import {capimelize, moveCaretToEnd} from 'app/libs/helpers';
 import ProjectIcon from 'app/components/icon/project-icon';
+import IconButtonApp from 'app/components/icon/icon-button-app';
 
 const CardProject = class extends React.Component {
 	handleClickUpdateSave = () => {
@@ -46,8 +45,16 @@ const CardProject = class extends React.Component {
 		const styleCardActions = {display: 'inline-block'};
 		const styleInputProjectName = {
 			marginLeft: 10,
-			height: 42
+			marginRight: 0,
+			float: 'left'
 		};
+		const styleSpanProjectName = {
+			marginLeft: 10,
+			marginRight: 0,
+			marginTop: 15,
+			float: 'left'
+		};
+		const styleIcon = {marginTop: 3, float: 'left', marginLeft: 6};
 
 		// Edit on
 		if (this.props.isEditOn) {
@@ -55,12 +62,8 @@ const CardProject = class extends React.Component {
 				<Card key={this.props.id} style={styleCard}>
 					<CardActions style={styleCardActions}>
 						<TextField name="fieldEditProjectName" style={styleInputProjectName} defaultValue={this.props.name} ref={this.setRefName} onKeyDown={this.handleKeyDown}/>
-						<IconButton className="btProjectUpdateSave" title="Save" tooltip="Save" onClick={this.handleClickUpdateSave}>
-							<FontIcon className="mdi mdi-check" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
-						</IconButton>
-						<IconButton className="btProjectUpdateClose" title="Cancel" tooltip="Cancel" onClick={this.handleClickUpdateClose}>
-							<FontIcon className="mdi mdi-close" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
-						</IconButton>
+						<IconButtonApp raised iconClassName="mdi mdi-check" className="btProjectUpdateSave" title="Save" tooltip="Save" onClick={this.handleClickUpdateSave}/>
+						<IconButtonApp raised iconClassName="mdi mdi-close" className="btProjectUpdateClose" title="Cancel" tooltip="Cancel" onClick={this.handleClickUpdateClose}/>
 					</CardActions>
 				</Card>
 			);
@@ -71,17 +74,11 @@ const CardProject = class extends React.Component {
 		return (
 			<Card key={this.props.id} style={styleCard}>
 				<CardActions style={styleCardActions}>
-					<span className={`txtProjectName txtProjectName${this.props.index} txtProjectName${projectNameCamel}`} style={styleInputProjectName}>{this.props.name}</span>
-					<ProjectIcon style={{marginTop: 3, float: 'left'}} tooltip={this.props.status} status={this.props.status}/>
-					<IconButton className="btProjectEnter" title={`Enter ${this.props.name}`} tooltip="Enter" onClick={this.handleClickEnter}>
-						<FontIcon className="mdi mdi-arrow-right-bold" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
-					</IconButton>
-					<IconButton className="btProjectEdit" title={`Edit ${this.props.name}`} tooltip="Edit" onClick={this.handleClickUpdate}>
-						<FontIcon className="mdi mdi-pencil" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
-					</IconButton>
-					<IconButton className="btProjectDelete" title={`Delete ${this.props.name}`} tooltip="Delete" onClick={this.handleClickDelete}>
-						<FontIcon className="mdi mdi-delete" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
-					</IconButton>
+					<ProjectIcon style={styleIcon} tooltip={this.props.status} status={this.props.status}/>
+					<span className={`txtProjectName txtProjectName${this.props.index} txtProjectName${projectNameCamel}`} style={styleSpanProjectName}>{this.props.name}</span>
+					<IconButtonApp raised iconClassName="mdi mdi-arrow-right-bold" className="btProjectEnter" title={`Enter ${this.props.name}`} tooltip="Enter" onClick={this.handleClickEnter}/>
+					<IconButtonApp raised iconClassName="mdi mdi-pencil" className="btProjectEdit" title={`Edit ${this.props.name}`} tooltip="Edit" onClick={this.handleClickUpdate}/>
+					<IconButtonApp raised iconClassName="mdi mdi-delete" className="btProjectDelete" title={`Delete ${this.props.name}`} tooltip="Delete" onClick={this.handleClickDelete}/>
 				</CardActions>
 			</Card>
 		);

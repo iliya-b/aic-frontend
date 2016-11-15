@@ -106,10 +106,13 @@ const ProjectList = class extends React.Component {
 		const deleteName = this.state.deleting ? <span> project <b> {this.getProjectNameById(this.state.deleteId)}</b></span> : null;
 
 		return (
-			<div style={{position: 'initial'}}>
-				{items}
-				{newProject}
-				<DialogConfirmDelete deleteItemName={deleteName} open={this.state.deleting} onRequestClose={this.handleCloseDialog} onCancel={this.handleCloseDialog} onConfirm={this.handleConfirmDialog}/>
+			<div>
+				<div>
+					{items}
+					{newProject}
+					<DialogConfirmDelete deleteItemName={deleteName} open={this.state.deleting} onRequestClose={this.handleCloseDialog} onCancel={this.handleCloseDialog} onConfirm={this.handleConfirmDialog}/>
+				</div>
+				<div style={{clear: 'both'}}>&nbsp;</div>
 			</div>
 		);
 	}

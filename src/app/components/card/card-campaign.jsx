@@ -3,10 +3,9 @@
 import React from 'react';
 import Card from 'material-ui/Card/Card';
 import CardActions from 'material-ui/Card/CardActions';
-import FontIcon from 'material-ui/FontIcon';
-import IconButton from 'material-ui/IconButton';
 import {capimelize, moveCaretToEnd} from 'app/libs/helpers';
 import CampaignIcon from 'app/components/icon/campaign-icon';
+import IconButtonApp from 'app/components/icon/icon-button-app';
 
 const CardCampaign = class extends React.Component {
 	handleClickEnter = () => {
@@ -42,9 +41,7 @@ const CardCampaign = class extends React.Component {
 				<CardActions style={styleCardActions}>
 					<span className={`txtProjectName txtProjectName${this.props.index} txtProjectName${projectNameCamel}`} style={styleInputProjectName}>{this.props.name}</span>
 					<CampaignIcon style={{marginTop: 3, float: 'left'}} tooltip={this.props.status} status={this.props.status}/>
-					<IconButton className="btProjectEnter" title={`Enter ${this.props.name}`} tooltip="Enter" onClick={this.handleClickEnter}>
-						<FontIcon className="mdi mdi-arrow-right-bold" color="rgba(0, 0, 0, 0.4)" hoverColor="rgba(0, 0, 0, 0.87)"/>
-					</IconButton>
+					<IconButtonApp raised iconClassName="mdi mdi-arrow-right-bold" className="btProjectEnter" title={`Enter ${this.props.name}`} tooltip="Enter" onClick={this.handleClickEnter}/>
 				</CardActions>
 			</Card>
 		);

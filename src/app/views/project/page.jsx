@@ -74,7 +74,8 @@ const ProjectPage = class extends React.Component {
 			},
 			menuItemSelected: {
 				// color: this.context.muiTheme.palette.accent1Color
-				backgroundColor: 'rgba(0, 0, 0, 0.0980392)'
+				backgroundColor: 'rgba(0, 0, 0, 0.0980392)',
+				fontWeight: 500
 			}
 		};
 

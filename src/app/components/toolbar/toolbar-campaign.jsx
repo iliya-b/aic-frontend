@@ -5,12 +5,16 @@ import Toolbar from 'material-ui/Toolbar/Toolbar';
 import ToolbarGroup from 'material-ui/Toolbar/ToolbarGroup';
 import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
 import ToolbarTitle from 'material-ui/Toolbar/ToolbarTitle';
-import FontIcon from 'material-ui/FontIcon';
 import IconList from 'app/components/icon/icon-list';
+import TitleIcon from 'app/components/icon/title-icon';
 
 const ToolbarCampaign = props => {
 	const styleToolbar = {justifyContent: 'initial'};
-	const styleSeparator = {margin: '0 5px 0 0px'};
+	const styleSeparator = {
+		margin: '0 5px 0 0px',
+		borderRight: '1px solid white',
+		backgroundColor: 'rgba(0, 0, 0, 0.2)'
+	};
 	const styleButtons = {marginTop: 5};
 	const styleIcon = {
 		cursor: 'default',
@@ -34,13 +38,14 @@ const ToolbarCampaign = props => {
 			start: props.onClickStart
 		},
 		iconClassNamePrefix: 'btCampaign',
-		selectedId: null
+		selectedId: null,
+		raised: true
 	};
 	const renderedButtons = <IconList {...iconListProps}/>;
 
 	return (
 		<Toolbar style={Object.assign(props.style || {}, styleToolbar)}>
-			<FontIcon style={styleIcon} className="mdi mdi-settings"/>
+			<TitleIcon style={styleIcon} className="mdi mdi-settings"/>
 			<ToolbarGroup firstChild lastChild>
 				<ToolbarTitle className="txtLiveTitle" text="Test Campaigns"/>
 				<ToolbarSeparator style={styleSeparator}/>

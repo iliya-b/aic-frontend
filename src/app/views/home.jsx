@@ -52,8 +52,8 @@ const Home = class extends AuthPage {
 			root: {
 				overflow: 'hidden',
 				backgroundImage: 'url(img/logo.png)',
-				height: '70vh',
-				backgroundSize: 'auto 70vh',
+				height: 'calc(100vh - 30px)',
+				backgroundSize: 'auto calc(100vh - 30px)',
 				position: 'relative',
 				backgroundRepeat: 'no-repeat',
 				backgroundPosition: 'center'
@@ -63,7 +63,7 @@ const Home = class extends AuthPage {
 			},
 			tagline: {
 				textAlign: 'center',
-				bottom: 45,
+				bottom: '10vh',
 				position: 'absolute',
 				width: '100%'
 			},

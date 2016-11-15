@@ -58,7 +58,7 @@ const Main = class extends React.Component {
 			footer: {
 				backgroundColor: Colors.grey900,
 				textAlign: 'center',
-				padding: 24
+				lineHeight: '30px'
 			},
 			a: {
 				color: Colors.darkWhite
@@ -82,18 +82,20 @@ const Main = class extends React.Component {
 				textAlign: 'center'
 			}
 		};
+
+		const styleContent = {
+			background: '#fff',
+			minHeight: 'calc(100vh - 30px)'
+		};
 		// debug('render state ', this.state);
 
 		if (this.state.config && this.state.config.isLoaded && !this.state.config.hasErrors) {
 			return (
 				<MuiThemeProvider muiTheme={AppTheme}>
 					<div>
-						<div style={{background: '#fff'}}>
+						<div style={styleContent}>
 						{this.props.children}
-						</div>
-						<div style={styles.footer}>
-							<p style={styles.p}>COPYRIGHT © AiC 2.0</p>
-						</div>
+						</div><div style={styles.footer}><p style={styles.p}>COPYRIGHT © AiC 2.0</p></div>
 						<SessionEndedDialog open={this.state.sessionEndedDialogOpen} onRequestClose={this.handleSessionEndedDialogClose}/>
 						<ServerErrorDialog open={this.state.app ? this.state.app.serverError.open : false} onRequestClose={this.handleServerErrorDialogClose} message={this.state.app ? this.state.app.serverError.message : ''}/>
 						{this.state && this.state.app && <Snackbar

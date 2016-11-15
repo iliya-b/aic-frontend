@@ -26,6 +26,17 @@ const IconList = class extends React.Component {
 				if (b.tooltipPosition) {
 					extraProps.tooltipPosition = b.tooltipPosition;
 				}
+				if (this.props.raised) {
+					const extraIconStyle = {
+						color: AppPalette.primary1Color,
+						textShadow: '1px 1px 0 rgba(0, 0, 0, 0.25), -1px -1px 0 #fff'
+					};
+					return (
+						<IconButton iconStyle={Object.assign(extraIconStyle, b.iconStyle)} {...extraProps} className={`${this.props.iconClassNamePrefix}${camelize(b.tooltip)}`} key={b.id} tooltip={b.tooltip} style={this.props.style} onClick={this.props.onClick[b.id]}>
+							{icon}
+						</IconButton>
+					);
+				}
 				return (
 					<IconButton iconStyle={b.iconStyle} {...extraProps} className={`${this.props.iconClassNamePrefix}${camelize(b.tooltip)}`} key={b.id} tooltip={b.tooltip} style={this.props.style} onClick={this.props.onClick[b.id]}>
 						{icon}
@@ -58,7 +69,8 @@ IconList.propTypes = {
 	selectColor: React.PropTypes.string,
 	hoverColor: React.PropTypes.string,
 	defaultColor: React.PropTypes.string,
-	styleRoot: React.PropTypes.object
+	styleRoot: React.PropTypes.object,
+	raised: React.PropTypes.bool
 };
 
 module.exports = IconList;
