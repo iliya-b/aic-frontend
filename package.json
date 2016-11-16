@@ -26,8 +26,8 @@
     "test:no-console": "echo \"Verifying for console usage. Please use debug package instead.\" && ! grep -rnw 'src' -e \"console\" && echo \"Yes! No console.something being used! Good Job!\"",
     "test:no-todos": "echo \"Verifying for TODOs.\" && ! grep -rnw 'src' -e \"TODO\" && echo \"Yes! No TODOs to do! Good Job!\"",
     "test:code-style": "xo",
-    "start-story": "start-storybook -c .storybook -p 9001 --static-dir ./build/",
-    "build:story": "build-storybook -c .storybook -o build/stories/"
+    "start-story": "start-storybook -c stories/config -p 9001 --static-dir ./build/",
+    "build:story": "build-storybook -c stories/config -o build/stories/"
   },
   "author": "Karine Pires",
   "dependencies": {

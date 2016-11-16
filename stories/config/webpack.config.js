@@ -4,18 +4,17 @@ module.exports = {
 	resolve: {
 		extensions: ['', '.js', '.jsx'],
 		alias: {
-			app: path.resolve(__dirname, '../src/app/'),
-			stories: path.resolve(__dirname, '../stories/'),
-			build: path.resolve(__dirname, '../build/'),
-			test: path.resolve(__dirname, '../test/')
+			app: path.resolve(__dirname, '../../src/app/'),
+			stories: path.resolve(__dirname, '../../stories/'),
+			build: path.resolve(__dirname, '../../build/'),
+			test: path.resolve(__dirname, '../../test/')
 		}
 	},
 	module: {
 		loaders: [
 			{
 				test: /\.css?$/,
-				loaders: ['style', 'raw'],
-				include: /build/
+				loaders: ['style', 'raw']
 			},
 			{
 				test: /\.(eot|svg|ttf|woff|woff2)$/,
