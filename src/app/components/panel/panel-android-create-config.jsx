@@ -7,7 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import IconButtonApp from 'app/components/icon/icon-button-app';
 import DeviceIcon from 'app/components/icon/device-icon';
-import {sensors} from 'app/libs/constants';
+import {sensors} from 'app/libs/sensors';
 
 const debug = require('debug')('AiC:Components:Panel:PanelAndroidCreateConfig');
 
@@ -20,7 +20,7 @@ const sizes = [
 ];
 
 const dpis = [
-	'120', '160', '240', '320'
+	'160', '240', '320', '480'
 ];
 
 const getFirstImage = props => {
@@ -35,8 +35,8 @@ const PanelAndroidCreateConfig = class extends React.Component {
 			// Default configuration
 			config: {
 				image: getFirstImage(props),
-				size: '800x600',
-				dpi: '120',
+				size: sizes[2],
+				dpi: dpis[0],
 				enableSensors: true,
 				enableBattery: true,
 				enableGps: true,
@@ -113,6 +113,12 @@ const PanelAndroidCreateConfig = class extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.images.length && this.state.config.image === '') {
 			this.setState({config: Object.assign({}, this.state.config, {image: getFirstImage(nextProps)})});
+		}
+	}
+
+	componentDidMount() {
+		if (this.props.onChange) {
+			this.props.onChange(this.state.config);
 		}
 	}
 

@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import IconButtonApp from 'app/components/icon/icon-button-app';
 import DeviceIcon from 'app/components/icon/device-icon';
-import {sensors} from 'app/libs/constants';
+import {sensors} from 'app/libs/sensors';
 
 const debug = require('debug')('AiC:Components:Dialog:DialogLiveCreation');
 

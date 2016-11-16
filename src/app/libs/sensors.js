@@ -8,6 +8,17 @@ const sensors = [
 	{key: 'enableNfc', tooltip: 'NFC', iconClassName: 'mdi mdi-nfc'}
 ];
 
-module.exports = {
-	sensors
+const getEnabledSensors = info => {
+	const enabled = [];
+	sensors.forEach(sensor => {
+		if (info[sensor.key]) {
+			enabled.push(sensor.tooltip);
+		}
+	});
+	return enabled.join(', ');
+};
+
+export {
+	sensors,
+	getEnabledSensors
 };

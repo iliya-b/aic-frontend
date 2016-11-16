@@ -103,6 +103,14 @@ const DialogCampaignCreation = class extends React.Component {
 		this.setState({deviceConfig: newConfig});
 	}
 
+	handleDeleteDevice = e => {
+		const deviceIndex = parseInt(e.currentTarget.dataset.configId, 10);
+		const newStateConfig = Object.assign({}, this.state.config);
+		newStateConfig.devices = this.state.config.devices.slice();
+		newStateConfig.devices.splice(deviceIndex, 1);
+		this.setState({config: newStateConfig});
+	}
+
 	render() {
 		// TODO: treat all the other conflict fields inside ...other
 		const {
@@ -130,7 +138,9 @@ const DialogCampaignCreation = class extends React.Component {
 
 		const styleLabels = {paddingTop: 14, width: 256};
 
-		const devices = this.state.config.devices.map((deviceInfo, i) => <PanelAndroidConfig key={i} {...deviceInfo}/>);
+		const devices = this.state.config.devices.map((deviceInfo, i) => (
+			<PanelAndroidConfig onClickRemove={this.handleDeleteDevice} data-config-id={i} key={i} {...deviceInfo}/>
+		));
 
 		const apksMenu = this.props.apks
 			.filter(apk => apk.status === 'READY')
@@ -151,9 +161,9 @@ const DialogCampaignCreation = class extends React.Component {
 							/><br/>
 						<LabeledSpan label="devices" off style={styleLabels}/><br/>
 						<div>
-						{devices} <IconButtonApp primary iconClassName="mdi mdi-plus" onClick={this.handleClickDeviceOpen}/>
+							{devices}
+							<IconButtonApp primary tooltip="Add device" iconClassName="mdi mdi-plus" onClick={this.handleClickDeviceOpen}/>
 						</div>
-						<br/>
 						<LabeledSpan label="APKs" off style={styleLabels}/><br/>
 						<SelectTextField
 							name="startCampaignAPKs"

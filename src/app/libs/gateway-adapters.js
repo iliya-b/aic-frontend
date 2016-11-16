@@ -243,11 +243,24 @@ const GatewayAdapters = {
 			request: frontendObject => {
 				return {
 					campaign_name: frontendObject.name, // eslint-disable-line camelcase
-					tests: frontendObject.images.map(image => {
+					tests: frontendObject.devices.map(device => {
+						const size = device.size.split('x');
 						return {
-							image,
+							image: device.image,
 							apks: frontendObject.apks,
-							packages: frontendObject.packages
+							packages: ['com.zenika.aic.demo.sensor.test/android.support.test.runner.AndroidJUnitRunner', 'com.zenika.aic.core.libs.test/android.test.InstrumentationTestRunner'],
+							hwconfig: {
+								enable_sensors: device.enableSensors ? 1 : 0, // eslint-disable-line camelcase
+								enable_battery: device.enableBattery ? 1 : 0, // eslint-disable-line camelcase
+								enable_gps: device.enableGps ? 1 : 0, // eslint-disable-line camelcase
+								enable_camera: device.enableCamera ? 1 : 0, // eslint-disable-line camelcase
+								enable_record: frontendObject.enableRecord ? 1 : 0, // eslint-disable-line camelcase
+								enable_gsm: device.enableGsm ? 1 : 0, // eslint-disable-line camelcase
+								enable_nfc: device.enableNfc ? 1 : 0, // eslint-disable-line camelcase
+								width: parseInt(size[0], 10),
+								height: parseInt(size[1], 10),
+								dpi: parseInt(device.dpi, 10)
+							}
 						};
 					})
 				};

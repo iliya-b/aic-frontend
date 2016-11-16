@@ -17,15 +17,18 @@ const LabeledSpan = (props, context) => {
 
 	const styles = {
 		label: {
-			position: 'absolute',
-			transform: hasValue ? 'perspective(1px) scale(0.75) translate3d(0px, -20px, 0px)' : 'scale(0.75)',
-			transformOrigin: 'left top 0px',
+			position: 'relative',
+			// transform: 'scale(0.75)', // hasValue ? 'perspective(1px) scale(0.75) translate3d(0px, -20px, 0px)' : 'scale(0.75)',
+			// transformOrigin: 'left top 0px',
 			color: off ? context.muiTheme.palette.disabledColor : context.muiTheme.palette.primary1Color,
-			fontWeight: 500
+			fontWeight: 500,
+			whiteSpace: 'nowrap',
+			display: 'block',
+			fontSize: '0.75em',
+			lineHeight: '0.9em'
 		},
 		root: {
 			paddingTop: hasValue ? 15 : 0,
-			minWidth: 100,
 			minHeight: 15,
 			display: 'inline-block',
 			lineHeight: '20px',
