@@ -248,8 +248,9 @@ const GatewayAdapters = {
 						return {
 							image: device.image,
 							apks: frontendObject.apks,
-							packages: ['com.zenika.aic.demo.sensor.test/android.support.test.runner.AndroidJUnitRunner', 'com.zenika.aic.core.libs.test/android.test.InstrumentationTestRunner'],
-							hwconfig: {
+							// packages: ['com.zenika.aic.demo.sensor.test/android.support.test.runner.AndroidJUnitRunner', 'com.zenika.aic.core.libs.test/android.test.InstrumentationTestRunner'],
+							packages: [],
+                                                        hwconfig: {
 								enable_sensors: device.enableSensors ? 1 : 0, // eslint-disable-line camelcase
 								enable_battery: device.enableBattery ? 1 : 0, // eslint-disable-line camelcase
 								enable_gps: device.enableGps ? 1 : 0, // eslint-disable-line camelcase
