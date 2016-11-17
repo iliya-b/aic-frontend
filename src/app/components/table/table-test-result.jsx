@@ -27,24 +27,33 @@ const resultRow = result => {
 	const isFailure = result.statusText !== 'OK';
 	const isLast = result.current === result.numTests;
 	const statusIcon = <SimpleStatusIcon status={result.statusText}/>;
+	const rows = [];
 
-	const rowInfo = (<TableRow key={`info-${result.current}`} style={(isFailure || isLast) ? {borderBottomWidth: 0} : {}} >
-		<TableRowColumn style={{width: '50px'}}>{statusIcon}</TableRowColumn>
-		<TableRowColumn>{result.testClass}</TableRowColumn>
-		<TableRowColumn>{result.testName}</TableRowColumn>
-	</TableRow>);
-
-	const rowFailure = isFailure ? <TableRow key={`failure-${result.current}`}>
-		<TableRowColumn/>
-		<TableRowColumn colSpan="2" style={{color: AppPalette.errorColor}}>
-			<CodeBox style={{overflowY: 'hidden'}}>{result.stackTrace}</CodeBox>
-		</TableRowColumn>
-	</TableRow> : null;
-
-	if (isFailure) {
-		return [rowInfo, rowFailure];
+	if (isFailure && !result.stackTrace) {
+		rows.push(<TableRow key={`info-${result.current}`} style={(isFailure || isLast) ? {borderBottomWidth: 0} : {}} >
+			<TableRowColumn style={{width: '50px'}}>{statusIcon}</TableRowColumn>
+			<TableRowColumn colSpan="2" style={{color: AppPalette.errorColor}}>
+				<CodeBox style={{overflowY: 'hidden'}}>{result.error}</CodeBox>
+			</TableRowColumn>
+		</TableRow>);
+	} else {
+		rows.push(<TableRow key={`info-${result.current}`} style={(isFailure || isLast) ? {borderBottomWidth: 0} : {}} >
+			<TableRowColumn style={{width: '50px'}}>{statusIcon}</TableRowColumn>
+			<TableRowColumn>{result.testClass}</TableRowColumn>
+			<TableRowColumn>{result.testName}</TableRowColumn>
+		</TableRow>);
 	}
-	return [rowInfo];
+
+	if (isFailure && result.stackTrace) {
+		rows.push(<TableRow key={`failure-${result.current}`}>
+			<TableRowColumn/>
+			<TableRowColumn colSpan="2" style={{color: AppPalette.errorColor}}>
+				<CodeBox style={{overflowY: 'hidden'}}>{result.stackTrace}</CodeBox>
+			</TableRowColumn>
+		</TableRow>);
+	}
+
+	return rows;
 };
 
 const TableTestResult = props => {

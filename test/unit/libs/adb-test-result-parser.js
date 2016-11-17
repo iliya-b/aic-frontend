@@ -107,3 +107,17 @@ test(`Can parse file test-5.stdout`, t => {
 	t.is(typeof resultObj.timeMilliseconds, 'number');
 	t.is(resultObj.timeMilliseconds, 19925);
 });
+
+test(`Can parse file test-6.stdout`, t => {
+	let resultStr = fs.readFileSync('../../assets/test-6.stdout', 'utf8');
+	// const firstLinePos = resultStr.indexOf('\n');
+	// console.log(resultStr.substring(0, firstLinePos));
+	resultStr = resultStr.substring(resultStr.indexOf('\n') + 1);
+	// console.log(resultStr);
+	const resultObj = adbTestResultParser(resultStr);
+	// console.log(resultObj);
+	t.is(typeof resultObj, 'object');
+	// t.is(resultObj.testCases.length, 2);
+	// t.is(typeof resultObj.timeMilliseconds, 'number');
+	// t.is(resultObj.timeMilliseconds, 19925);
+});
