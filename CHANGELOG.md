@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ## [Unreleased]
 
+## [0.7.2]
+
 ### Added
 - Add quota panel to campaign.
 - Add machine information to tests running.
