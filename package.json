@@ -27,7 +27,7 @@
     "test:no-todos": "echo \"Verifying for TODOs.\" && ! grep -rnw 'src' -e \"TODO\" && echo \"Yes! No TODOs to do! Good Job!\"",
     "test:code-style": "xo",
     "start-story": "start-storybook --dont-track -c stories/config -p 9001 --static-dir ./build/",
-    "build:story": "build-storybook --dont-track -c stories/config -o build/stories/"
+    "build:story": "build-storybook -c stories/config -o build/stories/"
   },
   "author": "Karine Pires",
   "dependencies": {
