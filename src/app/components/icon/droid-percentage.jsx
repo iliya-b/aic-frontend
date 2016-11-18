@@ -6,7 +6,8 @@ import FontIcon from 'material-ui/FontIcon';
 
 // APP
 const DroidPercentage = (props, context) => {
-	const baseSize = props.style && props.style.fontSize ? props.style.fontSize : 24;
+	// const baseSize = props.style && props.style.fontSize ? props.style.fontSize : 24;
+	const baseSize = 24;
 	const remainingSize = (100 - (props.value > 100 ? 100 : props.value)) / 100 * baseSize;
 
 	const styles = {
@@ -32,7 +33,7 @@ const DroidPercentage = (props, context) => {
 	const fgColor = props.fgColor ? props.fgColor : 'rgba(255, 255, 255, 0.75)';
 
 	return (
-		<div style={styles.root}>
+		<div style={Object.assign(styles.root, props.style)}>
 			<FontIcon style={styles.base} className="mdi mdi-android" color={bgColor} hoverColor={bgColor}/>
 			<FontIcon style={styles.remaining} className="mdi mdi-android" color={fgColor} hoverColor={fgColor}/>
 		</div>

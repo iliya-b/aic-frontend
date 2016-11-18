@@ -3,11 +3,12 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import PanelInfo from 'app/components/panel/panel-info';
 
 const DialogConfirmDelete = props => {
 	const actionsButtons = [
-		<FlatButton
+		<RaisedButton
 			key="confirmDeleteDialogActionConfirm"
 			label="Confirm"
 			title="Confirm"
@@ -18,7 +19,6 @@ const DialogConfirmDelete = props => {
 			key="confirmDeleteDialogActionCancel"
 			label="Cancel"
 			title="Cancel"
-			secondary
 			onClick={props.onCancel}
 			/>
 	];

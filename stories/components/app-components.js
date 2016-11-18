@@ -1,6 +1,6 @@
 import {storiesOf} from '@kadira/storybook';
 import {themeDecorator, buildComponentStories} from 'stories/_helpers';
-import componentsProps from 'test/prop-samples';
+import componentsProps from 'test/fixtures';
 
 // Needs to be like this otherwise webpack can not resolve statically the require
 const req = {};

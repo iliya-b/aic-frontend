@@ -28,14 +28,17 @@ const LabeledSpan = (props, context) => {
 			lineHeight: '0.9em'
 		},
 		root: {
-			paddingTop: hasValue ? 15 : 0,
-			minHeight: 15,
+			marginTop: 14,
+			marginRight: 14,
 			display: 'inline-block',
 			lineHeight: '20px',
-			margin: 0,
 			position: 'relative'
 		},
-		value: {color: 'rgba(0, 0, 0, 0.5)'}
+		value: {
+			color: 'rgba(0, 0, 0, 0.5)',
+			minHeight: 15,
+			display: 'inline-block'
+		}
 	};
 
 	const spanValue = <span className={`sp${className}`} style={styles.value}>{value}</span>;

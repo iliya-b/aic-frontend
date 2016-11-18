@@ -12,14 +12,18 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 - Add rotation buttons to live.
 - Add drag toolbar on live fullscreen.
 - Add charging options to battery sensor on live.
---
+- Add project details with billing values.
+- Add collapse toolbar on live fullscreen.
+- Add test manager (dsl).
+- Add hwconfig to campaign (possibility to select device configuration for test campaign).
 
 ### Changed
 - Moved all components in /#themes to storybook.
 - Live code cleanup.
 - Fix bugs with 180° rotation.
 - Initiate all sensors when load live.
---
+- App redesign: new theme colors and new logo.
+- Remove the packages from campaign (when empty all tests will be run).
 
 ## [0.7.1]
 

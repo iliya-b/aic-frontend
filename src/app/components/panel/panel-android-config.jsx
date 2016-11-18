@@ -41,17 +41,14 @@ const PanelAndroidConfig = props => {
 	// 	);
 	// });
 	const styleWrapper = {
-		padding: '5px 50px 5px 10px',
+		padding: '0 50px 5px 10px',
 		position: 'relative',
 		marginTop: 10
 	};
 	const styleLabel = {
-		marginRight: 20,
-		paddingTop: 4
 	};
 	const styleLabelLast = {
-		marginRight: 0,
-		paddingTop: 4
+		marginRight: 0
 	};
 	const styleIcon = {
 		margin: '3px 17px 7px 10px',
@@ -59,14 +56,14 @@ const PanelAndroidConfig = props => {
 	};
 	const styleButton = {
 		position: 'absolute',
-		top: 0,
+		top: 2,
 		right: 0
 	};
 
 	// const showSensors = sensorIcons.length > 0;
 	let sensorsText = getEnabledSensors(props);
 	// const sensorsText = getEnabledSensors({enableBattery: true});
-	sensorsText = sensorsText ? sensorsText : '&nbsp;';
+	sensorsText = sensorsText ? sensorsText : ' ';
 	return (
 		<Paper style={styleWrapper} zDepth={1} {...other}>
 			<DeviceIcon style={styleIcon} isOn image={image}/>
