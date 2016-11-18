@@ -5,6 +5,7 @@ import Card from 'material-ui/Card/Card';
 import CardActions from 'material-ui/Card/CardActions';
 import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 
 const CardNewProject = class extends React.Component {
@@ -51,10 +52,9 @@ const CardNewProject = class extends React.Component {
 							style={styleNewProject}
 							onClick={this.handleClickSaveProject}
 							/>
-						<RaisedButton
+						<FlatButton
 							label="Cancel"
 							title="Cancel"
-							secondary
 							style={styleNewProject}
 							onClick={this.handleClickCancelProject}
 							/>

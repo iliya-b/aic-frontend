@@ -1,0 +1,11 @@
+$ adb shell am instrument -e perf true -r -w package_test_without_package_target
+INSTRUMENTATION_STATUS: id=ActivityManagerService
+INSTRUMENTATION_STATUS: Error=Unable to find instrumentation target package: aic.zenika.com.sensor
+INSTRUMENTATION_STATUS_CODE: -1
+android.util.AndroidException: INSTRUMENTATION_FAILED: aic.zenika.com.sensor.test/android.support.test.runner.AndroidJUnitRunner
+	at com.android.commands.am.Am.runInstrument(Am.java:977)
+	at com.android.commands.am.Am.onRun(Am.java:317)
+	at com.android.internal.os.BaseCommand.run(BaseCommand.java:47)
+	at com.android.commands.am.Am.main(Am.java:97)
+	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:249)

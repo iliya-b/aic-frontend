@@ -36,7 +36,7 @@ const IconButtonApp = (props, context) => {
 
 	if (raised) {
 		calcIconStyle = {
-			color: context.muiTheme.palette.primary1Color,
+			color: secondary ? context.muiTheme.palette.accent1Color : context.muiTheme.palette.primary1Color,
 			textShadow: '1px 1px 0 rgba(0, 0, 0, 0.25), -1px -1px 0 #fff'
 		};
 	}

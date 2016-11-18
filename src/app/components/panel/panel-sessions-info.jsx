@@ -7,12 +7,12 @@ import LabeledSpan from 'app/components/form/labeled-span';
 
 const PanelSessionsInfo = props => {
 	const stylePaper = {
-		padding: '10px 10px 0 10px',
+		padding: '0px 10px 10px 10px',
 		position: 'relative'
 	};
 
-	const styleLabel = {
-		padding: 10
+	const styleIcon = {
+		margin: '0px 14px 0px 5px'
 	};
 
 	let vmCountPerc = 0;
@@ -22,10 +22,10 @@ const PanelSessionsInfo = props => {
 
 	return (
 		<Paper style={stylePaper}>
-			<DroidPercentage value={vmCountPerc}/>
-			<LabeledSpan style={styleLabel} value={`${vmCountPerc}%`} label="Quota usage"/>
-			<LabeledSpan style={styleLabel} value={props.vmCount} label="Open sessions"/>
-			<LabeledSpan style={styleLabel} value={props.vmMaxAllowed} label="Max sessions"/>
+			<DroidPercentage style={styleIcon} value={vmCountPerc}/>
+			<LabeledSpan value={`${vmCountPerc}%`} label="Quota usage"/>
+			<LabeledSpan value={props.vmCount} label="Open sessions"/>
+			<LabeledSpan value={props.vmMaxAllowed} label="Max sessions"/>
 		</Paper>
 	);
 };

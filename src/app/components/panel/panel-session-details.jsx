@@ -8,7 +8,7 @@ import IconButton from 'material-ui/IconButton';
 import {capimelize} from 'app/libs/helpers';
 import VoiceSVG from 'app/components/icon/voice';
 import GravitySVG from 'app/components/icon/gravity';
-import {sensors} from 'app/libs/constants';
+import {getEnabledSensors} from 'app/libs/sensors';
 
 // TODO: use LabeledSpan
 // import LabeledSpan from 'app/components/form/labeled-span';
@@ -204,14 +204,8 @@ const infos = [
 	}
 ];
 
-const getEnabledSensors = info => {
-	const enabled = [];
-	sensors.forEach(sensor => {
-		if (info.hwconfig[sensor.key] === 1) {
-			enabled.push(sensor.tooltip);
-		}
-	});
-	return enabled.join(', ');
+const getEnabledSensorsFromConfig = info => {
+	return getEnabledSensors(info.hwconfig);
 };
 
 const avmInfoOrder = [
@@ -241,7 +235,7 @@ const avmInfoOrder = [
 		value: info => info.hwconfig.dpi
 	}, {
 		label: 'enabled sensors',
-		value: getEnabledSensors
+		value: getEnabledSensorsFromConfig
 	}
 ];
 

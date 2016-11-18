@@ -7,6 +7,8 @@ import TextField from 'material-ui/TextField';
 import {capimelize, moveCaretToEnd} from 'app/libs/helpers';
 import ProjectIcon from 'app/components/icon/project-icon';
 import IconButtonApp from 'app/components/icon/icon-button-app';
+import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 
 const CardProject = class extends React.Component {
 	handleClickUpdateSave = () => {
@@ -40,21 +42,33 @@ const CardProject = class extends React.Component {
 	render() {
 		const styleCard = {
 			margin: 10,
-			clear: 'both'
+			clear: 'both',
+			minHeight: 72
 		};
-		const styleCardActions = {display: 'inline-block'};
+		const styleCardActions = {
+			display: 'inline-block'
+		};
 		const styleInputProjectName = {
 			marginLeft: 10,
 			marginRight: 0,
 			float: 'left'
 		};
 		const styleSpanProjectName = {
-			marginLeft: 10,
-			marginRight: 0,
-			marginTop: 15,
+			marginLeft: 0,
+			marginRight: 2,
+			marginTop: 18,
 			float: 'left'
 		};
-		const styleIcon = {marginTop: 3, float: 'left', marginLeft: 6};
+		const styleIcon = {
+			float: 'left',
+			margin: '6px 10px 0 8px'
+		};
+		const styleButton = {
+			margin: 10
+		};
+		const styleIconButton = {
+			margin: '2px 0px 0px 2px'
+		};
 
 		// Edit on
 		if (this.props.isEditOn) {
@@ -62,8 +76,21 @@ const CardProject = class extends React.Component {
 				<Card key={this.props.id} style={styleCard}>
 					<CardActions style={styleCardActions}>
 						<TextField name="fieldEditProjectName" style={styleInputProjectName} defaultValue={this.props.name} ref={this.setRefName} onKeyDown={this.handleKeyDown}/>
-						<IconButtonApp raised iconClassName="mdi mdi-check" className="btProjectUpdateSave" title="Save" tooltip="Save" onClick={this.handleClickUpdateSave}/>
-						<IconButtonApp raised iconClassName="mdi mdi-close" className="btProjectUpdateClose" title="Cancel" tooltip="Cancel" onClick={this.handleClickUpdateClose}/>
+						<RaisedButton
+							label="Save"
+							title="Save"
+							className="btProjectUpdateSave"
+							secondary
+							style={styleButton}
+							onClick={this.handleClickUpdateSave}
+							/>
+						<FlatButton
+							label="Cancel"
+							title="Cancel"
+							className="btProjectUpdateClose"
+							style={styleButton}
+							onClick={this.handleClickUpdateClose}
+							/>
 					</CardActions>
 				</Card>
 			);
@@ -76,9 +103,9 @@ const CardProject = class extends React.Component {
 				<CardActions style={styleCardActions}>
 					<ProjectIcon style={styleIcon} tooltip={this.props.status} status={this.props.status}/>
 					<span className={`txtProjectName txtProjectName${this.props.index} txtProjectName${projectNameCamel}`} style={styleSpanProjectName}>{this.props.name}</span>
-					<IconButtonApp raised iconClassName="mdi mdi-arrow-right-bold" className="btProjectEnter" title={`Enter ${this.props.name}`} tooltip="Enter" onClick={this.handleClickEnter}/>
-					<IconButtonApp raised iconClassName="mdi mdi-pencil" className="btProjectEdit" title={`Edit ${this.props.name}`} tooltip="Edit" onClick={this.handleClickUpdate}/>
-					<IconButtonApp raised iconClassName="mdi mdi-delete" className="btProjectDelete" title={`Delete ${this.props.name}`} tooltip="Delete" onClick={this.handleClickDelete}/>
+					<IconButtonApp style={styleIconButton} raised iconClassName="mdi mdi-arrow-right-bold" className="btProjectEnter" title={`Enter ${this.props.name}`} tooltip="Enter" onClick={this.handleClickEnter}/>
+					<IconButtonApp style={styleIconButton} raised iconClassName="mdi mdi-pencil" className="btProjectEdit" title={`Edit ${this.props.name}`} tooltip="Edit" onClick={this.handleClickUpdate}/>
+					<IconButtonApp style={styleIconButton} raised iconClassName="mdi mdi-delete" className="btProjectDelete" title={`Delete ${this.props.name}`} tooltip="Delete" onClick={this.handleClickDelete}/>
 				</CardActions>
 			</Card>
 		);

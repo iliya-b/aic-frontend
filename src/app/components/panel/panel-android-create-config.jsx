@@ -1,8 +1,6 @@
 'use strict';
 
 import React from 'react';
-import Dialog from 'material-ui/Dialog';
-import IconButton from 'material-ui/IconButton';
 import LabeledSpan from 'app/components/form/labeled-span';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -11,7 +9,7 @@ import IconButtonApp from 'app/components/icon/icon-button-app';
 import DeviceIcon from 'app/components/icon/device-icon';
 import {sensors} from 'app/libs/sensors';
 
-const debug = require('debug')('AiC:Components:Dialog:DialogLiveCreation');
+const debug = require('debug')('AiC:Components:Panel:PanelAndroidCreateConfig');
 
 // References:
 // https://developer.android.com/about/dashboards/index.html
@@ -25,17 +23,20 @@ const dpis = [
 	'160', '240', '320', '480'
 ];
 
-const DialogLiveCreation = class extends React.Component {
+const getFirstImage = props => {
+	return ((props.images && props.images.length) ? props.images[0].image : '');
+};
+
+const PanelAndroidCreateConfig = class extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
 			// Default configuration
 			config: {
-				name: '',
-				image: ((props.images && props.images.length) ? props.images[0].image : ''),
-				size: '800x600',
-				dpi: '160',
+				image: getFirstImage(props),
+				size: sizes[2],
+				dpi: dpis[0],
 				enableSensors: true,
 				enableBattery: true,
 				enableGps: true,
@@ -55,6 +56,9 @@ const DialogLiveCreation = class extends React.Component {
 		newStateConfig[config] = value;
 		debug('udpdateConfig', config, value, {config: newStateConfig});
 		this.setState({config: newStateConfig});
+		if (this.props.onChange) {
+			this.props.onChange(newStateConfig);
+		}
 	}
 
 	handleClickSensors = e => {
@@ -93,10 +97,6 @@ const DialogLiveCreation = class extends React.Component {
 	handleClickCustomSize = () => this.setState({customSize: true});
 	handleClickCustomDpi = () => this.setState({customDpi: true});
 
-	handleStart = () => {
-		this.props.onStart(this.state.config);
-	}
-
 	getButtonsDevices = () => {
 		if (this.props.images) {
 			return this.props.images.map(image => image.image).map(image => {
@@ -110,28 +110,34 @@ const DialogLiveCreation = class extends React.Component {
 		return [];
 	}
 
-	render() {
-		// TODO: treat all the other conflict fields inside ...other
-		const {
-			open,
-			onCancel,
-			...others
-		} = this.props;
-		const colorOn = this.context.muiTheme.palette.primary1Color;
-		const colorOff = this.context.muiTheme.palette.disabledColor;
-		const styleSizes = {textTransform: 'none'};
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.images.length && this.state.config.image === '') {
+			this.setState({config: Object.assign({}, this.state.config, {image: getFirstImage(nextProps)})});
+		}
+	}
 
-		const actionsButtons = [
-			<RaisedButton secondary label="Start" key="start" onClick={this.handleStart}/>,
-			<FlatButton style={{marginLeft: 10}} label="Cancel" key="cancel" onClick={onCancel}/>];
+	componentDidMount() {
+		if (this.props.onChange) {
+			this.props.onChange(this.state.config);
+		}
+	}
+
+	render() {
+		const {
+			images, // eslint-disable-line no-unused-vars
+			...other
+		} = this.props;
+		const styleSizes = {textTransform: 'none'};
 
 		const sensorButtons = sensors.map(s => {
 			return (
-				<IconButton
+				<IconButtonApp
 					key={s.key}
 					data-sensor-key={s.key}
 					onClick={this.handleClickSensors}
-					iconStyle={{color: this.state.config[s.key] ? colorOn : colorOff}}
+					on={this.state.config[s.key]}
+					off={!this.state.config[s.key]}
+					primary
 					tooltip={s.tooltip}
 					iconClassName={s.iconClassName}
 					/>
@@ -158,8 +164,7 @@ const DialogLiveCreation = class extends React.Component {
 		const devices = this.getButtonsDevices();
 
 		return (
-			<Dialog {...others} open={open} title="Start session" actions={actionsButtons} autoScrollBodyContent onRequestClose={onCancel}>
-				<TextField name="createLiveSessionName" data-config-key="name" ref={this.setRefC} floatingLabelFixed floatingLabelText="session name" onChange={this.handleChangeConfig} defaultValue={this.state.config.name}/><br/>
+			<div {...other}>
 				<LabeledSpan label="device" off style={styleLabels}/><br/>
 				{devices}
 				<br/>
@@ -175,27 +180,18 @@ const DialogLiveCreation = class extends React.Component {
 				<br/>
 				<LabeledSpan label="enabled sensors" off style={styleLabels}/><br/>
 				{sensorButtons}
-			</Dialog>
+			</div>
 		);
 	}
 };
 
-DialogLiveCreation.contextTypes = {
-	muiTheme: React.PropTypes.object
-};
-
-DialogLiveCreation.defaultProps = {
-	open: true,
-	onCancel: () => {},
-	onStart: () => {},
+PanelAndroidCreateConfig.defaultProps = {
 	images: [{image: 'kitkat-phone'}, {image: 'kitkat-tablet'}, {image: 'lollipop-phone'}, {image: 'lollipop-tablet'}]
 };
 
-DialogLiveCreation.propTypes = {
-	open: React.PropTypes.bool,
-	onCancel: React.PropTypes.func,
-	onStart: React.PropTypes.func,
-	images: React.PropTypes.array
+PanelAndroidCreateConfig.propTypes = {
+	images: React.PropTypes.array,
+	onChange: React.PropTypes.func
 };
 
-module.exports = DialogLiveCreation;
+module.exports = PanelAndroidCreateConfig;
