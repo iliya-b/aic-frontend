@@ -13,7 +13,7 @@ const XtextPlayground = class extends React.Component {
 		super(props);
 		this.state = {
 			contents: '',
-			filename: 'test123.aicdsl',
+			filename: 'test123.aic',
 			issues: {}
 		};
 	}

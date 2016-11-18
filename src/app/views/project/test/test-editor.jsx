@@ -20,7 +20,7 @@ const TestEditor = class extends React.Component {
 
 	constructor(props) {
 		super(props);
-		const filename = 'newfile.aicdsl';
+		const filename = 'newfile.aic';
 		this.state = {
 			contents: '',
 			// TODO: information is repeated, really needed two times?
