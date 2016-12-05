@@ -9,7 +9,7 @@ import TestStore from 'app/stores/test';
 import 'brace/theme/github';
 import 'app/libs/mode-aicdsl';
 
-const debug = require('debug')('AiC:Views:TestEditor');
+// const debug = require('debug')('AiC:Views:TestEditor');
 
 let projectId;
 
