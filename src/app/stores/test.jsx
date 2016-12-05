@@ -5,6 +5,15 @@ import TestActions from 'app/actions/test';
 
 const debug = require('debug')('AiC:Stores:Test');
 
+// Default filename for new files
+const defaultFilename = 'newfile.aic';
+
+const defaultMetadata = {
+	filename: defaultFilename
+};
+
+const defaultContents = '';
+
 const TestStore = Reflux.createStore({
 
 	// Base Store //
@@ -18,6 +27,17 @@ const TestStore = Reflux.createStore({
 		this.state.test.uploadingTests = [];
 		this.state.test.itemsToDelete = [];
 		this.state.test.status = 'init';
+
+		// Editor settings
+		this.state.test.editor = {
+			metadata: Object.assign({}, defaultMetadata),
+			contents: defaultContents,
+			issues: [],
+			notes: [],
+			isDirty: false, // file has unsaved changes
+			isSaving: false,
+			testId: null
+		};
 	},
 
 	// Actions //
@@ -94,7 +114,68 @@ const TestStore = Reflux.createStore({
 	// 	this.updateState();
 	// },
 
+	onLoadFile(projectId, testId) {
+		this.state.test.editor.testId = testId;
+		this.updateState();
+	},
+
+	onLoadFileCompleted(data) {
+		if (typeof data === 'object' && data.isCreatingFile) {
+			this.state.test.editor.metadata = Object.assign({}, defaultMetadata);
+			this.state.test.editor.contents = defaultContents;
+			this.state.test.editor.isDirty = true;
+		} else {
+			this.state.test.editor.metadata = data[0];
+			this.state.test.editor.contents = data[1];
+			this.state.test.editor.isDirty = false;
+		}
+		this.updateState();
+		this.execXtextValidate();
+	},
+
+	onHandleSaveTest(e) {
+		debug('onHandleSaveTest', e);
+		this.state.test.editor.isSaving = true;
+		this.updateState();
+	},
+
+	onHandleSaveTestCompleted(data) {
+		debug('onHandleSaveTestCompleted', data);
+		this.state.test.editor.isDirty = false;
+		this.state.test.editor.isSaving = false;
+
+		// Was a new file saved => needs to change to editing file
+		if ('response' in data && data.response.length === 1) {
+			this.state.test.editor.testId = data.response[0].response.testsource_id;
+		}
+		this.updateState();
+	},
+
+	onHandleFilenameChange(e, newValue) {
+		debug('onHandleFilenameChange', e, arguments);
+		this.state.test.editor.metadata.filename = newValue;
+		this.state.test.editor.isDirty = true;
+		this.updateState();
+	},
+
+	onHandleContentsChange(newContents) {
+		debug('onHandleContentsChange', newContents);
+		this.state.test.editor.contents = newContents;
+		this.state.test.editor.isDirty = true;
+		this.updateState();
+		this.execXtextValidate();
+	},
+
+	onXtextValidateCompleted(data) {
+		debug('onXtextValidateCompleted', data);
+		this.state.test.editor.issues = data.issues;
+		this.updateState();
+	},
 	// Methods //
+
+	execXtextValidate() {
+		TestActions.xtextValidate(this.state.test.editor.metadata.filename, this.state.test.editor.contents);
+	},
 
 	updateState() {
 		this.trigger(this.state);

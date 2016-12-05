@@ -9,7 +9,7 @@ ace.define(
 		const oop = acequire('../lib/oop');
 		const TextHighlightRules = acequire('./text_highlight_rules').TextHighlightRules;
 
-		const AicdslHighlightRules = () => {
+		const AicdslHighlightRules = function () {
 			const keywords = 'End|Run|at';
 			this.$rules = {
 				start: [
@@ -25,6 +25,13 @@ ace.define(
 					{token: 'comment', regex: '.+'}
 				]
 			};
+
+			this.normalizeRules();
+		};
+
+		AicdslHighlightRules.metaData = {
+			fileTypes: ['aicdsl'],
+			name: 'Aicdsl'
 		};
 
 		oop.inherits(AicdslHighlightRules, TextHighlightRules);
@@ -35,22 +42,21 @@ ace.define(
 ace.define(
 	'ace/mode/aicdsl',
 	['require', 'exports', 'module', 'ace/lib/oop', 'ace/mode/text', 'ace/mode/aicdsl_highlight_rules'],
-	(acequire, exports /* , module */) => {
+	(acequire, exports /* , module*/) => {
 		'use strict';
 
 		const oop = acequire('../lib/oop');
 		const TextMode = acequire('./text').Mode;
-		const HighlightRules = acequire('./aicdsl_highlight_rules').AicdslHighlightRules;
+		const AicdslHighlightRules = acequire('./aicdsl_highlight_rules').AicdslHighlightRules;
 
-		const Mode = () => {
-			this.HighlightRules = HighlightRules;
+		const Mode = function () {
+			this.HighlightRules = AicdslHighlightRules;
 		};
 		oop.inherits(Mode, TextMode);
 
-		(() => {
+		(function () {
 			this.$id = 'ace/mode/aicdsl';
 		}).call(Mode.prototype);
 
 		exports.Mode = Mode;
 	});
-

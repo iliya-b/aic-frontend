@@ -81,6 +81,12 @@ const GatewayAdapters = {
 					};
 				});
 			}
+		},
+		// download: {
+		// 	response:
+		// },
+		show: {
+			response: data => data.testsource
 		}
 	},
 	camera: {

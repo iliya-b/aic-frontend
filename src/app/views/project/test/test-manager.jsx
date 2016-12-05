@@ -177,7 +177,7 @@ const TestManager = class extends React.Component {
 			<div>
 				<ToolbarFileUpload
 					title="Test Manager"
-					icon="mdi mdi-puzzle"
+					icon="mdi mdi-pencil"
 					uploadOpenVisible={!this.state.dialogUploadTestOpen}
 					uploadCloseVisible={this.state.dialogUploadTestOpen}
 					deleteFileVisible={this.state.selectFileIndexes.length > 0}
