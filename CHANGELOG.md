@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ## [Unreleased]
 
+### Changed
+- Fix style at live machine list.
+
 ## [0.7.2]
 
 ### Added

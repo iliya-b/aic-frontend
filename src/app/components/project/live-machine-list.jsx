@@ -9,17 +9,12 @@ const debug = require('debug')('AiC:Component:LiveMachineList');
 const LiveMachineList = class extends React.Component {
 	render() {
 		let avmsRendered = '';
-		const styles = {
-			card: {
-				0: {
-					margin: '20px 20px 0 0',
-					width: 414
-				},
-				1: {
-					margin: '20px 0 0 0',
-					width: 413
-				}
-			}
+		const styleCard = {
+			margin: '0 0 20px 20px',
+			width: 412
+		};
+		const styleRoot = {
+			marginLeft: '-20px'
 		};
 
 		// List VMs or information about loading and no VMs
@@ -27,7 +22,7 @@ const LiveMachineList = class extends React.Component {
 			avmsRendered = this.props.avmList.map((currentValue, index) => {
 				debug('currentValue', currentValue);
 				currentValue.index = index;
-				return <CardAndroidSession style={styles.card[index % 2]} className={`cardLiveVM cardLiveVM${index} cardLiveVM${currentValue.avm_id}`} {...currentValue} key={currentValue.avm_id} actionEnter={this.props.actionEnter} actionStop={this.props.actionStop}/>;
+				return <CardAndroidSession style={styleCard} className={`cardLiveVM cardLiveVM${index} cardLiveVM${currentValue.avm_id}`} {...currentValue} key={currentValue.avm_id} actionEnter={this.props.actionEnter} actionStop={this.props.actionStop}/>;
 			});
 		} else if (this.props.isListLoading) {
 			avmsRendered = <PanelInfo style={{textAlign: 'center'}}>Loading sessions...</PanelInfo>;
@@ -35,9 +30,11 @@ const LiveMachineList = class extends React.Component {
 			avmsRendered = <PanelInfo style={{textAlign: 'center'}}>No sessions found. You can start a new session.</PanelInfo>;
 		}
 
-		return (<div>
-			{avmsRendered}
-		</div>);
+		return (
+			<div style={styleRoot}>
+				{avmsRendered}
+			</div>
+		);
 	}
 };
 
