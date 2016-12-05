@@ -47,7 +47,7 @@ const ToolbarAndroid = class extends React.Component {
 				fontIcon: 'mdi mdi-puzzle'
 			}, {
 				id: 'monkeyRunner',
-				tooltip: 'Monkey runner',
+				tooltip: 'Monkey tool',
 				fontIcon: 'mdi mdi-panda'
 			}, {
 				id: 'screen',
