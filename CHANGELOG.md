@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 - Fix style at live machine list.
 - Fix state after saving test source file.
 - Changed naming monkey runner => monkey tool.
+- Fix style of status boxes in live mode.
 
 ## [0.7.2]
 

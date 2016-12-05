@@ -50,7 +50,8 @@ const BoxStatus = class extends React.Component {
 		}
 		const styles = {
 			wrapper: {
-				display: 'inline-block'
+				display: 'inline-block',
+				float: isFirst ? 'left' : 'initial'
 			},
 			box: {
 				width: '100px',
