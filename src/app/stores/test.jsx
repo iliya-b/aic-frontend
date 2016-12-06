@@ -14,6 +14,12 @@ const defaultMetadata = {
 
 const defaultContents = '';
 
+const loadingStatuses = ['LOADING', 'UPLOADING', 'COMPILING JAVA', 'COMPILING DSL'];
+
+const isLoadingStatus = test => {
+	return loadingStatuses.indexOf(test.status) !== -1 || loadingStatuses.indexOf(test.apkStatus) !== -1;
+};
+
 const TestStore = Reflux.createStore({
 
 	// Base Store //
@@ -47,10 +53,19 @@ const TestStore = Reflux.createStore({
 		this.updateState();
 	},
 
+	onList(info) {
+		this.projectId = info.projectId;
+	},
+
 	onListCompleted(data) {
+		debug('onListCompleted', data);
+		const shouldReload = data.some(isLoadingStatus);
 		this.state.test.tests = data;
 		this.state.test.status = 'listCompleted';
 		this.updateState();
+		if (shouldReload) {
+			setTimeout(this.reloadList, 5000);
+		}
 	},
 
 	onUpload(filesArray) {
@@ -84,6 +99,7 @@ const TestStore = Reflux.createStore({
 		debug('onCompileCompleted', result);
 		this.state.test.status = 'compiledCompleted';
 		this.updateState();
+		this.reloadList();
 	},
 
 	// onToggleDelete(apkId) {
@@ -172,6 +188,10 @@ const TestStore = Reflux.createStore({
 		this.updateState();
 	},
 	// Methods //
+
+	reloadList() {
+		TestActions.list({projectId: this.projectId});
+	},
 
 	execXtextValidate() {
 		TestActions.xtextValidate(this.state.test.editor.metadata.filename, this.state.test.editor.contents);

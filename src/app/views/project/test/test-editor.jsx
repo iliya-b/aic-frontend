@@ -115,6 +115,7 @@ const TestEditor = class extends React.Component {
 						onChange={TestActions.handleContentsChange}
 						name="Test-Editor"
 						editorProps={{$blockScrolling: true}}
+						style={{width: '100%'}}
 						value={this.state.test.editor.contents}
 						/>
 				</div>
