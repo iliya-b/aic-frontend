@@ -89,6 +89,12 @@ const TestManager = class extends React.Component {
 		this.context.router.push(`/projects/${projectId}/tests/${testId}/editor`);
 	}
 
+	handleClickInformationFile = () => {
+		debug('handleClickInformationFile');
+		const testId = this.getSelectedId();
+		this.context.router.push(`/projects/${projectId}/tests/${testId}`);
+	}
+
 	handleClickEditFile = () => {
 		const testId = this.getSelectedId();
 		this.handleEnterEditFile(testId);
@@ -183,6 +189,7 @@ const TestManager = class extends React.Component {
 					deleteFileVisible={this.state.selectFileIndexes.length > 0}
 					editFileVisible={this.state.selectFileIndexes.length === 1}
 					compileFileVisible={this.state.selectFileIndexes.length === 1}
+					informationVisible={this.state.selectFileIndexes.length === 1}
 					createFileVisible
 					onClickUploadOpen={this.handleClickUploadOpen}
 					onClickUploadClose={this.handleClickUploadClose}
@@ -190,6 +197,7 @@ const TestManager = class extends React.Component {
 					onClickCreateFile={this.handleClickCreateFile}
 					onClickEditFile={this.handleClickEditFile}
 					onClickCompileFile={this.handleClickCompileFile}
+					onClickInformationFile={this.handleClickInformationFile}
 					/>
 				{uploadDropzone}
 				{table}

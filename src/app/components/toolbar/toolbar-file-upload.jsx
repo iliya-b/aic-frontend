@@ -82,6 +82,14 @@ const ToolbarFileUpload = class extends React.Component {
 				// </IconButton>
 			);
 		}
+		if (this.props.informationVisible) {
+			buttons.push(
+				<IconButtonApp raised title="Information about selected file" className="btInformationSelected" key={7} style={styles.button} onClick={this.props.onClickInformationFile} iconClassName="mdi mdi-information"/>
+				// <IconButton title="Compile selected file" className="btCompileSelected" key={6} style={styles.button} onClick={this.props.onClickCompileFile}>
+				// 	<FontIcon className="mdi mdi-settings-box" hoverColor="rgba(0, 0, 0, 0.87)"/>
+				// </IconButton>
+			);
+		}
 
 		return (
 			<Toolbar style={Object.assign(this.props.style || {}, styles.toolbar)}>
@@ -109,12 +117,14 @@ ToolbarFileUpload.propTypes = {
 	onClickCreateFile: React.PropTypes.func,
 	onClickEditFile: React.PropTypes.func,
 	onClickCompileFile: React.PropTypes.func,
+	onClickInformationFile: React.PropTypes.func,
 	uploadOpenVisible: React.PropTypes.bool,
 	uploadCloseVisible: React.PropTypes.bool,
 	deleteFileVisible: React.PropTypes.bool,
 	createFileVisible: React.PropTypes.bool,
 	editFileVisible: React.PropTypes.bool,
 	compileFileVisible: React.PropTypes.bool,
+	informationVisible: React.PropTypes.bool,
 	icon: React.PropTypes.string,
 	title: React.PropTypes.string.isRequired
 };

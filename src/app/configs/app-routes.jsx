@@ -25,6 +25,7 @@ import ProjectApkManager from 'app/views/project/apk-manager';
 import ProjectTestWrapper from 'app/views/project/test/wrapper';
 import ProjectTestManager from 'app/views/project/test/test-manager';
 import ProjectTestEditor from 'app/views/project/test/test-editor';
+import ProjectTestInfo from 'app/views/project/test/test-info';
 import ProjectLiveWrapper from 'app/views/project/live/wrapper';
 import ProjectLiveSession from 'app/views/project/live/session';
 import ProjectLiveList from 'app/views/project/live/list';
@@ -44,6 +45,7 @@ const AppRoutes = (
 					<Route path="apks" component={ProjectApkManager}/>
 					<Route path="tests" component={ProjectTestWrapper}>
 						<IndexRoute component={ProjectTestManager}/>
+						<Route path=":testId" component={ProjectTestInfo}/>
 						<Route path=":testId/editor" component={ProjectTestEditor}/>
 						<Route path="create/editor" component={ProjectTestEditor}/>
 					</Route>

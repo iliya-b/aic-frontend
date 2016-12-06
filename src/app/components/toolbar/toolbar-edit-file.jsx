@@ -28,26 +28,28 @@ const ToolbarEditFile = class extends React.Component {
 
 		const dirt = this.props.isDirty;
 
-		const buttons = [
-			{
+		const buttons = [];
+		const onClick = {};
+
+		if (this.props.onClickSaveFile) {
+			buttons.push({
 				id: 'save',
-				tooltip: dirt ? 'Save changes' : 'file saved',
+				tooltip: dirt ? 'Save changes' : 'File saved',
 				tooltipPosition: 'top-center',
 				fontIcon: dirt ? 'mdi mdi-content-save' : 'mdi mdi-check',
 				disabled: !dirt
-			}
-		];
+			});
+			onClick.save = this.props.onClickSaveFile;
+		}
 		const iconListProps = {
 			buttons,
 			style: styleButtons,
-			onClick: {
-				save: this.props.onClickSaveFile
-			},
+			onClick,
 			iconClassNamePrefix: 'btTest',
 			selectedId: null,
 			raised: true
 		};
-		const renderedButtons = <IconList {...iconListProps}/>;
+		const renderedButtons = buttons.length ? <IconList {...iconListProps}/> : null;
 
 		return (
 			<Toolbar style={Object.assign(this.props.style || {}, styleToolbar)}>
@@ -56,7 +58,7 @@ const ToolbarEditFile = class extends React.Component {
 				</IconButton>
 				<ToolbarGroup firstChild lastChild>
 					<ToolbarTitle className={`txt${capimelize(this.props.title)}Title`} text={this.props.title}/>
-					<ToolbarSeparator style={styleSeparator}/>
+					{renderedButtons !== null && <ToolbarSeparator style={styleSeparator}/>}
 					{renderedButtons}
 				</ToolbarGroup>
 			</Toolbar>

@@ -8,10 +8,16 @@ import TableRow from 'material-ui/Table/TableRow';
 import TableHeader from 'material-ui/Table/TableHeader';
 import TableRowColumn from 'material-ui/Table/TableRowColumn';
 import TableBody from 'material-ui/Table/TableBody';
+import SimpleStatusIcon from 'app/components/icon/simple-status-icon';
 
 const TableTestFiles = class extends React.Component {
 
 	render() {
+		const styleStatusIcon = {
+			position: 'absolute',
+			marginTop: '-10px'
+		};
+
 		const classNameType = this.props.type ? `tb${this.props.type}` : '';
 		const list = this.props.list.map((v, i) => {
 			const classNameRow = classNameType ? `${classNameType}Row` : '';
@@ -20,12 +26,14 @@ const TableTestFiles = class extends React.Component {
 			const classNameRowFilename = classNameRow ? `${classNameRow}Filename ${classNameRow}Filename${i}` : '';
 			const classNameRowStatus = classNameRow ? `${classNameRow}Status ${classNameRow}Status${i}` : '';
 			const classNameRowDescription = classNameRow ? `${classNameRow}Description ${classNameRow}Description${i}` : '';
+
 			return (
 				<TableRow key={v.id} selected={this.props.selected.indexOf(i) !== -1} className={`tbFilesRow tbFilesRow${i} ${classNameRow} ${classNameRowI}`}>
 					<TableRowColumn className={`tbFilesRowId tbFilesRowId${i} ${classNameRowId}`}>{v.id}</TableRowColumn>
 					<TableRowColumn className={`tbFilesRowId tbFilesRowId${i} ${classNameRowFilename}`}>{v.filename}</TableRowColumn>
 					<TableRowColumn className={`tbFilesRowId tbFilesRowId${i} ${classNameRowDescription}`}>Description</TableRowColumn>
-					<TableRowColumn className={`tbFilesRowId tbFilesRowId${i} ${classNameRowStatus}`}>{v.status}</TableRowColumn>
+					<TableRowColumn className={`tbFilesRowId tbFilesRowId${i} ${classNameRowStatus}`}><SimpleStatusIcon status={v.status} withTooltip style={styleStatusIcon}/></TableRowColumn>
+					<TableRowColumn className={`tbFilesRowId tbFilesRowId${i} ${classNameRowStatus}`}>{v.apkStatus !== '' && <SimpleStatusIcon status={v.apkStatus} withTooltip style={styleStatusIcon}/>}</TableRowColumn>
 				</TableRow>
 			);
 		});
@@ -37,7 +45,8 @@ const TableTestFiles = class extends React.Component {
 						<TableHeaderColumn className={`tbFilesHeaderId ${classNameType ? `${classNameType}HeaderId` : ''}`}>ID</TableHeaderColumn>
 						<TableHeaderColumn className={`tbFilesHeaderFilename ${classNameType ? `${classNameType}HeaderFilename` : ''}`}>Filename</TableHeaderColumn>
 						<TableHeaderColumn className={`tbFilesHeaderDescription ${classNameType ? `${classNameType}HeaderDescription` : ''}`}>Description</TableHeaderColumn>
-						<TableHeaderColumn className={`tbFilesHeaderStatus ${classNameType ? `${classNameType}HeaderStatus` : ''}`}>Status</TableHeaderColumn>
+						<TableHeaderColumn className={`tbFilesHeaderStatus ${classNameType ? `${classNameType}HeaderStatus` : ''}`}>Source Status</TableHeaderColumn>
+						<TableHeaderColumn className={`tbFilesHeaderStatus ${classNameType ? `${classNameType}HeaderStatus` : ''}`}>APK Status</TableHeaderColumn>
 					</TableRow>
 				</TableHeader>
 				<TableBody deselectOnClickaway={false}>

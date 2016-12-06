@@ -1,8 +1,10 @@
 'use strict';
 
 import React from 'react';
+
 import FontIcon from 'material-ui/FontIcon';
 import AppPalette from 'app/configs/app-palette';
+import Tooltip from 'material-ui/internal/Tooltip';
 
 const statusColors = {
 	OK: AppPalette.successColor,
@@ -33,12 +35,46 @@ statusIcons.READY = statusIcons.OK;
 statusColors.READY = statusColors.OK;
 statusIcons.SUCCESS = statusIcons.OK;
 statusColors.SUCCESS = statusColors.OK;
+statusIcons['COMPILING DSL'] = statusIcons.LOADING;
+statusColors['COMPILING DSL'] = statusColors.LOADING;
+statusIcons['COMPILING JAVA'] = statusIcons.LOADING;
+statusColors['COMPILING JAVA'] = statusColors.LOADING;
 
-const SimpleStatusIcon = props => {
-	if (props.status in SimpleStatusIcon.STATUS_LIST) {
-		return statusIcons[props.status];
+const SimpleStatusIcon = class extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {tooltipOpen: false};
 	}
-	return statusIcons.NOTFOUND;
+
+	handleOpenTooltip = () => {
+		this.setState({tooltipOpen: true});
+	}
+
+	handleCloseTooltip = () => {
+		this.setState({tooltipOpen: false});
+	}
+
+	render() {
+		let icon;
+
+		const tooltipPositionSplitted = this.props.tooltipPosition ? this.props.tooltipPosition.split('-') : ['', ''];
+		const tooltipElement = this.props.withTooltip && (
+			<Tooltip
+				label={this.props.tooltip ? this.props.tooltip : this.props.status}
+				show={this.state.tooltipOpen}
+				verticalPosition={tooltipPositionSplitted[0]}
+				horizontalPosition={tooltipPositionSplitted[1]}
+				/>
+		);
+
+		if (this.props.status in SimpleStatusIcon.STATUS_LIST) {
+			icon = statusIcons[this.props.status];
+		} else {
+			icon = statusIcons.NOTFOUND;
+		}
+
+		return <span style={this.props.style} onMouseOver={this.handleOpenTooltip} onMouseOut={this.handleCloseTooltip}>{icon}{tooltipElement}</span>;
+	}
 };
 
 SimpleStatusIcon.STATUS_LIST_ARR = Object.keys(statusIcons);
@@ -51,7 +87,11 @@ SimpleStatusIcon.STATUS_COLORS = statusColors;
 
 // TODO: investigate why SimpleStatusIcon.STATUS_LIST_ARR is typeof object ???
 SimpleStatusIcon.propTypes = {
-	status: React.PropTypes.string
+	status: React.PropTypes.string,
+	withTooltip: React.PropTypes.bool,
+	tooltip: React.PropTypes.string,
+	tooltipPosition: React.PropTypes.string,
+	style: React.PropTypes.object
 };
 
 module.exports = SimpleStatusIcon;

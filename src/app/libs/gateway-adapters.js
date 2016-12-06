@@ -58,13 +58,14 @@ const GatewayAdapters = {
 	apks: {
 		list: {
 			response: data => {
-				return data.apks.map(apk => {
-					return {
-						id: apk.apk_id,
-						filename: apk.filename,
-						status: apk.status
-					};
-				});
+				return data.apks.filter(apk => !apk.testsource_id) // Filter out apks that come from test sources
+												.map(apk => {
+													return {
+														id: apk.apk_id,
+														filename: apk.filename,
+														status: apk.status
+													};
+												});
 			}
 		}
 	},
@@ -77,7 +78,9 @@ const GatewayAdapters = {
 						filename: test.filename,
 						project_id: test.project_id, // eslint-disable-line camelcase
 						status: test.status,
-						id: test.testsource_id
+						id: test.testsource_id,
+						apkStatus: test.apk_status,
+						apkStatusReason: test.apk_status_reason
 					};
 				});
 			}
