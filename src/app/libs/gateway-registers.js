@@ -184,6 +184,7 @@ const GatewayRegisters = function () {
 			}, {
 				action: GatewayActions.listPackages,
 				pathname: '/android/{avmId}/apk'
+				// placeholder: () => Promise.reject()
 			}, {
 				action: GatewayActions.monkeyRunner,
 				pathname: '/android/{avmId}/monkey',

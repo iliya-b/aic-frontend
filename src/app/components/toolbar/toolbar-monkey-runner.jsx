@@ -122,10 +122,14 @@ PanelMonkeyRunner.contextTypes = {
 PanelMonkeyRunner.propTypes = {
 	style: React.PropTypes.object,
 	onClick: React.PropTypes.func,
-	packageList: React.PropTypes.array.isRequired,
+	packageList: React.PropTypes.array,
 	onInputFocus: React.PropTypes.func,
 	onInputBlur: React.PropTypes.func,
 	monkeyCalls: React.PropTypes.array
+};
+
+PanelMonkeyRunner.defaultProps = {
+	packageList: []
 };
 
 module.exports = PanelMonkeyRunner;

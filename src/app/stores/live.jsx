@@ -182,7 +182,7 @@ const LiveStore = Reflux.createStore({
 
 	onListPackagesFailed(errorMessage) {
 		this.state.live.message = errorMessage;
-		this.state.live.status = 'LIVE_STATUS_LISTPACKAGES_FAILED';
+		// this.state.live.status = 'LIVE_STATUS_LISTPACKAGES_FAILED';
 		this.updateState();
 	},
 
