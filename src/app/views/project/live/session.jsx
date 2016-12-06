@@ -101,14 +101,22 @@ const LiveSession = class extends React.Component {
 	}
 
 	handleStopVM = () => {
-		this.handleOnInputFocus();
-		LiveActions.disconnectScreen();
-		LiveActions.disconnectAudio();
+		this.disconnectVM();
 		LiveActions.stop({avmId}, {includeRequest: true});
 	}
 
 	handleStateChange = state => {
 		this.setState(state);
+	}
+
+	disconnectVM = () => {
+		debug('disconnectVM');
+		this.handleOnInputFocus();
+		LiveActions.disconnectScreen();
+		LiveActions.disconnectAudio();
+		Notify.clearLive({avmId});
+		window.removeEventListener('resize', recalculeScaleThrottled);
+		fullscreen.removeFullscreenchange(this.handleDocumentFullscreenChange);
 	}
 
 	render() {
@@ -242,14 +250,9 @@ const LiveSession = class extends React.Component {
 
 	componentWillUnmount() {
 		debug('componentWillUnmount');
-		this.handleOnInputFocus();
-		LiveActions.disconnectScreen();
-		LiveActions.disconnectAudio();
+		this.disconnectVM();
 		// Subscribe and unsubscribe because we don't want to use the mixins
 		this.unsubscribe.map(v => v());
-		Notify.clearLive({avmId});
-		window.removeEventListener('resize', recalculeScaleThrottled);
-		fullscreen.removeFullscreenchange(this.handleDocumentFullscreenChange);
 	}
 
 };
