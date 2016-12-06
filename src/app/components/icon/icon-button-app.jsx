@@ -41,11 +41,8 @@ const IconButtonApp = (props, context) => {
 		};
 	}
 
-	// Like this others can override color property
-	const finalProps = Object.assign({}, calcIconStyle, others);
-
 	return (
-		<IconButton iconStyle={Object.assign(calcIconStyle, iconStyle)} {...finalProps}/>
+		<IconButton iconStyle={Object.assign(calcIconStyle, iconStyle)} {...others}/>
 	);
 };
 

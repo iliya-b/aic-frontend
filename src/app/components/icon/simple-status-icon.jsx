@@ -94,4 +94,8 @@ SimpleStatusIcon.propTypes = {
 	style: React.PropTypes.object
 };
 
+SimpleStatusIcon.defaultProps = {
+	tooltipPosition: 'top-center'
+};
+
 module.exports = SimpleStatusIcon;

@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 - Fix state after saving test source file.
 - Changed naming monkey runner => monkey tool.
 - Fix style of status boxes in live mode.
+- Fix wrong property at IconButtonApp component.
 
 ### Removed
 - Removed from APK Manager list the apks that come from test sources.
