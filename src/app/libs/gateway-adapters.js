@@ -58,14 +58,14 @@ const GatewayAdapters = {
 	apks: {
 		list: {
 			response: data => {
-				return data.apks.filter(apk => !apk.testsource_id) // Filter out apks that come from test sources
-												.map(apk => {
-													return {
-														id: apk.apk_id,
-														filename: apk.filename,
-														status: apk.status
-													};
-												});
+				return data.apks.map(apk => {
+					return {
+						id: apk.apk_id,
+						filename: apk.filename,
+						status: apk.status,
+						testsourceId: apk.testsource_id
+					};
+				});
 			}
 		}
 	},

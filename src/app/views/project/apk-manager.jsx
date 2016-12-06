@@ -78,6 +78,7 @@ const APKManager = class extends React.Component {
 				break;
 			case 'listCompleted':
 				{
+					newState.apk.apks = newState.apk.apks.filter(apk => !apk.testsourceId);
 					const statusToLoad = ['QUEUED', 'DELETING', 'COMPILING DSL', 'COMPILING JAVA'];
 					const shouldListAgain = newState.apk.apks.reduce((p, c) => {
 						return !p && statusToLoad.indexOf(c.status) !== -1 ? true : p;
