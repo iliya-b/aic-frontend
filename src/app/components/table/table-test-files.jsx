@@ -25,13 +25,11 @@ const TableTestFiles = class extends React.Component {
 			const classNameRowId = classNameRow ? `${classNameRow}Id ${classNameRow}Id${i}` : '';
 			const classNameRowFilename = classNameRow ? `${classNameRow}Filename ${classNameRow}Filename${i}` : '';
 			const classNameRowStatus = classNameRow ? `${classNameRow}Status ${classNameRow}Status${i}` : '';
-			const classNameRowDescription = classNameRow ? `${classNameRow}Description ${classNameRow}Description${i}` : '';
 
 			return (
 				<TableRow key={v.id} selected={this.props.selected.indexOf(i) !== -1} className={`tbFilesRow tbFilesRow${i} ${classNameRow} ${classNameRowI}`}>
 					<TableRowColumn className={`tbFilesRowId tbFilesRowId${i} ${classNameRowId}`}>{v.id}</TableRowColumn>
 					<TableRowColumn className={`tbFilesRowId tbFilesRowId${i} ${classNameRowFilename}`}>{v.filename}</TableRowColumn>
-					<TableRowColumn className={`tbFilesRowId tbFilesRowId${i} ${classNameRowDescription}`}>Description</TableRowColumn>
 					<TableRowColumn className={`tbFilesRowId tbFilesRowId${i} ${classNameRowStatus}`}><SimpleStatusIcon status={v.status} withTooltip style={styleStatusIcon}/></TableRowColumn>
 					<TableRowColumn className={`tbFilesRowId tbFilesRowId${i} ${classNameRowStatus}`}>{v.apkStatus !== '' && <SimpleStatusIcon status={v.apkStatus} withTooltip style={styleStatusIcon}/>}</TableRowColumn>
 				</TableRow>
@@ -44,7 +42,6 @@ const TableTestFiles = class extends React.Component {
 					<TableRow className={`tbFilesHeader ${classNameType ? `${classNameType}Header` : ''}`}>
 						<TableHeaderColumn className={`tbFilesHeaderId ${classNameType ? `${classNameType}HeaderId` : ''}`}>ID</TableHeaderColumn>
 						<TableHeaderColumn className={`tbFilesHeaderFilename ${classNameType ? `${classNameType}HeaderFilename` : ''}`}>Filename</TableHeaderColumn>
-						<TableHeaderColumn className={`tbFilesHeaderDescription ${classNameType ? `${classNameType}HeaderDescription` : ''}`}>Description</TableHeaderColumn>
 						<TableHeaderColumn className={`tbFilesHeaderStatus ${classNameType ? `${classNameType}HeaderStatus` : ''}`}>Source Status</TableHeaderColumn>
 						<TableHeaderColumn className={`tbFilesHeaderStatus ${classNameType ? `${classNameType}HeaderStatus` : ''}`}>APK Status</TableHeaderColumn>
 					</TableRow>
