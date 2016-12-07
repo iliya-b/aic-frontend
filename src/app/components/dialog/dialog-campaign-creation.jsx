@@ -173,6 +173,7 @@ const DialogCampaignCreation = class extends React.Component {
 							menuStyle={{width: 'calc(100% - 50px)'}}
 							items={apksMenu}
 							multiple
+							initialValue={this.state.config.apks}
 							/>
 					</div>}
 				{this.state.isChosingDevice &&

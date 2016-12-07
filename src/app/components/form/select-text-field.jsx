@@ -21,7 +21,7 @@ const SelectTextField = class extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			selectedItems: props.multiple ? [] : null,
+			selectedItems: props.initialValue ? props.initialValue : this.getResetedValue(props),
 			itemsOpen: false,
 			filterValue: '',
 			focusMenuItem: -1
@@ -31,6 +31,10 @@ const SelectTextField = class extends React.Component {
 		this.availableRenderedCount = -1;
 		this.mappedItems = [];
 		this.calcItems(props);
+	}
+
+	getResetedValue = props => {
+		return props.multiple ? [] : null;
 	}
 
 	getFocusedItem = () => {
@@ -66,10 +70,7 @@ const SelectTextField = class extends React.Component {
 	}
 
 	selectionRemoveAll = () => {
-		let newSelection = null;
-		if (this.props.multiple) {
-			newSelection = [];
-		}
+		const newSelection = this.getResetedValue(this.props);
 		this.selectionChange(newSelection);
 	}
 
@@ -477,7 +478,8 @@ SelectTextField.propTypes = {
 	hintText: React.PropTypes.string,
 	name: React.PropTypes.string,
 	multiple: React.PropTypes.bool,
-	maxHeight: React.PropTypes.number
+	maxHeight: React.PropTypes.number,
+	initialValue: React.PropTypes.any
 };
 
 module.exports = SelectTextField;
