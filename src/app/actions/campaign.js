@@ -7,6 +7,7 @@ const CampaignActions = Reflux.createActions({
 	list: {asyncResult: true},
 	read: {asyncResult: true},
 	create: {asyncResult: true},
+	delete: {asyncResult: true},
 	notifyList: {},
 	notifyRead: {},
 	notifySessionList: {}
@@ -15,5 +16,6 @@ const CampaignActions = Reflux.createActions({
 CampaignActions.list.listenAndPromise(Gateway.campaign.list);
 CampaignActions.read.listenAndPromise(Gateway.campaign.read);
 CampaignActions.create.listenAndPromise(Gateway.campaign.create);
+CampaignActions.delete.listenAndPromise(Gateway.campaign.delete);
 
 module.exports = CampaignActions;

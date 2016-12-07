@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 ### Added
 - Add back button to test source editor.
 - Add details page with compilation results in the test source list.
+- Add remove test campaign.
 
 ### Changed
 - Fix style at live machine list.

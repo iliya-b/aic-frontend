@@ -11,6 +11,7 @@ import LiveListStore from 'app/stores/live-list';
 import LiveListActions from 'app/actions/live-list';
 import CampaignActions from 'app/actions/campaign';
 import Notify from 'app/libs/notify';
+import DialogConfirmDelete from 'app/components/dialog/dialog-confirm-delete';
 
 const debug = require('debug')('AiC:Views:Campaign:CampaignList');
 
@@ -19,7 +20,10 @@ const CampaignList = class extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isDialogOpen: false
+			isDialogOpen: false,
+			deleteCampaignName: null,
+			deleteCampaignId: null,
+			deleteIsOpen: false
 		};
 	}
 
@@ -39,18 +43,46 @@ const CampaignList = class extends React.Component {
 		config.projectId = this.props.params.projectId;
 		CampaignActions.create(config);
 		this.handleCloseDialog();
+		this.reloadList();
+	}
+
+	handleDeleteCampaign = campaignInfo => {
+		this.setState({
+			deleteCampaignName: campaignInfo.name,
+			deleteCampaignId: campaignInfo.id,
+			deleteIsOpen: true
+		});
+	}
+
+	handleCloseDeleteDialog = () => {
+		this.setState({
+			deleteCampaignName: null,
+			deleteCampaignId: null,
+			deleteIsOpen: false
+		});
+	}
+
+	handleConfirmDeleteDialog = () => {
+		CampaignActions.delete({campaignId: this.state.deleteCampaignId, projectId: this.props.params.projectId});
+		this.handleCloseDeleteDialog();
+		this.reloadList();
+	}
+
+	reloadList = () => {
 		Notify.startListCampaigns({projectId: this.props.params.projectId}, null, {initialDelaySeconds: 1});
 	}
 
 	render() {
 		const apks = this.state && this.state.apk ? this.state.apk.apks : [];
 		const images = this.state && this.state.liveList ? this.state.liveList.images : [];
+		const deleteCampaignName = this.state.deleteCampaignName ? <b> {this.state.deleteCampaignName}</b> : null;
 		return (
 			<div>
 				<ToolbarCampaign onClickStart={this.handleOpenDialog}/>
 				<QuotaCampaignContainer projectId={this.props.params.projectId}/>
-				<ListCampaignContainer projectId={this.props.params.projectId} onEnter={this.handleEnterCampaign}/>
+				<ListCampaignContainer projectId={this.props.params.projectId} onEnter={this.handleEnterCampaign} onDelete={this.handleDeleteCampaign}/>
 				<DialogCampaignCreation onCancel={this.handleCloseDialog} onStart={this.handleStartCampaign} open={this.state.isDialogOpen} apks={apks} images={images}/>
+				<DialogConfirmDelete deleteItemName={deleteCampaignName} open={this.state.deleteIsOpen} onRequestClose={this.handleCloseDeleteDialog} onCancel={this.handleCloseDeleteDialog} onConfirm={this.handleConfirmDeleteDialog}/>
 			</div>
 		);
 	}

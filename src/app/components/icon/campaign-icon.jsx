@@ -26,17 +26,20 @@ CampaignIcon.ERROR = 'ERROR';
 CampaignIcon.RUNNING = 'RUNNING';
 CampaignIcon.READY = 'READY';
 CampaignIcon.QUEUED = 'QUEUED';
+CampaignIcon.DELETING = 'DELETING';
 
 campaign2Status[CampaignIcon.ERROR] = StatusIcon.ERROR;
 campaign2Status[CampaignIcon.RUNNING] = StatusIcon.LOADING;
 campaign2Status[CampaignIcon.READY] = StatusIcon.SUCCESS;
 campaign2Status[CampaignIcon.QUEUED] = StatusIcon.QUEUED;
+campaign2Status[CampaignIcon.DELETING] = StatusIcon.LOADING;
 
 CampaignIcon.STATUS_LIST = [
 	CampaignIcon.ERROR,
 	CampaignIcon.RUNNING,
 	CampaignIcon.READY,
-	CampaignIcon.QUEUED
+	CampaignIcon.QUEUED,
+	CampaignIcon.DELETING
 ];
 CampaignIcon.SIZE_LIST = StatusIcon.SIZE_LIST;
 

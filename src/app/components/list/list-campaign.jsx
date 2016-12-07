@@ -25,6 +25,7 @@ const ListCampaign = props => {
 					name={item.campaign_name || item.campaign_id}
 					status={item.status}
 					onEnter={props.onEnter}
+					onDelete={props.onDelete}
 					/>
 				);
 		});
@@ -41,7 +42,8 @@ const ListCampaign = props => {
 ListCampaign.propTypes = {
 	isLoading: React.PropTypes.bool,
 	campaigns: React.PropTypes.array,
-	onEnter: React.PropTypes.func
+	onEnter: React.PropTypes.func,
+	onDelete: React.PropTypes.func
 };
 
 module.exports = ListCampaign;

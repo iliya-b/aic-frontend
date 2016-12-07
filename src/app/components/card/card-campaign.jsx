@@ -11,6 +11,9 @@ const CardCampaign = class extends React.Component {
 	handleClickEnter = () => {
 		this.props.onEnter(this.props.id);
 	}
+	handleClickDelete = () => {
+		this.props.onDelete({id: this.props.id, name: this.props.name});
+	}
 	setRefName = c => {
 		this.refName = c;
 		if (c) {
@@ -30,7 +33,7 @@ const CardCampaign = class extends React.Component {
 			clear: 'both'
 		};
 		const styleCardActions = {display: 'inline-block'};
-		const styleInputProjectName = {
+		const styleInputCampaignName = {
 			marginLeft: 10,
 			height: 42
 		};
@@ -39,9 +42,10 @@ const CardCampaign = class extends React.Component {
 		return (
 			<Card key={this.props.id} style={styleCard}>
 				<CardActions style={styleCardActions}>
-					<span className={`txtProjectName txtProjectName${this.props.index} txtProjectName${projectNameCamel}`} style={styleInputProjectName}>{this.props.name}</span>
+					<span className={`txtCampaignName txtCampaignName${this.props.index} txtCampaignName${projectNameCamel}`} style={styleInputCampaignName}>{this.props.name}</span>
 					<CampaignIcon style={{marginTop: 3, float: 'left'}} tooltip={this.props.status} status={this.props.status}/>
-					<IconButtonApp raised iconClassName="mdi mdi-arrow-right-bold" className="btProjectEnter" title={`Enter ${this.props.name}`} tooltip="Enter" onClick={this.handleClickEnter}/>
+					<IconButtonApp raised iconClassName="mdi mdi-arrow-right-bold" className="btCampaignEnter" title={`Enter ${this.props.name}`} tooltip="Enter" onClick={this.handleClickEnter}/>
+					<IconButtonApp raised iconClassName="mdi mdi-delete" className="btCampaignDelete" title={`Delete ${this.props.name}`} tooltip="Delete" onClick={this.handleClickDelete}/>
 				</CardActions>
 			</Card>
 		);
@@ -53,7 +57,8 @@ CardCampaign.propTypes = {
 	index: React.PropTypes.number,
 	name: React.PropTypes.string,
 	status: React.PropTypes.string,
-	onEnter: React.PropTypes.func
+	onEnter: React.PropTypes.func,
+	onDelete: React.PropTypes.func
 };
 
 module.exports = CardCampaign;

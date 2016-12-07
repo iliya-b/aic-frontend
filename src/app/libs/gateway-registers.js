@@ -238,6 +238,9 @@ const GatewayRegisters = function () {
 			}, {
 				action: {name: 'machines', method: 'GET'},
 				pathname: '/android'
+			}, {
+				action: {name: 'delete', method: 'DELETE'},
+				pathname: '/projects/{projectId}/campaigns/{campaignId}'
 			}
 		]
 	});

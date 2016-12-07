@@ -17,6 +17,7 @@ const ListCampaignContainer = class extends React.Component {
 				isLoading={!(this.state.campaign)}
 				campaigns={this.state.campaign ? this.state.campaign.campaigns : []}
 				onEnter={this.props.onEnter}
+				onDelete={this.props.onDelete}
 				/>
 		);
 	}
@@ -40,7 +41,8 @@ const ListCampaignContainer = class extends React.Component {
 
 ListCampaignContainer.propTypes = {
 	projectId: React.PropTypes.string,
-	onEnter: React.PropTypes.func
+	onEnter: React.PropTypes.func,
+	onDelete: React.PropTypes.func
 };
 
 module.exports = ListCampaignContainer;
