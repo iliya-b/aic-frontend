@@ -17,6 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 - Fix API error message while exiting live VM.
 - Fix live error when packages list request returns a 500.
 - Fix selection of APKs being removed at campaign creation if device is added.
+- Fix live rescaling bug with window resize.
 
 ### Removed
 - Removed from APK Manager list the apks that come from test sources.

@@ -392,7 +392,7 @@ const LiveStore = Reflux.createStore({
 
 	onRecalculeScaleIfConnected() {
 		debug('onRecalculeScaleIfConnected', this.state.live.status);
-		if (this.state.live.status === 'LIVE_STATUS_CONNECTED') {
+		if (this.state.live.status === 'LIVE_STATUS_CONNECTED' && this.state.live.isScaledscreen) {
 			LiveActions.recalculeScale();
 		}
 	},
