@@ -22,6 +22,7 @@ const PanelAndroidConfig = props => {
 		enableRecord, // eslint-disable-line no-unused-vars
 		enableGsm, // eslint-disable-line no-unused-vars
 		enableNfc, // eslint-disable-line no-unused-vars
+		onClickRemove,
 		...other
 	} = props;
 
@@ -78,7 +79,7 @@ const PanelAndroidConfig = props => {
 				iconClassName="mdi mdi-delete"
 				style={styleButton}
 				data-config-id={props['data-config-id']}
-				onClick={props.onClickRemove}
+				onClick={onClickRemove}
 				/>
 		</Paper>
 	);

@@ -25,6 +25,10 @@ const dpis = [
 	'160', '240', '320', '480'
 ];
 
+const getFirstImage = props => {
+	return ((props.images && props.images.length) ? props.images[0].image : '');
+};
+
 const DialogLiveCreation = class extends React.Component {
 
 	constructor(props) {
@@ -33,7 +37,7 @@ const DialogLiveCreation = class extends React.Component {
 			// Default configuration
 			config: {
 				name: '',
-				image: ((props.images && props.images.length) ? props.images[0].image : ''),
+				image: getFirstImage(props),
 				size: '800x600',
 				dpi: '160',
 				enableSensors: true,
@@ -108,6 +112,12 @@ const DialogLiveCreation = class extends React.Component {
 			});
 		}
 		return [];
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.images.length && this.state.config.image === '') {
+			this.setState({config: Object.assign({}, this.state.config, {image: getFirstImage(nextProps)})});
+		}
 	}
 
 	render() {

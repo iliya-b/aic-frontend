@@ -125,6 +125,7 @@ const PanelAndroidCreateConfig = class extends React.Component {
 	render() {
 		const {
 			images, // eslint-disable-line no-unused-vars
+			onChange, // eslint-disable-line no-unused-vars
 			...other
 		} = this.props;
 		const styleSizes = {textTransform: 'none'};

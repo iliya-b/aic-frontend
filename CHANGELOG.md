@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 - Add back button to test source editor.
 - Add details page with compilation results in the test source list.
 - Add remove test campaign.
+- Add default image on live creation.
 
 ### Changed
 - Fix style at live machine list.
@@ -19,6 +20,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 - Fix live error when packages list request returns a 500.
 - Fix selection of APKs being removed at campaign creation if device is added.
 - Fix live rescaling bug with window resize.
+- Fix selection of custom size/dpi when adding device at campaign creation.
 
 ### Removed
 - Remove from APK Manager list the apks that come from test sources.
