@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ## [Unreleased]
 
+## [0.7.6]
+
 ### Added
 - Add back button to test source editor.
 - Add details page with compilation results in the test source list.
