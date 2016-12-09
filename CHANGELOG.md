@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ## [Unreleased]
 
+### Changed
+- Change nfc off as default.
+
 ## [0.7.6]
 
 ### Added

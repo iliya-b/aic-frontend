@@ -46,7 +46,7 @@ const DialogLiveCreation = class extends React.Component {
 				enableCamera: true,
 				enableRecord: true,
 				enableGsm: true,
-				enableNfc: true
+				enableNfc: false
 			},
 			customSize: false,
 			customDpi: false
