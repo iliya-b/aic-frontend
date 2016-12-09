@@ -4,7 +4,7 @@ import React from 'react';
 import DeviceIcon from 'app/components/icon/device-icon';
 import TableTestResult from 'app/components/table/table-test-result';
 import adbTestResultParser from 'app/libs/adb-test-result-parser';
-import AppPalette from 'app/configs/app-palette';
+// import AppPalette from 'app/configs/app-palette';
 import timeHumanize from 'app/libs/time-humanize';
 import SimpleStatusIcon from 'app/components/icon/simple-status-icon';
 import Paper from 'material-ui/Paper';
@@ -130,7 +130,7 @@ const PanelTestResults = class extends React.Component {
 
 		const totalsPerPackage = parsedResults.map(p => getTotals(p.testCases));
 		const totalsMachine = calcMachineTotal(totalsPerPackage);
-		const totalTime = parsedResults.reduce((p, c) => p + c.timeMilliseconds, 0);
+		// const totalTime = parsedResults.reduce((p, c) => p + c.timeMilliseconds, 0);
 
 		// const infoTests = (
 		// 	<div>
@@ -171,7 +171,7 @@ const PanelTestResults = class extends React.Component {
 			});
 
 		const hasTestsReady = getAnyReady(packages);
-		const elapsedTime = <span style={{minWidth: 150, display: 'inline-block', color: 'rgba(0, 0, 0, 0.5)'}}><FontIcon style={{color: AppPalette.primary1Color, fontSize: 20}} className="mdi mdi-clock"/> {timeHumanize(totalTime)}</span>;
+		// const elapsedTime = <span style={{minWidth: 150, display: 'inline-block', color: 'rgba(0, 0, 0, 0.5)'}}><FontIcon style={{color: AppPalette.primary1Color, fontSize: 20}} className="mdi mdi-clock"/> {timeHumanize(totalTime)}</span>;
 		const machineText = <span style={{minWidth: 150, display: 'inline-block', color: 'rgba(0, 0, 0, 0.5)'}}>{`${image.replace('-', ' ')}`}</span>;
 		const index = 0;
 		const machineRunning = (
@@ -195,7 +195,7 @@ const PanelTestResults = class extends React.Component {
 				<div>
 					{globalStatusIcon}
 					{machineIcon} {machineText}
-					{hasTestsReady && elapsedTime}
+					{/* hasTestsReady && elapsedTime */}
 					{(hasTestsReady || hasMachine) && <IconButton style={{float: 'right', padding: 0, width: 24, height: 24}} iconClassName={`mdi mdi-${this.state.isDetailsOpen ? 'chevron-up' : 'chevron-down'}`} onClick={this.handleToggleDetails}/>}
 				</div>
 				<div style={{display: this.state.isDetailsOpen ? '' : 'none'}}>

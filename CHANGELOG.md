@@ -21,7 +21,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 - Fix live rescaling bug with window resize.
 
 ### Removed
-- Removed from APK Manager list the apks that come from test sources.
+- Remove from APK Manager list the apks that come from test sources.
+- Remove timing from test results.
 
 ## [0.7.2]
 
