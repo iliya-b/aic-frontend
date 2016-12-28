@@ -3,53 +3,119 @@
 [![coverage report](https://git.rnd.alterway.fr/aic_ats/frontend/badges/master/coverage.svg)](https://git.rnd.alterway.fr/aic_ats/frontend/commits/master)
 [![ava runner](https://img.shields.io/badge/runner-ava-4d88e3.svg)](https://github.com/avajs/ava)
 
-## Cloning the project
+## Front-end AiC
 
-noVNC is now added as a npm package and there is *no* need for special
-cloning (with --recursive option) on this project.
+![Front-end AiC](frontend-aic.png "Front-end AiC")
 
-## Building the project
+This is the repo that contains
+[AiC project](http://aic-project.rnd.alterway.fr/) web interface.
 
-The production environment is the build environment.
-The development is the environment for testing.
-To install only dependencies needed by the build (exclude packages
-for testing) use either `npm install --production`, either
-`NODE_ENV=production npm install`, either &lt;insert here another way
-to make node in production environment&gt;.
-Then run the `npm run build`, which will create `./build/` folder.
+## Production environment
 
-## Development installation
+To set-up a production environment, first install the npm
+dependencies.
 
-Run `npm install` to install all packages needed to start the
-project.
+```
+$ npm install --production
+```
+
+This will install only dependencies needed by the build, excluding
+packages for development and testing.
+
+Then, to create the transpiled JS files and assets, build the project:
+
+```
+$ npm run build
+```
+
+It will create the `./build/` folder. This folder can be served by any
+webserver to start the frontend AiC application.
+
+```
+$ cd build/
+$ python -m SimpleHTTPServer
+Serving HTTP on 0.0.0.0 port 8000 ...
+```
+
+Now you can access in your browser http://0.0.0.0:8000/
+
+## Configuration file
+
+The application uses a configuration file in JSON format. It is named
+`config.json` and it should be in the root of your application,
+typically at `./build/config.json`. In this project we offer a sample
+at `./config-sample.json`.
 
 
-Run `npm start` to start a development web server and open then
-application in the browser. However, when using npm start, you should
-run at least once the build command.
+```
+{
+  "backend": {
+    "protocol": "http",
+    "host": "localhost",
+    "port": 12345,
+    "timeout": 5000
+  },
+  "userHome": "projects",
+  "debug": true
+}
 
-Run `npm run build` to build the project at build/ folder. Any
-webserver can be used to serve this folder and run the application.
+```
 
-Application configuration file should be served with the rest of the
-application files. It must be in the root of your application served
-by any webserver. It must be named `config.json`. A sample file is
-given in this project as `config-sample.json`.
+Make sure that you set a valid AiC `backend`, otherwise the
+application will not work.
 
-The backend machine IP can be changed at the `config.json`, the key
-to be changed is `backend => host`.
+## Development environment
 
-You can also use the following environment variables to set the
-front-end configuration, by using the command
-`npm run create-conf-from-env` to create a valid file from the
-environment variables:
+To set-up a development environment, first install the npm
+dependencies. In this mode we want to install the all dependencies,
+including development and testing ones. Therefore, do not use the
+option --production (as seen in production environment).
 
-Variables                      | Default       | Description
--------------------------------|---------------|-----------------------------------
-AIC_FRONTEND_BACKEND_PROTOCOL  | 'http'        | Protocol of the backend API host
-AIC_FRONTEND_BACKEND_HOST      | 'localhost'   | IP/Domain of the backend API host
-AIC_FRONTEND_BACKEND_PORT      | '12345'       | Port of the backend API host
-AIC_FRONTEND_BACKEND_TIMEOUT   | 5000          | Value in miliseconds for timeout the API calls
+```
+$ npm install
+```
+
+This will install all dependencies needed to build, start
+development webserver and run tests.
+
+Then, to create the static assets needed by the development webserver,
+build the project:
+
+```
+$ npm run build
+```
+
+It will create the `./build/` folder. This folder is then used by the
+development webserver. To start the development webserver use the
+`npm start` command.
+
+```
+$ npm start
+
+> front-end-app@0.7.6 start /AiC/frontend
+> webpack-dev-server --content-base ./build/ --history-api-fallback --progress --port 9080 --hot --inline
+
+ http://localhost:9080/
+webpack result is served from /
+content is served from /AiC/frontend/build
+404s will fallback to /index.html
+webpack: wait until bundle finished: /
+Hash: 32c181be8097ea1d115f
+Version: webpack 2.1.0-beta.21
+Time: 16348ms
+ Asset     Size  Chunks             Chunk Names
+app.js  12.3 MB       0  [emitted]  main
+chunk    {0} app.js (main) 4.48 MB [entry] [rendered]
+    [0] ./~/react/react.js 56 bytes {0} [built]
+[...]
+```
+
+Now you can access in your browser http://localhost:9080/
+
+In this environment, each time a change occurs in one of the source
+files the application files will be modified automatically, without
+restarting the web server or rebuilding the entire application.
+However, there is still a need to reload the application in browser.
 
 ## Tests
 
@@ -61,11 +127,10 @@ Run `npm run test:coverage` to run the unit tests and create test
 coverage output. The coverage files are created in a folder named
 `./coverage`.
 
-Integration tests are now in
+Integration tests are now in a separated
 [aic_features repository](https://git.rnd.alterway.fr/aic-documentation/aic_features).
 The gitlabci integration pipeline will clone and run integration tests
 on this project.
-
 
 ## Known Bugs
 
@@ -86,6 +151,28 @@ project with the following command and reload the browser.
 npm run build
 ```
 
+### `It was not possible to load the application.`
+
+If when opening the application in the browser you have the following
+message:
+
+```
+It was not possible to load the application.
+Please contact administrator to verify the application installation.
+```
+
+It is possible that you have an invalid configuration file. Please
+check the section [Configuration file](#configuration-file) for more
+details.
+
+## Cloning the project
+
+Historically, up to version v0.2.0, this project needed to be cloned
+with the recursive option because noVNC was a git sub project.
+
+Now, since version v0.2.1, noVNC is part of the project as a npm
+package. Therefore, there is *no* need for special cloning (with
+--recursive option) on this project.
 
 ## TODO List
 
