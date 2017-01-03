@@ -205,6 +205,14 @@ const GatewayAdapters = {
 				}
 			})
 		},
+		runTest: {
+			response: backendObject => ({
+				request: backendObject.request,
+				response: {
+					commandId: backendObject.response.command_id
+				}
+			})
+		},
 		properties: {
 			response: backendObject => {
 				return backendObject.properties;

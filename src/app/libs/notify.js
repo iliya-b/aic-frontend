@@ -42,6 +42,13 @@ Notify.registerActions({
 		notify: LiveActions.notifyLiveMonkeyRunner,
 		stopCondition: (actionInfo, response) => NotifyStopCondition.commandShouldStop(response)
 	},
+	liveRunTest: {
+		group: 'live',
+		id: 'commandId',
+		request: Gateway.live.command,
+		notify: LiveActions.notifyLiveRunTest,
+		stopCondition: (actionInfo, response) => NotifyStopCondition.commandShouldStop(response)
+	},
 	liveProperties: {
 		group: 'live',
 		request: Gateway.live.properties,

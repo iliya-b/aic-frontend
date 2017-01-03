@@ -200,7 +200,8 @@ const GatewayRegisters = function () {
 				pathname: '/android/{avmId}/testrun'
 			}, {
 				action: GatewayActions.runTest,
-				pathname: '/android/{avmId}/testrun?package={....}'
+				pathname: '/android/{avmId}/testrun',
+				schema: GatewaySchemas.runTest
 			}, {
 				action: GatewayActions.execStatus,
 				pathname: '/android/{avmId}/exec/{execId}'

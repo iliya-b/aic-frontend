@@ -235,6 +235,12 @@ const GatewaySchemas = {
 		// 	packages: {type: 'array', optional: true}, // eslint-disable-line camelcase
 		// 	campaign_name: {type: 'string'} // eslint-disable-line camelcase
 		// }
+	},
+	runTest: {
+		type: 'object',
+		properties: {
+			package: {type: 'string'}
+		}
 	}
 };
 

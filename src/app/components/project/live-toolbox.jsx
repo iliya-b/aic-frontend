@@ -17,8 +17,9 @@ const TOOLBAR_GSM = 'gsm';
 const TOOLBAR_APKS = 'apks';
 const TOOLBAR_SESSIONDETAILS = 'details';
 const TOOLBAR_MONKEYURUNNER = 'monkeyRunner';
+const TOOLBAR_TESTS = 'tests';
 const TOOLBAR_SCREEN = 'screen';
-const TOOLBAR_MAIN_ORDER = [TOOLBAR_SENSORS, TOOLBAR_CAMERA, TOOLBAR_GSM, TOOLBAR_APKS, TOOLBAR_SESSIONDETAILS, TOOLBAR_MONKEYURUNNER, TOOLBAR_SCREEN, TOOLBAR_ANDROID];
+const TOOLBAR_MAIN_ORDER = [TOOLBAR_SENSORS, TOOLBAR_CAMERA, TOOLBAR_GSM, TOOLBAR_APKS, TOOLBAR_SESSIONDETAILS, TOOLBAR_MONKEYURUNNER, TOOLBAR_TESTS, TOOLBAR_SCREEN, TOOLBAR_ANDROID];
 
 // Sensors toolbar
 const TOOLBAR_GPS = 'gps';
@@ -87,6 +88,9 @@ toolbars.gsmRoaming = require('app/components/toolbar/toolbar-gsm-roaming');
 // Monkey Runner panel
 toolbars.monkeyRunner = require('app/components/toolbar/toolbar-monkey-runner');
 
+// Tests panel
+toolbars.tests = require('app/components/toolbar/toolbar-tests');
+
 // Info panel
 toolbars.details = require('app/components/panel/panel-session-details');
 
@@ -122,6 +126,10 @@ const LiveToolbox = class extends React.Component {
 			this.handleClickFirstBar[v] = this.changeActiveToolbar.bind(this, v);
 		});
 
+		this.handleClickFirstBar.tests = () => {
+			props.onTestPackagesLoad();
+			this.changeActiveSecondToolbar('tests');
+		};
 		this.handleClickFirstBar.monkeyRunner = this.changeActiveSecondToolbar.bind(this, 'monkeyRunner');
 		this.handleClickFirstBar.camera = this.changeActiveSecondToolbar.bind(this, 'camera');
 		this.handleClickFirstBar.apks = this.changeActiveSecondToolbar.bind(this, 'apks');
@@ -322,6 +330,15 @@ const LiveToolbox = class extends React.Component {
 				monkeyCalls: this.props.monkeyCalls
 			};
 			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
+		} else if (this.state.activeSecondBar === 'tests') { // eslint-disable-line no-negated-condition
+			const props = {
+				onInputFocus: this.handleInputFocusMonkeyRunner,
+				onInputBlur: this.props.onInputBlur,
+				testPackages: this.props.testPackages,
+				testRuns: this.props.testRuns,
+				onTestRun: this.props.onTestRun
+			};
+			currentSecondBar = React.createElement(toolbars[this.state.activeSecondBar], props);
 		} else if (this.state.activeSecondBar === 'details') { // eslint-disable-line no-negated-condition
 			const props = {
 				properties: this.props.properties,
@@ -392,7 +409,11 @@ LiveToolbox.propTypes = {
 	isScaledscreen: React.PropTypes.bool,
 	style: React.PropTypes.object,
 	onExitScaledscreen: React.PropTypes.func,
-	onEnterScaledscreen: React.PropTypes.func
+	onEnterScaledscreen: React.PropTypes.func,
+	testPackages: React.PropTypes.array,
+	testRuns: React.PropTypes.array,
+	onTestPackagesLoad: React.PropTypes.func,
+	onTestRun: React.PropTypes.func
 };
 
 module.exports = LiveToolbox;

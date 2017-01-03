@@ -50,6 +50,10 @@ const ToolbarAndroid = class extends React.Component {
 				tooltip: 'Monkey tool',
 				fontIcon: 'mdi mdi-panda'
 			}, {
+				id: 'tests',
+				tooltip: 'Tests',
+				fontIcon: 'mdi mdi-settings'
+			}, {
 				id: 'screen',
 				tooltip: 'Screen settings',
 				fontIcon: 'mdi mdi-desktop-mac'

@@ -119,6 +119,16 @@ const LiveSession = class extends React.Component {
 		fullscreen.removeFullscreenchange(this.handleDocumentFullscreenChange);
 	}
 
+	handleTestPackagesLoad = () => {
+		const refId = `${avmId}-${Date.now()}`;
+		LiveActions.listTests({avmId, projectId, refId}, {includeRequest: true});
+	}
+
+	handleTestRun = info => {
+		const refId = `${avmId}-${Date.now()}`;
+		LiveActions.runTest(Object.assign({avmId, projectId, refId}, info), {includeRequest: true});
+	}
+
 	render() {
 		debug('render');
 
@@ -215,6 +225,11 @@ const LiveSession = class extends React.Component {
 								onEnterScaledscreen={this.handleEnterScaledscreen}
 								onExitScaledscreen={this.handleExitScaledscreen}
 								isScaledscreen={this.state.live.isScaledscreen}
+								// Tests
+								testPackages={this.state.live.tests.packages}
+								testRuns={this.state.live.tests.runs}
+								onTestPackagesLoad={this.handleTestPackagesLoad}
+								onTestRun={this.handleTestRun}
 								/>
 						) : null}
 						</div>

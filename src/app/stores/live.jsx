@@ -267,8 +267,8 @@ const LiveStore = Reflux.createStore({
 			this.state.live.monkeyCalls[index].updateTime = Date.now();
 			this.state.live.monkeyCalls[index].commandId = response.response.commandId;
 			Notify.startLiveMonkeyRunner({avmId: this.state.liveInfo.avm_id, commandId: this.state.live.monkeyCalls[index].commandId});
+			this.updateState();
 		}
-		this.updateState();
 	},
 
 	onMonkeyRunnerFailed(response) {
@@ -280,10 +280,10 @@ const LiveStore = Reflux.createStore({
 		if (index !== -1) {
 			this.state.live.monkeyCalls[index].endTime = Date.now();
 			this.state.live.monkeyCalls[index].status = 'ERROR';
+			this.updateState();
 		}
-		this.state.live.message = response.error;
-		this.state.live.status = 'LIVE_STATUS_MONKEYRUNNER_FAILED';
-		this.updateState();
+		// this.state.live.message = response.error;
+		// this.state.live.status = 'LIVE_STATUS_MONKEYRUNNER_FAILED';
 	},
 
 	onNotifyLiveMonkeyRunner(commandInfo, commandDetails) {
@@ -397,6 +397,70 @@ const LiveStore = Reflux.createStore({
 		}
 	},
 
+	onListTests(data) {
+		debug('onListTests', data);
+		this.state.live.tests.packages = [];
+		this.updateState();
+	},
+
+	onListTestsCompleted(data) {
+		debug('onListTestsCompleted', data);
+		const packages = Object.keys(data.response.packages);
+		this.state.live.tests.packages = packages;
+		this.updateState();
+	},
+
+	onRunTest(request) {
+		const {refId} = request;
+		debug('onRunTest');
+		this.state.live.tests.runs.push({
+			id: refId,
+			status: 'REQUESTED',
+			startTime: Date.now(),
+			label: request.package
+		});
+		this.updateState();
+	},
+
+	onRunTestCompleted(response) {
+		debug('onRunTestCompleted', response);
+		const refId = response.request.refId;
+		const index = this.state.live.tests.runs.reduce((found, mcall, index) => {
+			return mcall.id === refId ? index : found;
+		}, -1);
+		if (index !== -1) {
+			const commandId = response.response.commandId;
+			this.state.live.tests.runs[index].updateTime = Date.now();
+			this.state.live.tests.runs[index].commandId = commandId;
+			Notify.startLiveRunTest({avmId: this.state.liveInfo.avm_id, commandId});
+			this.updateState();
+		}
+	},
+
+	onRunTestFailed(response) {
+		debug('onRunTestFailed', response.error);
+		const refId = response.request.refId;
+		const index = this.state.live.tests.runs.reduce((found, mcall, index) => {
+			return mcall.id === refId ? index : found;
+		}, -1);
+		if (index !== -1) {
+			this.state.live.tests.runs[index].endTime = Date.now();
+			this.state.live.tests.runs[index].status = 'ERROR';
+			this.updateState();
+		}
+	},
+
+	onNotifyLiveRunTest(commandInfo, commandDetails) {
+		debug('onNotifyLiveRunTest', commandInfo, commandDetails);
+		const commandId = commandInfo.commandId;
+		const commandIndex = this.state.live.tests.runs.reduce((p, c, i) => !p && c.commandId === commandId ? i : p, false);
+		if (commandIndex !== false && this.state.live.tests.runs[commandIndex].status !== commandDetails.status) {
+			this.state.live.tests.runs[commandIndex].status = commandDetails.status;
+			this.state.live.tests.runs[commandIndex].stdout = commandDetails.stdout;
+			this.updateState();
+		}
+	},
+
 	// Methods //
 
 	// Status Box
@@ -427,6 +491,9 @@ const LiveStore = Reflux.createStore({
 			vertical: {x: 5.9, y: 0, z: 0, next: 'horizontal'}
 		};
 		this.state.live.recordingFileName = '';
+		this.state.live.tests = {};
+		this.state.live.tests.packages = [];
+		this.state.live.tests.runs = [];
 	},
 
 	calculateScale() {

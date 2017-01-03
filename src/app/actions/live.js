@@ -26,7 +26,10 @@ const LiveActions = Reflux.createActions({
 	enterScaledscreen: {},
 	exitScaledscreen: {},
 	recalculeScale: {},
-	recalculeScaleIfConnected: {}
+	recalculeScaleIfConnected: {},
+	listTests: {asyncResult: true},
+	runTest: {asyncResult: true},
+	notifyLiveRunTest: {}
 });
 
 // Backend related
@@ -36,6 +39,8 @@ LiveActions.setSensor.listenAndPromise(Gateway.live.sensor);
 LiveActions.listPackages.listenAndPromise(Gateway.live.listPackages);
 LiveActions.installAPK.listenAndPromise(Gateway.live.installAPK);
 LiveActions.monkeyRunner.listenAndPromise(Gateway.live.monkeyRunner);
+LiveActions.listTests.listenAndPromise(Gateway.live.listTests);
+LiveActions.runTest.listenAndPromise(Gateway.live.runTest);
 
 // noVNC & audio related
 LiveActions.setProjectId.listenAndPromise(NoVNCAdapter.loadUtil);
