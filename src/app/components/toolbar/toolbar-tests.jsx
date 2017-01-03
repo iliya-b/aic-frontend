@@ -116,6 +116,11 @@ PanelTests.contextTypes = {
 	router: React.PropTypes.object
 };
 
+PanelTests.defaultProps = {
+	testPackages: [],
+	testRuns: []
+};
+
 PanelTests.propTypes = {
 	style: React.PropTypes.object,
 	onInputFocus: React.PropTypes.func,

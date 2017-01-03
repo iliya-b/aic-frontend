@@ -30,6 +30,10 @@ const ToolbarSensorsProps = [{
 	props: {onClick: {android: () => {}}}
 }];
 
+const PanelTestsProps = [{
+	props: {}
+}];
+
 const componentsProps = {
 	ToolbarAccelerometer: ToolbarAccelerometerProps,
 	ToolbarAndroid: ToolbarAndroidProps,
@@ -38,7 +42,8 @@ const componentsProps = {
 	ToolbarGPS: ToolbarGPSProps,
 	ToolbarGSM: ToolbarGSMProps,
 	ToolbarScreen: ToolbarScreenProps,
-	ToolbarSensors: ToolbarSensorsProps
+	ToolbarSensors: ToolbarSensorsProps,
+	PanelTests: PanelTestsProps
 };
 
 module.exports = componentsProps;
