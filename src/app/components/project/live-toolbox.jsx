@@ -1,3 +1,4 @@
+/* global document */
 'use strict';
 
 import React from 'react';
@@ -179,9 +180,10 @@ const LiveToolbox = class extends React.Component {
 			this.props.onInputFocus(e);
 		};
 
-		this.handleDragThrottled = throttle(e => {
-			this.handleDrag(e);
-		}, 66, {trailing: false});
+		this.handleDragOverThrottled = throttle(e => {
+			// debug('handleDragThrottled');
+			this.handleDragOver(e);
+		}, 66);
 	}
 
 	changeActiveToolbar(toolbar) {
@@ -201,6 +203,7 @@ const LiveToolbox = class extends React.Component {
 	}
 
 	handleDrag = e => {
+		// debug('handleDrag e', e, Object.keys(e), e.clientX, e.screenX, e.pageX, e.detail);
 		if (e.pageX) {
 			debug('handleDrag', Object.keys(e), e.clientX, e.screenX, e.pageX);
 			debug('handleDrag ct', Object.keys(e.currentTarget));
@@ -213,7 +216,20 @@ const LiveToolbox = class extends React.Component {
 		debug('handleDrag ct', Object.keys(e.currentTarget));
 		this.offSetX = this.state.toolbarPosition[0] - e.pageX;
 		this.offSetY = this.state.toolbarPosition[1] - e.pageY;
+		e.dataTransfer.setData('text', '');
 		debug('handleDrag st off', this.offSetX, this.offSetY);
+		document.addEventListener('dragover', this.handleDragOverThrottled);
+	}
+
+	handleDragEnd = e => {
+		debug('handleDragEnd');
+		document.removeEventListener('dragover', this.handleDragOverThrottled);
+		this.handleDrag(e);
+	}
+
+	handleDragOver = e => {
+		// debug('handleDragOver e', e, Object.keys(e), e.clientX, e.screenX, e.pageX, e.detail);
+		this.handleDrag(e);
 	}
 
 	handleToggleToolbar = () => {
@@ -342,7 +358,7 @@ const LiveToolbox = class extends React.Component {
 		return (
 			<div style={styleLiveToolBox}>
 				{this.props.isFullscreen && <FontIcon style={styleToggle} onClick={this.handleToggleToolbar} className={`mdi mdi-menu-${this.state.toolbarCollapsed ? 'right' : 'left'}`}/>}
-				{this.props.isFullscreen && <FontIcon style={styleDrag} draggable onDragStart={this.handleDragStart} onDrag={this.handleDragThrottled} className="mdi mdi-drag"/>}
+				{this.props.isFullscreen && <FontIcon style={styleDrag} draggable onDragEnd={this.handleDragEnd} onDragStart={this.handleDragStart} className="mdi mdi-drag"/>}
 				{this.showCurrentBar() && currentBar}
 				{this.showCurrentBar() && currentSecondBar}
 			</div>

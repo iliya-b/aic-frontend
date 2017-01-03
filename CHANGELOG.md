@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ### Changed
 - Change nfc off as default.
+- Fix toolbox live drag on firefox because [the event does not have coordinates](https://bugzilla.mozilla.org/show_bug.cgi?id=505521).
 
 ## [0.7.6]
 
