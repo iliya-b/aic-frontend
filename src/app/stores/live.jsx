@@ -145,11 +145,12 @@ const LiveStore = Reflux.createStore({
 	},
 
 	onLiveConnectCompleted() {
-		debug('onLiveConnectCompleted');
-		debug(arguments);
+		debug('onLiveConnectCompleted', arguments);
 		this.state.live.status = 'LIVE_STATUS_CONNECTED';
+		LiveActions.initiateScaleScreen();
 		this.updateState();
-		LiveActions.enterScaledscreen();
+		// LiveActions.enterScaledscreen();
+		debug('onLiveConnectCompleted 2');
 	},
 
 	onLiveConnectFailed(errorMessage) {
@@ -461,6 +462,22 @@ const LiveStore = Reflux.createStore({
 		}
 	},
 
+	onInitiateScaleScreen() {
+		debug('onInitiateScaleScreen');
+		const possibleScale = this.getPossibleScale();
+		debug('onInitiateScaleScreen', {possibleScale});
+		if (possibleScale < 1.0 || this.state.live.isFullscreen) {
+			LiveActions.enterScaledscreen();
+		} else {
+			LiveActions.exitScaledscreen();
+		}
+	},
+
+	onVncDisconnect() {
+		debug('onVncDisconnect');
+		LiveActions.liveConnect(this.state.liveInfo.avm_id);
+	},
+
 	// Methods //
 
 	// Status Box
@@ -497,11 +514,17 @@ const LiveStore = Reflux.createStore({
 	},
 
 	calculateScale() {
+		this.setScale(this.getPossibleScale());
+	},
+
+	getPossibleScale() {
+		debug('getPossibleScale1');
 		const width = this.state.liveInfo.hwconfig.width;
 		const height = this.state.liveInfo.hwconfig.height;
 		const rotation = this.state.live.properties ? this.state.live.properties['aicd.screen_rotation'] : '0';
-		// const isFullscreen = this.state && this.state.live && this.state.live.isFullscreen;
-		this.setScale(calcScreenScale(width, height, rotation));
+		const possibleScale = calcScreenScale(width, height, rotation, this.state.live.isFullscreen);
+		debug('getPossibleScale2', {possibleScale});
+		return possibleScale;
 	},
 
 	setScale(value) {

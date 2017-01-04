@@ -22,7 +22,8 @@ const scale2Fit = (originalWidth, originalHeight, targetWidth, targetHeight) => 
 	};
 };
 
-const calcScreenScale = (width, height, rotation) => {
+const calcScreenScale = (width, height, rotation, isFullScreen) => {
+	debug('calcScreenScale1', {width, height, rotation, isFullScreen});
 	let androidSize;
 	if (rotation === '0' || rotation === '180') {
 		androidSize = {
@@ -35,9 +36,11 @@ const calcScreenScale = (width, height, rotation) => {
 			width: height
 		};
 	}
+	debug('calcScreenScale2');
 	const windowSize = document.querySelector('#liveBox').getBoundingClientRect();
-	const androidFinalSize = scale2Fit(androidSize.width, androidSize.height, windowSize.width, windowSize.height);
-	debug('calcScreenScale', androidSize, windowSize, androidFinalSize);
+	debug('calcScreenScale3');
+	const androidFinalSize = scale2Fit(androidSize.width, androidSize.height, windowSize.width, isFullScreen ? windowSize.height : Infinity);
+	debug('calcScreenScale5', androidSize, windowSize, androidFinalSize);
 	return androidFinalSize.width / androidSize.width;
 };
 

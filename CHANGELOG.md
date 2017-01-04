@@ -6,10 +6,12 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ### Added
 - Add test run to live.
+- Add live reconnect when noVNC disconnects.
 
 ### Changed
 - Change nfc off as default.
 - Fix toolbox live drag on firefox because [the event does not have coordinates](https://bugzilla.mozilla.org/show_bug.cgi?id=505521).
+- Change live scaling behavior.
 
 ## [0.7.6]
 

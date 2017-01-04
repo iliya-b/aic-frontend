@@ -29,7 +29,9 @@ const LiveActions = Reflux.createActions({
 	recalculeScaleIfConnected: {},
 	listTests: {asyncResult: true},
 	runTest: {asyncResult: true},
-	notifyLiveRunTest: {}
+	notifyLiveRunTest: {},
+	initiateScaleScreen: {},
+	vncDisconnect: {}
 });
 
 // Backend related
@@ -60,7 +62,7 @@ LiveActions.liveConnect.listenAndPromise(avmId => {
 			throw new Error('Could not get authentication for VNC.');
 		}
 		return new Promise((resolve, reject) => {
-			const promises = [NoVNCAdapter.loadScripts, NoVNCAdapter.createRFB, NoVNCAdapter.connect.bind(NoVNCAdapter, host, port, password, path)];
+			const promises = [NoVNCAdapter.loadScripts, NoVNCAdapter.createRFB.bind(NoVNCAdapter, LiveActions.vncDisconnect), NoVNCAdapter.connect.bind(NoVNCAdapter, host, port, password, path)];
 			promises.reduce((pPrevious, pCurrent) => {
 				return pPrevious.then(pCurrent);
 			}, Promise.resolve()).then(resolve, reject);

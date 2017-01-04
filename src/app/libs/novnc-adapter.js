@@ -51,7 +51,7 @@ const NoVNCAdapter = {
 		});
 	},
 
-	createRFB: () => {
+	createRFB: vncDisconnectCallback => {
 		return new Promise((resolve, reject) => {
 			debug('createRFB Promise');
 			let isResolved = false;
@@ -65,6 +65,10 @@ const NoVNCAdapter = {
 				if (state === 'normal') {
 					clearTimeout(noVNCState.connect.timeoutIfNotLoad);
 					noVNCState.connect.resolve();
+				}
+				if (state === 'disconnected') {
+					// Tries to reconnect
+					vncDisconnectCallback();
 				}
 			};
 			try {
