@@ -51,7 +51,7 @@ job_deploy_dev:
 job_test_integration:
   stage: test_integration
   services:
-    - karine/docker-chromedriver
+    - selenium/standalone-chrome
   script:
     - node --version
     - npm --version
@@ -60,7 +60,7 @@ job_test_integration:
     - npm install --unsafe-perm --quiet
     - echo "Saving screenshots at ${AIC_SCREENSHOT_PATH}"
     - echo "Running tests at https://${AIC_DEV_HOST}:8443/"
-    - AIC_WB_HOST=karine__docker-chromedriver AIC_FRONTEND_HOST=https://${AIC_DEV_HOST}:8443/ ./run-tests.sh
+    - AIC_WB_HOST=selenium__standalone-chrome AIC_FRONTEND_HOST=https://${AIC_DEV_HOST}:8443/ ./run-tests.sh
     - ls ${AIC_SCREENSHOT_PATH}
   artifacts:
     when: always
