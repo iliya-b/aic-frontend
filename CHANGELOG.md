@@ -120,7 +120,7 @@ version projects of AiC.
 - Secure connection with wss for websockets and https for backend.
 - Live connects to gateway for the vm screen (vm docker reverse proxy).
 
-## [0.2.4]
+## [0.2.4]
 
 ### Added
 - Feedback for apk install and monkey runner on live.
@@ -128,7 +128,7 @@ version projects of AiC.
 ### Fixed
 - Fix project internal selected menu indication.
 
-## [0.2.3]
+## [0.2.3]
 
 ### Added
 - Live GSM calls.

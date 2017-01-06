@@ -17,7 +17,7 @@
     "copy-static:noVNC": "mkdir -p build/noVNC || true && cp ./node_modules/noVNC/include/base.css ./node_modules/noVNC/include/*.js build/noVNC/",
     "copy-static:mdi": "cp ./node_modules/mdi/css/materialdesignicons.min.css* build/css/ && mkdir -p build/fonts || true && cp ./node_modules/mdi/fonts/* build/fonts/ ",
     "create-conf-from-env": "create-json-from-env --input config-sample.json --output config.json --match \"^AIC_FRONTEND_(.+)\" --match-split \"([^_.]+)_(.+)\"",
-    "start": "webpack-dev-server --content-base ./build/ --history-api-fallback --progress --port 9080 --hot --inline",
+    "start": "webpack-dev-server --host 0.0.0.0 --content-base ./build/ --history-api-fallback --progress --port 9080 --hot --inline",
     "test": "npm run test:code-style && npm run test:coverage && npm run test:no-console",
     "test:coverage": "nyc --extension .jsx npm run test:unit && nyc report --reporter=lcov && nyc report --reporter=text-summary",
     "test:coverage-check": "npm run test:coverage && nyc check-coverage --lines 100 --functions 100 --branches 100",
