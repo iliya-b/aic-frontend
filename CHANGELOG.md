@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ## [Unreleased]
 
+## [0.7.7]
+
 ### Added
 - Add test run to live.
 - Add live reconnect when noVNC disconnects.
