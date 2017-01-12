@@ -249,7 +249,19 @@ const GatewayAdapters = {
 							stdout: t.stdout,
 							apkPackage: t.package,
 							status: t.status,
-							image: t.image
+							image: t.image,
+							hwconfig: {
+								dpi: t.hwconfig.dpi,
+								enableBattery: t.hwconfig.enable_battery,
+								enableCamera: t.hwconfig.enable_camera,
+								enableGps: t.hwconfig.enable_gps,
+								enableGsm: t.hwconfig.enable_gsm,
+								enableNfc: t.hwconfig.enable_nfc,
+								enableRecord: t.hwconfig.enable_record,
+								enableSensors: t.hwconfig.enable_sensors,
+								height: t.hwconfig.height,
+								width: t.hwconfig.width
+							}
 						};
 					}),
 					name: backendObject.campaign.campaign_name
