@@ -9,9 +9,9 @@ import IconButton from 'material-ui/IconButton';
 import LabeledSpan from 'app/components/form/labeled-span';
 import DeviceIcon from 'app/components/icon/device-icon';
 
-const debug = require('debug')('AiC:Components:Panel:PanelTestResults');
+const debug = require('debug')('AiC:Components:Panel:PanelTestResultsPackage');
 
-const PanelTestResults = class extends React.Component {
+const PanelTestResultsPackage = class extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -60,7 +60,7 @@ const PanelTestResults = class extends React.Component {
 	}
 };
 
-PanelTestResults.propTypes = {
+PanelTestResultsPackage.propTypes = {
 	style: React.PropTypes.object,
 	status: React.PropTypes.string,
 	stdout: React.PropTypes.string,
@@ -68,4 +68,4 @@ PanelTestResults.propTypes = {
 	image: React.PropTypes.string
 };
 
-module.exports = PanelTestResults;
+module.exports = PanelTestResultsPackage;

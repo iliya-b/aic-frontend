@@ -789,6 +789,16 @@ const PanelCampaignMachineProps = [{
 	}
 }];
 
+const PanelTestResultsPackageProps = [{
+	props: {
+		stdout: 'INSTRUMENTATION_STATUS: numtests=2\nINSTRUMENTATION_STATUS: stream=\ncom.zenika.aic.core.libs.ParserTest:\nINSTRUMENTATION_STATUS: id=InstrumentationTestRunner\nINSTRUMENTATION_STATUS: test=testAndroidTestCaseSetupProperly\nINSTRUMENTATION_STATUS: class=com.zenika.aic.core.libs.ParserTest\nINSTRUMENTATION_STATUS: current=1\nINSTRUMENTATION_STATUS_CODE: 1\nINSTRUMENTATION_STATUS: numtests=2\nINSTRUMENTATION_STATUS: stream=.\nINSTRUMENTATION_STATUS: id=InstrumentationTestRunner\nINSTRUMENTATION_STATUS: test=testAndroidTestCaseSetupProperly\nINSTRUMENTATION_STATUS: class=com.zenika.aic.core.libs.ParserTest\nINSTRUMENTATION_STATUS: current=1\nINSTRUMENTATION_STATUS_CODE: 0\nINSTRUMENTATION_STATUS: numtests=2\nINSTRUMENTATION_STATUS: stream=\nINSTRUMENTATION_STATUS: id=InstrumentationTestRunner\nINSTRUMENTATION_STATUS: test=testApplicationTestCaseSetUpProperly\nINSTRUMENTATION_STATUS: class=com.zenika.aic.core.libs.ParserTest\nINSTRUMENTATION_STATUS: current=2\nINSTRUMENTATION_STATUS_CODE: 1\nINSTRUMENTATION_STATUS: numtests=2\nINSTRUMENTATION_STATUS: stream=.\nINSTRUMENTATION_STATUS: id=InstrumentationTestRunner\nINSTRUMENTATION_STATUS: test=testApplicationTestCaseSetUpProperly\nINSTRUMENTATION_STATUS: class=com.zenika.aic.core.libs.ParserTest\nINSTRUMENTATION_STATUS: current=2\nINSTRUMENTATION_STATUS_CODE: 0\nINSTRUMENTATION_RESULT: stream=\nTest results for InstrumentationTestRunner=..\nTime: 0.005\n\nOK (2 tests)\n\n\nINSTRUMENTATION_CODE: -1',
+		apkPackage: 'com.zenika.aic.core.libs.test/android.test.InstrumentationTestRunner',
+		status: 'READY',
+		image: 'kitkat-tablet',
+		style: {}
+	}
+}];
+
 const componentsProps = {
 	PanelAndroidConfig: PanelAndroidConfigProps,
 	PanelCampaignShow: PanelCampaignShowProps,
@@ -802,7 +812,8 @@ const componentsProps = {
 	PanelSessionStatus: PanelSessionStatusProps,
 	PanelTestResults: PanelTestResultsProps,
 	PanelLiveTestResults: PanelLiveTestResultsProps,
-	PanelCampaignMachine: PanelCampaignMachineProps
+	PanelCampaignMachine: PanelCampaignMachineProps,
+	PanelTestResultsPackage: PanelTestResultsPackageProps
 };
 
 module.exports = componentsProps;
