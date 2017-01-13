@@ -58,7 +58,8 @@ const PanelCampaignShow = props => {
 };
 
 PanelCampaignShow.defaultProps = {
-	machines: []
+	machines: [],
+	tests: []
 };
 
 PanelCampaignShow.propTypes = {
