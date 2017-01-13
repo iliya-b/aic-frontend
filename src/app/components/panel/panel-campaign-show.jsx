@@ -24,7 +24,7 @@ const PanelCampaignShow = props => {
 		onStop,
 		...others
 	} = props;
-	const progressPerc = progress ? parseInt(progress * 100, 10) : '';
+	const progressPerc = progress ? parseInt(progress * 100, 10) : '0';
 
 	const testsList = tests.map((t, i) => {
 		return <div key={i}><PanelTestResultsPackage {...t}/><br/></div>;
