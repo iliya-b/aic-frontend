@@ -8,23 +8,54 @@ import FlatButton from 'material-ui/FlatButton';
 import IconButtonApp from 'app/components/icon/icon-button-app';
 import DeviceIcon from 'app/components/icon/device-icon';
 import {sensors} from 'app/libs/sensors';
+import {
+	isValidResDpi,
+	calcMaxValidSizeByDpi,
+	calcMinValidDpiBySize,
+	getArrMaxSize,
+	getArrMinDpi,
+	sizes,
+	dpis,
+	getSize
+} from 'app/libs/dpi';
 
 const debug = require('debug')('AiC:Components:Panel:PanelAndroidCreateConfig');
 
-// References:
-// https://developer.android.com/about/dashboards/index.html
-// https://developer.android.com/guide/practices/screens_support.html
-
-const sizes = [
-	'320x480', '480x800', '800x600', '1280x800'
-];
-
-const dpis = [
-	'160', '240', '320', '480'
-];
-
 const getFirstImage = props => {
 	return ((props.images && props.images.length) ? props.images[0].image : '');
+};
+
+const validateField = {
+	size: sizeValue => {
+		if (sizeValue === '') {
+			throw new Error('Select a valid screen size.');
+		}
+		const r = /^[0-9]+x[0-9]+$/;
+		const valid = r.exec(sizeValue);
+		if (!valid) {
+			throw new Error('Screen size should be "widthxheight".');
+		}
+		const sizes = getSize(sizeValue);
+		if (sizes.width < 320 || sizes.height < 320) {
+			throw new Error('Screen size should be at least 320.');
+		}
+		return true;
+	},
+	dpi: dpiValue => {
+		if (dpiValue === '') {
+			throw new Error('Select a valid screen DPI.');
+		}
+		let dpiValueInt;
+		try {
+			dpiValueInt = parseInt(dpiValue, 10);
+		} catch (err) {
+			throw new Error('Screen DPI should be a number.');
+		}
+		if (dpiValueInt < 160) {
+			throw new Error('Screen DPI should be at least 160.');
+		}
+		return true;
+	}
 };
 
 const PanelAndroidCreateConfig = class extends React.Component {
@@ -46,18 +77,71 @@ const PanelAndroidCreateConfig = class extends React.Component {
 				enableNfc: false
 			},
 			customSize: false,
-			customDpi: false
+			customDpi: false,
+			sizeErrorText: null,
+			dpiErrorText: null
 		};
 		this.refsC = {};
 	}
 
 	udpdateConfig = (config, value) => {
 		const newStateConfig = Object.assign({}, this.state.config);
+		const extraStateProps = {};
 		newStateConfig[config] = value;
-		debug('udpdateConfig', config, value, {config: newStateConfig});
-		this.setState({config: newStateConfig});
+		debug('udpdateConfig', {config, value, newStateConfig});
+
+		// Verify config
+		try {
+			const isFieldValid = validateField[config](value);
+			if (isFieldValid) {
+				extraStateProps[`${config}ErrorText`] = null;
+			}
+		} catch (err) {
+			debug('err', err);
+			extraStateProps[`${config}ErrorText`] = err.message;
+		}
+
+		let errors = Object.assign({}, this.state, extraStateProps);
+		const isValidConfig = errors.dpiErrorText === null && errors.sizeErrorText === null;
+		if (isValidConfig) {
+			const isValidConfigResDpi = isValidResDpi(newStateConfig.size, newStateConfig.dpi);
+			debug('isValidConfigResDpi', isValidConfigResDpi);
+			if (!isValidConfigResDpi) {
+				if (config === 'dpi') {
+					const possibleSize = calcMaxValidSizeByDpi(parseInt(newStateConfig.dpi, 10));
+					const possibleSizeArr = getArrMaxSize(possibleSize);
+					if (possibleSizeArr) {
+						newStateConfig.size = possibleSizeArr;
+						extraStateProps.customSize = false;
+					} else {
+						newStateConfig.size = possibleSize;
+						extraStateProps.customSize = true;
+						extraStateProps.sizeValue = newStateConfig.size;
+						extraStateProps.sizeErrorText = null;
+					}
+				} else {
+					const possibleDpi = calcMinValidDpiBySize(newStateConfig.size);
+					const possibleDpiArr = getArrMinDpi(possibleDpi);
+					if (possibleDpiArr) {
+						newStateConfig.dpi = possibleDpiArr;
+						extraStateProps.customDpi = false;
+					} else {
+						newStateConfig.dpi = possibleDpi;
+						extraStateProps.customDpi = true;
+						extraStateProps.dpiValue = newStateConfig.dpi;
+						extraStateProps.dpiErrorText = null;
+					}
+				}
+			}
+		}
+
+		const newState = Object.assign({config: newStateConfig}, extraStateProps);
+		debug('state', newState);
+		this.setState(newState);
 		if (this.props.onChange) {
-			this.props.onChange(newStateConfig);
+			errors = Object.assign({}, this.state, extraStateProps);
+			const isValidConfig = errors.dpiErrorText === null && errors.sizeErrorText === null;
+			this.props.onChange(newStateConfig, isValidConfig);
 		}
 	}
 
@@ -118,7 +202,7 @@ const PanelAndroidCreateConfig = class extends React.Component {
 
 	componentDidMount() {
 		if (this.props.onChange) {
-			this.props.onChange(this.state.config);
+			this.props.onChange(this.state.config, true);
 		}
 	}
 
@@ -145,21 +229,22 @@ const PanelAndroidCreateConfig = class extends React.Component {
 			);
 		});
 
-		const styleBts = {margin: '6px 0 6px 0'};
-		const styleLabels = {paddingTop: 14, width: 256};
+		const styleBts = {margin: '6px 0 6px 0', float: 'left'};
+		const styleBtsInvalid = {margin: '6px 0 6px 0', color: '#bbb', float: 'left'};
+		const styleLabels = {paddingTop: 14, width: 256, clear: 'both', display: 'block'};
 
 		const sizeButtons = sizes.map(s => {
 			if (!this.state.customSize && s === this.state.config.size) {
-				return <RaisedButton primary key={s} onClick={this.handleClickConfig} data-config-key="size" data-config-value={s} labelStyle={styleSizes} label={s}/>;
+				return <RaisedButton style={styleBts} primary key={s} onClick={this.handleClickConfig} data-config-key="size" data-config-value={s} labelStyle={styleSizes} label={s}/>;
 			}
-			return <FlatButton style={styleBts} key={s} onClick={this.handleClickConfig} data-config-key="size" data-config-value={s} labelStyle={styleSizes} label={s}/>;
+			return <FlatButton style={isValidResDpi(s, this.state.config.dpi) ? styleBts : styleBtsInvalid} key={s} onClick={this.handleClickConfig} data-config-key="size" data-config-value={s} labelStyle={styleSizes} label={s}/>;
 		});
 
 		const dpiButtons = dpis.map(s => {
 			if (!this.state.customDpi && s === this.state.config.dpi) {
-				return <RaisedButton primary key={s} onClick={this.handleClickConfig} data-config-key="dpi" data-config-value={s} labelStyle={styleSizes} label={s}/>;
+				return <RaisedButton style={styleBts} primary key={s} onClick={this.handleClickConfig} data-config-key="dpi" data-config-value={s} labelStyle={styleSizes} label={s}/>;
 			}
-			return <FlatButton style={styleBts} key={s} onClick={this.handleClickConfig} data-config-key="dpi" data-config-value={s} labelStyle={styleSizes} label={s}/>;
+			return <FlatButton style={isValidResDpi(this.state.config.size, s) ? styleBts : styleBtsInvalid} key={s} onClick={this.handleClickConfig} data-config-key="dpi" data-config-value={s} labelStyle={styleSizes} label={s}/>;
 		});
 
 		const devices = this.getButtonsDevices();
@@ -171,13 +256,13 @@ const PanelAndroidCreateConfig = class extends React.Component {
 				<br/>
 				<LabeledSpan label="screen size" off style={styleLabels}/><br/>
 				{sizeButtons}
-				{!this.state.customSize && <FlatButton label="custom" onClick={this.handleClickCustomSize}/>}
-				{this.state.customSize && <TextField name="createLiveSessionSize" data-config-key="size" ref={this.setRefC} onChange={this.handleChangeConfig}/>}
+				{!this.state.customSize && <FlatButton style={styleBts} label="custom" onClick={this.handleClickCustomSize}/>}
+				{this.state.customSize && <TextField name="createLiveSessionSize" errorText={this.state.sizeErrorText} value={this.state.config.size} data-config-key="size" ref={this.setRefC} onChange={this.handleChangeConfig}/>}
 				<br/>
 				<LabeledSpan label="screen dpi" off style={styleLabels}/><br/>
 				{dpiButtons}
-				{!this.state.customDpi && <FlatButton label="custom" onClick={this.handleClickCustomDpi}/>}
-				{this.state.customDpi && <TextField name="createLiveSessionDpi" data-config-key="dpi" ref={this.setRefC} onChange={this.handleChangeConfig}/>}
+				{!this.state.customDpi && <FlatButton style={styleBts} label="custom" onClick={this.handleClickCustomDpi}/>}
+				{this.state.customDpi && <TextField name="createLiveSessionDpi" errorText={this.state.dpiErrorText} value={this.state.config.dpi} data-config-key="dpi" ref={this.setRefC} onChange={this.handleChangeConfig}/>}
 				<br/>
 				<LabeledSpan label="enabled sensors" off style={styleLabels}/><br/>
 				{sensorButtons}

@@ -26,7 +26,8 @@ const DialogCampaignCreation = class extends React.Component {
 				packages: []
 			},
 			isChosingDevice: false,
-			deviceConfig: null
+			deviceConfig: null,
+			isValidConfig: null
 		};
 		this.refsC = {};
 	}
@@ -98,9 +99,9 @@ const DialogCampaignCreation = class extends React.Component {
 		this.setState({isChosingDevice: false});
 	}
 
-	handleChangeDeviceConfig = newConfig => {
+	handleChangeDeviceConfig = (newConfig, isValidConfig) => {
 		debug('newConfig', newConfig);
-		this.setState({deviceConfig: newConfig});
+		this.setState({deviceConfig: newConfig, isValidConfig});
 	}
 
 	handleDeleteDevice = e => {
@@ -126,7 +127,7 @@ const DialogCampaignCreation = class extends React.Component {
 
 		if (this.state.isChosingDevice) {
 			actionsButtons.push([
-				<RaisedButton secondary label="Select" key="select" onClick={this.handleClickDeviceSelect}/>,
+				<RaisedButton secondary label="Select" key="select" disabled={!this.state.isValidConfig} onClick={this.handleClickDeviceSelect}/>,
 				<FlatButton style={{marginLeft: 10}} label="Return" key="Return" onClick={this.handleClickDeviceClose}/>
 			]);
 		} else {

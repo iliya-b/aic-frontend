@@ -98,6 +98,14 @@ const vm2Status = {
 };
 const getVmStatus = vmStatus => vm2Status[vmStatus];
 
+const findLast = (arr, fn) => {
+	for (let i = (arr.length - 1); i >= 0; i--) {
+		if (fn(arr[i])) {
+			return arr[i];
+		}
+	}
+};
+
 module.exports = {
 	camelize: camelCase,
 	capitalize,
@@ -122,5 +130,6 @@ module.exports = {
 	isEqual,
 	upperFirst,
 	camelizeObj,
-	isObject
+	isObject,
+	findLast
 };

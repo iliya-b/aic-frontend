@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ## [Unreleased]
 
+### Added
+- Add resolution and DPI check on VM creation.
+
 ### Changed
 - Fix VM aggregation bug on the test campaign run.
 
