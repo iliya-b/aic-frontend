@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ## [Unreleased]
 
+## [0.8.0]
+
 ### Added
 - Add resolution and DPI check on VM creation.
 
