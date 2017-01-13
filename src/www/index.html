@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Front-end AiC</title>
+  <meta name="description" content="Front-end AiC built with React.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <style type="text/css">
+    .prototype {
+      text-align: center;
+      width: 360px;
+      position: absolute;
+      top: 18px;
+      left: -119px;
+      font-size: 24px;
+      -webkit-transform: rotate(-28deg);
+      -moz-transform: rotate(-28deg);
+      -ms-transform: rotate(-28deg);
+      -o-transform: rotate(-28deg);
+      transform: rotate(-28deg);
+      background: rgba(106, 231, 0, 0.75);
+      cursor: pointer;
+      z-index: 5000;
+      pointer-events: none;
+      color: white;
+   }
+  </style>
+</head>
+
+<body>
+  <div id="gobyApp"></div>
+  <script>
+    var WebFontConfig = {
+      google: { families: [ 'Roboto:400,300,500:latin', 'Roboto+Mono:300:latin' ] }
+    };
+    (function() {
+      var wf = document.createElement('script');
+      wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+      '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+      wf.type = 'text/javascript';
+      wf.async = 'true';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(wf, s);
+    })();
+  </script>
+  <script src="babel-helpers.js"></script>
+  <script src="app.js"></script>
+  <script src="/noVNC/util.js"></script>
+  <div class="prototype">prototype</div>
+</body>
+</html>

@@ -1,0 +1,171 @@
+
+// General
+
+html {
+  font-family: 'Roboto', sans-serif;
+  font-size: '13px';
+}
+
+body {
+    margin: 0;
+    background: #212121;
+}
+
+
+// Transitions
+
+
+// show hide opacity
+@keyframes transitionShow {
+  from {opacity: 0.01;}
+  to   {opacity: 1.00;}
+}
+
+.showHideTransition-enter {
+  animation-name: transitionShow;
+  animation-duration: 1s;
+  animation-timing-function: ease-in;
+}
+
+// .deleteButtonTransition-enter.deleteButtonTransition-enter-active {
+//   opacity: 1;
+// }
+
+.showHideTransition-appear {
+  animation-name: transitionShow;
+  animation-duration: 1s;
+  animation-timing-function: ease-in;
+}
+
+// .deleteButtonTransition-appear.deleteButtonTransition-appear  -active {
+//   opacity: 1;
+// }
+
+@keyframes transitionHide {
+  from {opacity: 1.00;}
+  to   {opacity: 0.01;}
+}
+
+.showHideTransition-leave {
+  animation-name: transitionHide;
+  animation-duration: 1s;
+  animation-timing-function: ease-in;
+}
+
+// .deleteButtonTransition-leave.deleteButtonTransition-leave-active {
+//   opacity: 0.01;
+// }
+
+
+.dropzone{
+  width: 100%;
+  border: 1px dashed;
+  padding: 20px;
+  box-sizing: border-box;
+  height: 150px;
+}
+
+.dropzone.active{
+  border: 1px solid rgb(139, 195, 74);
+  background: #dcedc8;
+}
+
+
+
+@keyframes liveIconMagnify {
+  from { transform: rotate(0deg) translateX(10px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(10px) rotate(-360deg); }
+}
+
+
+@jumpyWidth: 15px;
+@keyframes liveIconJumpy {
+  0% { transform: rotate(180deg) translateX(@jumpyWidth) rotate(-180deg); opacity: 1 }
+  80%   { transform: rotate(360deg) translateX(@jumpyWidth) rotate(-360deg); opacity: 1 }
+  90% { transform: rotate(360deg) translateX(@jumpyWidth) rotate(-360deg); opacity: 0 }
+  95% { transform: rotate(180deg) translateX(@jumpyWidth) rotate(-180deg); opacity: 0 }
+  100% { transform: rotate(180deg) translateX(@jumpyWidth) rotate(-180deg); opacity: 1 }
+}
+
+@sidesMinX: -10px;
+@sidesMaxX: 15px;
+@sidesMaxY: 8px;
+@keyframes liveIconSides {
+  0% { transform: translateX(@sidesMinX); }
+  25%   { transform: translateX(@sidesMaxX) ; }
+  50%   { transform: translateX(@sidesMaxX) translateY(@sidesMaxY) rotateY(-180deg); }
+  75%   { transform: translateX(@sidesMinX) translateY(@sidesMaxY)  rotateY(-180deg); }
+  100%   { transform: translateX(@sidesMinX) translateY(0px)  rotateY(0); }
+}
+
+
+
+@keyframes liveIconRotate {
+  from { transform: rotate(0deg) ; }
+  to   { transform: rotate(360deg) ; }
+}
+
+
+
+
+
+// http://codepen.io/kyledws/pen/Gvelt/
+
+@chatTotalLen: 106;
+@chatTotalSteps: 100;
+@chartPercStep: @chatTotalLen/@chatTotalSteps;
+
+/* Set the initial values for the animation */
+.generate-chart-initial(@chatTotalSteps);
+.generate-chart-initial(@n, @i: 0) when (@i =< @n) {
+  .chart[data-percent='@{i}'] .outer {
+    stroke-dashoffset: ((@chatTotalSteps - @i)*@chartPercStep);
+    -webkit-animation: 'show@{i}' 2s;
+    animation: 'show@{i}' 2s;
+  }
+  .generate-chart-initial(@n, (@i + 1));
+}
+
+/* Keyframes for the initial animation */
+.generate-chart-keyframes(@chatTotalSteps);
+.generate-chart-keyframes(@n, @i: 0) when (@i =< @n) {
+  @-webkit-keyframes 'show@{i}' {
+    from {stroke-dashoffset: @chatTotalLen;}
+    to {stroke-dashoffset: ((@chatTotalSteps - @i)*@chartPercStep);}
+  }
+  @keyframes 'show@{i}' {
+    from {stroke-dashoffset: @chatTotalLen;}
+    to {stroke-dashoffset: ((@chatTotalSteps - @i)*@chartPercStep);}
+  }
+  .generate-chart-keyframes(@n, (@i + 1));
+}
+
+
+
+
+
+
+.hideToBottom-enter {
+  transform: translate(800px, 0);
+}
+
+.hideToBottom-enter.hideToBottom-enter-active {
+  transform: translate(0, 0);
+  transition: transform 1000ms linear;
+}
+
+.hideToBottom-leave {
+  transform: translate(0, 0);
+}
+
+.hideToBottom-leave.hideToBottom-leave-active {
+  transform: translate(-800px, 0);
+  transition: transform 1000ms linear;
+}
+
+
+
+
+.mdi:before{
+  font-size: inherit;
+}
