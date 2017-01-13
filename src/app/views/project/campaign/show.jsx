@@ -5,6 +5,7 @@ import CampaignStore from 'app/stores/campaign';
 import Notify from 'app/libs/notify';
 import PanelCampaignShow from 'app/components/panel/panel-campaign-show';
 import LiveActions from 'app/actions/live';
+import CampaignActions from 'app/actions/campaign';
 
 const debug = require('debug')('AiC:Views:Campaign:CampaignShow');
 
@@ -54,6 +55,7 @@ const CampaignShow = class extends React.Component {
 	componentDidMount() {
 		debug('componentDidMount');
 		this.unsubscribe = CampaignStore.listen(this.handleStateChange);
+		CampaignActions.initiate();
 		Notify.watchCampaign({campaignId: this.props.params.campaignId});
 		Notify.startCampaignRead({projectId: this.props.params.projectId, campaignId: this.props.params.campaignId});
 		Notify.startListSessionsCampaign({projectId: this.props.params.projectId, campaignId: this.props.params.campaignId});

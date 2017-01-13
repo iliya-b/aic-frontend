@@ -250,7 +250,7 @@ const GatewayAdapters = {
 							apkPackage: t.package,
 							status: t.status,
 							image: t.image,
-							hwconfig: {
+							hwconfig: t.hwconfig ? {
 								dpi: t.hwconfig.dpi,
 								enableBattery: t.hwconfig.enable_battery,
 								enableCamera: t.hwconfig.enable_camera,
@@ -261,7 +261,7 @@ const GatewayAdapters = {
 								enableSensors: t.hwconfig.enable_sensors,
 								height: t.hwconfig.height,
 								width: t.hwconfig.width
-							}
+							} : null
 						};
 					}),
 					name: backendObject.campaign.campaign_name

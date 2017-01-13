@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 ### Changed
 - Fix VM aggregation bug on the test campaign run.
+- Fix show old campaign data.
 
 ## [0.7.7]
 

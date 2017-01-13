@@ -10,7 +10,8 @@ const CampaignActions = Reflux.createActions({
 	delete: {asyncResult: true},
 	notifyList: {},
 	notifyRead: {},
-	notifySessionList: {}
+	notifySessionList: {},
+	initiate: {}
 });
 
 CampaignActions.list.listenAndPromise(Gateway.campaign.list);

@@ -484,18 +484,7 @@ const PanelCampaignShowProps = [{
 					status: 'QUEUED',
 					apkPackage: 'com.zenika.aic.demo.sensor.test/android.support.test.runner.AndroidJUnitRunner',
 					image: 'lollipop-phone',
-					hwconfig: {
-						dpi: 160,
-						enableBattery: 1,
-						enableGps: 1,
-						enableGsm: 1,
-						enableSensors: 1,
-						width: 800,
-						enableCamera: 1,
-						height: 600,
-						enableNfc: 0,
-						enableRecord: 0
-					}
+					hwconfig: null
 				},
 				{
 					stdout: '',
