@@ -29,6 +29,7 @@ const PanelTestResultsPackage = class extends React.Component {
 			style,
 			apkPackage,
 			image,
+			hwconfig, // eslint-disable-line no-unused-vars
 			...other
 		} = this.props;
 
@@ -65,7 +66,8 @@ PanelTestResultsPackage.propTypes = {
 	status: React.PropTypes.string,
 	stdout: React.PropTypes.string,
 	apkPackage: React.PropTypes.string,
-	image: React.PropTypes.string
+	image: React.PropTypes.string,
+	hwconfig: React.PropTypes.object
 };
 
 module.exports = PanelTestResultsPackage;
