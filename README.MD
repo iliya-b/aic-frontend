@@ -5,7 +5,7 @@
 
 ## Front-end AiC
 
-![Front-end AiC](frontend-aic.png "Front-end AiC")
+![Front-end AiC](aic-frontend.png "Front-end AiC")
 
 This is the repo that contains
 [AiC project](http://aic-project.rnd.alterway.fr/) web interface.
@@ -116,6 +116,18 @@ In this environment, each time a change occurs in one of the source
 files the application files will be modified automatically, without
 restarting the web server or rebuilding the entire application.
 However, there is still a need to reload the application in browser.
+
+### Storybook
+
+Storybook offers a simple interface that lists react components, like
+a component library for your project. To start storybook with AiC
+react components, first install project dependencies and then start
+the webpack storybook dev server.
+
+```
+$ npm install          # Install all project dependencies
+$ npm run start-story  # Start storybook server
+```
 
 ## Tests
 
